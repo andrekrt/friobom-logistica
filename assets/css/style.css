@@ -1,0 +1,340 @@
+body{
+    margin: 0;
+    box-sizing: content-box;
+}
+
+/*tela login*/
+.login{
+    background-image: url(../images/background.png);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.area-title-login{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.area-title-login img{
+    width: 300px;
+    margin-top: 20px;
+    max-height: 70px;
+}
+
+.area-login{
+    background-color: rgba(170, 16, 2, 0.6);
+    width: 400px;
+    margin: auto;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 30px;
+    margin-top: 10px;
+}
+
+.cabecalho{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.cabecalho img{
+    height: 50px;
+}
+
+.cabecalho p{
+    margin-top:auto ;
+    margin-left: 20px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.espaco{
+    margin-bottom: 15px;
+}
+.espaco label{
+    margin-bottom: 0;
+    color: #000;
+    font-weight: bold;
+}
+
+.corpo{
+    display: flex;
+    flex-direction: row;
+    background-color: #E6E6E6;
+}
+
+.menu-lateral{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border-right: solid rgb(94, 93, 93) 2px;
+}
+
+.logo img{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: solid rgb(94, 93, 93) 2px;
+}
+
+.opcoes{
+    display: flex;
+    flex-direction: column;
+}
+
+.item a{ 
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    border-bottom: solid rgb(94, 93, 93) 2px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.item a:hover{
+    text-decoration: none;
+    color: #fff;
+}
+
+.item img{
+    width: 185px;
+}
+
+a .icone{
+    margin: auto;
+}
+
+a .nome{
+    margin: auto;
+}
+
+.nome p{
+    margin: auto;
+}
+
+.tela-principal{
+    width: 85%;
+    
+}
+
+/* submenu */
+.item ul, .item li{
+    list-style: none;
+}
+.item ul{
+    display: flex;
+}
+
+.item li a{
+    color: rgb(139, 139, 139);
+    font-weight: bold;
+    text-decoration: none;
+    font-weight: 600;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #fff;
+    justify-content: center;
+}
+
+.item li a:hover{
+    border-bottom: 2px solid #000;
+    color: #fff;
+}
+
+.item .active a{
+    border-bottom: 5px solid #FF040C;
+    color: #ccc;
+}
+
+.item nav{
+    display: none;
+    width: 100%;
+}
+
+/*tela principal*/
+.tela-principal{
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-superior{
+    height: 72px;
+    border-bottom: solid rgb(94, 93, 93) 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.icone-menu-superior{
+    height: 100%;
+    display: flex;
+    justify-content: center ;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.icone-menu-superior img{
+    width: 70px;
+    height: 50px;
+}
+
+.tela-principal .title{
+   height: 100%;
+   display: flex;
+   align-items: center;
+   margin-left: 10px;
+   margin-top: 12px;
+}
+
+.title h2{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.menu-principal{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.indices{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+    height: 50px;
+}
+
+.indice-area-title{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+}
+
+.icone-indice img{
+    height: 30px;
+    margin-left: 10px;
+}
+
+.title-indice p{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.area-indice-val{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-row-gap: 20px;
+}
+
+.indice-ind{
+    background-color: #fff;
+    width: 180px;
+    margin: auto;
+    height: 120px;
+    border-radius: 5px;
+}
+
+.indice-ind-tittle{
+    width: 100%;
+}
+
+.indice-ind-tittle p{
+    text-align: center;
+    margin-top: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+} 
+
+.indice-qtde{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.indice-qtde img{
+    height: 50px;
+}
+
+.indice-qtde p{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+/*paginação*/
+.paginacao{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/*cadastro de veiculo*/
+
+.menu-principal form{
+    width: 100%;
+    margin: auto;
+}
+
+/* lista de despesas*/
+.filtro form{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.filtro select{
+    margin-right: 5px;
+}
+
+/*lançamento de despesas*/
+.menu-principal .despesas{
+    width: 100%;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+/*check list*/
+img.icone{
+    height: 30px;
+}
+
+/*centralizando input de arquivo*/
+.centro-file{
+    margin-top: 25px;
+}
+
+
+@media(max-width:425px){
+    .menu-lateral{
+        display: none;
+    }
+    .menu-principal form{
+        width: 100%;
+    }
+}
