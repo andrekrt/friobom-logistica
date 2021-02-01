@@ -155,13 +155,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                             </div>
                         </form>
+                        <a href="gastos-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                     </div>
                     <div class="table-responsive analise">
                         <table class="table table-striped table-dark table-bordered"> 
                             <thead>
                                 <tr>
                                     <th class="text-center align-middle">Tipo</th>
-                                    <th class="text-center align-middle">Qtd</th>
                                     <th class="text-center align-middle"> Custo/Entrega </th>
                                     <th class="text-center align-middle">Valor Transportado</th>
                                     <th class="text-center align-middle"> Valor Devolvido </th>
@@ -201,7 +201,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 ?>
                                 <tr>
                                     <td class="text-center text-nowrap"><?php echo  $dado['placa_veiculo'] ?></td>
-                                    <td class="text-center text-nowrap"><?php echo  $dado['contagem'] ?></td>
                                     <td class="text-center tex-nowrap"> <?php echo "R$ ". number_format($dado['custoEntrega'],2,",",".") ?> </td>
                                     <td class="text-center text-nowrap"><?php echo "R$ ". number_format($dado['mediaValorTransportado'], 2, ",",".")  ?></td>
                                     <td class="text-center text-nowrap"><?php echo "R$ ". number_format($dado['valorDevolvido'],2, ",", ".")  ?></td>
@@ -235,7 +234,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 ?>
                                 <tr>
                                     <td class="text-center text-nowrap"><?php echo  $dado['placa_veiculo'] ?></td>
-                                    <td class="text-center text-nowrap"><?php echo  $dado['contagem'] ?></td>
                                     <td class="text-center tex-nowrap"> <?php echo "R$ ". number_format($dado['custoEntrega'],2,",",".") ?> </td>
                                     <td class="text-center text-nowrap"><?php echo "R$ ". number_format($dado['mediaValorTransportado'], 2, ",",".")  ?></td>
                                     <td class="text-center text-nowrap"><?php echo "R$ ". number_format($dado['valorDevolvido'],2, ",", ".")  ?></td>

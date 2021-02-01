@@ -136,7 +136,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
-                 <div class="filtro">
+                    <div class="filtro">
                         <form class="form-inline" action="" method="post">
                             <div class="form-row">
                                 <select name="placa" id="placa" class="form-control">
@@ -156,6 +156,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                             </div>
                         </form>
+                        <a href="relatorio-xls.php"> <img src="../assets/images/excel.jpg" alt=""> </a>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-dark table-bordered">
@@ -164,7 +165,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <th class="text-center text-nowrap"> Tipo </th>
                                 <th class="text-center text-nowrap"> Qtd Viagens </th>
                                 <th class="text-center text-nowrap"> Km Rodado </th>
-                                <th class="text-center text-nowrap"> Total Abastecido (Lt) </th><th class="text-center text-nowrap"> Valor Abastecido (R$) </th>
+                                <th class="text-center text-nowrap"> Total Abastecido (Lt) </th>
+                                <th class="text-center text-nowrap"> Valor Abastecido (R$) </th>
                                 <th class="text-center text-nowrap"> Qtd Solicitações </th>
                                 <th class="text-center text-nowrap"> Valor das Solicitações (R$) </th>
                                 <th class="text-center text-nowrap"> R$/Km </th>

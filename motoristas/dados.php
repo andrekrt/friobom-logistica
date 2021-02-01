@@ -155,6 +155,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                             </div>
                         </form>
+                        <a href="dados-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                     </div>
                     <div class="table-responsive analise">
                         <table class="table table-striped table-dark table-bordered"> 

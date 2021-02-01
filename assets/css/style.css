@@ -302,6 +302,16 @@ a .nome{
 }
 
 /* lista de despesas*/
+.filtro{
+    display: flex;
+    flex-direction: row;   
+}
+
+.filtro img{
+    height: 60px;
+    margin: 5px;
+}
+
 .filtro form{
     margin-top: 5px;
     margin-bottom: 5px;

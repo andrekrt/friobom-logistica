@@ -155,12 +155,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                             </div>
                         </form>
+                        <a href="relatorio-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                     </div>
                     <div class="table-responsive analise">
                         <table class="table table-striped table-dark table-bordered"> 
                             <thead>
                                 <tr>
                                     <th class="text-center align-middle">Tipo</th>
+                                    <th class="text-center align-middle">Categoria Veículo</th>
                                     <th class="text-center align-middle">Qtd</th>
                                     <th class="text-center align-middle"> Custo/Entrega </th>
                                     <th class="text-center align-middle">Valor Transportado</th>
@@ -193,7 +195,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 if(isset($_POST['filtro']) && empty($_POST['rota'])==false){
                                     $rota = filter_input(INPUT_POST, 'rota');
 
-                                    $selecionar = $db->query("SELECT nome_motorista, nome_rota, viagem.placa_veiculo,COUNT(nome_motorista) as contagem, AVG(custo_entrega) as custoEntrega, SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(peso_carga) as peso, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento, SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(dias_em_rota) as diasEmRota, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia  FROM viagem WHERE nome_rota = '$rota' GROUP BY nome_rota ");
+                                    $selecionar = $db->query("SELECT nome_rota, veiculos.categoria as categoria, viagem.placa_veiculo,COUNT(nome_rota) as contagem, AVG(custo_entrega) as custoEntrega, SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(peso_carga) as peso, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento, SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(dias_em_rota) as diasEmRota, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_rota = '$rota' GROUP BY nome_rota, veiculos.categoria");
 
                                     if($selecionar){
                                         $dados = $selecionar->fetchAll();
@@ -201,6 +203,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 ?>
                                 <tr>
                                     <td class="text-center text-nowrap"><?php echo  $dado['nome_rota'] ?></td>
+                                    <td class="text-center text-nowrap"><?php echo  $dado['categoria'] ?></td>
                                     <td class="text-center text-nowrap"><?php echo  $dado['contagem'] ?></td>
                                     <td class="text-center tex-nowrap"> <?php echo "R$ ". number_format($dado['custoEntrega'],2,",",".") ?> </td>
                                     <td class="text-center text-nowrap"><?php echo "R$ ". number_format($dado['mediaValorTransportado'], 2, ",",".")  ?></td>
@@ -227,7 +230,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
 
                                     //relatorio padrao sem filtro
                                 }else{
-                                    $selecionar = $db->query("SELECT nome_motorista, nome_rota, viagem.placa_veiculo,COUNT(nome_motorista) as contagem, AVG(custo_entrega) as custoEntrega, SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(peso_carga) as peso, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento, SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(dias_em_rota) as diasEmRota, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia  FROM viagem GROUP BY nome_rota LIMIT $paginaInicial,$qtdPorPagina");
+                                    $selecionar = $db->query("SELECT nome_rota, veiculos.categoria as categoria, viagem.placa_veiculo,COUNT(nome_rota) as contagem, AVG(custo_entrega) as custoEntrega, SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(peso_carga) as peso, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento, SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(dias_em_rota) as diasEmRota, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo GROUP BY nome_rota, veiculos.categoria LIMIT $paginaInicial,$qtdPorPagina");
 
                                     if($selecionar){
                                         $dados = $selecionar->fetchAll();
@@ -235,6 +238,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 ?>
                                 <tr>
                                     <td class="text-center text-nowrap"><?php echo  $dado['nome_rota'] ?></td>
+                                    <td class="text-center text-nowrap"><?php echo  $dado['categoria'] ?></td>
                                     <td class="text-center text-nowrap"><?php echo  $dado['contagem'] ?></td>
                                     <td class="text-center tex-nowrap"> <?php echo "R$ ". number_format($dado['custoEntrega'],2,",",".") ?> </td>
                                     <td class="text-center text-nowrap"><?php echo "R$ ". number_format($dado['mediaValorTransportado'], 2, ",",".")  ?></td>
