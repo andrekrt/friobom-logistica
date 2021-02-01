@@ -24,8 +24,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $qtdViagem = $db->query("SELECT * FROM viagem")->rowCount();
         $qtdMotoristas = $db->query("SELECT * FROM motoristas")->rowCount();
         $qtdeRepatos = $db->query("SELECT * FROM solicitacoes")->rowCount();
-        $mediaCombustivel = $db->query("SELECT AVG(mediaSemTk) as media FROM viagem");
-        $mediaCombustivel = $mediaCombustivel->fetch();
+
+        $totalKmRodado = $db->query("SELECT SUM(km_rodado) as kmRodado FROM viagem");
+        $totalKmRodado = $totalKmRodado->fetch();
+        $totalAbastecido = $db->query("SELECT SUM(litros) as litros FROM viagem");
+        $totalAbastecido=$totalAbastecido->fetch();
+        $mediaCombustivel = $totalKmRodado['kmRodado']/$totalAbastecido['litros'];
+        
         $totalReparo01 = $db->query("SELECT SUM(valor) as total01 FROM solicitacoes");
         $totalReparo02 = $db->query("SELECT SUM(valor) as total02 FROM solicitacoes02");
         $totalReparo01=$totalReparo01->fetch();
@@ -221,18 +226,69 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             </div>
                             <div class="indice-qtde">
                                 <img src="assets/images/icones/combustivel.png" alt="">
-                                <p class="qtde"> <?php echo number_format($mediaCombustivel['media'], 2, ",", ".") ?>  </p>
+                                <p class="qtde"> <?php echo number_format($mediaCombustivel,2,",", ".")  ; ?>  </p>
                             </div>
                         </div>
-                        <!--<div class="indice-ind">
+                        <div class="indice-ind">
                             <div class="indice-ind-tittle">
-                                <p>Total de Reparos</p>
+                                <p>Média 3/4 Km/L</p>
                             </div>
                             <div class="indice-qtde">
-                                <img src="assets/images/icones/total.png" alt="">
-                                <p class="qtde"> <?php //echo "R$ ". number_format(147298.253,2, ",", ".") ?>  </p>
+                                <img src="assets/images/icones/combustivel.png" alt="">
+                                <p class="qtde"> 
+                                
+                                <?php
+
+                                    $sql = $db->query("SELECT veiculos.categoria, SUM(km_rodado) as kmRodado, SUM(litros) as litros FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE veiculos.categoria = '3/4' ");
+                                    $dados = $sql->fetch();
+                                    echo number_format($dados['kmRodado']/$dados['litros'],2, ",", ".");
+                                
+
+                                ?>  
+                                
+                                </p>
                             </div>
-                        </div>-->
+                        </div>
+                        <div class="indice-ind">
+                            <div class="indice-ind-tittle">
+                                <p>Média Toco Km/L</p>
+                            </div>
+                            <div class="indice-qtde">
+                                <img src="assets/images/icones/combustivel.png" alt="">
+                                <p class="qtde"> 
+                                
+                                <?php
+
+                                    $sql = $db->query("SELECT veiculos.categoria, SUM(km_rodado) as kmRodado, SUM(litros) as litros FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE veiculos.categoria = 'toco' ");
+                                    $dados = $sql->fetch();
+                                    echo number_format($dados['kmRodado']/$dados['litros'],2, ",", ".");
+                                
+
+                                ?>  
+                                
+                                </p>
+                            </div>
+                        </div>
+                        <div class="indice-ind">
+                            <div class="indice-ind-tittle">
+                                <p>Média Truck Km/L</p>
+                            </div>
+                            <div class="indice-qtde">
+                                <img src="assets/images/icones/combustivel.png" alt="">
+                                <p class="qtde"> 
+                                
+                                <?php
+
+                                    $sql = $db->query("SELECT veiculos.categoria, SUM(km_rodado) as kmRodado, SUM(litros) as litros FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE veiculos.categoria = 'truck' ");
+                                    $dados = $sql->fetch();
+                                    echo number_format($dados['kmRodado']/$dados['litros'],2, ",", ".");
+                                
+
+                                ?>  
+                                
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
