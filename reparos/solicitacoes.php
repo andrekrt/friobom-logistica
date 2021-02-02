@@ -169,12 +169,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     if($tipoUsuario==3 || $tipoUsuario == 99){
                                         if(isset($_POST['filtro']) && empty($_POST['veiculo_filtrado'])==false){
                                             $veiculo_filtrado = filter_input(INPUT_POST, 'veiculo_filtrado');
-                                            $filtro = $db->query("SELECT * FROM solicitacoes WHERE placarVeiculo = '$veiculo_filtrado'");
+                                            $filtro = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria WHERE placarVeiculo = '$veiculo_filtrado'");
 
                                             echo '<tr>';
                                             echo'    <th scope="col" class="text-center">ID</th>';
                                             echo'    <th scope="col" class="text-center">Data</th>';
                                             echo'    <th scope="col" class="text-center"> Serviço/Peça </th>';
+                                            echo'    <th scope="col" class="text-center"> Categoria </th>';
                                             echo'    <th scope="col" class="text-center"> Placa </th>';
                                             echo'    <th scope="col" class="text-center"> Imagem </th>';
                                             echo '  <th scope="col" class="text-center">Situação</th>';
@@ -186,7 +187,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             $qtdePagina = 8;
                                             $numPaginas = ceil($totalSolic/$qtdePagina);
                                             $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT * FROM solicitacoes WHERE placarVeiculo='$veiculo_filtrado' LIMIT $pagInicial, $qtdePagina ");
+                                            $resul = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria WHERE placarVeiculo='$veiculo_filtrado' LIMIT $pagInicial, $qtdePagina ");
                                             $totalSoli = $resul->rowCount();
                                             
                                             if($resul->rowCount()>0){
@@ -198,6 +199,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                     echo '<td class="text-center">' . $id . '</td>';
                                                     echo '<td class="text-center">' . date("d/m/Y", strtotime($dado['dataAtual'])) . '</td>';
                                                     echo '<td class="text-center">' . $dado['servico'] . '</>';
+                                                    echo '<td class="text-center">' . $dado['nome_categoria'] . '</>';
                                                     echo '<td class="text-center">' . $dado['placarVeiculo'] . '</td>';
                                                     $nomeImg = $dado['imagem'];
                                                     $linkImg = "uploads/$nomeImg";
@@ -238,6 +240,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             echo'    <th scope="col" class="text-center">ID</th>';
                                             echo'    <th scope="col" class="text-center">Data</th>';
                                             echo'    <th scope="col" class="text-center"> Serviço/Peça </th>';
+                                            echo'    <th scope="col" class="text-center"> Categoria </th>';
                                             echo'    <th scope="col" class="text-center"> Placa </th>';
                                             echo'    <th scope="col" class="text-center"> Imagem </th>';
                                             echo '   <th scope="col" class="text-center">Situação</th>';
@@ -248,7 +251,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             $qtdePagina = 10;
                                             $numPaginas = ceil($totalSolic/$qtdePagina);
                                             $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT * FROM solicitacoes ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina ");
+                                            $resul = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina ");
                                             $totalSoli = $resul->rowCount();
                                             if($resul->rowCount() > 0){
                                                 
@@ -260,6 +263,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                     echo '<td class="text-center">' . $id . '</td>';
                                                     echo '<td class="text-center">' . date("d/m/Y", strtotime($dado['dataAtual'])) . '</td>';
                                                     echo '<td class="text-center">' . $dado['servico'] . '</>';
+                                                    echo '<td class="text-center">' . $dado['nome_categoria'] . '</>';
                                                     echo '<td class="text-center">' . $dado['placarVeiculo'] . '</td>';
                                                     $nomeImg = $dado['imagem'];
                                                     $linkImg = "uploads/$nomeImg";

@@ -139,19 +139,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         <form action="" class="form-inline" method="post">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <select name="veiculo_filtrado" id="" class="form-control">
-                                        <option value=""></option>
-                                        <?php
-                                            $sql = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
-                                            if($sql->rowCount()>0){
-                                                $dados = $sql->fetchAll();
-                                                foreach($dados as $dado){
-                                                    echo "<option value='$dado[placa_veiculo]'>". $dado['placa_veiculo'] ."</option>";
-
-                                                }
-                                            }
-                                        ?>
-                                    </select>
                                     <input type="date" name="dataInicial" class="form-control"> 
                                     <span style="margin-left:10px; margin-right:10px; color:#fff"> a </span> 
                                     <input type="date" name="dataFinal" class="form-control">
@@ -171,7 +158,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </thead>
                             <tbody>
                                 <?php 
-                                    $veiculo = filter_input(INPUT_POST, 'veiculo_filtrado')?filter_input(INPUT_POST, 'veiculo_filtrado'):"%";
                                     $dataInicial = filter_input(INPUT_POST, 'dataInicial')?filter_input(INPUT_POST, 'dataInicial'):"2020-01-01";
                                     $dataFinal = filter_input(INPUT_POST, 'dataFinal')?filter_input(INPUT_POST, 'dataFinal'):"2050-12-31";
                                     

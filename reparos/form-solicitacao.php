@@ -162,15 +162,31 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="input-group mb-3 form-grupo col-md-6 centro-file">
-                                <div class="custom-file">
-                                    <input type="file" name="imagem" class="custom-file-input" id="imagem" >
-                                    <label for="imagem" class="custom-file-label">Imagem relatando o problema</label>
-                                </div>
-                            </div>
                             <div class="form-group col-md-6 espaco ">
                                 <label for="local">Local para Reparo</label>
                                 <input type="text" required name="local" class="form-control" id="local">
+                            </div>
+                            <div class="form-grupo col-md-5 espaco">
+                                <label for="categoria"> Categoria </label>
+                                <select name="categoria" class="form-control" id="categoria">
+                                    <option value=""></option>
+                                    <?php
+                                    
+                                        $sql = $db->query("SELECT * FROM categoria_peca");
+                                        $categorias = $sql->fetchAll();
+                                        foreach($categorias as $categoria){
+
+                                    ?>
+                                    <option value="<?php echo $categoria['idcategoria'] ?>"><?php echo $categoria['nome_categoria'] ?></option>
+                                    <?php
+
+                                        }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="icone-plus">
+                                <img src="../assets/images/icones/plus.png" data-toggle="modal" data-target="#modalCategoria" data-whatever="@mdo" value="" name="modalCategoria"> 
                             </div>
                         </div>     
                         <div class="form-row">
@@ -178,9 +194,43 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="peca">Peça/Serviço</label>
                                 <textarea name="peca" id="peca" class="form-control" rows="5"></textarea>
                             </div>
+                            <div class="input-group mb-3 form-grupo col-md-6 centro-file">
+                                <div class="custom-file">
+                                    <input type="file" name="imagem" class="custom-file-input" id="imagem" >
+                                    <label for="imagem" class="custom-file-label">Imagem relatando o problema</label>
+                                </div>
+                            </div>
+                            
                         </div>              
                         <button type="submit" name="entradas" class="btn btn-primary"> Enviar Solicitação</button>
                     </form>
+                    <!--Modal add categoria-->
+                    <div class="modal fade" id="modalCategoria" tabindex="1" role="dialog" >
+                       <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Adicionar Categoria</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="add-categoria.php" method="post">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="categoria" class="col-form-label"> Categoria </label>
+                                                <input type="text" name="categoria" class="form-control" id="categoria">
+                                            </div>
+                                        </div>
+                                <div class="modal-footer">
+                                        <button type="submit" name="cadastrar" class="btn btn-primary"> Cadastrar </button>
+                                </div>
+                                    </form>
+                                </div>
+                            </div>
+                       </div> 
+                    </div>
+                    <!-- Fim modal add categoria-->
                 </div>
             </div>
         </div>

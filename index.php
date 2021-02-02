@@ -142,7 +142,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             <ul class="nav flex-column">
                                 <li class="nav-item"> <a class="nav-link" href="reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Valores Gastos</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="reparos/relatorio.php"> Valores Gastos</a> </li>
                             </ul> 
                         </nav> 
                     </div>

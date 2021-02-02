@@ -339,6 +339,17 @@ img.icone{
     margin-top: 25px;
 }
 
+/*css icone plus*/
+.icone-plus{
+    margin: auto;
+    margin-left: 0;
+}
+
+.icone-plus img{
+    height: 25px;
+}
+/* final css icone plus */
+
 
 @media(max-width:425px){
     .menu-lateral{
