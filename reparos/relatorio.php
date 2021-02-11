@@ -147,6 +147,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </div>
                         </form>
                         <!-- fim filtro por veiculo -->
+                        <a href="relatorio-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                     </div>
                     <div class="table-responsivve">
                         <table class="table table-striped table-dark table-bordered">

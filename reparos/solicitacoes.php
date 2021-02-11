@@ -319,7 +319,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             echo '</tr>';
 
                                             $totalSolic = $filtro->rowCount();
-                                            $qtdePagina = 8;
+                                            $qtdePagina = 15;
                                             $numPaginas = ceil($totalSolic/$qtdePagina);
                                             $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
                                             $resul = $db->query("SELECT * FROM solicitacoes INNER JOIN usuarios WHERE solicitacoes.idSolic = usuarios.idusuarios AND placarVeiculo = '$veiculo_filtrado' LIMIT $pagInicial, $qtdePagina");
