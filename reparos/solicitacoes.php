@@ -303,7 +303,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                         // iniciando filtragem
                                         if(isset($_POST['filtro']) && empty($_POST['veiculo_filtrado'])==false ){
                                             $veiculo_filtrado = filter_input(INPUT_POST, 'veiculo_filtrado');
-                                            $filtro = $db->query("SELECT * FROM solicitacoes INNER JOIN usuarios WHERE solicitacoes.idSolic = usuarios.idusuarios AND placarVeiculo = '$veiculo_filtrado' ");
+                                            $filtro = $db->query("SELECT * FROM solicitacoes LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idusuarios WHERE solicitacoes.idSolic = usuarios.idusuarios AND placarVeiculo = '$veiculo_filtrado' ORDER BY dataAtual DESC");
 
                                             echo '<tr>';
                                             echo '   <th scope="col" class="text-center text-nowrap">ID</th>';
@@ -319,10 +319,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             echo '</tr>';
 
                                             $totalSolic = $filtro->rowCount();
-                                            $qtdePagina = 15;
+                                            $qtdePagina = 30;
                                             $numPaginas = ceil($totalSolic/$qtdePagina);
                                             $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT * FROM solicitacoes INNER JOIN usuarios WHERE solicitacoes.idSolic = usuarios.idusuarios AND placarVeiculo = '$veiculo_filtrado' LIMIT $pagInicial, $qtdePagina");
+                                            $resul = $db->query("SELECT * FROM solicitacoes LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idusuarios WHERE placarVeiculo = '$veiculo_filtrado' ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina");
                                             $totalSoli = $resul->rowCount();
                                             
                                             if($resul->rowCount()>0){
@@ -368,7 +368,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                         }else{
                                             
                                         
-                                            $sql = $db->query("SELECT * FROM `solicitacoes` INNER JOIN usuarios ORDER BY dataAtual DESC LIMIT 200");
+                                            $sql = $db->query("SELECT * FROM `solicitacoes` LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idUsuarios ORDER BY dataAtual DESC LIMIT 200");
                                             echo '<tr>';
                                             echo '   <th scope="col" class="text-center text-nowrap">ID</th>';
                                             echo'    <th scope="col" class="text-center text-nowrap">Data</th>';
@@ -385,7 +385,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             $qtdePagina = 8;
                                             $numPaginas = ceil($totalSolic/$qtdePagina);
                                             $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT * FROM `solicitacoes` INNER JOIN usuarios ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina");
+                                            $resul = $db->query("SELECT * FROM `solicitacoes` LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idUsuarios ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina");
                                             $totalSoli = $resul->rowCount();
                                             if($resul->rowCount()>0){
                                                                             

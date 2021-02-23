@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+use Mpdf\Tag\Input;
 
 session_start();
 require("../conexao.php");
@@ -134,6 +136,30 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
+                    <div class="filtro">
+                        <form action="" class="form-inline" method="post">
+                            <div class="form-row">
+                                <select name="veiculo" id="" class="form-control">
+                                    <option value=""></option>
+                                    <?php
+                                    $filtro = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
+                                    if ($filtro->rowCount() > 0) {
+                                        $dados = $filtro->fetchAll();
+                                        foreach ($dados as $dado) {
+
+                                    ?>
+                                            <option value="<?php echo $dado['placa_veiculo'] ?>"> <?php echo $dado['placa_veiculo'] ?> </option>
+                                    <?php
+
+                                        }
+                                    }
+
+                                    ?>
+                                </select>
+                                <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
+                            </div>
+                        </form>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped table-dark table-bordered"> 
                             <thead>
@@ -154,111 +180,221 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 $qtdPorPagina = 12;
                                 $numPaginas = ceil($totalVeiculo/$qtdPorPagina);
                                 $paginaInicial = ($qtdPorPagina*$pagina)-$qtdPorPagina;
-                                $limitado = $db->query("SELECT * FROM veiculos LIMIT $paginaInicial,$qtdPorPagina ");
                                 
-                                if($limitado->rowCount()>0){
-                                    $dados = $limitado->fetchAll();
-                                    foreach($dados as $dado){
-                                ?>
-                                <tr id="<?php echo $dado['cod_interno_veiculo'] ?>">
-                                    <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cod_interno_veiculo']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?php echo $dado['tipo_veiculo']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?php echo $dado['placa_veiculo']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_ultima_revisao']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_atual']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap">
-                                        <?php
-                                        $diferenca = $dado['km_atual']-$dado['km_ultima_revisao'];
+
+                                if(isset($_POST['filtro']) && empty($_POST['veiculo'])==false){
+                                    $veiculo = filter_input(INPUT_POST, 'veiculo');
+                                    $filtrado = $db->prepare("SELECT * FROM veiculos WHERE placa_veiculo = :placaVeiculo");
+                                    $filtrado->bindValue(':placaVeiculo', $veiculo);
+                                    $filtrado->execute();
+
+                                    if($filtrado->rowCount()>0){
+                                        $dados = $filtrado->fetchAll();
+                                        foreach($dados as $dado){
+                                            ?>
+                                            <tr id="<?php echo $dado['cod_interno_veiculo'] ?>">
+                                                <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cod_interno_veiculo']; ?> </td>
+                                                <td scope="col" class="text-center text-nowrap"> <?php echo $dado['tipo_veiculo']; ?> </td>
+                                                <td scope="col" class="text-center text-nowrap"> <?php echo $dado['placa_veiculo']; ?> </td>
+                                                <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_ultima_revisao']; ?> </td>
+                                                <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_atual']; ?> </td>
+                                                <td scope="col" class="text-center text-nowrap">
+                                                    <?php
+                                                    $diferenca = $dado['km_atual']-$dado['km_ultima_revisao'];
+                                                    
+                                                    if($diferenca<15000){
+                                                        echo "Aguardando";
+                                                    }else{
+                                                        echo "Pronto para Revisão";
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td scope="col" class="text-center text-nowrap">
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?php echo $dado['cod_interno_veiculo']; ?>" data-whatever="@mdo" value="<?php echo $dado['cod_interno_veiculo']; ?>" name="idSolic" >Visualisar</button>
+                                                </td>
+                                                
+                                                <script type="text/javascript">
+                                                   var diferenca = "<?php echo $diferenca;?>";
+                                                   if(diferenca<15000){
+                                                        var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
+                                                        container.style.background = 'green';
+                                                    }else{
+                                                        var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
+                                                        container.style.background = 'red';
+                                                    }
+                                                </script>
+                                            </tr>
+                                            <!-- INICIO MODAL -->
+                                            <div class="modal fade" id="modal<?php echo $dado['cod_interno_veiculo']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Veículo</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="atualiza.php" method="post">
+                                                                <div class="form-row">
+                                                                    <input type="hidden" name="idSolicitacao" value="<?php echo $dado['cod_interno_veiculo']; ?>" >
+                                                                    <div class="form-group col-md-12">
+                                                                        <label for="codVeiculo" class="col-form-label">Código Veículo</label>
+                                                                        <input type="text" name="codVeiculo" class="form-control"  id="codVeiculo" Readonly value="<?php echo $dado['cod_interno_veiculo'];  ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label for="tipoVeiculo" class="col-form-label">Tipo Veículo</label>
+                                                                        <input type="text" class="form-control" name="tipoVeiculo"  id="tipoVeiculo" value="<?php echo $dado['tipo_veiculo'] ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label for="categoria" class="col-form-label">Categoria</label>
+                                                                        <select class="form-control" name="categoria" id="categoria">
+                                                                            <option value="<?php echo $dado['categorai'] ?>"> <?php echo $dado['categoria'] ?> </option>
+                                                                            <option value="3/4">3/4</option>
+                                                                            <option value="Toco">Toco</option>
+                                                                            <option value="Truck">Truck</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-12">
+                                                                        <label for="placa" class="col-form-label">Placa</label>
+                                                                        <input type="text" class="form-control" name="placa" id="placa" value="<?php echo $dado['placa_veiculo'] ?>">
+                                                                    </div>
+                                                                </div>  
+                                                                <div class="form-row">
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="kmUltimaRevisao" class="col-form-label">Km da Última Revisão</label>
+                                                                        <input type="text" class="form-control" name="kmUltimaRevisao" id="kmUltimaRevisao" value="<?php echo $dado['km_ultima_revisao'] ?>">
+                                                                    </div>
+                                                                    <div class="form-group col-md-6">
+                                                                        <label for="kmAtual" class="col-form-label">Km Atual</label>
+                                                                        <input type="text" class="form-control" name="kmAtual" id="kmAtual" value="<?php echo $dado['km_atual'] ?>">
+                                                                    </div>
+                                                                </div>       
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                                <a href="excluir.php?codVeiculo=<?php echo $dado['cod_interno_veiculo']; ?>" class="btn btn-danger" > Excluir </a>
+                                                                <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- FIM MODAL -->
+                                            <?php   
+                                        }
+                                    }
+
+                                }else{
+                                    $limitado = $db->query("SELECT * FROM veiculos ORDER BY pLaca_veiculo LIMIT $paginaInicial,$qtdPorPagina ");
+                                    if($limitado->rowCount()>0){
+                                        $dados = $limitado->fetchAll();
+                                        foreach($dados as $dado){
+                                    ?>
+                                    <tr id="<?php echo $dado['cod_interno_veiculo'] ?>">
+                                        <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cod_interno_veiculo']; ?> </td>
+                                        <td scope="col" class="text-center text-nowrap"> <?php echo $dado['tipo_veiculo']; ?> </td>
+                                        <td scope="col" class="text-center text-nowrap"> <?php echo $dado['placa_veiculo']; ?> </td>
+                                        <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_ultima_revisao']; ?> </td>
+                                        <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_atual']; ?> </td>
+                                        <td scope="col" class="text-center text-nowrap">
+                                            <?php
+                                            $diferenca = $dado['km_atual']-$dado['km_ultima_revisao'];
+                                            
+                                            if($diferenca<15000){
+                                                echo "Aguardando";
+                                            }else{
+                                                echo "Pronto para Revisão";
+                                            }
+                                            ?>
+                                        </td>
+                                        <td scope="col" class="text-center text-nowrap">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?php echo $dado['cod_interno_veiculo']; ?>" data-whatever="@mdo" value="<?php echo $dado['cod_interno_veiculo']; ?>" name="idSolic" >Visualisar</button>
+                                        </td>
                                         
-                                        if($diferenca<15000){
-                                            echo "Aguardando";
-                                        }else{
-                                            echo "Pronto para Revisão";
-                                        }
-                                        ?>
-                                    </td>
-                                    <td scope="col" class="text-center text-nowrap">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?php echo $dado['cod_interno_veiculo']; ?>" data-whatever="@mdo" value="<?php echo $dado['cod_interno_veiculo']; ?>" name="idSolic" >Visualisar</button>
-                                    </td>
-                                    
-                                    <script type="text/javascript">
-                                       var diferenca = "<?php echo $diferenca;?>";
-                                       if(diferenca<15000){
-                                            var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
-                                            container.style.background = 'green';
-                                        }else{
-                                            var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
-                                            container.style.background = 'red';
-                                        }
-                                    </script>
-                                </tr>
-                                <!-- INICIO MODAL -->
-                                <div class="modal fade" id="modal<?php echo $dado['cod_interno_veiculo']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Veículo</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="atualiza.php" method="post">
-                                                    <div class="form-row">
-                                                        <input type="hidden" name="idSolicitacao" value="<?php echo $dado['cod_interno_veiculo']; ?>" >
-                                                        <div class="form-group col-md-12">
-                                                            <label for="codVeiculo" class="col-form-label">Código Veículo</label>
-                                                            <input type="text" name="codVeiculo" class="form-control"  id="codVeiculo" Readonly value="<?php echo $dado['cod_interno_veiculo'];  ?>">
+                                        <script type="text/javascript">
+                                           var diferenca = "<?php echo $diferenca;?>";
+                                           if(diferenca<15000){
+                                                var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
+                                                container.style.background = 'green';
+                                            }else{
+                                                var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
+                                                container.style.background = 'red';
+                                            }
+                                        </script>
+                                    </tr>
+                                    <!-- INICIO MODAL -->
+                                    <div class="modal fade" id="modal<?php echo $dado['cod_interno_veiculo']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Veículo</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="atualiza.php" method="post">
+                                                        <div class="form-row">
+                                                            <input type="hidden" name="idSolicitacao" value="<?php echo $dado['cod_interno_veiculo']; ?>" >
+                                                            <div class="form-group col-md-12">
+                                                                <label for="codVeiculo" class="col-form-label">Código Veículo</label>
+                                                                <input type="text" name="codVeiculo" class="form-control"  id="codVeiculo" Readonly value="<?php echo $dado['cod_interno_veiculo'];  ?>">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-12">
-                                                            <label for="tipoVeiculo" class="col-form-label">Tipo Veículo</label>
-                                                            <input type="text" class="form-control" name="tipoVeiculo"  id="tipoVeiculo" value="<?php echo $dado['tipo_veiculo'] ?>">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label for="tipoVeiculo" class="col-form-label">Tipo Veículo</label>
+                                                                <input type="text" class="form-control" name="tipoVeiculo"  id="tipoVeiculo" value="<?php echo $dado['tipo_veiculo'] ?>">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-12">
-                                                            <label for="categoria" class="col-form-label">Categoria</label>
-                                                            <select class="form-control" name="categoria" id="categoria">
-                                                                <option value="<?php echo $dado['categorai'] ?>"> <?php echo $dado['categoria'] ?> </option>
-                                                                <option value="3/4">3/4</option>
-                                                                <option value="Toco">Toco</option>
-                                                                <option value="Truck">Truck</option>
-                                                            </select>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label for="categoria" class="col-form-label">Categoria</label>
+                                                                <select class="form-control" name="categoria" id="categoria">
+                                                                    <option value="<?php echo $dado['categorai'] ?>"> <?php echo $dado['categoria'] ?> </option>
+                                                                    <option value="3/4">3/4</option>
+                                                                    <option value="Toco">Toco</option>
+                                                                    <option value="Truck">Truck</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-12">
-                                                            <label for="placa" class="col-form-label">Placa</label>
-                                                            <input type="text" class="form-control" name="placa" id="placa" value="<?php echo $dado['placa_veiculo'] ?>">
-                                                        </div>
-                                                    </div>  
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-6">
-                                                            <label for="kmUltimaRevisao" class="col-form-label">Km da Última Revisão</label>
-                                                            <input type="text" class="form-control" name="kmUltimaRevisao" id="kmUltimaRevisao" value="<?php echo $dado['km_ultima_revisao'] ?>">
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label for="kmAtual" class="col-form-label">Km Atual</label>
-                                                            <input type="text" class="form-control" name="kmAtual" id="kmAtual" value="<?php echo $dado['km_atual'] ?>">
-                                                        </div>
-                                                    </div>       
-                                            </div>
-                                            <div class="modal-footer">
-                                                    <a href="excluir.php?codVeiculo=<?php echo $dado['cod_interno_veiculo']; ?>" class="btn btn-danger" > Excluir </a>
-                                                    <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
-                                                </form>
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-12">
+                                                                <label for="placa" class="col-form-label">Placa</label>
+                                                                <input type="text" class="form-control" name="placa" id="placa" value="<?php echo $dado['placa_veiculo'] ?>">
+                                                            </div>
+                                                        </div>  
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="kmUltimaRevisao" class="col-form-label">Km da Última Revisão</label>
+                                                                <input type="text" class="form-control" name="kmUltimaRevisao" id="kmUltimaRevisao" value="<?php echo $dado['km_ultima_revisao'] ?>">
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="kmAtual" class="col-form-label">Km Atual</label>
+                                                                <input type="text" class="form-control" name="kmAtual" id="kmAtual" value="<?php echo $dado['km_atual'] ?>">
+                                                            </div>
+                                                        </div>       
+                                                </div>
+                                                <div class="modal-footer">
+                                                        <a href="excluir.php?codVeiculo=<?php echo $dado['cod_interno_veiculo']; ?>" class="btn btn-danger" > Excluir </a>
+                                                        <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- FIM MODAL -->
-                                <?php 
-                                
+                                    <!-- FIM MODAL -->
+                                    <?php 
+                                    
+                                        }
                                     }
                                 }
-
                                 ?>
                             </tbody>
                         </table>
