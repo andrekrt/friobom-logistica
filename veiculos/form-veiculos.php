@@ -31,7 +31,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     </head>
     <body>
         <div class="container-fluid corpo">
-            <div class="menu-lateral">
+            <div class="menu-lateral" id="menu-lateral">
                 <div class="logo">  
                     <img src="../assets/images/logo.png" alt="">
                 </div>
@@ -114,6 +114,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </nav> 
                     </div>
                     <div class="item">
+                        <a onclick="menuCarregamentos()">
+                            <img src="../assets/images/menu/carregamentos.png" alt="">
+                        </a>
+                        <nav id="submenuCarregamentos">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
+                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="../sair.php">
                             <img src="../assets/images/menu/sair.png" alt="">
                         </a>
@@ -124,12 +135,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             <!-- Tela com os dados -->
             <div class="tela-principal">
                 <div class="menu-superior">
-                   <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/veiculo.png" alt="">
-                   </div>
-                   <div class="title">
-                        <h2>Cadastrar Novo Veículo</h2>
-                   </div>
+                    <div class="icone-menu-superior">
+                            <img src="../assets/images/icones/veiculo.png" alt="">
+                    </div>
+                    <div class="title">
+                            <h2>Cadastrar Novo Veículo</h2>
+                    </div>
+                    <div class="menu-mobile">
+                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                    </div>
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
@@ -161,6 +175,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <option value="3/4">3/4</option>
                                     <option value="Frota Leve">Frota Leve</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 espaco">
+                                <label for="peso">Peso Máximo(Kg)</label>
+                                <input type="text" name="peso" id="peso" class="form-control">
+                            </div>
+                            <div class="form-group col-md-6 espaco">
+                                <label for="cubagem">Cubagem(m3)</label>
+                                <input type="text" name="cubagem" id="cubagem" class="form-control">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>

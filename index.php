@@ -64,11 +64,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
     </head>
     <body>
         <div class="container-fluid corpo">
-            <div class="menu-lateral">
+            <div class="menu-lateral" id="menu-lateral">
                 <div class="logo">  
                     <img src="assets/images/logo.png" alt="">
                 </div>
-                <div class="opcoes">
+                <div class="opcoes" >
                     <div class="item">
                         <a href="index.php">
                             <img src="assets/images/menu/inicio.png" alt="">
@@ -147,6 +147,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </nav> 
                     </div>
                     <div class="item">
+                        <a onclick="menuCarregamentos()">
+                            <img src="assets/images/menu/carregamentos.png" alt="">
+                        </a>
+                        <nav id="submenuCarregamentos">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a href="carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
+                                <li class="nav-item"> <a href="carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="sair.php">
                             <img src="assets/images/menu/sair.png" alt="">
                         </a>
@@ -161,6 +172,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                    </div>
                    <div class="title">
                         <h2>Bem-Vindo <?php echo $nomeUsuario ?></h2>
+                   </div>
+                   <div class="menu-mobile">
+                        <img src="assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
                    </div>
                 </div>
                 <div class="menu-principal">

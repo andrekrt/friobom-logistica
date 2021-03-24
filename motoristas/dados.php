@@ -34,7 +34,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     </head>
     <body>
         <div class="container-fluid corpo">
-            <div class="menu-lateral">
+            <div class="menu-lateral" id="menu-lateral">
                 <div class="logo">  
                     <img src="../assets/images/logo.png" alt="">
                 </div>
@@ -116,6 +116,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </nav> 
                     </div>
                     <div class="item">
+                        <a onclick="menuCarregamentos()">
+                            <img src="../assets/images/menu/carregamentos.png" alt="">
+                        </a>
+                        <nav id="submenuCarregamentos">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
+                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="sair.php">
                             <img src="../assets/images/menu/sair.png" alt="">
                         </a>
@@ -126,12 +137,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             <!-- Tela com os dados -->
             <div class="tela-principal">
                 <div class="menu-superior">
-                   <div class="icone-menu-superior">
+                    <div class="icone-menu-superior">
                         <img src="../assets/images/icones/motoristas.png" alt="">
-                   </div>
-                   <div class="title">
+                    </div>
+                    <div class="title">
                         <h2>Relatório dos Motoristas</h2>
-                   </div>
+                    </div>
+                    <div class="menu-mobile">
+                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                    </div>
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">

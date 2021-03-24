@@ -7,6 +7,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
 
     $codRota = filter_input(INPUT_POST, 'codRota');
     $rota = filter_input(INPUT_POST, 'rota');
+    $horaFechamento1 = filter_input(INPUT_POST, 'horaFechamento1');
+    $horaFechamento2 = filter_input(INPUT_POST, 'horaFechamento2');
+    $diaFechamento1 = filter_input(INPUT_POST, 'fechamento1');
+    $diaFechamento2 = filter_input(INPUT_POST, 'fechamento2');
+    $ceps = filter_input(INPUT_POST, 'ceps');
 
     $consulta = $db->query("SELECT * FROM rotas WHERE cod_rota = $codRota ");
 
@@ -14,15 +19,23 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         echo "<script>alert('Essa Rota já está cadastrada!');</script>";
         echo "<script>window.location.href='form-rota.php'</script>";
     }else{
-        $sql = $db->query("INSERT INTO rotas (cod_rota, nome_rota) VALUES ('$codRota', '$rota') ");
-        if($sql){
+        $sql = $db->prepare("INSERT INTO rotas (cod_rota, nome_rota, fechamento1, fechamento2, hora_fechamento1, hora_fechamento2, ceps) VALUES (:codRota, :rota, :fechamento1, :fechamento2, :horaFechamento1, :horaFechamento2, :ceps) ");
+        $sql->bindValue(':codRota', $codRota);
+        $sql->bindValue(':rota', $rota);
+        $sql->bindValue(':fechamento1', $diaFechamento1);
+        $sql->bindValue(':fechamento2', $diaFechamento2);
+        $sql->bindValue(':horaFechamento1', $horaFechamento1);
+        $sql->bindValue(':horaFechamento2', $horaFechamento2);
+        $sql->bindValue(':ceps', $ceps);
+        
+        if($sql->execute()){
 
             echo "<script>alert('Rota Cadastrada!');</script>";
             echo "<script>window.location.href='rotas.php'</script>";
 
         }else{
 
-            echo "erro no cadastro contator o administrador!";
+           print_r($sql->errorInfo());
 
         }
     }

@@ -3,10 +3,9 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 4){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] ==5 || $_SESSION['tipoUsuario'] == 99){
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
-    $tipoUsuario = $_SESSION['tipoUsuario'];
     
 }else{
     echo "<script>alert('Acesso não permitido');</script>";
@@ -19,7 +18,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dados</title>
+        <title>Cadastro de Veículo</title>
         <link rel="stylesheet" href="../assets/css/style.css">
         <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
         <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
@@ -110,7 +109,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <ul class="nav flex-column">
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Relatórios </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Valores Gastos</a> </li>
                             </ul> 
                         </nav> 
                     </div>
@@ -120,8 +119,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </a>
                         <nav id="submenuCarregamentos">
                             <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
-                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
+                                <li class="nav-item"> <a href="carregamentos.php" class="nav-link"> Carregamentos </a> </li>
+                                <li class="nav-item"> <a href="form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
                             </ul>
                         </nav>
                     </div>
@@ -137,10 +136,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             <div class="tela-principal">
                 <div class="menu-superior">
                     <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/reparos.png" alt="">
+                        <img src="../assets/images/icones/carregamento.png" alt="">
                     </div>
                     <div class="title">
-                        <h2>Valores Já Gastos</h2>
+                        <h2>Novo Carregamento</h2>
                     </div>
                     <div class="menu-mobile">
                         <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
@@ -148,51 +147,35 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
-                    <div class="filtro">
-                        <!-- iniciando filtro por veiculo -->
-                        <form action="" class="form-inline" method="post">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <input type="date" name="dataInicial" class="form-control"> 
-                                    <span style="margin-left:10px; margin-right:10px; color:#fff"> a </span> 
-                                    <input type="date" name="dataFinal" class="form-control">
-                                    <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
-                                </div>
+                    <form action="add-carregamento.php" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco ">
+                                <label for="carregamento"> Carregamento </label>
+                                <input type="text" required name="carregamento" class="form-control" id="carregamento">
                             </div>
-                        </form>
-                        <!-- fim filtro por veiculo -->
-                        <a href="relatorio-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
-                    </div>
-                    <div class="table-responsivve">
-                        <table class="table table-striped table-dark table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="text-center"> Gasto Total </th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                    $dataInicial = filter_input(INPUT_POST, 'dataInicial')?filter_input(INPUT_POST, 'dataInicial'):"2020-01-01";
-                                    $dataFinal = filter_input(INPUT_POST, 'dataFinal')?filter_input(INPUT_POST, 'dataFinal'):"2050-12-31";
-                                    
-                                    $sql =$db->query("SELECT SUM(solicitacoes.valor) + SUM(solicitacoes02.valor) AS total FROM solicitacoes INNER JOIN solicitacoes02 ON solicitacoes.id = solicitacoes02.idSocPrinc WHERE dataAtual BETWEEN '$dataInicial' AND '$dataFinal'");
-
-                                    if($sql){
-                                        $dados = $sql->fetchAll();
-                                        foreach($dados as $dado){
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco ">
+                                <label for="doca"> Doca </label>
+                                <input type="text" required name="doca" class="form-control" id="doca">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco ">
+                                <label for="rota"> Rota </label>
+                                <select name="rota" id="rota" class="form-control">
+                                    <option value=""></option>
+                                <?php $rotas = $db->query("SELECT * FROM rotas");
+                                $rotas = $rotas->fetchAll();
+                                foreach($rotas as $rota): 
                                 ?>
-                                    <tr>
-                                        <td class="text-center"> <?php echo "R$ ". number_format($dado['total'], 2, ",", ".")  ?> </td>
-                                    </tr>
-                                <?php            
-                                        }
-                                    }
-                                
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                <option value="<?=$rota['cod_rota'] . " - ". $rota['nome_rota']?>"><?=$rota['cod_rota'] . " - ". $rota['nome_rota']?></option>
+                                <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"> Lançar </button>
+                    </form>
                 </div>
             </div>
         </div>

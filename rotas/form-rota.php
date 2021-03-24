@@ -34,7 +34,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     </head>
     <body>
         <div class="container-fluid corpo">
-            <div class="menu-lateral">
+            <div class="menu-lateral" id="menu-lateral">
                 <div class="logo">  
                     <img src="../assets/images/logo.png" alt="">
                 </div>
@@ -117,6 +117,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </nav> 
                     </div>
                     <div class="item">
+                        <a onclick="menuCarregamentos()">
+                            <img src="../assets/images/menu/carregamentos.png" alt="">
+                        </a>
+                        <nav id="submenuCarregamentos">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
+                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="../sair.php">
                             <img src="../assets/images/menu/sair.png" alt="">
                         </a>
@@ -127,12 +138,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             <!-- Tela com os dados -->
             <div class="tela-principal">
                 <div class="menu-superior">
-                   <div class="icone-menu-superior">
+                    <div class="icone-menu-superior">
                         <img src="../assets/images/icones/rotas.png" alt="">
-                   </div>
-                   <div class="title">
+                    </div>
+                    <div class="title">
                         <h2>Cadastrar Nova Rota</h2>
-                   </div>
+                    </div>
+                    <div class="menu-mobile">
+                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                    </div>
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
@@ -147,6 +161,47 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <div class="form-group col-md-12 espaco">
                                 <label for="rota">Rota</label>
                                 <input type="text" class="form-control" required name="rota" id="rota">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="fechamento1">Fechamento 1</label>
+                                <select name="fechamento1" id="fechamento1" class="form-control">
+                                    <option value=""></option>
+                                    <option value="Segunda-Feira">Segunda-Feira</option>
+                                    <option value="Terça-Feira">Terça-Feira</option>
+                                    <option value="Quarta-Feira">Quarta-Feira</option>
+                                    <option value="Quinta-Feira">Quinta-Feira</option>
+                                    <option value="Sexta-Feira">Sexta-Feira</option>
+                                    <option value="Sábado">Sábado</option>
+                                    <option value="Sábado">Segunda à Sexta</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="horaFechamento1">Hora de Fechamento 1</label>
+                                <input type="time" class="form-control" required name="horaFechamento1" id="horaFechamento1">
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="fechamento2">Fechamento 2</label>
+                                <select name="fechamento2" id="fechamento2" class="form-control">
+                                    <option value=""></option>
+                                    <option value="Segunda-Feira">Segunda-Feira</option>
+                                    <option value="Terça-Feira">Terça-Feira</option>
+                                    <option value="Quarta-Feira">Quarta-Feira</option>
+                                    <option value="Quinta-Feira">Quinta-Feira</option>
+                                    <option value="Sexta-Feira">Sexta-Feira</option>
+                                    <option value="Sábado">Sábado</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="horaFechamento2">Hora de Fechamento 2 </label>
+                                <input type="time" class="form-control" required name="horaFechamento2" id="horaFechamento2">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco">
+                                <label for="ceps">CEPs</label>
+                                <textarea name="ceps" id="ceps" class="form-control" rows="5"></textarea>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>

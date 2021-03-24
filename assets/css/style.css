@@ -70,6 +70,10 @@ body{
     background-color: #E6E6E6;
 }
 
+.menu-mobile{
+    display: none;
+}
+
 .menu-lateral{
     width: 200px;
     display: flex;
@@ -354,8 +358,42 @@ img.icone{
 @media(max-width:425px){
     .menu-lateral{
         display: none;
+        position: absolute;
+        z-index: 99;
+        background-color: #E6E6E6;
+        
     }
+
+    .menu-superior{
+        justify-content: space-between;
+    }
+
+    .item nav{
+        background-color: #E6E6E6;
+    }
+
+    .menu-mobile{
+        display: flex;
+    }
+
+    .area-indice-val{
+        grid-template-columns: auto;
+    }
+
     .menu-principal form{
         width: 100%;
+    }
+}
+
+@media(max-width:375px){
+    .area-login{
+        width: 100%;
+    } 
+}
+
+@media(max-width:320px){
+    .title h2{
+        font-size: 15px;
+        text-align: center;
     }
 }
