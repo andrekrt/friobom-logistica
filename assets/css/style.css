@@ -356,12 +356,19 @@ img.icone{
 
 
 @media(max-width:425px){
+    .tela-principal{
+        width: 100%;
+    }
+
     .menu-lateral{
         display: none;
         position: absolute;
         z-index: 99;
         background-color: #E6E6E6;
-        
+    }
+
+    .indices{
+        justify-content: center;
     }
 
     .menu-superior{

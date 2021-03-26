@@ -276,23 +276,25 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                 <form action="finaliza.php" enctype="multipart/form-data" method="post">
                                                     <div class="form-row">
                                                         <input type="hidden" name="id" value="<?= $dado['id']; ?>">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-2">
                                                             <label for="carregamento" class="col-form-label">Carregamento</label>
                                                             <input type="text" readonly name="carregamento" class="form-control" id="carregamento" value="<?= $dado['num_carreg']; ?>">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-2">
                                                             <label for="doca" readonly  class="col-form-label">Doca</label>
                                                             <input type="text" readonly class="form-control" name="doca" id="doca" value="<?= $dado['doca'] ?>">
                                                         </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-4">
+                                                        <div class="form-group col-md-3">
                                                             <label for="placa" class="col-form-label">Placa</label>
                                                             <input type="text" class="form-control" readonly name="placa" id="placa" value="<?=$dado['placa_veiculo']?>">
                                                         </div>
-                                                        <div class="form-group col-md-8">
+                                                        <div class="form-group col-md-3">
                                                             <label for="horaDoca" class="col-form-label">Hora do Caminhão na Doca</label>
                                                             <input type="text" class="form-control" name="horaDoca" id="horaDoca" readonly value="<?=$dado['hora_caminhao_doca']?>">
+                                                        </div>
+                                                        <div class="form-group col-md-2">
+                                                            <label for="tmpoAtraso" class="col-form-label">Tempo de Atraso</label>
+                                                            <input type="text" class="form-control" name="tmpoAtraso" id="tmpoAtraso" readonly value="<?=$dado['tempo_atraso']?>">
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
@@ -312,31 +314,37 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-3">
                                                             <label for="usuarioErro " class="col-form-label">Carregador que Errou</label>
                                                             <input type="text" readonly class="form-control" name="carregadorErro" id="carregadorErro">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-3">
                                                             <label for="fotoErro " class="col-form-label">Foto Erro</label>
-                                                            <input type="file" class="form-control-file" name="fotoErro[]" id="fotoErro" multiple="multiple">
+                                                            <?php if(empty($dado['foto_erro'])): ?>
+                                                                <input type="text" readonly class="form-control" value="Sem Fotos">
+                                                            <?php else: ?>
+                                                                <a  href="uploads/<?=$dado['num_carreg']?>/erros" target="_blank" ><input type="text" readonly class="form-control" value="Fotos Erros"></a>
+                                                            <?php endif; ?>
                                                         </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-3">
                                                             <label for="notaCarregamento "  class="col-form-label">Nota do Carregamento (0 à 10)</label>
                                                             <input type="text" readonly class="form-control" name="notaCarregamento" id="notaCarregamento">
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-3">
                                                             <label for="fotoErro " class="col-form-label">Foto Carregamento</label>
-                                                            <input type="file" class="form-control-file" name="fotoCarregamento[]" id="fotoErro" multiple="multiple">
+                                                            <?php if(empty($dado['foto_carregamento'])): ?>
+                                                                <input type="text" readonly class="form-control" value="Sem Fotos">
+                                                            <?php else: ?>
+                                                                <a  href="uploads/<?=$dado['num_carreg']?>/carregamentoConcluido" target="_blank" ><input type="text" readonly class="form-control" value="Fotos Carregamentos"></a>
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-8">
                                                             <label for="obsRota "  class="col-form-label"> Observações da Rota </label>
                                                             <textarea class="form-control" name="obsRota" id="obsRota" <?=!empty($dado['obs_rota'])?'reandoly':'';?> rows="3"><?=$dado['obs_rota']?></textarea>
                                                         </div>
-                                                        <div class="form-group col-md-6">
+                                                        <div class="form-group col-md-4">
                                                             <label for="situacao" class="col-form-label">Situação</label>
                                                             <select name="situacao" id="situaca" class="form-control">
                                                                 <option value="<?=$dado['situacao']?>"><?=$dado['situacao']?></option>

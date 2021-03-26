@@ -9,8 +9,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $obsRota = filter_input(INPUT_POST, 'obsRota');
     $situacao = filter_input(INPUT_POST, 'situacao');
 
-    echo "$id<br>$obsRota<br>$situacao";
-
     $finaliza = $db->prepare("UPDATE carregamentos SET obs_rota = :obsRota, situacao = :situacao WHERE id = :id");
     $finaliza->bindValue(':id', $id);
     $finaliza->bindValue(':obsRota', $obsRota);

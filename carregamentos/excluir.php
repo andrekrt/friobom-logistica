@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 5 || $_SESSION['tipoUsuario'] == 6){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 5 || $_SESSION['tipoUsuario'] == 6 || $_SESSION['tipoUsuario'] == 99){
 
     $id = filter_input(INPUT_GET, 'idCarregamento');
 

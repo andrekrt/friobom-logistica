@@ -221,6 +221,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                                 <option value="Quinta-Feira">Quinta-Feira</option>
                                                                 <option value="Sexta-Feira">Sexta-Feira</option>
                                                                 <option value="Sábado">Sábado</option>
+                                                                <option value="Segunda à Sexta">Segunda à Sexta</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-6">

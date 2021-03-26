@@ -35,6 +35,9 @@ if( isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
         }
     }
 
+}else{
+    echo "<script>alert('Acesso não Permitido');</script>";
+    echo "<script>window.location.href='form-carregamento.php'</script>";
 }
 
 ?>
