@@ -174,6 +174,12 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 </select>
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco ">
+                                <label for="peso"> Peso por Doca (Kg) </label>
+                                <input required type="text" name="peso" id="peso" class="form-control">
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary"> Lançar </button>
                     </form>
                 </div>

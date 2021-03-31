@@ -354,6 +354,14 @@ img.icone{
 }
 /* final css icone plus */
 
+@media(max-width:768px){
+    .area-indice-val{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .tela-principal{
+        width: 75%;
+    }
+}
 
 @media(max-width:425px){
     .tela-principal{

@@ -138,7 +138,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $kmFinal = $kmSaida+$kmRodado;
     $litrosTotal = $lt1Abast + $lt2Abast + $lt3Abast + $lt4Abast;
     $mediaSemTk = number_format($kmRodado/$litrosTotal,"2");
-    $consumoTotalTk = $tk1Perc + $tk2Perc + $tk3Perc + $tk4Perc;
+    $consumoTotalTk = $tk4Perc-$hrTkSaida*2;
     $mediaTk = number_format($kmRodado/ ($litrosTotal-$consumoTotalTk),2);
     $valorTotalAbast = $vl1Abast + $vl2Abast + $vl3Abast + $vl4Abast;
     $diariaMotorista = str_replace(",", ".", filter_input(INPUT_POST, 'diariasMot')) ;

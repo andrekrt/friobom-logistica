@@ -188,6 +188,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">Carregamento</th>
                                 <th scope="col" class="text-center text-nowrap">Doca</th>
+                                <th scope="col" class="text-center text-nowrap">Peso (Kg)</th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
                                 <th scope="col" class="text-center text-nowrap"> Hora do Caminhão na Doca </th>
                                 <th scope="col" class="text-center text-nowrap"> Carregador Principal </th>
@@ -254,6 +255,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <tr id="<?= $dado['num_carreg'] ?>">
                                     <td scope="col" class="text-center text-nowrap"> <?= $dado['num_carreg']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?= $dado['doca']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?= $dado['peso']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?= $dado['placa_veiculo']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?= $dado['hora_caminhao_doca']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?= $dado['carregador_principal']; ?> </td>
@@ -280,11 +282,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                             <label for="carregamento" class="col-form-label">Carregamento</label>
                                                             <input type="text" readonly name="carregamento" class="form-control" id="carregamento" value="<?= $dado['num_carreg']; ?>">
                                                         </div>
-                                                        <div class="form-group col-md-2">
+                                                        <div class="form-group col-md-1">
                                                             <label for="doca" readonly  class="col-form-label">Doca</label>
                                                             <input type="text" readonly class="form-control" name="doca" id="doca" value="<?= $dado['doca'] ?>">
                                                         </div>
-                                                        <div class="form-group col-md-3">
+                                                        <div class="form-group col-md-2">
+                                                            <label for="peso" readonly  class="col-form-label">Peso</label>
+                                                            <input type="text" readonly class="form-control" name="peso" id="peso" value="<?= $dado['peso'] ?>">
+                                                        </div>
+                                                        <div class="form-group col-md-2">
                                                             <label for="placa" class="col-form-label">Placa</label>
                                                             <input type="text" class="form-control" readonly name="placa" id="placa" value="<?=$dado['placa_veiculo']?>">
                                                         </div>

@@ -51,6 +51,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $notaCarregamento = str_replace(',', ".", filter_input(INPUT_POST, 'notaCarregamento'))?str_replace(',', ".", filter_input(INPUT_POST, 'notaCarregamento')):null;
     $fotoCarregamento =isset($_FILES['fotoCarregamento'])?$_FILES['fotoCarregamento']:null;
     $fotoCarregamento_nome = isset($fotoCarregamento['name'][0])?$fotoCarregamento['name'][0]:null;
+    $peso = str_replace(",", ".",filter_input(INPUT_POST, 'peso'));
     
     
     if(empty($notaCarregamento) && !empty($placaVeiculo)){
@@ -100,9 +101,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
 
     
 
-    $atualiza = $db->prepare('UPDATE carregamentos SET num_carreg = :carregamento, doca = :doca, rota = :rota, placa_veiculo = :placaVeiculo, hora_caminhao_doca = :horaCaminhaoDoca, tempo_atraso = :tempoAtraso, problema_caminhao = :problemaCaminhao, carregador_principal = :carregadorPrincipal, carregadores_adicionais = :carregadoresAdicionais, usuario_errou = :carregadorErro, foto_erro = :fotoErro, nota_carregamento = :notaCarregamento, foto_carregamento = :fotoCarregamento, situacao = :situacao WHERE id = :id');
+    $atualiza = $db->prepare('UPDATE carregamentos SET num_carreg = :carregamento, doca = :doca, rota = :rota, peso = :peso, placa_veiculo = :placaVeiculo, hora_caminhao_doca = :horaCaminhaoDoca, tempo_atraso = :tempoAtraso, problema_caminhao = :problemaCaminhao, carregador_principal = :carregadorPrincipal, carregadores_adicionais = :carregadoresAdicionais, usuario_errou = :carregadorErro, foto_erro = :fotoErro, nota_carregamento = :notaCarregamento, foto_carregamento = :fotoCarregamento, situacao = :situacao WHERE id = :id');
     $atualiza->bindValue(':doca', $doca);
     $atualiza->bindValue(':rota', $rota);
+    $atualiza->bindValue(':peso', $peso);
     $atualiza->bindValue(':placaVeiculo', $placaVeiculo);
     $atualiza->bindValue(':horaCaminhaoDoca', $horaCaminhaDoca);
     $atualiza->bindValue(':tempoAtraso', $atraso);
@@ -118,22 +120,22 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $atualiza->bindValue(':id', $id);
 
     //uploads de fotos dos erros de carregamentos
-    $diretorio = "uploads/".$numCarreg."/erros";
+    $diretorio = "uploads/erros/".$id;
     if(is_dir($diretorio)==false){
         mkdir($diretorio, 0755);
-    }        
+    }      
     for($i=0;$i<count($fotoErro['name']);$i++){
-        $destino = "uploads/".$numCarreg."/erros/".$fotoErro['name'][$i];
+        $destino = "uploads/erros/".$id."/".$fotoErro['name'][$i];
         move_uploaded_file($fotoErro['tmp_name'][$i], $destino);
     }
 
     //uploads de fotos do carregamento finalizado
-    $diretorio = "uploads/".$numCarreg."/carregamentoConcluido";
+    $diretorio = "uploads/concluidos/".$id;
     if(is_dir($diretorio)==false){
         mkdir($diretorio, 0755);
     }        
     for($i=0;$i<count($fotoCarregamento['name']);$i++){
-        $destino = "uploads/".$numCarreg."/carregamentoConcluido/".$fotoCarregamento['name'][$i];
+        $destino = "uploads/concluidos/".$id."/".$fotoCarregamento['name'][$i];
         move_uploaded_file($fotoCarregamento['tmp_name'][$i], $destino);
     }
     

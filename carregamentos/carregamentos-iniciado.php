@@ -182,6 +182,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">Carregamento</th>
                                 <th scope="col" class="text-center text-nowrap">Doca</th>
+                                <th scope="col" class="text-center text-nowrap">Peso (Kg)</th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
                                 <th scope="col" class="text-center text-nowrap"> Hora do Caminhão na Doca </th>
                                 <th scope="col" class="text-center text-nowrap"> Carregador Principal </th>
@@ -216,6 +217,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
                             <tr id="<?= $dado['id'] ?>">
                                 <td scope="col" class="text-center text-nowrap"> <?= $dado['num_carreg']; ?> </td>
                                 <td scope="col" class="text-center text-nowrap"> <?= $dado['doca']; ?> </td>
+                                <td scope="col" class="text-center text-nowrap"> <?= $dado['peso']; ?> </td>
                                 <td scope="col" class="text-center text-nowrap"> <?= $dado['placa_veiculo']; ?> </td>
                                 <td scope="col" class="text-center text-nowrap"> <?= $dado['hora_caminhao_doca']; ?> </td>
                                 <td scope="col" class="text-center text-nowrap"> <?= $dado['carregador_principal']; ?> </td>
@@ -238,19 +240,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
                                             <form action="atualiza.php" enctype="multipart/form-data" method="post">
                                                 <div class="form-row">
                                                     <input type="hidden" name="id" value="<?= $dado['id']; ?>">
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label for="carregamento" class="col-form-label">Carregamento</label>
                                                         <input <?=($tipoUsuario==6)?'readonly':''?> type="text" name="carregamento" class="form-control" id="carregamento" value="<?= $dado['num_carreg']; ?>">
                                                     </div>
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label for="doca" readonly  class="col-form-label">Doca</label>
                                                         <input <?=($tipoUsuario==6)?'readonly':''?> type="text" class="form-control" name="doca" id="doca" value="<?= $dado['doca'] ?>">
                                                     </div>
-                                                    <div class="form-group col-md-4">
+                                                    <div class="form-group col-md-3">
                                                         <label for="rota" readonly  class="col-form-label">Rota</label>
-
-                                                        
-
                                                         <select name="rota" <?=($tipoUsuario==6)?'readonly':''?> id="rota" class="form-control">
                                                             <option value="<?= $dado['rota'] ?>"><?= $dado['rota'] ?></option>
                                                             <?php $rotas = $db->query("SELECT * FROM rotas");
@@ -260,6 +259,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
                                                             <option value="<?=$rota['cod_rota'] . " - ". $rota['nome_rota']?>"><?=$rota['cod_rota'] . " - ". $rota['nome_rota']?></option>
                                                         <?php endforeach; ?>
                                                         </select>
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="peso" readonly  class="col-form-label">Peso (Kg)</label>
+                                                        <input <?=($tipoUsuario==6)?'readonly':''?> type="text" class="form-control" name="peso" id="peso" value="<?= $dado['peso'] ?>">
                                                     </div>
                                                 </div>
                                                 <?php if($tipoUsuario==6): ?>
