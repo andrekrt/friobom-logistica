@@ -309,6 +309,7 @@ a .nome{
 .filtro{
     display: flex;
     flex-direction: row;   
+    margin: 5px;
 }
 
 .filtro img{
@@ -320,6 +321,7 @@ a .nome{
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 5px;
+    width: 75%;
 }
 
 .filtro select{

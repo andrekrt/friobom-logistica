@@ -125,6 +125,19 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </nav>
                     </div>
                     <div class="item">
+                        <a onclick="menuAlmoxerifado()">
+                            <img src="../assets/images/menu/almoxerifado.png" alt="">
+                        </a>
+                        <nav id="submenuAlmoxerifado">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a href="../almoxerifado/pecas.php" class="nav-link"> Estoque </a> </li>
+                                <li class="nav-item"> <a href="../almoxerifado/entradas.php" class="nav-link"> Entrada </a> </li>
+                                <li class="nav-item"> <a href="../almoxerifado/saidas.php" class="nav-link"> Saída </a> </li>
+                                <li class="nav-item"> <a href="../fornecedores/fornecedores.php" class="nav-link"> Fornecedores </a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="../sair.php">
                             <img src="../assets/images/menu/sair.png" alt="">
                         </a>

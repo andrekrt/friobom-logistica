@@ -68,6 +68,16 @@ function menuCarregamentos(){
     
 }
 
+function menuAlmoxerifado(){
+
+    if(document.getElementById("submenuAlmoxerifado").style.display == "none" || document.getElementById("submenuAlmoxerifado").style.display == "" ){
+        document.getElementById("submenuAlmoxerifado").style.display = "block";
+    }else{
+        document.getElementById("submenuAlmoxerifado").style.display = "none";
+    }
+    
+}
+
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
         document.getElementById('menu-lateral').style.display='block';
