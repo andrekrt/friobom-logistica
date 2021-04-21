@@ -142,6 +142,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <li class="nav-item"> <a href="../almoxerifado/pecas.php" class="nav-link"> Estoque </a> </li>
                                 <li class="nav-item"> <a href="../almoxerifado/entradas.php" class="nav-link"> Entrada </a> </li>
                                 <li class="nav-item"> <a href="../almoxerifado/saidas.php" class="nav-link"> Saída </a> </li>
+                                <li class="nav-item"> <a href="../almoxerifado/ordem-servico.php" class="nav-link"> Ordem de Serviço </a> </li>
                                 <li class="nav-item"> <a href="../fornecedores/fornecedores.php" class="nav-link"> Fornecedores </a> </li>
                             </ul>
                         </nav>
@@ -157,7 +158,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             <div class="tela-principal">
                 <div class="menu-superior">
                     <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/veiculo.png" alt="">
+                        <img src="../assets/images/icones/almoxerifado.png" alt="">
                     </div>
                     <div class="title">
                         <h2>Estoque</h2>
@@ -402,17 +403,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                         </div>
                                                         <div class="form-group col-md-4">
                                                             <label for="dataCadastro" class="col-form-label">Data de Cadastro</label>
-                                                            <input type="text" class="form-control" name="dataCadastro" id="dataCadastro" readonly value="<?=date("d/m/Y,", strtotime($dado['data_cadastro'])); ?>">
+                                                            <input type="text" class="form-control" name="dataCadastro" id="dataCadastro" readonly value="<?=date("d/m/Y", strtotime($dado['data_cadastro'])); ?>">
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            <label for="dataCadastro" class="col-form-label">Data de Cadastro</label>
+                                                            <label for="dataCadastro" class="col-form-label">Usuário Lançou</label>
                                                             <input type="text" class="form-control" name="dataCadastro" id="dataCadastro" readonly value="<?=$dado['nome_usuario']; ?>">
                                                         </div>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="excluir.php?idPeca=<?=$dado['idpeca']; ?>" class="btn btn-danger"> Excluir </a>
+                                            <?php if($dado['id_usuario']==$_SESSION['idUsuario']): ?>
+                                                <a href="excl uir.php?idPeca=<?=$dado['idpeca']; ?>" class="btn btn-danger"> Excluir </a>
                                                 <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
+                                            <?php endif; ?>
                                                 </form>
                                             </div>
                                         </div>

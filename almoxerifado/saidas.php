@@ -137,6 +137,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <li class="nav-item"> <a href="../almoxerifado/pecas.php" class="nav-link"> Estoque </a> </li>
                                 <li class="nav-item"> <a href="../almoxerifado/entradas.php" class="nav-link"> Entrada </a> </li>
                                 <li class="nav-item"> <a href="../almoxerifado/saidas.php" class="nav-link"> Saída </a> </li>
+                                <li class="nav-item"> <a href="../almoxerifado/ordem-servico.php" class="nav-link"> Ordem de Serviço </a> </li>
                                 <li class="nav-item"> <a href="../fornecedores/fornecedores.php" class="nav-link"> Fornecedores </a> </li>
                             </ul>
                         </nav>
@@ -152,7 +153,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             <div class="tela-principal">
                 <div class="menu-superior">
                     <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/veiculo.png" alt="">
+                        <img src="../assets/images/icones/almoxerifado.png" alt="">
                     </div>
                     <div class="title">
                         <h2>Saídas</h2>
@@ -280,14 +281,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     $sql->bindValue(':peca', $peca);
                                     $sql->execute();
                                    
+                                    $totalSaidas = $sql->rowCount();
+                                    $qtdPorPagina = 10;
+                                    $numPaginas = ceil($totalSaidas / $qtdPorPagina);
+                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
                                 }else{
                                     $sql = $db->query("SELECT * FROM `saida_estoque` LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios");
-                                }
 
-                                $totalEntradas = $sql->rowCount();
-                                $qtdPorPagina = 10;
-                                $numPaginas = ceil($totalEntradas / $qtdPorPagina);
-                                $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
+                                    $totalSaidas = $sql->rowCount();
+                                    $qtdPorPagina = 20;
+                                    $numPaginas = ceil($totalSaidas / $qtdPorPagina);
+                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
+
+                                    $sql = $db->query("SELECT * FROM `saida_estoque` LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios LIMIT $paginaInicial,$qtdPorPagina");
+                                }
 
                                 $dados = $sql->fetchAll();
                                 foreach($dados as $dado):
@@ -368,8 +375,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
+                                            <?php if($dado['id_usuario']==$_SESSION['idUsuario']): ?>
                                                 <a href="excluir-saida.php?idSaida=<?=$dado['idsaida_estoque']; ?>" class="btn btn-danger" onclick="return confirm('Confirmar Exclusão?');"> Excluir </a>
                                                 <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
+                                            <?php endif; ?>
                                                 </form>
                                             </div>
                                         </div>
