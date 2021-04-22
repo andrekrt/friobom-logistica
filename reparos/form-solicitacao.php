@@ -51,10 +51,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <ul class="nav flex-column">
                                 <li class="nav-item"> <a class="nav-link" href="../veiculos/veiculos.php"> Veículos </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../veiculos/form-veiculos.php"> Cadastrar Veículo </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../veiculos/revisao.php"> Revisões </a> </li>
                                 <li class="nav-item"> <a href="../veiculos/relatorio.php" class="na-link">Despesas por Veículo</a> </li>
                                 <li class="nav-item"> <a href="../veiculos/gastos.php" class="na-link">Relatório</a> </li>
-                            </ul> 
-                        </nav>  
+                            </ul>
+                        </nav>
                     </div>
                     <div class="item">
                         <a onclick="menuRota()">

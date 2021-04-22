@@ -74,19 +74,20 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             <img src="assets/images/menu/inicio.png" alt="">
                         </a>
                     </div>
-                    <div class="item">
-                        <a class="" onclick="menuVeiculo()">
-                            <img src="assets/images/menu/veiculos.png" alt="">
-                        </a>
-                        <nav id="submenu">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="veiculos/veiculos.php"> Veículos </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="veiculos/form-veiculos.php"> Cadastrar Veículo </a> </li>
-                                <li class="nav-item"> <a href="veiculos/relatorio.php" class="na-link">Despesas por Veículo</a> </li>
-                                <li class="nav-item"> <a href="veiculos/gastos.php" class="na-link">Relatório</a> </li>
-                            </ul> 
-                        </nav>  
-                    </div>
+                <div class="item">
+                    <a class="" onclick="menuVeiculo()">
+                        <img src="assets/images/menu/veiculos.png" alt="">
+                    </a>
+                    <nav id="submenu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"> <a class="nav-link" href="veiculos/veiculos.php"> Veículos </a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="veiculos/form-veiculos.php"> Cadastrar Veículo </a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="veiculos/revisao.php"> Revisões </a> </li>
+                            <li class="nav-item"> <a href="veiculos/relatorio.php" class="na-link">Despesas por Veículo</a> </li>
+                            <li class="nav-item"> <a href="veiculos/gastos.php" class="na-link">Relatório</a> </li>
+                        </ul>
+                    </nav>
+                </div>
                     <div class="item">
                         <a onclick="menuRota()">
                             <img src="assets/images/menu/rotas.png" alt="">

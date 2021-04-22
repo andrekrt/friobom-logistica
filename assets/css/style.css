@@ -356,6 +356,19 @@ img.icone{
 }
 /* final css icone plus */
 
+/* css botoes de opções*/
+.area-opcoes-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    padding:5px;
+}
+.area-opcoes-button button, .area-opcoes-button a {
+    margin: 5px;
+}
+
+
 @media(max-width:768px){
     .area-indice-val{
         grid-template-columns: repeat(3, 1fr);
