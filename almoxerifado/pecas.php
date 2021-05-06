@@ -321,11 +321,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <td scope="col" class="text-left text-nowrap"> <?=$dado['descricao_peca']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['un_medida']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['grupo_peca']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['estoque_minimo']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['total_entrada']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['total_saida']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['total_estoque']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['valor_total']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?= number_format($dado['estoque_minimo'],1,",", "."); ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?=number_format($dado['total_entrada'],1,",","."); ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?=number_format($dado['total_saida'],1,",","."); ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?= number_format($dado['total_estoque'],1,",","."); ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?="R$ ". str_replace(".", ",",$dado['valor_total']); ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['situacao']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=date("d/m/Y",strtotime($dado['data_cadastro'])) ; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['nome_usuario']; ?> </td>
