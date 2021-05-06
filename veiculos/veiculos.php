@@ -202,6 +202,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap"> Data Última Revisão</th>
                                 <th scope="col" class="text-center text-nowrap"> Última Revisão (KM) </th>
                                 <th scope="col" class="text-center text-nowrap"> Km Atual </th>
+                                <th scope="col" class="text-center text-nowrap"> Km Restante </th>
                                 <th scope="col" class="text-center text-nowrap"> Situação </th>
                                 <th scope="col" class="text-center text-nowrap"> Ações</th>
                             </tr>
@@ -234,6 +235,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                             <td scope="col" class="text-center text-nowrap"> <?php echo  date("d/m/Y", strtotime($dado['data_revisao'])); ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_ultima_revisao']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_atual']; ?> </td>
+                                            <td scope="col" class="text-center text-nowrap"> <?=$dado['km_atual']-$dado['km_ultima_revisao']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap">
                                                 <?php
                                                 $diferenca = $dado['km_atual'] - $dado['km_ultima_revisao'];
@@ -350,6 +352,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                             <td scope="col" class="text-center text-nowrap"> <?php echo date("d/m/Y", strtotime($dado['data_revisao'])); ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_ultima_revisao']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['km_atual']; ?> </td>
+                                            <td scope="col" class="text-center text-nowrap"> <?=$dado['km_atual']-$dado['km_ultima_revisao']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap">
                                                 <?php
                                                 $diferenca = $dado['km_atual'] - $dado['km_ultima_revisao'];

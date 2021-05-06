@@ -17,6 +17,12 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $inserir->bindValue(':kmRevisao', $kmRevisao);
     $inserir->bindValue(':dataRevisao', $dataRevisao);
 
+    $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_ultima_revisao = :kmRevisao, data_revisao = :dataRevisao WHERE placa_veiculo = :placa");
+    $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
+    $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
+    $atualizaVeiculo->bindValue(':placa', $placa);
+    $atualizaVeiculo->execute();
+
     if($inserir->execute()){
         echo "<script>alert('Revisão Lançada!');</script>";
         echo "<script>window.location.href='revisao.php'</script>";
