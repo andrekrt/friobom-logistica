@@ -53,7 +53,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     </div>
                     <div class="item">
                         <a class="" onclick="menuVeiculo()">
-                            <img src="assets/images/menu/veiculos.png" alt="">
+                            <img src="../assets/images/menu/veiculos.png" alt="">
                         </a>
                         <nav id="submenu">
                             <ul class="nav flex-column">

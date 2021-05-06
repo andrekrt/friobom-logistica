@@ -142,10 +142,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             <div class="tela-principal">
                 <div class="menu-superior">
                    <div class="icone-menu-superior">
-                        <img src="../assets/images/veiculos.png" alt="">
+                        <img src="../assets/images/icones/reparos.png" alt="">
                    </div>
                    <div class="title">
-                        <h2>Bem-Vindo <?php echo $nomeUsuario ?></h2>
+                        <h2>Análise </h2>
                    </div>
                 </div>
                 <!-- dados exclusivo da página-->
@@ -172,7 +172,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             
                             <div class="form-group espaco col-md-4">
                                 <label for="servico">Valor Geral do Serviço/Peça</label>
-                                <input type="text" name="valor" class="form-control" value="<?php echo $valor; ?>">
+                                <input type="text" id="valor" required name="valor" class="form-control" value="<?php echo $valor; ?>">
                             </div>
                             <div class="form-group espaco col-md-4">
                                 <label for="local">Local do Serviço</label>
@@ -213,7 +213,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </div>
                             <div class="form-group col-md-4 espaco">
                                 <label for="">Valor</label>
-                                <input type="text" required name="valorNovo" id="" class="form-control">
+                                <input type="text" id="valorNovo" required name="valorNovo" id="" class="form-control">
                             </div>
                         </div>
                         <?php
@@ -229,5 +229,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         <script src="../assets/js/jquery.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script>
+        <script src="../assets/js/jquery.mask.js"></script>
+        <script>
+            jQuery(function($){
+                $("#valor").mask('###0,00', {reverse: true});
+                $("#valorNovo").mask('###0,00', {reverse: true});
+            })
+        </script>
+        
     </body>
 </html>

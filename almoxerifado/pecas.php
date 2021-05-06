@@ -52,7 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     </div>
                     <div class="item">
                         <a class="" onclick="menuVeiculo()">
-                            <img src="assets/images/menu/veiculos.png" alt="">
+                            <img src="../assets/images/menu/veiculos.png" alt="">
                         </a>
                         <nav id="submenu">
                             <ul class="nav flex-column">
@@ -193,7 +193,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                             </div>
                         </form>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalPeca" data-whatever="@mdo" name="idpeca">Nova Peça</button>
+                        <div class="area-opcoes-button">     
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalPeca" data-whatever="@mdo" name="idpeca">Nova Peça</button>
+                        </div>
+                        <a href="pecas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>    
                     </div>
                     <!-- MODAL CADASTRO DE PEÇA -->
                     <div class="modal fade" id="modalPeca" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -271,6 +274,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <th scope="col" class="text-center text-nowrap"> Total Entrada </th>
                                     <th scope="col" class="text-center text-nowrap"> Total Saída </th>
                                     <th scope="col" class="text-center text-nowrap"> Total Estoque </th>
+                                    <th scope="col" class="text-center text-nowrap"> Total Comprado </th>
                                     <th scope="col" class="text-center text-nowrap"> Situação </th>
                                     <th scope="col" class="text-center text-nowrap"> Data Cadastro </th>
                                     <th scope="col" class="text-center text-nowrap"> Usuário Cadastrou  </th>
@@ -308,7 +312,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     $qtdSaida = contaSaida($dado['idpeca'])?contaSaida($dado['idpeca']):0;
                                     $estoque = $qtdEntradas-$qtdSaida;
                                     $estoqueMinimo = $dado['estoque_minimo'];
-                                    atualizaEStoque($qtdEntradas, $qtdSaida, $estoque, $estoqueMinimo, $dado['idpeca']);                                    
+                                    $valorComprado = valorTotalPeca($dado['idpeca']);
+                                    atualizaEStoque($qtdEntradas, $qtdSaida, $estoque, $estoqueMinimo, $valorComprado,$dado['idpeca']); 
+                                    
                                 ?>
                                 <tr id="<?=$dado['idpeca']?>">
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['idpeca']; ?> </td>
@@ -319,6 +325,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['total_entrada']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['total_saida']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['total_estoque']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['valor_total']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['situacao']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=date("d/m/Y",strtotime($dado['data_cadastro'])) ; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['nome_usuario']; ?> </td>
@@ -441,7 +448,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <li class="page-item">
                                 <?php
                                 if ($paginaAnterior != 0) {
-                                    echo "<a class='page-link' href='veiculos.php?pagina=$paginaAnterior' aria-label='Anterior'>
+                                    echo "<a class='page-link' href='pecas.php?pagina=$paginaAnterior' aria-label='Anterior'>
                                         <span aria-hidden='true'>&laquo;</span>
                                         <span class='sr-only'>Anterior</span>
                                     </a>";
@@ -456,7 +463,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             </li>
                             <?php
                             for ($i = 1; $i < $numPaginas + 1; $i++) {
-                                echo "<li class='page-item'><a class='page-link' href='veiculos.php?pagina=$i'>$i</a></li>";
+                                echo "<li class='page-item'><a class='page-link' href='pecas.php?pagina=$i'>$i</a></li>";
                             }
                             ?>
                             <li class="page-item">

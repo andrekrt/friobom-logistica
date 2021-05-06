@@ -47,7 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     </div>
                     <div class="item">
                         <a class="" onclick="menuVeiculo()">
-                            <img src="assets/images/menu/veiculos.png" alt="">
+                            <img src="../assets/images/menu/veiculos.png" alt="">
                         </a>
                         <nav id="submenu">
                             <ul class="nav flex-column">
@@ -336,7 +336,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <td scope="col" class="text-center text-nowrap"> <?="R$ ". str_replace(".",",", $dado['desconto']); ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['obs']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['apelido']; ?> </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['vl_total_comprado']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap"> <?="R$ ". str_replace(".",",",$dado['vl_total_comprado']); ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['nome_usuario']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?=$dado['identrada_estoque']; ?>" data-whatever="@mdo" value="<?=$dado['identrada_estoque']; ?>" name="idEntrada">Visualisar</button>

@@ -189,10 +189,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
                     </form>
                     <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalRevisao" data-whatever="@mdo" name="revisao">Lançar Revisão</button>
-                        <a href="revisao-xls.php" class="btn btn-success">Gerar Planilha</a>
                     </div>
-                    
-                    
+                    <a href="revisao-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>                   
                 </div>
                 <!-- MODAL lançamento de revisão -->
                 <div class="modal fade" id="modalRevisao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

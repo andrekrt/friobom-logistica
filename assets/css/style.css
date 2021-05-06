@@ -78,7 +78,7 @@ body{
     width: 200px;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     border-right: solid rgb(94, 93, 93) 2px;
 }
 
@@ -361,7 +361,6 @@ img.icone{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    width: 100%;
     padding:5px;
 }
 .area-opcoes-button button, .area-opcoes-button a {
