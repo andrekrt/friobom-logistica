@@ -176,13 +176,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <select name="peca" id="peca" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $filtro = $db->query("SELECT descricao_peca FROM peca_estoque ORDER BY descricao_peca ASC");
+                                    $filtro = $db->query("SELECT idpeca,descricao_peca FROM peca_estoque ORDER BY descricao_peca ASC");
                                     if ($filtro->rowCount() > 0) {
                                         $dados = $filtro->fetchAll();
                                         foreach ($dados as $dado):
 
                                     ?>
-                                            <option value="<?=$dado['descricao_peca'] ?>"> <?=$dado['descricao_peca'] ?> </option>
+                                            <option value="<?=$dado['descricao_peca'] ?>"> <?=$dado['idpeca'] . " - ". $dado['descricao_peca'] ?> </option>
                                     <?php
 
                                         endforeach;

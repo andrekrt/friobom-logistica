@@ -215,7 +215,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             $numPaginas = ceil($totalVeiculo / $qtdPorPagina);
                             $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
-
                             if (isset($_POST['filtro']) && empty($_POST['veiculo']) == false) {
                                 $veiculo = filter_input(INPUT_POST, 'veiculo');
                                 $filtrado = $db->prepare("SELECT * FROM veiculos WHERE placa_veiculo = :placaVeiculo");
@@ -240,10 +239,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                 <?php
                                                 $diferenca = $dado['km_atual'] - $dado['km_ultima_revisao'];
 
-                                                if ($diferenca < 15000) {
-                                                    echo "Aguardando";
-                                                } else {
-                                                    echo "Pronto para Revisão";
+                                                if ($dado['categoria']='Truck' && $diferenca >= 20000) {
+                                                    echo $situacao = "Pronto para Revisão";
+                                                } elseif($dado['categoria']='Toco' && $diferenca >= 20000) {
+                                                    echo $situacao = "Pronto para Revisão";
+                                                }elseif($dado['categoria']='3/4' && $diferenca >= 15000){
+                                                    echo $situacao = "Pronto para Revisão";
+                                                }else{
+                                                    echo $situacao = "Aguardando";
                                                 }
                                                 ?>
                                             </td>
@@ -253,7 +256,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
 
                                             <script type="text/javascript">
                                                 var diferenca = "<?php echo $diferenca; ?>";
-                                                if (diferenca < 15000) {
+                                                var situacao = "<?=$situacao?>"
+                                                if (situacao == "Aguardando") {
+                                                   
                                                     var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
                                                     container.style.background = 'green';
                                                 } else {
@@ -357,10 +362,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                 <?php
                                                 $diferenca = $dado['km_atual'] - $dado['km_ultima_revisao'];
 
-                                                if ($diferenca < 15000) {
-                                                    echo "Aguardando";
-                                                } else {
-                                                    echo "Pronto para Revisão";
+                                                if ($dado['categoria']='Truck' && $diferenca >= 20000) {
+                                                    echo $situacao = "Pronto para Revisão";
+                                                } elseif($dado['categoria']='Toco' && $diferenca >= 20000) {
+                                                    echo $situacao = "Pronto para Revisão";
+                                                }elseif($dado['categoria']='3/4' && $diferenca >= 15000){
+                                                    echo $situacao = "Pronto para Revisão";
+                                                }else{
+                                                    echo $situacao = "Aguardando";
                                                 }
                                                 ?>
                                             </td>
@@ -370,7 +379,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
 
                                             <script type="text/javascript">
                                                 var diferenca = "<?php echo $diferenca; ?>";
-                                                if (diferenca < 15000) {
+                                                var situacao = "<?=$situacao?>"
+                                                if (situacao == "Aguardando") {
+                                                   
                                                     var container = document.getElementById('<?php echo $dado['cod_interno_veiculo'] ?>');
                                                     container.style.background = 'green';
                                                 } else {

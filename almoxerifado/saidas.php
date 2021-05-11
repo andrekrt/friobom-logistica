@@ -177,7 +177,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                         foreach ($dados as $dado):
 
                                     ?>
-                                            <option value="<?=$dado['idpeca'] ?>"> <?=$dado['descricao_peca'] ?> </option>
+                                            <option value="<?=$dado['idpeca'] ?>"> <?=$dado['idpeca']. " - ". $dado['descricao_peca'] ?> </option>
                                     <?php
 
                                         endforeach;
