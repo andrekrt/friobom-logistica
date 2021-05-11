@@ -6,14 +6,14 @@ require("../conexao.php");
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99){
 
     $idEntrada = filter_input(INPUT_POST,'identrada');
-    $dataNota = filter_input(INPUT_POST, 'dataNota')?filter_input(INPUT_POST, 'dataNota'):null;
-    $numNf = filter_input(INPUT_POST, 'numNF')?filter_input(INPUT_POST, 'numNF'):null;
-    $numPedido = filter_input(INPUT_POST, 'pedido')?filter_input(INPUT_POST, 'pedido'):null;
+    $dataNota = filter_input(INPUT_POST, 'dataNf')?filter_input(INPUT_POST, 'dataNf'):null;
+    $numNf = filter_input(INPUT_POST, 'numNf')?filter_input(INPUT_POST, 'numNf'):null;
+    $numPedido = filter_input(INPUT_POST, 'numPedido')?filter_input(INPUT_POST, 'numPedido'):null;
     $peca = filter_input(INPUT_POST, 'peca');
     $preco = str_replace(",", ".",filter_input(INPUT_POST, 'preco')) ;
     $qtd = str_replace(",",".",filter_input(INPUT_POST, 'qtd') ) ;
     $desconto = str_replace(",", ".",filter_input(INPUT_POST, 'desconto') ) ;
-    $obsEntrada = filter_input(INPUT_POST, 'obsEntrada')?filter_input(INPUT_POST, 'obsEntrada'):null;
+    $obsEntrada = filter_input(INPUT_POST, 'obs')?filter_input(INPUT_POST, 'obs'):null;
     $fornecedor = filter_input(INPUT_POST, 'fornecedor');
     $totalComprado = ($preco*$qtd)-$desconto;
     

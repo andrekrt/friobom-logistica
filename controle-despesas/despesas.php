@@ -6,6 +6,7 @@ require("../conexao.php");
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] ==1 || $_SESSION['tipoUsuario'] == 99){
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
+    $tipoUsuario = $_SESSION['tipoUsuario'];
 
     $pagina = (isset($_GET['pagina'])) ? $_GET['pagina'] : 1;
     $selecionar = $db->query("SELECT * FROM viagem ORDER BY data_carregamento DESC LIMIT 200");
@@ -231,7 +232,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                             <a class="dropdown-item" target="_blank" href="gerar-pdf.php?id=<?php echo $idDespesa ?>">Imprimir</a>
-                                                            <a class="dropdown-item" href="excluir.php?id=<?php echo $idDespesa ?>">Excluir</a>
+                                                            <?php if($tipoUsuario==99):?>
+                                                                <a class="dropdown-item" href="excluir.php?id=<?=$idDespesa ?>">Excluir</a>
+                                                            <?php endif;?>
+                                                            <a class="dropdown-item" href="atualizar.php?id=<?=$idDespesa ?>">Editar</a>
                                                         </div>
                                                     </div>
 
@@ -262,7 +266,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                             <a class="dropdown-item" target="_blank" href="gerar-pdf.php?id=<?php echo $idDespesa ?>">Imprimir</a>
-                                                            <a class="dropdown-item" href="excluir.php?id=<?php echo $idDespesa ?>">Excluir</a>
+                                                            <?php if($tipoUsuario==99):?>
+                                                                <a class="dropdown-item" href="excluir.php?id=<?=$idDespesa ?>">Excluir</a>
+                                                            <?php endif;?>
+                                                            <a class="dropdown-item" href="form-atualiza.php?id=<?=$idDespesa ?>">Editar</a>
                                                         </div>
                                                     </div>
                                                 </td>

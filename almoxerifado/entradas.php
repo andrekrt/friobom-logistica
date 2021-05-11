@@ -327,7 +327,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 ?>
                                 <tr id="<?=$dado['identrada_estoque']?>">
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['identrada_estoque']; ?> </td>
-                                    <td scope="col" class="text-left text-nowrap"> <?=$dado['data_nf']; ?> </td>
+                                    <td scope="col" class="text-left text-nowrap"> <?=date("d/m/Y", strtotime($dado['data_nf'])) ; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['num_nf']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['num_pedido']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['descricao_peca']; ?> </td>
@@ -452,7 +452,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         <li class="page-item">
                             <?php
                             if ($paginaAnterior != 0) {
-                                echo "<a class='page-link' href='veiculos.php?pagina=$paginaAnterior' aria-label='Anterior'>
+                                echo "<a class='page-link' href='entradas.php?pagina=$paginaAnterior' aria-label='Anterior'>
                                     <span aria-hidden='true'>&laquo;</span>
                                     <span class='sr-only'>Anterior</span>
                                 </a>";
@@ -467,13 +467,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </li>
                         <?php
                         for ($i = 1; $i < $numPaginas + 1; $i++) {
-                            echo "<li class='page-item'><a class='page-link' href='veiculos.php?pagina=$i'>$i</a></li>";
+                            echo "<li class='page-item'><a class='page-link' href='entradas.php?pagina=$i'>$i</a></li>";
                         }
                         ?>
                         <li class="page-item">
                             <?php
                             if ($paginaPosterior <= $numPaginas) {
-                                echo " <a class='page-link' href='veiculos.php?pagina=$paginaPosterior' aria-label='Próximo'>
+                                echo " <a class='page-link' href='entradas.php?pagina=$paginaPosterior' aria-label='Próximo'>
                                     <span aria-hidden='true'>&raquo;</span>
                                     <span class='sr-only'>Próximo</span>
                                 </a>";
