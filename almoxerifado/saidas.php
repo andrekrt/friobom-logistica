@@ -236,6 +236,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                 <label for="placa"> Placa </label>
                                                 <select required name="placa" id="placa" class="form-control">
                                                     <option value=""></option>
+                                                    <option value="Oficina">Oficina</option>
                                                     <?php $pecas = $db->query("SELECT * FROM veiculos");
                                                     $pecas = $pecas->fetchAll();
                                                     foreach($pecas as $peca):
@@ -257,7 +258,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             </div>
                         </div>
                     </div>
-                    <!-- FIM MODAL lançamento de entrada-->
+                    <!-- FIM MODAL lançamento de saida-->
                     <div class="table-responsive">
                         <table class="table table-striped table-dark table-bordered">
                             <thead>

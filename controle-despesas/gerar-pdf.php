@@ -32,14 +32,14 @@ if($sql){
         $km1Abastecimento = $dado['km_abast1'];
         $km1Percuso = $dado['km_perc1'];
         $hrTkInicial = $dado['hr_tk_saida'];
-        $hrTk1Abast = $dado['hr_tk_abast1'];
-        $hrTk2Abast = $dado['hr_tk_abast2'];
-        $hrTk3Abast = $dado['hr_tk_abast3'];
+        $hrTk1Abast = 0;
+        $hrTk2Abast = 0;
+        $hrTk3Abast = 0;
         $hrTk4Abast = $dado['hr_tk_abast4'];
-        $hrTk1Percusso = $hrTk1Abast-$hrTkInicial;
-        $hrTk2Percusso = $hrTk2Abast-$hrTk1Percusso;
-        $hrTk3Percusso = $hrTk3Abast-$hrTk2Percusso;
-        $hrTk4Percusso = $hrTk4Abast-$hrTk3Percusso;
+        $hrTk1Percusso = 0;
+        $hrTk2Percusso = 0;
+        $hrTk3Percusso = 0;
+        $hrTk4Percusso = $hrTk4Abast-$hrTkInicial;
         $km2Abastecimento = $dado['km_abast2'];
         $km2Percuso = $dado['km_perc2'];
         $km3Abastecimento = $dado['km_abast3'];
@@ -52,8 +52,8 @@ if($sql){
         $litros4Abast = $dado['lt_abast4'];
         $litrosGeral = $litros1Abast+$litros2Abast+$litros3Abast+$litros4Abast;
         $litroTk1Abast = $hrTk1Percusso*2;
-        $litroTk2Abast = $hrTk2Percusso*2;
-        $litroTk3Abast = $hrTk3Percusso*2;
+        $litroTk2Abast = 0;
+        $litroTk3Abast = 0;
         $litroTk4Abast = $hrTk4Percusso*2;
         $totalLitrosTk = $litroTk1Abast+$litroTk2Abast+$litroTk3Abast+$litroTk4Abast;
         $litroSemTk = $litros1Abast-$litroTk1Abast;
@@ -85,9 +85,9 @@ if($sql){
            $kmPorLitro3 = number_format($km3Percuso/$litroSemTk3,2);
         }
 
-        $kmPorLitro4   ;
+        $kmPorLitro4;
         if($km4Percuso==0){
-            $kmPorLitro4 =0;
+            $kmPorLitro4=0;
         }else{
            $kmPorLitro4 = number_format($km4Percuso/$litroSemTk4,2);
         }
@@ -211,11 +211,11 @@ $mpdf->WriteHTML("
                     <td style='text-align: center; font-size:8pt;border:1px solid black;'> $kmSaida </td>
                     <td style='text-align: center; font-size:8pt;border:1px solid black;'> $hrTkInicial </td>
                     <td style='text-align: center; font-size:8pt;border:1px solid black;'> $km1Abastecimento </td>
-                    <td style='text-align: center; font-size:8pt;border:1px solid black;'> $hrTk1Percusso </td>
+                    <td style='text-align: center; font-size:8pt;border:1px solid black;'> 0 </td>
                     <td style='text-align: center; font-size:8pt;border:1px solid black;'> $km2Abastecimento </td>
-                    <td style='text-align: center; font-size:8pt;border:1px solid black;'> $hrTk1Abast </td>
+                    <td style='text-align: center; font-size:8pt;border:1px solid black;'> 0 </td>
                     <td style='text-align: center; font-size:8pt;border:1px solid black;'> $km4Abastecimento </td>
-                    <td style='text-align: center; font-size:8pt;border:1px solid black;'> $hrTk1Abast </td>
+                    <td style='text-align: center; font-size:8pt;border:1px solid black;'> $hrTk4Abast </td>
                 </tr>
                 <tr>
                     <td style='font-size:8pt;border:1px solid black;'>Tomada</td>
@@ -224,7 +224,7 @@ $mpdf->WriteHTML("
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km1Abastecimento </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $hrTk1Abast </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km2Abastecimento </td>
-                    <td style='font-size:8pt; text-align:center;border:1px solid black;'> $hrTk1Percusso </td>
+                    <td style='font-size:8pt; text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km3Abastecimento </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $hrTk1Abast </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km4Abastecimento </td>
@@ -235,13 +235,13 @@ $mpdf->WriteHTML("
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'>R$ $descarga</td>
                     <td style='font-size:8pt; text-align:right; font-weight:bold;border:1px solid black;'>  Percurso </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km1Percuso </td>
-                    <td style='font-size:8pt; text-align:center;border:1px solid black;'> $hrTk1Percusso </td>
+                    <td style='font-size:8pt; text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km2Percuso </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km3Percuso </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'>0 </td>
                     <td style='font-size:8pt; text-align:center;border:1px solid black;'> $km4Percuso </td>
-                    <td style='font-size:8pt; text-align:center;border:1px solid black;'> 0 </td>
+                    <td style='font-size:8pt; text-align:center;border:1px solid black;'> $hrTk4Percusso </td>
                 </tr>
                 <tr>
                     <td style='font-size:8pt;border:1px solid black;' >Travessia</td>
@@ -260,13 +260,13 @@ $mpdf->WriteHTML("
                     <td style='font-size:8pt;border:1px solid black;'> Serviços / Peças </td>
                     <td style='font-size:8pt;text-align:center;border:1px solid black;'> R$ $outrosServicos </td>
                     <td style='font-weight:bold; font-size:8pt; text-align:right;border:1px solid black;'> Litro (TK) </td>
-                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> $litroTk1Abast </td>
+                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt;text-align:center;border:1px solid black;'> KM/L </td>
-                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> $litroTk2Abast </td>
+                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt;text-align:center;border:1px solid black;'> KM/L</td>
-                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> $litroTk3Abast </td>
+                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt;text-align:center;border:1px solid black;'> KM/L </td>
-                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> $litroTk4Abast </td>
+                    <td style='font-size:8pt;text-align:center;border:1px solid black;'> 0 </td>
                     <td style='font-size:8pt;text-align:center;border:1px solid black;'> KM/L </td>
                 </tr>
                 <tr>

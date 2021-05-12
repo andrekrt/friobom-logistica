@@ -244,43 +244,33 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3 espaco">
-                                <label for="km1Abast">KM 1º Abastescimento Externo</label>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="km1Abast">KM 1º Abast. Externo</label>
                                 <input type="text" required name="km1Abast" class="form-control" id="km1Abast">
                             </div>
+                            
                             <div class="form-group col-md-3 espaco">
-                                <label for="hrKm1Abast">HR TK 1º Abastescimento Externo</label>
-                                <input type="text" name="hrKm1Abast" class="form-control" id="hrKm1Abast">
-                            </div>
-                            <div class="form-group col-md-3 espaco">
-                                <label for="lt1Abast">Litros 1º Abastescimento Externo</label>
+                                <label for="lt1Abast">Litros 1º Abast. Externo</label>
                                 <input type="text" required name="lt1Abast" class="form-control" id="lt1Abast">
                             </div>
                             <div class="form-group col-md-3 espaco">
                                 <label for="vl1Abast">Valor 1º Abastescimento Externo</label>
                                 <input type="text" name="vl1Abast" class="form-control" id="vl1Abast">
                             </div>
-                            
-                        </div>
-                        <div class="form-row">
                             <div class="form-group col-md-4 espaco">
                                 <label for="local1Abast">Posto / Cidade 1º Abastecimento Externo</label>
                                 <input type="text" name="local1Abast" class="form-control" id="local1Abast">
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="km2Abast">KM 2º Abastescimento</label>
                                 <input type="text" name="km2Abast" class="form-control" id="km2Abast">
                             </div>
                             <div class="form-group col-md-3 espaco">
-                                <label for="hrKm2Abast">HR TK 2º Abastescimento Externo</label>
-                                <input type="text" name="hrKm2Abast" class="form-control" id="hrKm2Abast">
-                            </div>
-                            <div class="form-group col-md-3 espaco">
                                 <label for="lt2Abast">Litros 2º Abastescimento Externo</label>
                                 <input type="text" name="lt2Abast" class="form-control" id="lt2Abast">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group col-md-3 espaco">
                                 <label for="vl2Abast">Valor 2º Abastescimento Externo</label>
                                 <input type="text" name="vl2Abast" class="form-control" id="vl2Abast">
@@ -289,51 +279,48 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="local2Abast">Posto / Cidade 2º Abastecimento Externo</label>
                                 <input type="text" name="local2Abast" class="form-control" id="local2Abast">
                             </div>
-                            <div class="form-group col-md-5 espaco">
-                                <label for="km3Abast">KM 3º Abastescimento Externo</label>
+                        </div>
+                        <div class="form-row">    
+                            <div class="form-group col-md-2 espaco">
+                                <label for="km3Abast">KM 3º Abast. Externo</label>
                                 <input type="text" name="km3Abast" class="form-control" id="km3Abast">
                             </div>
                             <div class="form-group col-md-3 espaco">
-                                <label for="hrKm3Abast">HR TK 3º Abastescimento Externo</label>
-                                <input type="text" name="hrKm3Abast" class="form-control" id="hrKm3Abast">
-                            </div>
-                            <div class="form-group col-md-5 espaco">
                                 <label for="lt3Abast">Litros 3º Abastescimento Externo</label>
                                 <input type="text" name="lt3Abast" class="form-control" id="lt3Abast">
                             </div>
-                            <div class="form-group col-md-4 espaco">
+                            <div class="form-group col-md-3 espaco">
                                 <label for="vl3Abast">Valor 3º Abastescimento Externo</label>
                                 <input type="text" name="vl3Abast" class="form-control" id="vl3Abast">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group col-md-4 espaco">
                                 <label for="local3Abast">Posto / Cidade 3º Abastecimento Externo</label>
                                 <input type="text" name="local3Abast" class="form-control" id="local3Abast">
                             </div>
-                            <div class="form-group col-md-3 espaco">
-                                <label for="km4Abast">KM Abastescimento Interno</label>
-                                <input type="text" name="km4Abast" class="form-control" id="km4Abast">
-                            </div>
-                            <div class="form-group col-md-5 espaco">
-                                <label for="hrKm4Abast">HR TK Abastescimento  Interno</label>
-                                <input type="text" name="hrKm4Abast" class="form-control" id="hrKm4Abast">
-                            </div>
-                            
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-3 espaco">
-                                <label for="lt4Abast">Litros Abastescimento  Interno</label>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="km4Abast">KM Abast.Interno</label>
+                                <input type="text" name="km4Abast" class="form-control" id="km4Abast">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="hrKm4Abast">HR TK Chegada</label>
+                                <input type="text" name="hrKm4Abast" class="form-control" id="hrKm4Abast">
+                            </div> 
+                            <div class="form-group col-md-2 espaco">
+                                <label for="lt4Abast">Litros Abast.  Interno</label>
                                 <input type="text" name="lt4Abast" class="form-control" id="lt4Abast">
                             </div>
-                            <div class="form-group col-md-3 espaco">
-                                <label for="vl4Abast">Valor Abastescimento Interno</label>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="vl4Abast">Valor Abast. Interno</label>
                                 <input type="text" name="vl4Abast" class="form-control" id="vl4Abast">
                             </div>
                             <div class="form-group col-md-4 espaco">
                                 <label for="local4Abast">Posto / Cidade Abastecimento Interno</label>
                                 <input type="text" required name="local4Abast" class="form-control" id="local4Abast">
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="diariasMot">Valor Diária Motorista</label>
                                 <input type="text" required name="diariasMot" class="form-control" id="diariasMot">
@@ -357,13 +344,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <div class="form-group col-md-2 espaco">
                                 <label for="diasRotaChapa">Dias em Rota Chapa</label>
                                 <input type="text" required name="diasRotaChapa" class="form-control" id="diasRotaChapa">
-                            </div>
+                            </div>  
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="gastosAjud">Outros Gastos</label>
                                 <input type="text" name="gastosAjud" class="form-control" id="gastosAjud">
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="tomada">Tomada</label>
                                 <input type="text"  name="tomada" class="form-control" id="tomada">
@@ -380,7 +367,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="servicos">Serviços</label>
                                 <input type="text" name="servicos" class="form-control" id="servicos">
                             </div>
-                            <div class="form-group col-md-4 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="nomeAjud">Nome Ajudante</label>
                                 <input type="text" name="nomeAjud" class="form-control" id="nomeAjud">
                             </div>
@@ -390,7 +377,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                 </div>
             </div>
         </div>
-
         <script src="../assets/js/jquery.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script>
