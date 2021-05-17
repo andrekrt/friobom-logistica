@@ -89,10 +89,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </a>
                         <nav id="submenuDespesa">
                             <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="../controle-despesas/despesas.php"> Despesas </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../controle-despesas/despesas.php"> Despesas </a> </li><li class="nav-item"> <a class="nav-link" href="../controle-despesas/complementos.php"> Complementos </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../controle-despesas/form-lancar-despesas.php"> Lançar Despesa </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../controle-despesas/gerar-planilha.php"> Planilha de Despesas </a> </li>
-                            </ul>
+                            </ul> 
                         </nav>
                     </div>
                     <div class="item">
@@ -188,7 +188,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                             </div>
                         </form>
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Nova Saída</button>
+                        <div class="area-opcoes-button">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Nova Saída</button>
+                        </div>
+                        <a href="saidas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                     </div>
                     <!-- MODAL lançamento de saída -->
                     <div class="modal fade" id="modalEntrada" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -225,7 +228,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                     $pecas = $pecas->fetchAll();
                                                     foreach($pecas as $peca):
                                                     ?>
-                                                    <option value="<?=$peca['idpeca']?>"><?=$peca['descricao_peca']?></option>
+                                                    <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". $peca['descricao_peca']?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -329,12 +332,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                 <form action="atualiza-saida.php" method="post">
                                                     <div class="form-row">
                                                         <div class="form-group col-md-1">
-                                                            <label for="idPeca" class="col-form-label">ID</label>
-                                                            <input type="text" readonly name="idSaida" class="form-control" id="idSaida" value="<?= $dado['idsaida_estoque']; ?>">
+                                                            <label for="id" class="col-form-label">ID</label>
+                                                            <input type="text" readonly name="id" class="form-control" id="id" value="<?= $dado['id_complemento']; ?>">
                                                         </div>
                                                         <div class="form-group col-md-2 ">
-                                                            <label for="dataSaida" class="col-form-label">Data Saída</label>
-                                                            <input type="date" name="dataSaida" class="form-control" id="dataSaida" value="<?= $dado['data_saida']; ?>">
+                                                            <label for="veiculo" class="col-form-label">Veículo</label>
+                                                            <input type="date" name="veiculo" class="form-control" id="veiculo" value="<?= $dado['data_saida']; ?>">
                                                         </div>
                                                         <div class="form-group col-md-1">
                                                             <label for="qtd"  class="col-form-label">Quantidade</label>

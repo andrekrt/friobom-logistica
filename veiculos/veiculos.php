@@ -90,10 +90,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     </a>
                     <nav id="submenuDespesa">
                         <ul class="nav flex-column">
-                            <li class="nav-item"> <a class="nav-link" href="../controle-despesas/despesas.php"> Despesas </a> </li>
+                            <li class="nav-item"> <a class="nav-link" href="../controle-despesas/despesas.php"> Despesas </a> </li><li class="nav-item"> <a class="nav-link" href="../controle-despesas/complementos.php"> Complementos </a> </li>
                             <li class="nav-item"> <a class="nav-link" href="../controle-despesas/form-lancar-despesas.php"> Lançar Despesa </a> </li>
                             <li class="nav-item"> <a class="nav-link" href="../controle-despesas/gerar-planilha.php"> Planilha de Despesas </a> </li>
-                        </ul>
+                        </ul> 
                     </nav>
                 </div>
                 <div class="item">
@@ -189,6 +189,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
                         </div>
                     </form>
+                    <a href="veiculos-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-dark table-bordered">
