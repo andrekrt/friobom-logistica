@@ -197,6 +197,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">Código Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Tipo Veículo</th>
+                                <th scope="col" class="text-center text-nowrap">Categoria</th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Peso Máximo</th>
                                 <th scope="col" class="text-center text-nowrap">Cubagem</th>
@@ -229,6 +230,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                         <tr id="<?php echo $dado['cod_interno_veiculo'] ?>">
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cod_interno_veiculo']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['tipo_veiculo']; ?> </td>
+                                            <td scope="col" class="text-center text-nowrap"> <?php echo $dado['categoria']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['placa_veiculo']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['peso_maximo'] . " Kg"; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cubagem'] . " m3"; ?> </td>
@@ -352,6 +354,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                         <tr id="<?php echo $dado['cod_interno_veiculo'] ?>">
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cod_interno_veiculo']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['tipo_veiculo']; ?> </td>
+                                            <td scope="col" class="text-center text-nowrap"> <?php echo $dado['categoria']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['placa_veiculo']; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['peso_maximo'] . " Kg"; ?> </td>
                                             <td scope="col" class="text-center text-nowrap"> <?php echo $dado['cubagem'] . " m3"; ?> </td>
