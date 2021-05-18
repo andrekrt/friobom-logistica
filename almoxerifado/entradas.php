@@ -313,13 +313,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     $numPaginas = ceil($totalEntradas / $qtdPorPagina);
                                     $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
-                                    $sql = $db->query("SELECT * FROM `entrada_estoque` LEFT JOIN peca_estoque ON entrada_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id LIMIT $paginaInicial,$qtdPorPagina");
+                                    $sql = $db->query("SELECT * FROM `entrada_estoque` LEFT JOIN peca_estoque ON entrada_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id ORDER BY identrada_estoque DESC LIMIT $paginaInicial,$qtdPorPagina");
                                 }
-
-                                $totalEntradas = $sql->rowCount();
-                                $qtdPorPagina = 10;
-                                $numPaginas = ceil($totalEntradas / $qtdPorPagina);
-                                $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
                                 $dados = $sql->fetchAll();
                                 foreach($dados as $dado):

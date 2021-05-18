@@ -298,7 +298,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     $numPaginas = ceil($totalSaidas / $qtdPorPagina);
                                     $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
-                                    $sql = $db->query("SELECT * FROM `saida_estoque` LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios LIMIT $paginaInicial,$qtdPorPagina");
+                                    $sql = $db->query("SELECT * FROM `saida_estoque` LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios ORDER BY idsaida_estoque DESC LIMIT $paginaInicial,$qtdPorPagina");
                                 }
 
                                 $dados = $sql->fetchAll();

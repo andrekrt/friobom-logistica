@@ -311,7 +311,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     $numPaginas = ceil($totalOrdens / $qtdPorPagina);
                                     $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
-                                    $sql = $db->query("SELECT * FROM `ordem_servico` LEFT JOIN usuarios ON ordem_servico.idusuario = usuarios.idusuarios LIMIT $paginaInicial,$qtdPorPagina");
+                                    $sql = $db->query("SELECT * FROM `ordem_servico` LEFT JOIN usuarios ON ordem_servico.idusuario = usuarios.idusuarios ORDER BY idordem_servico DESC LIMIT $paginaInicial,$qtdPorPagina");
                                 }
 
                                 $dados = $sql->fetchAll();
