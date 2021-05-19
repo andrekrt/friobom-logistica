@@ -207,6 +207,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             echo'    <th scope="col" class="text-center"> Categoria </th>';
                                             echo'    <th scope="col" class="text-center"> Placa </th>';
                                             echo'    <th scope="col" class="text-center"> Imagem </th>';
+                                            echo'    <th scope="col" class="text-center"> Local Reparo </th>';
                                             echo '  <th scope="col" class="text-center">Situação</th>';
                                             echo '  <th scope="col" class="text-center">Observação</th>';
                                             echo '  <th scope="col" class="text-center">Ações</th>';
@@ -238,6 +239,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                         $anexo = "<td class='text-center'> <a href='$linkImg' target='_blank'> Anexo </a>  </td>";
                                                     }
                                                     echo $anexo;
+                                                    echo '<td class="text-center">' . $dado['localReparo'] . '</td>';
                                                     echo '<td class="text-center">' .$dado['statusSolic'] .'</td>';
                                                     echo '<td class="text-center">' .$dado['obs'] .'</td>';
                                                     $statusSolic = $dado['statusSolic'];
@@ -272,6 +274,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             echo'    <th scope="col" class="text-center"> Categoria </th>';
                                             echo'    <th scope="col" class="text-center"> Placa </th>';
                                             echo'    <th scope="col" class="text-center"> Imagem </th>';
+                                            echo'    <th scope="col" class="text-center"> Local Reparo </th>';
                                             echo '   <th scope="col" class="text-center">Situação</th>';
                                             echo '   <th scope="col" class="text-center">Observação</th>';
                                             echo '   <th scope="col" class="text-center">Ações</th>';
@@ -302,6 +305,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                         $anexo = "<td class='text-center'> <a href='$linkImg' target='_blank'> Anexo </a>  </td>";
                                                     }
                                                     echo $anexo;
+                                                    echo '<td class="text-center">' . $dado['localReparo'] . '</td>';
                                                     echo '<td class="text-center">' .$dado['statusSolic'] .'</td>';
                                                     echo '<td class="text-center">' .$dado['obs'] .'</td>';
                                                     $statusSolic = $dado['statusSolic'];

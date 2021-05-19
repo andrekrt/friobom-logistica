@@ -19,6 +19,7 @@ if($sql){
         $obs = $dado['obs'];
         $valor = $dado['valor'];
         $local = $dado['localReparo'];
+        $numSolic = $dado['id'];
     }
 }
 $select = $db->query("SELECT * FROM solicitacoes02 WHERE idSocPrinc = $idReparo ");
@@ -76,7 +77,7 @@ $mpdf->WriteHTML("
                         <td style='text-align:right'>Setor: Recursos Humanos</td>
                     </tr>
                     <tr>
-                        <td>Responsável: Antonio Weliton da Silva</td>
+                        <td>Responsável: Gilvan</td>
                         <td style='text-align:right'>Responsável: Francisca Nascimento Silva</td>
                     </tr>
                      <tr>
@@ -91,6 +92,7 @@ $mpdf->WriteHTML("
             </table><br>
             <table style='width:100%' border='1'>
                 <tr>
+                    <td> <span style='font-weight:bold'> Solicitação Nº: </span>  $numSolic</td>
                     <td> <span style='font-weight:bold'> Data da Solicitação: </span>  $dataSolic</td>
                     <td> <span style='font-weight:bold'> Data da Aprovação: </span>  $dataAprovacao</td>
                     <td  style='text-align:center'> <span style='font-weight:bold'> Veículo: </span> $veiculo </td>
@@ -98,12 +100,12 @@ $mpdf->WriteHTML("
                 <tr>
                     <td> <span style='font-weight:bold'> Peça(Serviço): </span>  $servico</td>
                     <td> <span style='font-weight:bold'> Descrição: </span> $descricao </td>
-                    <td> <span style='font-weight:bold'> Valor(Custo): </span> R$ $valor </td>
+                    <td colspan='2'> <span style='font-weight:bold'> Valor(Custo): </span> R$ $valor </td>
                 </tr>
                 <tr>
                     <td> <span style='font-weight:bold'> Status OS: </span>  $situacao</td>
                     <td> <span style='font-weight:bold'> Observações: </span> $obs </td>
-                    <td> <span style='font-weight:bold'> Local do Reparo </span>  $local </td>
+                    <td colspan='2'> <span style='font-weight:bold'> Local do Reparo </span>  $local </td>
                 </tr>
             </table><br>
             $msg
