@@ -173,6 +173,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <th scope="col" class="text-center"> Nome Motorista </th>
                                     <th scope="col" class="text-center"> CNH </th>
                                     <th scope="col" class="text-center"> Vencimento CNH </th>
+                                    <th scope="col" class="text-center"> Toxicológico </th>
+                                    <th scope="col" class="text-center"> Validade Toxicológico </th>
                                     <th scope="col" class="text-center">Salário</th>
                                     <th scope="col" class="text-center"> Ações</th>
                                 </tr>
@@ -194,6 +196,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                         <td scope="col" class="text-center"> <?php echo $dado['nome_motorista']; ?> </td>
                                         <td scope="col" class="text-center"> <?php echo $dado['cnh']; ?> </td>
                                         <td scope="col" class="text-center"> <?php echo date("d/m/Y", strtotime($dado['validade_cnh'])) ; ?> </td>
+                                        <td scope="col" class="text-center"> <?php echo $dado['toxicologico']; ?> </td>
+                                        <td scope="col" class="text-center"> <?php echo date("d/m/Y", strtotime($dado['validade_toxicologico'])); ?> </td>
                                         <td scope="col" class="text-center"> <?php echo "R$ ". number_format($dado['salario'],2,",", "." )?> </td>
                                         <td scope="col" class="text-center">
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?php echo $dado['cod_interno_motorista']; ?>" data-whatever="@mdo" value="<?php echo $dado['cod_interno_motorista']; ?>" name="idSolic" >Visualisar</button>
@@ -233,7 +237,21 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                                 <label for="vencimentoCnh" class="col-form-label">Vencimento CNH</label>
                                                                 <input type="date" class="form-control" name="vencimentoCnh" id="vencimentoCnh" value="<?php echo  $dado['validade_cnh']; ?>">
                                                             </div>
-                                                        </div>     
+                                                        </div>   
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-5">
+                                                                <label for="'toxicologico'" class="col-form-label">Toxicológico</label>
+                                                                <select name="toxicologico" id="toxicologico" class="form-control">
+                                                                    <option value="<?=$dado['toxicologico']?>"><?=$dado['toxicologico']?></option>
+                                                                    <option value="Aguardando">Aguardando</option>
+                                                                    <option value="OK">OK</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-md-5">
+                                                                <label for="vencimentoToxicologico" class="col-form-label">Vencimento Toxicológico</label>
+                                                                <input type="date" class="form-control" name="vencimentoToxicologico" id="vencimentoToxicologico" value="<?php echo  $dado['validade_toxicologico']; ?>">
+                                                            </div>
+                                                        </div>  
                                                         <div class="form-row">
                                                             <div class="form-group form-check">
                                                                 <input type="checkbox" class="form-check-input" id="ativo" name="ativo">

@@ -181,6 +181,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <label for="validadeCNH"> Validade CNH </label>
                             <input type="date" name="validadeCNH" class="form-control" id="validadeCNH">
                         </div>
+                        <div class="form-group col-md-12 espaco">
+                            <label for="situacaoToxicologico"> Exame Toxicológico </label>
+                            <select name="situacaoToxicologico" required id="situacaoToxicologico" class="form-control">
+                                <option value="Aguardando">Aguardando</option>
+                                <option value="OK">OK</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12 espaco">
+                            <label for="validadeToxicologico"> Validade Toxicológico </label>
+                            <input type="date" name="validadeToxicologico" required class="form-control" id="validadeToxicologico">
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary"> Cadastrar </button>
                 </form>

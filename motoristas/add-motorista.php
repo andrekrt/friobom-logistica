@@ -9,19 +9,28 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $nomeMotorista = filter_input(INPUT_POST, 'nomeMotorista');
     $cnh = filter_input(INPUT_POST, 'cnh')?filter_input(INPUT_POST, 'cnh'):null;
     $validadeCnh = filter_input(INPUT_POST, 'validadeCNH')?filter_input(INPUT_POST, 'validadeCNH'):null;
+    $toxicoligco = filter_input(INPUT_POST,'situacaoToxicologico');
+    $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
 
     $consulta = $db->query("SELECT * FROM motoristas WHERE cod_interno_motorista = '$codMotorista' ");
     if($consulta->rowCount()>0){
         echo "<script>alert('Esse Motorista já está cadastrado!');</script>";
         echo "<script>window.location.href='form-motorista.php'</script>";
     }else{
-        $sql = $db->query("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, cnh, validade_cnh, ativo) VALUES ('$codMotorista', '$nomeMotorista', '$cnh', '$validadeCnh', 1) ");
+        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, cnh, validade_cnh, toxicologico, validade_toxicologico, ativo) VALUES (:codMotorista, :nomeMotorista, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :ativo) ");
+        $sql->bindValue(':codMotorista', $codMotorista);
+        $sql->bindValue(':nomeMotorista', $nomeMotorista);
+        $sql->bindValue(':cnh', $cnh);
+        $sql->bindValue(':validadeCnh', $validadeCnh);
+        $sql->bindValue(':toxicologico', $toxicoligco);
+        $sql->bindValue(':validadeToxicologico', $validadeToxicologico);
+        $sql->bindValue(':ativo', 1);
 
-        if($sql){
+        if($sql->execute()){
             echo "<script>alert('Motorista Cadastrado!');</script>";
             echo "<script>window.location.href='motoristas.php'</script>";
         }else{
-            echo "erro no cadastro contator o administrador!";
+            print_r($sql->errorInfo());
         }
     }
     //echo "$codMotorista<br> $nomeMotorista<br> $cnh <br> $validadeCnh";
