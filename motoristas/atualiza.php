@@ -30,7 +30,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
         echo "<script> alert('Atualizado com Sucesso!')</script>";
         echo "<script> window.location.href='motoristas.php' </script>";
     }else{
-        print_r($sql->errorInfo());
+        print_r($atualiza->errorInfo());
     }
 }else{
     header("Location:motoristas.php");

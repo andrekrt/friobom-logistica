@@ -309,12 +309,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
 
                                 $dados = $sql->fetchAll();
                                 foreach($dados as $dado):
-                                    $qtdEntradas = contaEntradas($dado['idpeca'])?contaEntradas($dado['idpeca']):0;
+                                   $qtdEntradas = contaEntradas($dado['idpeca'])?contaEntradas($dado['idpeca']):0;
                                     $qtdSaida = contaSaida($dado['idpeca'])?contaSaida($dado['idpeca']):0;
                                     $estoque = $qtdEntradas-$qtdSaida;
                                     $estoqueMinimo = $dado['estoque_minimo'];
                                     $valorComprado = valorTotalPeca($dado['idpeca']);
                                     atualizaEStoque($qtdEntradas, $qtdSaida, $estoque, $estoqueMinimo, $valorComprado,$dado['idpeca']); 
+
+                                    $totalEstoque = $dado['total_entrada']-$dado['total_saida'];
                                     
                                 ?>
                                 <tr id="<?=$dado['idpeca']?>">

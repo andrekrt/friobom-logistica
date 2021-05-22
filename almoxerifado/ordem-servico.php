@@ -176,8 +176,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <div class="form-row">
                                 <select name="problema" id="problema" class="form-control">
                                     <option value=""></option>
+                                    <option value="Encerrada">Encerrada</option>
+                                    <option value="Em Aberto">Em Aberto</option>
                                     <?php
-                                    $filtro = $db->query("SELECT descricao_problema FROM ordem_servico ORDER BY descricao_problema ASC");
+                                    /*$filtro = $db->query("SELECT situacao FROM ordem_servico ORDER BY descricao_problema ASC");
                                     if ($filtro->rowCount() > 0) {
                                         $dados = $filtro->fetchAll();
                                         foreach ($dados as $dado):
@@ -187,7 +189,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <?php
 
                                         endforeach;
-                                    }
+                                    }*/
 
                                     ?>
                                 </select>
@@ -294,7 +296,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
 
                                 if(isset($_POST['filtro']) && !empty($_POST['problema'])){
                                     $descricao = filter_input(INPUT_POST, 'problema');
-                                    $sql = $db->prepare("SELECT * FROM `ordem_servico` LEFT JOIN usuarios ON ordem_servico.idusuario = usuarios.idusuarios WHERE descricao_problema = :descricao");
+                                    $sql = $db->prepare("SELECT * FROM `ordem_servico` LEFT JOIN usuarios ON ordem_servico.idusuario = usuarios.idusuarios WHERE situacao = :descricao");
                                     $sql->bindValue(':descricao', $descricao);
                                     $sql->execute();
 

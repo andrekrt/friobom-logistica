@@ -266,7 +266,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
 
                                         }else{
 
-                                            $sql = $db->query("SELECT * FROM solicitacoes ORDER BY dataAtual DESC LIMIT 200");
+                                            $sql = $db->query("SELECT * FROM solicitacoes ORDER BY dataAtual DESC");
                                             echo '<tr>';
                                             echo'    <th scope="col" class="text-center">ID</th>';
                                             echo'    <th scope="col" class="text-center">Data</th>';
@@ -280,7 +280,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                             echo '   <th scope="col" class="text-center">Ações</th>';
                                             echo '</tr>';
                                             $totalSolic = $sql->rowCount();
-                                            $qtdePagina = 10;
+                                            $qtdePagina = 20;
                                             $numPaginas = ceil($totalSolic/$qtdePagina);
                                             $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
                                             $resul = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina ");
@@ -401,7 +401,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                         }else{
                                             
                                         
-                                            $sql = $db->query("SELECT * FROM `solicitacoes` LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idUsuarios ORDER BY dataAtual DESC LIMIT 200");
+                                            $sql = $db->query("SELECT * FROM `solicitacoes` LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idUsuarios ORDER BY dataAtual DESC ");
                                             echo '<tr>';
                                             echo '   <th scope="col" class="text-center text-nowrap">ID</th>';
                                             echo'    <th scope="col" class="text-center text-nowrap">Data</th>';

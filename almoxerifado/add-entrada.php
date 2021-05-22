@@ -2,6 +2,7 @@
 
 session_start();
 require("../conexao.php");
+include('funcoes.php');
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario'] ==99){
     
@@ -32,13 +33,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
 
     if($inserir->execute()){
         echo "<script>alert('Entrada Lançada com Sucesso!');</script>";
-        echo "<script>window.location.href='entradas.php'</script>";
+        echo "<script>window.location.href='entradas.php'</script>";    
         
     }else{
         print_r($inserir->errorInfo());
     }
-
-    
 
 }
 

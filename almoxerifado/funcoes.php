@@ -10,7 +10,13 @@ function contaEntradas($idPeca){
     $totalEntradas->execute();
     $entradas = $totalEntradas->fetch();
 
-    return $entradas['entradas'];
+    if(empty($entradas['entradas'])){
+        return 0;
+    }else{
+        return $entradas['entradas'];
+    }
+
+    
 }
 
 function contaSaida($idPeca){
@@ -21,7 +27,29 @@ function contaSaida($idPeca){
     $totalSaida->execute();
     $saidas = $totalSaida->fetch();
 
-    return $saidas['saidas'];
+    if(empty($saidas['saidas'])){
+        return 0;
+    }else{
+        return $saidas['saidas'];
+    }
+
+    
+}
+
+function contaEstoque($idPeca){
+    require("../conexao.php");
+
+    $totalEstoque = $db->prepare("SELECT total_estoque as estoque FROM peca_estoque WHERE idpeca = :idPeca");
+    $totalEstoque->bindValue(':idPeca', $idPeca);
+    $totalEstoque->execute();
+    $estoque = $totalEstoque->fetch();
+
+    if(empty($estoque['estoque'])){
+        return 0;
+    }else{
+        return $estoque['estoque'];
+    }
+
 }
 
 function valorTotalPeca($idPeca){
@@ -33,6 +61,24 @@ function valorTotalPeca($idPeca){
     $totalComprado = $totalComprado->fetch();
 
     return $totalComprado['totalComprado'];
+
+}
+
+function precoMedio($idPeca){
+    require("../conexao.php");
+
+    $preco = $db->prepare("SELECT * FROM peca_estoque WHERE idpeca = :idPeca");
+    $preco->bindValue(':idPeca', $idPeca);
+    $preco->execute();
+    $precos = $preco->fetch();
+
+    if($precos['total_estoque']==0 || $precos['total_estoque']==0){
+        $precoMedio =0;
+    }else{
+        $precoMedio = $precos['valor_total']/$precos['total_estoque'];
+    }
+
+    return $precoMedio;
 
 }
 

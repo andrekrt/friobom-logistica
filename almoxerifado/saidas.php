@@ -208,15 +208,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                         <div class="form-row">
                                             <div class="form-group col-md-4 espaco ">
                                                 <label for="dataSaida"> Data Saída</label>
-                                                <input type="date"  name="dataSaida" class="form-control" id="dataSaida">
+                                                <input type="date" required  name="dataSaida" class="form-control" id="dataSaida">
                                             </div>
                                             <div class="form-group col-md-4 espaco ">
                                                 <label for="qtd">Quantidade</label>
-                                                <input type="text"  name="qtd" class="form-control" id="qtd">
+                                                <input type="text" required  name="qtd" class="form-control" id="qtd">
                                             </div>
                                             <div class="form-group col-md-4 espaco ">
                                                 <label for="peca"> Solicitante </label>
-                                                <input type="text" name="solicitante" id="solicitante" class="form-control">
+                                                <input type="text" required name="solicitante" id="solicitante" class="form-control">
                                             </div>
                                         </div>    
                                         <div class="form-row">
