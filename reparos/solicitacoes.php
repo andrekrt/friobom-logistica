@@ -188,6 +188,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 </div>
                             </div>
                         </form>
+                        <a href="solicitacoes-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                     </div>
                     <!-- fim filtro por veiculo -->
                     <div class="table-responsive">
@@ -199,6 +200,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                         if(isset($_POST['filtro']) && empty($_POST['veiculo_filtrado'])==false){
                                             $veiculo_filtrado = filter_input(INPUT_POST, 'veiculo_filtrado');
                                             $filtro = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria WHERE placarVeiculo = '$veiculo_filtrado'");
+                                            
 
                                             echo '<tr>';
                                             echo'    <th scope="col" class="text-center">ID</th>';
