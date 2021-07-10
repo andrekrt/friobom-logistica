@@ -31,6 +31,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
         <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </head>
 
     <body>
@@ -82,6 +86,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <li class="nav-item"> <a href="../motoristas/dados.php" class="nav-link"> Relatório</a> </li>
                             </ul>
                         </nav>
+                    </div>
+                    <div class="item">
+                        <a onclick="menuOcorrencias()">
+                            <img src="../assets/images/menu/ocorrencias.png" alt="">
+                        </a>
+                        <nav id="submenuOcorrencias">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/form-ocorrencias.php"> Registrar Nova Ocorrência </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/ocorrencias.php"> Listar Ocorrências </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/relatorio.php"> Ocorrências por Motorista</a> </li>
+                                
+                            </ul> 
+                        </nav> 
                     </div>
                     <div class="item">
                         <a onclick="menuDespesas()">
@@ -168,7 +185,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <div class="filtro">
                         <form  action="" class="form-inline " method="post">
                             <div class="form-row">
-                                <select name="peca" id="" class="form-control">
+                                <select name="peca" id="peca" class="form-control">
                                     <option value=""></option>
                                     <?php
                                     $filtro = $db->query("SELECT * FROM `saida_estoque` LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca ORDER BY descricao_peca ASC");
@@ -323,7 +340,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <div class="modal-dialog modal-xl" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Entrada</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Saída</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -333,10 +350,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                     <div class="form-row">
                                                         <div class="form-group col-md-1">
                                                             <label for="id" class="col-form-label">ID</label>
-                                                            <input type="text" readonly name="id" class="form-control" id="id" value="<?= $dado['id_complemento']; ?>">
+                                                            <input type="text" readonly name="id" class="form-control" id="id" value="<?= $dado['idsaida_estoque']; ?>">
                                                         </div>
                                                         <div class="form-group col-md-2 ">
-                                                            <label for="veiculo" class="col-form-label">Veículo</label>
+                                                            <label for="veiculo" class="col-form-label">Data</label>
                                                             <input type="date" name="veiculo" class="form-control" id="veiculo" value="<?= $dado['data_saida']; ?>">
                                                         </div>
                                                         <div class="form-group col-md-1">
@@ -448,9 +465,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                 </nav>
             </div>
         </div>
-        <script src="../assets/js/jquery.js"></script>
+
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('#peca').select2();
+        });
+        </script>
         
     </body>
 </html>

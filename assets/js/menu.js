@@ -78,6 +78,16 @@ function menuAlmoxerifado(){
     
 }
 
+function menuOcorrencias(){
+
+    if(document.getElementById("submenuOcorrencias").style.display == "none" || document.getElementById("submenuOcorrencias").style.display == "" ){
+        document.getElementById("submenuOcorrencias").style.display = "block";
+    }else{
+        document.getElementById("submenuOcorrencias").style.display = "none";
+    }
+    
+}
+
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
         document.getElementById('menu-lateral').style.display='block';

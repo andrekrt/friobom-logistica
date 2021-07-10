@@ -89,6 +89,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </nav>
                     </div>
                     <div class="item">
+                        <a onclick="menuOcorrencias()">
+                            <img src="../assets/images/menu/ocorrencias.png" alt="">
+                        </a>
+                        <nav id="submenuOcorrencias">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/form-ocorrencias.php"> Registrar Nova Ocorrência </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/ocorrencias.php"> Listar Ocorrências </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/relatorio.php"> Ocorrências por Motorista</a> </li>
+                                
+                            </ul> 
+                        </nav> 
+                    </div>
+                    <div class="item">
                         <a onclick="menuDespesas()">
                             <img src="../assets/images/menu/despesas.png" alt="">
                         </a>
@@ -230,7 +243,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                             </div>
                                             <div class="form-group col-md-5 espaco ">
                                                 <label for="grupo"> Grupo </label>
-                                                <select required name="grupo" id="grupo" class="form-control">
+                                                <select required  name="grupo" id="grupo" class="form-control" style="width: 100%;">
                                                     <option value=""></option>
                                                     <option value="Serviços">Serviços</option>
                                                     <option value="Borracharia">Borracharia</option>
@@ -425,7 +438,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                             </div>
                                             <div class="modal-footer">
                                             <?php if($dado['id_usuario']==$_SESSION['idUsuario']): ?>
-                                                <a href="excl uir.php?idPeca=<?=$dado['idpeca']; ?>" class="btn btn-danger"> Excluir </a>
+                                                <a href="excluir.php?idPeca=<?=$dado['idpeca']; ?>" class="btn btn-danger"> Excluir </a>
                                                 <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
                                             <?php endif; ?>
                                                 </form>

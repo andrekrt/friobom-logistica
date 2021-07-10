@@ -32,6 +32,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </head>
     <body>
         <div class="container-fluid corpo">
@@ -80,6 +84,19 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <li class="nav-item"> <a class="nav-link" href="../motoristas/motoristas.php"> Motoristas </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../motoristas/form-motorista.php"> Cadastrar Motorista </a> </li>
                                 <li class="nav-item"> <a href="../motoristas/dados.php" class="nav-link"> Relatório</a> </li>
+                            </ul> 
+                        </nav> 
+                    </div>
+                    <div class="item">
+                        <a onclick="menuOcorrencias()">
+                            <img src="../assets/images/menu/ocorrencias.png" alt="">
+                        </a>
+                        <nav id="submenuOcorrencias">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/form-ocorrencias.php"> Registrar Nova Ocorrência </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/ocorrencias.php"> Listar Ocorrências </a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/relatorio.php"> Ocorrências por Motorista</a> </li>
+                                
                             </ul> 
                         </nav> 
                     </div>
@@ -171,7 +188,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         <form action="" class="form-inline" method="post">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <select name="veiculo_filtrado" id="" class="form-control">
+                                    <select name="veiculo_filtrado" id="veiculo_filtrado" class="form-control">
                                         <option value=""></option>
                                         <?php
                                             $sql = $db->query("SELECT placarVeiculo FROM solicitacoes GROUP BY placarVeiculo ORDER BY placarVeiculo ASC");
@@ -522,8 +539,12 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             </div>
         </div>
 
-        <script src="../assets/js/jquery.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#veiculo_filtrado').select2();
+            });
+        </script>
     </body>
 </html>
