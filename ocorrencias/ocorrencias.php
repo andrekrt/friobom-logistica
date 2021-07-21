@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 99) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario']==4) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $pagina = (isset($_GET['pagina'])) ? $_GET['pagina'] : 1;
@@ -267,7 +267,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['situacao'];?>  </td>
                                     <td scope="col" class="text-center text-nowrap"> <?=$dado['nome_usuario'];?>  </td>
                                     <td scope="col" class="text-center text-nowrap"> 
+                                    <?php if($_SESSION['tipoUsuario']==4): ?>
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?= $dado['idocorrencia']; ?>" data-whatever="@mdo" value="<?= $dado['idocorrencia']; ?>" name="idocorrencia">Visualisar</button>
+                                    <?php endif; ?>
                                     </td>
                                 </tr>
                                 <!-- INICIO MODAL -->
