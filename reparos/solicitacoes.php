@@ -96,7 +96,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <li class="nav-item"> <a class="nav-link" href="../ocorrencias/form-ocorrencias.php"> Registrar Nova Ocorrência </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../ocorrencias/ocorrencias.php"> Listar Ocorrências </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../ocorrencias/relatorio.php"> Ocorrências por Motorista</a> </li>
-                                
                             </ul> 
                         </nav> 
                     </div>
@@ -132,19 +131,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Valores Gastos</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/local-reparo.php">Local de Reparo</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/pecas.php">Peças/Serviços</a> </li>
                             </ul> 
                         </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuCarregamentos()">
-                            <img src="../assets/images/menu/carregamentos.png" alt="">
-                        </a>
-                        <nav id="submenuCarregamentos">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
-                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
-                            </ul>
-                        </nav>
                     </div>
                     <div class="item">
                         <a onclick="menuAlmoxerifado()">
@@ -210,280 +200,219 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                     <!-- fim filtro por veiculo -->
                     <div class="table-responsive">
                         <table class="table table-striped table-dark table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center text-nowrap">ID</th>
+                                    <th scope="col" class="text-center text-nowrap">Data Solicitação</th>
+                                    <th scope="col" class="text-center text-nowrap">Veículo</th>
+                                    <th scope="col" class="text-center text-nowrap">Problema</th>
+                                    <th scope="col" class="text-center text-nowrap">Local Reparo</th>
+                                    <th scope="col" class="text-center text-nowrap">Tipos Peça/Serviço</th>
+                                    <th scope="col" class="text-center text-nowrap">Qtd</th>
+                                    <th scope="col" class="text-center text-nowrap">Valor Total</th>
+                                    <th scope="col" class="text-center text-nowrap">Situação</th>
+                                    <th scope="col" class="text-center text-nowrap">Solicitante</th>
+                                    <th scope="col" class="text-center text-nowrap">Ações</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <?php
+                                
+                                if(isset($_POST['filtro']) && !empty($_POST['veiculo_filtrado'])){
 
-                                    if($tipoUsuario==3 || $tipoUsuario == 99){
-                                        if(isset($_POST['filtro']) && empty($_POST['veiculo_filtrado'])==false){
-                                            $veiculo_filtrado = filter_input(INPUT_POST, 'veiculo_filtrado');
-                                            $filtro = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria WHERE placarVeiculo = '$veiculo_filtrado'");
-                                            
+                                    $veiculo = filter_input(INPUT_POST, 'veiculo_filtrado');
+                                    $sql = $db->prepare("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE placa = :placa GROUP BY problema, placa");
+                                    $sql->bindValue(':placa', $veiculo);
+                                    $sql->execute();
 
-                                            echo '<tr>';
-                                            echo'    <th scope="col" class="text-center">ID</th>';
-                                            echo'    <th scope="col" class="text-center">Data</th>';
-                                            echo'    <th scope="col" class="text-center"> Serviço/Peça </th>';
-                                            echo'    <th scope="col" class="text-center"> Categoria </th>';
-                                            echo'    <th scope="col" class="text-center"> Placa </th>';
-                                            echo'    <th scope="col" class="text-center"> Imagem </th>';
-                                            echo'    <th scope="col" class="text-center"> Local Reparo </th>';
-                                            echo '  <th scope="col" class="text-center">Situação</th>';
-                                            echo '  <th scope="col" class="text-center">Observação</th>';
-                                            echo '  <th scope="col" class="text-center">Ações</th>';
-                                            echo '</tr>';
-                                            
-                                            $totalSolic = $filtro->rowCount();
-                                            $qtdePagina = 8;
-                                            $numPaginas = ceil($totalSolic/$qtdePagina);
-                                            $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria WHERE placarVeiculo='$veiculo_filtrado' LIMIT $pagInicial, $qtdePagina ");
-                                            $totalSoli = $resul->rowCount();
-                                            
-                                            if($resul->rowCount()>0){
-                                                $dados = $resul->fetchAll();
-                                                
-                                                foreach($dados as $dado){
-                                                    $id = $dado['id'];
-                                                    echo '<tr>';
-                                                    echo '<td class="text-center">' . $id . '</td>';
-                                                    echo '<td class="text-center">' . date("d/m/Y", strtotime($dado['dataAtual'])) . '</td>';
-                                                    echo '<td class="text-center">' . $dado['servico'] . '</>';
-                                                    echo '<td class="text-center">' . $dado['nome_categoria'] . '</>';
-                                                    echo '<td class="text-center">' . $dado['placarVeiculo'] . '</td>';
-                                                    $nomeImg = $dado['imagem'];
-                                                    $linkImg = "uploads/$nomeImg";
-                                                    if($nomeImg==""){
-                                                        $anexo = "<td class='text-center'>Sem Anexo   </td>";
-                                                    }else{
-                                                        $anexo = "<td class='text-center'> <a href='$linkImg' target='_blank'> Anexo </a>  </td>";
-                                                    }
-                                                    echo $anexo;
-                                                    echo '<td class="text-center">' . $dado['localReparo'] . '</td>';
-                                                    echo '<td class="text-center">' .$dado['statusSolic'] .'</td>';
-                                                    echo '<td class="text-center">' .$dado['obs'] .'</td>';
-                                                    $statusSolic = $dado['statusSolic'];
-                                                    echo "<td class='text-center'>";
-                                                    
-                                                    echo "
-                                                    <div class='dropdown'>
-                                                        <button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                                            Opções
-                                                        </button>
-                                                        <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>";
-                                                            if($statusSolic=="Aprovado"){
-                                                                echo "<a class='dropdown-item' href='gerar-pdf.php?id=$id'> Imprimir </a> ";
-                                                                
-                                                            }
-                                                        echo"<a class='dropdown-item' href='nova-peca.php?id=$id'>Adicionar Nova Peça/Serviço</a>
+                                    $total = $sql->rowCount();
+                                    $qtdPorPagina = 10;
+                                    $numPaginas = ceil($total / $qtdPorPagina);
+                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
+
+                                   
+                                }else{
+
+                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa");
+
+                                    $total = $sql->rowCount();
+                                    $qtdPorPagina = 10;
+                                    $numPaginas = ceil($total / $qtdPorPagina);
+                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
+
+                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa LIMIT $paginaInicial,$qtdPorPagina");
+                                    
+                                }
+
+                                $dados = $sql->fetchAll();
+                                foreach($dados as $dado):
+
+                                ?>
+                                <tr id="<?=$dado['token']?>">
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['token']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?= date("d/m/Y",strtotime( $dado['data_atual'])); ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['placa']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['problema']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['local_reparo']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?= str_replace(",", "<br>",$dado['peca'] ) ; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?= str_replace(".", ",",str_replace(",", "<br>",$dado['qtd']))  ; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?="R$ ". str_replace(".", ",",str_replace(',','<br>',$dado['vlTotal']) )  ; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['situacao']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['nome_usuario']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle" >
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?=$dado['token']; ?>" data-whatever="@mdo" value="<?=$dado['token']; ?>" name="token"> Visualisar </button>       
+                                    </td>
+                                </tr>
+                                <!-- INICIO MODAL Editar-->
+                                <div class="modal fade" id="modal<?=$dado['token'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Peças/Serviços</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="atualiza-new.php" method="post">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-1">
+                                                            <label for="token" class="col-form-label">ID</label>
+                                                            <input type="text" readonly class="form-control" name="token" id="token" value="<?=$dado['token']?>">
                                                         </div>
-                                                    </div>";
-                                                        
-                                                        echo "  ";
-                                                    echo "</td>";
-                                                }
-                                            }
+                                                        <div class="form-group col-md-2">
+                                                            <label for="placa" class="col-form-label">Placa</label>
+                                                            <select name="veiculo" required id="veiculo" class="form-control">
+                                                                <option value="<?=$dado['placa']?>"><?=$dado['placa']?></option>
+                                                                <option value="Estoque" >Estoque</option>
+                                                                <?php
 
-                                        }else{
+                                                                $veiculos = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
+                                                                if ($veiculos->rowCount() > 0) {
+                                                                    $dados = $sql->fetchAll();
+                                                                    foreach ($veiculos as $veiculo) {
+                                                                        echo "<option value='$veiculo[placa_veiculo]'>" . $veiculo['placa_veiculo'] . "</option>";
+                                                                    }
+                                                                }
 
-                                            $sql = $db->query("SELECT * FROM solicitacoes ORDER BY dataAtual DESC");
-                                            echo '<tr>';
-                                            echo'    <th scope="col" class="text-center">ID</th>';
-                                            echo'    <th scope="col" class="text-center">Data</th>';
-                                            echo'    <th scope="col" class="text-center"> Serviço/Peça </th>';
-                                            echo'    <th scope="col" class="text-center"> Categoria </th>';
-                                            echo'    <th scope="col" class="text-center"> Placa </th>';
-                                            echo'    <th scope="col" class="text-center"> Imagem </th>';
-                                            echo'    <th scope="col" class="text-center"> Local Reparo </th>';
-                                            echo '   <th scope="col" class="text-center">Situação</th>';
-                                            echo '   <th scope="col" class="text-center">Observação</th>';
-                                            echo '   <th scope="col" class="text-center">Ações</th>';
-                                            echo '</tr>';
-                                            $totalSolic = $sql->rowCount();
-                                            $qtdePagina = 20;
-                                            $numPaginas = ceil($totalSolic/$qtdePagina);
-                                            $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT solicitacoes.*, categoria_peca.* from solicitacoes LEFT JOIN categoria_peca ON solicitacoes.categoria_idcategoria = categoria_peca.idcategoria ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina ");
-                                            $totalSoli = $resul->rowCount();
-                                            if($resul->rowCount() > 0){
-                                                
-                                                $dados = $resul->fetchAll();
-                        
-                                                foreach ($dados as $dado) {
-                                                    $id = $dado['id'];
-                                                    echo '<tr>';
-                                                    echo '<td class="text-center">' . $id . '</td>';
-                                                    echo '<td class="text-center">' . date("d/m/Y", strtotime($dado['dataAtual'])) . '</td>';
-                                                    echo '<td class="text-center">' . $dado['servico'] . '</>';
-                                                    echo '<td class="text-center">' . $dado['nome_categoria'] . '</>';
-                                                    echo '<td class="text-center">' . $dado['placarVeiculo'] . '</td>';
-                                                    $nomeImg = $dado['imagem'];
-                                                    $linkImg = "uploads/$nomeImg";
-                                                    if($nomeImg==""){
-                                                        $anexo = "<td class='text-center'>Sem Anexo   </td>";
-                                                    }else{
-                                                        $anexo = "<td class='text-center'> <a href='$linkImg' target='_blank'> Anexo </a>  </td>";
-                                                    }
-                                                    echo $anexo;
-                                                    echo '<td class="text-center">' . $dado['localReparo'] . '</td>';
-                                                    echo '<td class="text-center">' .$dado['statusSolic'] .'</td>';
-                                                    echo '<td class="text-center">' .$dado['obs'] .'</td>';
-                                                    $statusSolic = $dado['statusSolic'];
-                                                    echo "<td class='text-center'>";
-                                                    
-                                                    echo "
-                                                    <div class='dropdown'>
-                                                        <button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                                            Opções
-                                                        </button>
-                                                        <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>";
-                                                            if($statusSolic=="Aprovado"){
-                                                                echo "<a class='dropdown-item' href='gerar-pdf.php?id=$id'> Imprimir </a> ";
-                                                                
-                                                            }
-                                                        echo"<a class='dropdown-item' href='nova-peca.php?id=$id'>Adicionar Nova Peça/Serviço</a>
+                                                                ?>
+                                                            </select>
                                                         </div>
-                                                    </div>";
-                                                        
-                                                        echo "  ";
-                                                    echo "</td>";
-                                                        
+                                                        <div class="form-group col-md-3">
+                                                            <label class="col-form-label" for="descricao">Descrição do Problema</label>
+                                                            <input type="text" required value="<?=$dado['problema']?>" name="descricao" class="form-control" id="descricao">
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label class="col-form-label" for="localReparo">Local Reparo</label>
+                                                            <select name="localReparo" class="form-control" id="localReparo">
+                                                                <option value="<?=$dado['local_reparo']?>"><?=$dado['local_reparo']?></option>
+                                                                <?php
+
+                                                                $sql = $db->query("SELECT * FROM local_reparo");
+                                                                $categorias = $sql->fetchAll();
+                                                                foreach ($categorias as $categoria):
+                                                                ?>
+                                                                    <option value="<?=$categoria['nome_local'] ?>"><?=$categoria['nome_local'] ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php 
+                                                $solicitacoes = $db->prepare("SELECT * FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token ");
+                                                $solicitacoes->bindValue(':token', $dado['token']);
+                                                $solicitacoes->execute();
+                                                $solicitacoes=$solicitacoes->fetchAll();
+                                                foreach($solicitacoes as $solicitacao):
+                                                ?>
+                                                    <div class="form-row">
+                                                        <input type="hidden" name="id[]" value="<?=$solicitacao['id']?>">
+                                                        <div class="form-group col-md-4">
+                                                            <label for="peca" class="col-form-label">Peça/Serviço</label>
+                                                            <select name="peca[]" class="form-control" id="peca">
+                                                                <option value="<?=$solicitacao['peca_servico']?>"> <?=$solicitacao['peca_servico']?> - <?=$solicitacao['descricao']?> </option>
+                                                                <?php
+
+                                                                $sql = $db->query("SELECT * FROM peca_reparo");
+                                                                $pecas = $sql->fetchAll();
+                                                                foreach ($pecas as $peca) {
+
+                                                                ?>
+                                                                    <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option>
+                                                                <?php
+
+                                                                }
+
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-1">
+                                                            <label for="qtd" class="col-form-label">Qtd</label>
+                                                            <input type="text" class="form-control" name="qtd[]" id="qtd" value="<?=$solicitacao['qtd']?>">
+                                                        </div>
+                                                        <div class="form-group col-md-1">
+                                                            <label for="medida" class="col-form-label">Medida</label>
+                                                            <input type="text" readonly class="form-control" id="medida" name="medida" value="<?=$solicitacao['un_medida']?>">
+                                                        </div>
+                                                        <div class="form-group col-md-1">
+                                                            <label for="vlUnit" class="col-form-label">Valor Unit.</label>
+                                                            <input type="text" class="form-control" name="vlUnit[]" id="vlUnit" value="<?=$solicitacao['vl_unit']?>">
+                                                        </div>
+                                                        <div class="form-group col-md-1">
+                                                            <label for="vlTotal" class="col-form-label">Valor Total</label>
+                                                            <input type="text" readonly class="form-control" name="vlTotal[]" id="vlTotal" value="<?=$solicitacao['vl_total']?>">
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label for="anexo" class="col-form-label">Anexos</label>
+                                                            <?php if(empty($solicitacao['imagem'])==false): ?>
+                                                                <a target="_blank" href="uploads/<?=$solicitacao['imagem']?>" class="form-control" >Anexo</a>
+                                                            <?php else: ?>
+                                                                <input type="text" class="form-control" value="Sem Anexo">
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                                endforeach;
+                                                if($tipoUsuario==4):
+                                                ?>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-2">
+                                                        <label for="situacao" class="col-form-label">Situação</label>
+                                                        <select class="form-control" name="situacao" id="situacao">
+                                                            <option value="<?=$dado['situacao']?>"><?=$dado['situacao']?></option>
+                                                            <option value="Reprovado">Reprovado</option>
+                                                            <option value="Aprovado">Aprovado</option>
+                                                            <option value="Em análise"> Em Análise</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-10">
+                                                        <label for="obs" class="col-form-label">Observações</label>
+                                                        <input type="text" id="obs" name="obs" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                endif;
+                                                ?>
                                                     
-                                                }
-                                            }
-                                        } 
-                                    }elseif($tipoUsuario==4){
-                                        // iniciando filtragem
-                                        if(isset($_POST['filtro']) && empty($_POST['veiculo_filtrado'])==false ){
-                                            $veiculo_filtrado = filter_input(INPUT_POST, 'veiculo_filtrado');
-                                            $filtro = $db->query("SELECT * FROM solicitacoes LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idusuarios WHERE solicitacoes.idSolic = usuarios.idusuarios AND placarVeiculo = '$veiculo_filtrado' ORDER BY dataAtual DESC");
-
-                                            echo '<tr>';
-                                            echo '   <th scope="col" class="text-center text-nowrap">ID</th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap">Data</th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Serviço/Peça </th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Decrição do Problema </th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Placa </th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Imagem </th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Local de Reparo</th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Observação</th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Status</th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Ações</th>';
-                                            echo '</tr>';
-
-                                            $totalSolic = $filtro->rowCount();
-                                            $qtdePagina = 30;
-                                            $numPaginas = ceil($totalSolic/$qtdePagina);
-                                            $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT * FROM solicitacoes LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idusuarios WHERE placarVeiculo = '$veiculo_filtrado' ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina");
-                                            $totalSoli = $resul->rowCount();
-                                            
-                                            if($resul->rowCount()>0){
-                                                $dados = $resul->fetchAll();
-                                                foreach($dados as $dado){
-                                                    $id = $dado['id'];
-                                                    echo '<tr>';
-                                                    echo '<td>' .$id. '</td>';
-                                                    echo '<td>' .date("d/m/Y", strtotime($dado['dataAtual'])). '</td>';
-                                                    echo '<td>' .$dado['servico']. '</td>';
-                                                    echo '<td>'.$dado['descricao'].'</td>';
-                                                    echo '<td>' .$dado['placarVeiculo']. '</td>';
-                                                    $nomeImg = $dado['imagem'];
-                                                    $linkImg = "uploads/$nomeImg";
-                                                    if($nomeImg==""){
-                                                        $anexo = "<td class='text-center'>Sem Anexo   </td>";
-                                                    }else{
-                                                        $anexo = "<td class='text-center'> <a href='$linkImg' target='_blank'> Anexo </a>  </td>";
-                                                    }
-                                                    echo $anexo;
-                                                    echo '<td>' .$dado['localReparo']. '</td>';
-                                                    echo '<td>' .$dado['obs']. '</td>';
-                                                    $status = $dado['statusSolic'];
-                                                    echo '<td>'.$status.'</td>';
-                                                    echo "<td>  
-                                                            
-                                                            <div class='dropdown'>
-                                                                <button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                                                Opções
-                                                                </button>
-                                                                <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>";
-                                                                    if($status !="Aprovado"){
-                                                                        echo "<a class='dropdown-item' href='analisar.php?idSolic=$id'> Analisar </a>";
-                                                                    }
-                                                                    
-                                                                    echo "<a class='dropdown-item' href='gerar-pdf.php?id=$id'> Imprimir </a>
-                                                                    <a href='editar.php?id=$id' class='dropdown-item'> Excluir </a>
-                                                                </div>
-                                                                </div>
-                                                        </td>";
-                                                }
-                                            }
-                                        }else{
-                                            
-                                        
-                                            $sql = $db->query("SELECT * FROM `solicitacoes` LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idUsuarios ORDER BY dataAtual DESC ");
-                                            echo '<tr>';
-                                            echo '   <th scope="col" class="text-center text-nowrap">ID</th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap">Data</th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Serviço/Peça </th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Decrição do Problema </th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Placa </th>';
-                                            echo'    <th scope="col" class="text-center text-nowrap"> Imagem </th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Local de Reparo</th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Observação</th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Status</th>';
-                                            echo    '<th scope="col" class="text-center text-nowrap">Ações</th>';
-                                            echo '</tr>';
-                                            $totalSolic = $sql->rowCount();
-                                            $qtdePagina = 8;
-                                            $numPaginas = ceil($totalSolic/$qtdePagina);
-                                            $pagInicial = ($qtdePagina*$pagina)-$qtdePagina;
-                                            $resul = $db->query("SELECT * FROM `solicitacoes` LEFT JOIN usuarios ON solicitacoes.idSolic = usuarios.idUsuarios ORDER BY dataAtual DESC LIMIT $pagInicial, $qtdePagina");
-                                            $totalSoli = $resul->rowCount();
-                                            if($resul->rowCount()>0){
-                                                                            
-                                                $dados = $resul->fetchAll();
-                                                foreach($dados as $dado){
-                                                    $id = $dado['id'];
-                                                    echo '<tr>';
-                                                    echo '<td>' .$id. '</td>';
-                                                    echo '<td>' .date("d/m/Y", strtotime($dado['dataAtual'])). '</td>';
-                                                    echo '<td>' .$dado['servico']. '</td>';
-                                                    echo '<td>'.$dado['descricao'].'</td>';
-                                                    echo '<td>' .$dado['placarVeiculo']. '</td>';
-                                                    $nomeImg = $dado['imagem'];
-                                                    $linkImg = "uploads/$nomeImg";
-                                                    if($nomeImg==""){
-                                                        $anexo = "<td class='text-center'>Sem Anexo   </td>";
-                                                    }else{
-                                                        $anexo = "<td class='text-center'> <a href='$linkImg' target='_blank'> Anexo </a>  </td>";
-                                                    }
-                                                    echo $anexo;
-                                                    echo '<td>' .$dado['localReparo']. '</td>';
-                                                    echo '<td>' .$dado['obs']. '</td>';
-                                                    $status = $dado['statusSolic'];
-                                                    echo '<td>'.$status.'</td>';
-                                                    echo "<td>  
-                                                            
-                                                            <div class='dropdown'>
-                                                                <button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                                                Opções
-                                                                </button>
-                                                                <div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>";
-                                                                    if($status !="Aprovado"){
-                                                                        echo "<a class='dropdown-item' href='analisar.php?idSolic=$id'> Analisar </a>";
-                                                                    }
-                                                                    
-                                                                    echo "<a class='dropdown-item' href='gerar-pdf.php?id=$id'> Imprimir </a>
-                                                                    <a href='editar.php?id=$id' class='dropdown-item'> Excluir </a>
-                                                                </div>
-                                                                </div>
-                                                        </td>";
-                                                }
-
-                                            }
-                                        }
-                                    }
-
+                                            </div>
+                                            <div class="modal-footer">
+                                                <?php if($dado['situacao']!="Aprovado"): ?>
+                                                    <a href="excluir.php?token=<?=$dado['token']; ?>" class="btn btn-danger" onclick="return confirm('Confirmar Exclusão?');"> Excluir </a>
+                                                    <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
+                                                <?php endif; ?>
+                                                </form>
+                                                <?php if($dado['situacao']!="Aprovado" && ($tipoUsuario==99 || $tipoUsuario==3))  : ?>
+                                                    <a class="btn btn-success" href="solicitacao-adicional.php?token=<?=$dado['token']?>" >Adiconar Peças/Serviço</a>
+                                                <?php endif; ?>
+                                                <?php if($dado['situacao']=='Aprovado'): ?>
+                                                    <a class="btn btn-secondary" href="gerar-pdf.php?token=<?=$dado['token']?>">Imprimir</a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- FIM MODAL --> 
+                                <?php    
+                                endforeach;                                
                                 ?>
                             </tbody>
                         </table>

@@ -132,19 +132,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Valores Gastos</a> </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuCarregamentos()">
-                            <img src="../assets/images/menu/carregamentos.png" alt="">
-                        </a>
-                        <nav id="submenuCarregamentos">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
-                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
-                            </ul>
-                        </nav>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/local-reparo.php">Local de Reparo</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/pecas.php">Peças/Serviços</a> </li>
+                            </ul> 
+                        </nav> 
                     </div>
                     <div class="item">
                         <a onclick="menuAlmoxerifado()">
@@ -354,7 +345,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                         </div>
                                                         <div class="form-group col-md-2 ">
                                                             <label for="veiculo" class="col-form-label">Data</label>
-                                                            <input type="date" name="veiculo" class="form-control" id="veiculo" value="<?= $dado['data_saida']; ?>">
+                                                            <input type="date" name="data" class="form-control" id="data" value="<?= $dado['data_saida']; ?>">
                                                         </div>
                                                         <div class="form-group col-md-1">
                                                             <label for="qtd"  class="col-form-label">Quantidade</label>

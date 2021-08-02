@@ -18,7 +18,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
     <body>
         <?php
         
-            if($tipoUsuario==99){
+            if($tipoUsuario==99 || $tipoUsuario==4){
 
                 $arquivo = 'ocorrencias-por-motorista.xls';
 

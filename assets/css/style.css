@@ -367,6 +367,11 @@ img.icone{
     margin: 5px;
 }
 
+/* icones ações */
+.icone-acoes {
+    height: 50px;
+}
+
 
 @media(max-width:768px){
     .area-indice-val{

@@ -4,48 +4,31 @@ require_once __DIR__ . '/vendor/autoload.php';
 require("../conexao.php");
 
 $data = date("d/m/y");
-$idReparo = filter_input(INPUT_GET,"id");
+$token = filter_input(INPUT_GET,"token");
 
-$sql = $db->query("SELECT * FROM solicitacoes WHERE id = $idReparo");
-if($sql){
-    $dados=$sql->fetchAll();
-    foreach($dados as $dado){
-        $dataSolic = date("d/m/Y", strtotime($dado['dataAtual']));
-        $dataAprovacao = date("d/m/Y", strtotime($dado['dataAprov']));
-        $servico = $dado['servico'];
-        $descricao = $dado['descricao'];
-        $veiculo = $dado['placarVeiculo'];
-        $situacao = $dado['statusSolic'];
-        $obs = $dado['obs'];
-        $valor = $dado['valor'];
-        $local = $dado['localReparo'];
-        $numSolic = $dado['id'];
-    }
-}
-$select = $db->query("SELECT * FROM solicitacoes02 WHERE idSocPrinc = $idReparo ");
-if($select->rowCount()>0){
-    $dados = $select->fetch();
-    $valorFinal = str_replace(",",".",$dados['valor']);
-    $valorInicial = str_replace(",",".", $valor);
+$sql = $db->prepare("SELECT id, token, data_atual, placa, problema, local_reparo, imagem as anexo, GROUP_CONCAT('- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, solicitacoes_new.situacao, usuario, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token GROUP BY problema, placa");
+$sql->bindValue(':token',$token);
+$sql->execute();
 
-    $diferenca = str_replace(".",",",$valorFinal+$valorInicial) ;
-    $msg = "
-        <table border='1' style='width:100%'>
-            <thead>
-                <tr>
-                    <td> <span style='font-weight:bold'> Nova Peça/Serviço: </span>  $dados[servico]  </td>
-                    <td> <span style='font-weight:bold'> Nova Peça/Serviço: </span>  $dados[descricao] </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td> <span style='font-weight:bold'> Valor Adicional: </span> R$ $dados[valor] </td>
-                    <td> <span style='font-weight:bold'> Valor Total: </span> R$ $diferenca </td>
-                </tr>
-            </tbody>
-        </table><br><br>
-    ";
+$dados=$sql->fetchAll();
+foreach($dados as $dado){
+    $dataSolic = date("d/m/Y", strtotime($dado['data_atual']));
+    $dataAprovacao = date("d/m/Y", strtotime($dado['data_aprovacao']));
+    $descricao = $dado['problema'];
+    $veiculo = $dado['placa'];
+    $situacao = $dado['situacao'];
+    $obs = $dado['obs'];
+    $local = $dado['local_reparo'];
+    $peca = str_replace(",","<br>", $dado['peca']);
+    $qtd = str_replace(".",",",str_replace(",","<br>",$dado['qtd']))  ;
+    $vlUnit = str_replace(".",",",str_replace(",","<br>",$dado['vlUnit']))  ;
+    $vlTotal = str_replace(".",",", str_replace(",","<br>", $dado['vlTotal'])) ;
+    $vlFinal = str_replace(".",",",$dado['vlFinal']) ;
+ ?>
+
+<?php
 }
+
 
 $mpdf = new Mpdf();
 $mpdf->WriteHTML("
@@ -92,23 +75,30 @@ $mpdf->WriteHTML("
             </table><br>
             <table style='width:100%' border='1'>
                 <tr>
-                    <td> <span style='font-weight:bold'> Solicitação Nº: </span>  $numSolic</td>
+                    <td> <span style='font-weight:bold'> Solicitação Nº: </span>  $token</td>
                     <td> <span style='font-weight:bold'> Data da Solicitação: </span>  $dataSolic</td>
                     <td> <span style='font-weight:bold'> Data da Aprovação: </span>  $dataAprovacao</td>
                     <td  style='text-align:center'> <span style='font-weight:bold'> Veículo: </span> $veiculo </td>
                 </tr>
                 <tr>
-                    <td> <span style='font-weight:bold'> Peça(Serviço): </span>  $servico</td>
-                    <td> <span style='font-weight:bold'> Descrição: </span> $descricao </td>
-                    <td colspan='2'> <span style='font-weight:bold'> Valor(Custo): </span> R$ $valor </td>
+                    <td> <span style='font-weight:bold'> Peças/Serviços: </span>  </td>
+                    <td> <span style='font-weight:bold'> Qtd: </span>  </td>
+                    <td > <span style='font-weight:bold'> Valor(Unit.): </span>  </td>
+                    <td > <span style='font-weight:bold'> Valor Total: </span>  </td>
                 </tr>
                 <tr>
-                    <td> <span style='font-weight:bold'> Status OS: </span>  $situacao</td>
-                    <td> <span style='font-weight:bold'> Observações: </span> $obs </td>
-                    <td colspan='2'> <span style='font-weight:bold'> Local do Reparo </span>  $local </td>
+                    <td> $peca </td>
+                    <td> $qtd </td>
+                    <td>$vlUnit</td>
+                    <td>$vlTotal</td>
+                </tr>
+                <tr>
+                    <td> <span style='font-weight:bold'> Problema: </span>  $descricao</td>
+                    <td > <span style='font-weight:bold'> Local do Reparo: </span>  $local </td>
+                    <td > <span style='font-weight:bold'> Obs.: </span>  $obs </td>
+                    <td > <span style='font-weight:bold'> Valor Final </span> R$ $vlFinal </td>
                 </tr>
             </table><br>
-            $msg
             
             <div style='width:100%; text-align:center'>
                 <img src='../assets/images/assinatura.png' style='height:100px; margin-bottom:-65px'>

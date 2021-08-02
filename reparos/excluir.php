@@ -3,13 +3,14 @@
 session_start();
 require("../conexao.php");
 
-$idSolicitacao = filter_input(INPUT_GET, 'id');
+$token = filter_input(INPUT_GET, 'token');
 
-if(isset($idSolicitacao) && empty($idSolicitacao) == false ){
+if(isset($token) && empty($token) == false ){
     $id=$_SESSION['idUsuario'];  
     
-    $sql = $db->query("DELETE FROM solicitacoes WHERE id = '$idSolicitacao'");
-    if($sql){
+    $sql = $db->prepare("DELETE FROM solicitacoes_new WHERE token = :token");
+    $sql->bindValue(':token',$token);
+    if($sql->execute()){
         echo "<script>alert('Excluído com Sucesso!');</script>";
         echo "<script>window.location.href='solicitacoes.php'</script>";
     }else{

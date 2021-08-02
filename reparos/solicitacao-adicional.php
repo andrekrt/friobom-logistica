@@ -1,41 +1,34 @@
-<?php 
+<?php
 
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] ==4){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 99){
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $idUsuario = $_SESSION['idUsuario'];
-    $idSolicitacao = filter_input(INPUT_GET, "idSolic");
+    $tipoUsuario = $_SESSION['tipoUsuario'];
 
-    $sql = $db->query("SELECT * FROM `solicitacoes` INNER JOIN usuarios where solicitacoes.id = $idSolicitacao" );
+    $token = filter_input(INPUT_GET, 'token');
+    $sql = $db->prepare("SELECT * FROM solicitacoes_new WHERE token = :token");
+    $sql->bindValue(':token',$token);
+    $sql->execute();
+    $dados = $sql->fetchAll();
 
-    if($sql->rowCount()>0){
-        $dado=$sql->fetch();
-
-        $servico = $dado['servico'];
-        $descricao = $dado['descricao'];
-        $placa = $dado['placarVeiculo'];
-        $statusAtual = $dado['statusSolic'];
-        $obs = $dado['obs']?$dado['obs']:"";
-        $valor = $dado['valor']?$dado['valor']:"";
-        $local = $dado['localReparo']?$dado['localReparo']:"";
-        
-    }
-    
 }else{
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='index.php'</script>";
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Validação</title>
+        <title>Nova Peça/ Serviço</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="../assets/css/style.css">
         <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
         <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
@@ -45,6 +38,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </head>
     <body>
         <div class="container-fluid corpo">
@@ -96,19 +93,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </nav> 
                     </div>
                     <div class="item">
-                        <a onclick="menuOcorrencias()">
-                            <img src="../assets/images/menu/ocorrencias.png" alt="">
-                        </a>
-                        <nav id="submenuOcorrencias">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/form-ocorrencias.php"> Registrar Nova Ocorrência </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/ocorrencias.php"> Listar Ocorrências </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="../ocorrencias/relatorio.php"> Ocorrências por Motorista</a> </li>
-                                
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
                         <a onclick="menuDespesas()">
                             <img src="../assets/images/menu/despesas.png" alt="">
                         </a>
@@ -140,6 +124,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Valores Gastos</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/local-reparo.php">Local de Reparo</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/pecas.php">Peças/Serviços</a> </li>
                             </ul> 
                         </nav> 
                     </div>
@@ -158,97 +144,84 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         <img src="../assets/images/icones/reparos.png" alt="">
                    </div>
                    <div class="title">
-                        <h2>Análise </h2>
+                        <h2>Solicitação Adicional</h2>
                    </div>
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
-                    <form action="resp-analise.php" class="despesas" method="post">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="hidden" readonly name="idSolic" class="form-control" value="<?php echo $idSolicitacao; ?>">
+                    <form action="add-solicitacao-adicional.php" class="despesas" method="post">
+                        <div id="formulario">
+                            <input type="hidden" name="token" value="<?=$dados[0]['token']?>">
+                            <div class="form-row">
+                                <div class="form-group col-md-3 espaco">
+                                    <label for="veiculo">Placa Veículo</label>
+                                    <input type="text" readonly name="veiculo" class="form-control" value="<?= $dados[0]['placa'] ?>">
+                                </div>
+                                <div class="form-group col-md-4 espaco">
+                                    <label for="problema">Problema</label>
+                                    <input type="text" readonly name="problema" id="problema" class="form-control" value="<?=$dados[0]['problema'] ?>">
+                                </div>
+                                <div class="form-group col-md-3 espaco">
+                                    <label for="localReparo">Local Reparo</label>
+                                    <input type="text" id="localReparo" readonly name="localReparo" class="form-control" value="<?= $dados[0]['local_reparo'] ?>">
+                                </div>
                             </div>
-                            <div class="form-group espaco col-md-4">
-                                <label for="servico">Serviço / Peça</label>
-                                <input type="text" readonly name="servico" class="form-control" value="<?php echo $servico; ?>">
-                            </div>
-                            <div class="form-group espaco col-md-4">
-                                <label for="servico">Descrição</label>
-                                <input type="text" readonly name="descricao" class="form-control" value="<?php echo $descricao; ?>">
-                            </div>
-                            <div class="form-group espaco col-md-4">
-                                <label for="servico">Placa</label>
-                                <input type="text" readonly name="placa" class="form-control" value="<?php echo $placa; ?>">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            
-                            <div class="form-group espaco col-md-4">
-                                <label for="servico">Valor Geral do Serviço/Peça</label>
-                                <input type="text" id="valor" required name="valor" class="form-control" value="<?php echo $valor; ?>">
-                            </div>
-                            <div class="form-group espaco col-md-4">
-                                <label for="local">Local do Serviço</label>
-                                <input type="text" name="local" class="form-control" value="<?php echo $local; ?>">
-                            </div>
-                            <div class="form-group espaco col-md-4">
-                                <label for="servico">Status da Solicitação</label>
-                                <select name="status" id="" class="form-control">
-                                    <option value="<?php $statusAtual ?>"> <?php echo $statusAtual; ?> </option>
-                                    <option value="Orçamento">Reprovado</option>
-                                    <option value="Aprovado"> Aprovado </option>
-                                    <option value="Em Análise">Em Análise</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group espaco col-md-4">
-                                <label for="obs">Observações</label>
-                                <textarea name="obs" id=""  rows="5" class="form-control"> </textarea>
-                            </div>
-                        </div>
-                         <?php
-                        $busca = $db->query("SELECT * FROM solicitacoes02 WHERE idSocPrinc = $idSolicitacao ");
-                        if($busca->rowCount()>0){
-                            $dados = $busca->fetch();
-                            $servicoAdcional = $dados['servico'];
-                            $descricao = $dados['descricao'];
-                            
-                        ?>
-                        <div class="form-row">
-                            <div class="form-group col-md-4 espaco">
-                                <label for="">Serviço/Peça Adicional</label>
-                                <input type="text" readonly required name="servicoAdicional" class="form-control"  value="<?php echo $servicoAdcional ?>">
-                            </div>
-                            <div class="form-group col-md-4 espaco">
-                                <label for="">Descricao</label>
-                                <input type="text" readonly name="descricaoAdicional" class="form-control" value="<?php echo $descricao ?>">
-                            </div>
-                            <div class="form-group col-md-4 espaco">
-                                <label for="">Valor</label>
-                                <input type="text" id="valorNovo" required name="valorNovo" id="" class="form-control">
-                            </div>
-                        </div>
-                        <?php
-                        }            
+                            <div class="form-row">
+                                <div class="form-grupo col-md-5 espaco">
+                                    <label for="peca">Peça/Serviço</label>
+                                    <select name="peca[]" class="form-control" id="peca">
+                                    <option value=""></option>
+                                    <?php
 
-                        ?>
-                        <button type="submit" class="btn btn-primary"> Enviar </button>                
+                                    $sql = $db->query("SELECT * FROM peca_reparo");
+                                    $pecas = $sql->fetchAll();
+                                    foreach ($pecas as $peca) {
+
+                                    ?>
+                                        <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option>
+                                    <?php
+
+                                    }
+
+                                    ?>
+                                </select>
+                                </div>
+                                <div class="form-grupo col-md-1 espaco">
+                                    <label for="qtd">Qtd</label>
+                                    <input type="text" name="qtd[]" id="qtd" class="form-control">
+                                </div>
+                                <div class="form-grupo col-md-2 espaco">
+                                    <label for="vlUnit">Valor Unit.</label>
+                                    <input type="text" name="vlUnit[]" id="vlUnit" class="form-control">
+                                </div>
+                                <div style="margin: auto; margin-left: 0;">
+                                    <button type="button" class="btn btn-danger" id="add-peca">Adicionar Peça</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" value="Adicionar" class="btn btn-primary" name="novo-servico">
                     </form>
                 </div>
             </div>
         </div>
 
-        <script src="../assets/js/jquery.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script>
-        <script src="../assets/js/jquery.mask.js"></script>
         <script>
-            jQuery(function($){
-                $("#valor").mask('###0,00', {reverse: true});
-                $("#valorNovo").mask('###0,00', {reverse: true});
-            })
+            $(document).ready(function() {
+                $('#peca').select2();
+            });
         </script>
-        
+        <script>
+        $(document).ready(function(){
+
+            var cont = 1;
+            $('#add-peca').click(function(){
+                cont++;
+
+                $('#formulario').append('<div class="form-row"> <div class="form-grupo col-md-5 espaco"> <label for="peca">Peça/Serviço</label> <select name="peca[]" class="form-control" id="peca"> <option value=""></option> <?php $sql = $db->query("SELECT * FROM peca_reparo"); $pecas = $sql->fetchAll(); foreach ($pecas as $peca) {?> <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option> <?php } ?> </select> </div> <div class="form-grupo col-md-1 espaco"> <label for="qtd">Qtd</label> <input type="text" name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-grupo col-md-2 espaco"> <label for="vlUnit">Valor Unit.</label> <input type="text" name="vlUnit[]" id="vlUnit" class="form-control"> </div> <div style="margin: auto; margin-left: 0;"> </div> </div>');
+            });
+        });
+    </script>
     </body>
 </html>

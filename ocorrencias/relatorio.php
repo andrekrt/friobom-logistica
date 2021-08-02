@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 99) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario']==4)) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $pagina = (isset($_GET['pagina'])) ? $_GET['pagina'] : 1;
@@ -118,19 +118,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="../reparos/relatorio.php"> Valores Gastos</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/local-reparo.php">Local de Reparo</a> </li>
+                                <li class="nav-item"> <a class="nav-link" href="../reparos/pecas.php">Peças/Serviços</a> </li>
                             </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuCarregamentos()">
-                            <img src="../assets/images/menu/carregamentos.png" alt="">
-                        </a>
-                        <nav id="submenuCarregamentos">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="../carregamentos/carregamentos.php" class="nav-link"> Carregamentos </a> </li>
-                                <li class="nav-item"> <a href="../carregamentos/form-carregamento.php" class="nav-link"> Novo Carregamento </a> </li>
-                            </ul>
-                        </nav>
+                        </nav>  
                     </div>
                     <div class="item">
                         <a onclick="menuAlmoxerifado()">
