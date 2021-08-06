@@ -183,7 +183,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <label for="veiculo">Placa do Veículo</label>
                                 <select name="veiculo" required id="veiculo" class="form-control">
                                     <option></option>
-                                    <option>Estoque</option>
+                                    <option value="Estoque">Estoque</option>
+                                    <option value="Serviços">Serviços</option>
+                                    <option value="Oficina">Oficina</option>
                                     <?php
 
                                     $sql = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");

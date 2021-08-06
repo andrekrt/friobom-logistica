@@ -361,7 +361,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                             <label for="vlTotal" class="col-form-label">Valor Total</label>
                                                             <input type="text" readonly class="form-control" name="vlTotal[]" id="vlTotal" value="<?=$solicitacao['vl_total']?>">
                                                         </div>
-                                                        <div class="form-group col-md-3">
+                                                        <div class="form-group col-md-2">
                                                             <label for="anexo" class="col-form-label">Anexos</label>
                                                             <?php if(empty($solicitacao['imagem'])==false): ?>
                                                                 <a target="_blank" href="uploads/<?=$solicitacao['imagem']?>" class="form-control" >Anexo</a>
@@ -369,6 +369,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                                 <input type="text" class="form-control" value="Sem Anexo">
                                                             <?php endif; ?>
                                                         </div>
+                                                        <div style="margin-left: 0; margin-top: 37px;">
+                                                            <a href="excluir-peca-solicitacao.php?idSolic=<?=$solicitacao['id']?>"  class="btn btn-danger"> Excluir </a>
+                                                        </div>
+                                                            
+                                                        
                                                     </div>
                                                 <?php
                                                 endforeach;

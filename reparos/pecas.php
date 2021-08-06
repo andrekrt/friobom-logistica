@@ -243,6 +243,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                     <option value="Freios">Freios</option>
                                                     <option value="Suspensão">Suspensão</option>
                                                     <option value="Soldas">Soldas</option>
+                                                    <option value="Lanternagem">Lanternagem</option>
+                                                    <option value="Serviços">Serviços</option>
+                                                    <option value="Elétrica">Elétrica</option>
+                                                    <option value="Graxas">Graxas</option>
+                                                    <option value="Filtros">Filtros</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-4 espaco ">
@@ -351,6 +356,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                                 <option value="Freios">Freios</option>
                                                                 <option value="Suspensão">Suspensão</option>
                                                                 <option value="Soldas">Soldas</option>
+                                                                <option value="Lanternagem">Lanternagem</option>
+                                                                <option value="Serviços">Serviços</option>
+                                                                <option value="Elétrica">Elétrica</option>
+                                                                <option value="Graxas">Graxas</option>
+                                                                <option value="Filtros">Filtros</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-3 espaco">

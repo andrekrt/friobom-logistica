@@ -428,10 +428,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
-                                            <?php if($dado['id_usuario']==$_SESSION['idUsuario']): ?>
                                                 <a href="excluir.php?idPeca=<?=$dado['idpeca']; ?>" class="btn btn-danger"> Excluir </a>
                                                 <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
-                                            <?php endif; ?>
                                                 </form>
                                             </div>
                                         </div>
