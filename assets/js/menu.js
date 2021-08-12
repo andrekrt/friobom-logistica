@@ -88,6 +88,16 @@ function menuOcorrencias(){
     
 }
 
+function menuEntregas(){
+
+    if(document.getElementById("submenuCapital").style.display == "none" || document.getElementById("submenuCapital").style.display == "" ){
+        document.getElementById("submenuCapital").style.display = "block";
+    }else{
+        document.getElementById("submenuCapital").style.display = "none";
+    }
+    
+}
+
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
         document.getElementById('menu-lateral').style.display='block';
