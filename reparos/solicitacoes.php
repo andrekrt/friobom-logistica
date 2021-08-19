@@ -187,16 +187,20 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <div class="form-row">
                                 <div class="form-group">
                                     <select name="veiculo_filtrado" id="veiculo_filtrado" class="form-control">
-                                        <option value=""></option>
+                                        <option></option>
+                                        <option value="Estoque">Estoque</option>
+                                        <option value="Serviços">Serviços</option>
+                                        <option value="Oficina">Oficina</option>
                                         <?php
-                                            $sql = $db->query("SELECT placarVeiculo FROM solicitacoes GROUP BY placarVeiculo ORDER BY placarVeiculo ASC");
-                                            if($sql->rowCount()>0){
-                                                $dados = $sql->fetchAll();
-                                                foreach($dados as $dado){
-                                                    echo "<option value='$dado[placarVeiculo]'>". $dado['placarVeiculo'] ."</option>";
 
-                                                }
+                                        $sql = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
+                                        if ($sql->rowCount() > 0) {
+                                            $dados = $sql->fetchAll();
+                                            foreach ($dados as $dado) {
+                                                echo "<option value='$dado[placa_veiculo]'>" . $dado['placa_veiculo'] . "</option>";
                                             }
+                                        }
+
                                         ?>
                                     </select>
                                     <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
@@ -229,7 +233,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 if(isset($_POST['filtro']) && !empty($_POST['veiculo_filtrado'])){
 
                                     $veiculo = filter_input(INPUT_POST, 'veiculo_filtrado');
-                                    $sql = $db->prepare("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE placa = :placa GROUP BY problema, placa");
+                                    $sql = $db->prepare("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE placa = :placa GROUP BY problema, placa ORDER BY token DESC");
                                     $sql->bindValue(':placa', $veiculo);
                                     $sql->execute();
 
@@ -241,14 +245,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                    
                                 }else{
 
-                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa");
+                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa ORDER BY token DESC");
 
                                     $total = $sql->rowCount();
                                     $qtdPorPagina = 10;
                                     $numPaginas = ceil($total / $qtdPorPagina);
                                     $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
-                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa LIMIT $paginaInicial,$qtdPorPagina");
+                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa ORDER BY token DESC LIMIT $paginaInicial,$qtdPorPagina");
                                     
                                 }
 

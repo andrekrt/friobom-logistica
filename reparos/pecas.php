@@ -256,6 +256,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                     <option value="Elétrica">Elétrica</option>
                                                     <option value="Graxas">Graxas</option>
                                                     <option value="Filtros">Filtros</option>
+                                                    <option value="Óleo para Motor">Óleo para Motor</option>
+                                                    <option value="Refrigeração">Refrigeração</option>
+                                                    <option value="Arla 32">Arla 32</option>
+                                                    <option value="Combustível">Combustível</option>
+                                                    <option value="Motor">Motor</option>
+                                                    <option value="Acessórios">Acessórios</option>
+                                                    <option value="Baú">Baú</option>
+                                                    <option value="Direção">Direção</option>
+                                                    <option value="Outros">Outros</option>
+                                                    <option value="Embreagem">Embreagem</option>
+                                                    <option value="Diferencial">Diferencial</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-4 espaco ">
@@ -369,6 +380,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                                 <option value="Elétrica">Elétrica</option>
                                                                 <option value="Graxas">Graxas</option>
                                                                 <option value="Filtros">Filtros</option>
+                                                                <option value="Óleo para Motor">Óleo para Motor</option>
+                                                                <option value="Refrigeração">Refrigeração</option>
+                                                                <option value="Arla 32">Arla 32</option>
+                                                                <option value="Combustível">Combustível</option>
+                                                                <option value="Motor">Motor</option>
+                                                                <option value="Acessórios">Acessórios</option>
+                                                                <option value="Baú">Baú</option>
+                                                                <option value="Direção">Direção</option>
+                                                                <option value="Outros">Outros</option>
+                                                                <option value="Embreagem">Embreagem</option>
+                                                                <option value="Diferencial">Diferencial</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-3 espaco">

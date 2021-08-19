@@ -18,13 +18,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
     $placa = filter_input(INPUT_POST, 'veiculo');
     $problema = filter_input(INPUT_POST, 'descricao');
     $localReparo = filter_input(INPUT_POST, 'localReparo');
-    $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;
+    
     $situacao = "Em análise";
     $usuario = $_SESSION['idUsuario'];
 
     $peca = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']) ;
     $valorUnit = str_replace(",", ".",$_POST['vlUnit'] ) ;
+    $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;
     
     for($i=0; $i<count($peca); $i++){
 
@@ -36,7 +37,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
         $sql->bindValue(':placa', $placa);
         $sql->bindValue(':problema', $problema);
         $sql->bindValue(':localReparo', $localReparo);
-        $sql->bindValue(':imagem', $imagem);
+        $sql->bindValue(':imagem', $imagem[$i]);
         $sql->bindValue(':peca', $peca[$i]);
         $sql->bindValue(':qtd', $qtd[$i]);
         $sql->bindValue(':vlUnit', $valorUnit[$i]);
@@ -47,7 +48,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
         if($sql->execute()){
 
             $pasta = 'uploads/';
-            $mover = move_uploaded_file($_FILES['imagem']['tmp_name'],$pasta.$imagem);
+            $mover = move_uploaded_file($_FILES['imagem']['tmp_name'][$i],$pasta.$imagem[$i]);
 
             echo "<script> alert('Solicitação Lançada!!')</script>";
             echo "<script> window.location.href='solicitacoes.php' </script>";
