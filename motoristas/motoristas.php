@@ -177,6 +177,28 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
+                    <div class="filtro">
+                        <form class="form-inline" action="" method="post">
+                            <div class="form-row">
+                                <select name="motorista" id="motorista" class="form-control">
+                                    <option value=""></option>
+                                    <?php
+                                    
+                                    $consulta = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo = 1");
+                                    $dados = $consulta->fetchAll();
+                                    foreach($dados as $dado){
+                                    ?>
+                                    <option value="<?php echo $dado['cod_interno_motorista'] ?>"><?php echo $dado['nome_motorista'] ?></option>    
+                                    <?php    
+                                    }
+
+                                    ?>
+                                </select>
+                                <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
+                            </div>
+                        </form>
+                        <a href="motoristas-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
+                    </div>
                     <div class="table-reponsive">
                         <table class="table table-striped table-dark table-bordered">
                             <thead>
@@ -193,15 +215,30 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </thead>
                             <tbody>
                                 <?php
-                                    $totalMotorista = $selecionar->rowCount();
-                                    $qtdPorPagina = 12;
+                                if(isset($_POST['filtro']) && !empty($_POST['motorista'])) {
+                                    $motorista = filter_input(INPUT_POST, 'motorista');
+                                    $sql = $db->prepare("SELECT * FROM motoristas WHERE ativo = 1 AND cod_interno_motorista = :codMotorista ");
+                                    $sql->bindValue(':codMotorista', $motorista);
+                                    $sql->execute();
+
+                                    $totalMotorista = $sql->rowCount();
+                                    $qtdPorPagina = 10;
                                     $numPaginas = ceil($totalMotorista/$qtdPorPagina);
                                     $paginaInicial = ($qtdPorPagina*$pagina)-$qtdPorPagina;
-                                    $limitado = $db->query("SELECT * FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista LIMIT $paginaInicial,$qtdPorPagina ");
 
-                                    if($limitado->rowCount()>0){
-                                        $dados = $limitado->fetchAll();
-                                        foreach($dados as $dado){
+                                }else{
+                                    $sql = $db->query("SELECT * FROM motoristas WHERE ativo = 1 ");
+
+                                    $totalMotorista = $sql->rowCount();
+                                    $qtdPorPagina = 10;
+                                    $numPaginas = ceil($totalMotorista/$qtdPorPagina);
+                                    $paginaInicial = ($qtdPorPagina*$pagina)-$qtdPorPagina;
+
+                                    $sql= $db->query("SELECT * FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista ASC LIMIT $paginaInicial, $qtdPorPagina");
+
+                                }
+                                $dados = $sql->fetchAll();
+                                foreach($dados as $dado):
                                 ?>
                                     <tr>
                                         <td scope="col" class="text-center"> <?php echo $dado['cod_interno_motorista']; ?> </td>
@@ -228,7 +265,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                 <div class="modal-body">
                                                     <form action="atualiza.php" method="post">
                                                         <div class="form-row">
-                                                            <input type="hidden" name="idSolicitacao" value="<?php echo $dado['cod_interno_veiculo']; ?>" >
+                                                            <input type="hidden" name="idSolicitacao" value="<?php echo $dado['cod_interno_motorista']; ?>" >
                                                             <div class="form-group col-md-12">
                                                                 <label for="codMotorista" class="col-form-label">Código Motorista</label>
                                                                 <input type="text" name="codMotorista" class="form-control"  id="codMotorista" Readonly value="<?php echo $dado['cod_interno_motorista'];  ?>">
@@ -282,8 +319,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <!-- FIM MODAL -->
                                 <?php
 
-                                        }
-                                    }
+                                endforeach;
                                 
                                 ?>
                             </tbody>
