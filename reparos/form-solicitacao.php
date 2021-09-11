@@ -187,7 +187,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <div id="formulario">
                          
                         <div class="form-row">
-                            <div class="form-grupo col-md-6 espaco">
+                            <div class="form-grupo col-md-3 espaco">
                                 <label for="veiculo">Placa do Veículo</label>
                                 <select name="veiculo" required id="veiculo" class="form-control">
                                     <option></option>
@@ -207,7 +207,37 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6 espaco ">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="motorista">Motorista</label>
+                                <select name="motorista" id="motorista" class="form-control">
+                                    <option value=""></option>
+                                    <?php
+
+                                    $sql = $db->query("SELECT * FROM motoristas");
+                                    $motoristas = $sql->fetchAll();
+                                    foreach ($motoristas as $motorista):
+
+                                    ?>
+                                        <option value="<?=$motorista['nome_motorista'] ?>"><?=$motorista['nome_motorista'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="rota">Rota</label>
+                                <select name="rota" id="rota" class="form-control">
+                                    <option value=""></option>
+                                    <?php
+
+                                    $sql = $db->query("SELECT * FROM rotas");
+                                    $rotas = $sql->fetchAll();
+                                    foreach ($rotas as $rota):
+
+                                    ?>
+                                        <option value="<?=$rota['nome_rota'] ?>"><?=$rota['nome_rota'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco ">
                                 <label for="local">Local para Reparo</label>
                                 <select name="localReparo" required class="form-control" id="localReparo">
                                     <option value=""></option>
@@ -288,6 +318,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             $('#veiculo').select2();
             $('#localReparo').select2();
             $('#peca').select2();
+            $('#motorista').select2();
+            $('#rota').select2();
         });
     </script>
 </body>

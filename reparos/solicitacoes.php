@@ -217,6 +217,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <th scope="col" class="text-center text-nowrap">ID</th>
                                     <th scope="col" class="text-center text-nowrap">Data Solicitação</th>
                                     <th scope="col" class="text-center text-nowrap">Veículo</th>
+                                    <th scope="col" class="text-center text-nowrap">Motorista</th>
+                                    <th scope="col" class="text-center text-nowrap">Rota</th>
                                     <th scope="col" class="text-center text-nowrap">Problema</th>
                                     <th scope="col" class="text-center text-nowrap">Local Reparo</th>
                                     <th scope="col" class="text-center text-nowrap">Tipos Peça/Serviço</th>
@@ -233,7 +235,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 if(isset($_POST['filtro']) && !empty($_POST['veiculo_filtrado'])){
 
                                     $veiculo = filter_input(INPUT_POST, 'veiculo_filtrado');
-                                    $sql = $db->prepare("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE placa = :placa GROUP BY problema, placa ORDER BY token DESC");
+                                    $sql = $db->prepare("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE placa = :placa GROUP BY token ORDER BY token DESC");
                                     $sql->bindValue(':placa', $veiculo);
                                     $sql->execute();
 
@@ -245,14 +247,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                    
                                 }else{
 
-                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa ORDER BY token DESC");
+                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY token ORDER BY token DESC");
 
                                     $total = $sql->rowCount();
                                     $qtdPorPagina = 10;
                                     $numPaginas = ceil($total / $qtdPorPagina);
                                     $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
 
-                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY problema, placa ORDER BY token DESC LIMIT $paginaInicial,$qtdPorPagina");
+                                    $sql = $db->query("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios GROUP BY token ORDER BY token DESC LIMIT $paginaInicial,$qtdPorPagina");
                                     
                                 }
 
@@ -264,6 +266,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['token']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap align-middle"> <?= date("d/m/Y",strtotime( $dado['data_atual'])); ?> </td>
                                     <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['placa']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['motorista']; ?> </td>
+                                    <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['rota']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['problema']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap align-middle"> <?=$dado['local_reparo']; ?> </td>
                                     <td scope="col" class="text-center text-nowrap align-middle"> <?= str_replace(",", "<br>",$dado['peca'] ) ; ?> </td>
@@ -310,11 +314,41 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                                 ?>
                                                             </select>
                                                         </div>
+                                                        <div class="form-group col-md-2">
+                                                            <label for="motorista" class="col-form-label">Motorista</label>
+                                                            <select name="motorista" id="motorista" class="form-control">
+                                                                <option value="<?=$dado['motorista']?>"><?=$dado['motorista']?></option>
+                                                                <?php
+
+                                                                $sql = $db->query("SELECT * FROM motoristas");
+                                                                $motoristas = $sql->fetchAll();
+                                                                foreach ($motoristas as $motorista):
+
+                                                                ?>
+                                                                    <option value="<?=$motorista['nome_motorista'] ?>"><?=$motorista['nome_motorista'] ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-2">
+                                                            <label for="rota" class="col-form-label">Rota</label>
+                                                            <select name="rota" id="rota" class="form-control">
+                                                                <option value="<?=$dado['rota']?>"><?=$dado['rota']?></option>
+                                                                <?php
+
+                                                                $sql = $db->query("SELECT * FROM rotas");
+                                                                $rotas = $sql->fetchAll();
+                                                                foreach ($rotas as $rota):
+
+                                                                ?>
+                                                                    <option value="<?=$rota['nome_rota'] ?>"><?=$rota['nome_rota'] ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
                                                         <div class="form-group col-md-3">
                                                             <label class="col-form-label" for="descricao">Descrição do Problema</label>
                                                             <input type="text" required value="<?=$dado['problema']?>" name="descricao" class="form-control" id="descricao">
                                                         </div>
-                                                        <div class="form-group col-md-3">
+                                                        <div class="form-group col-md-2">
                                                             <label class="col-form-label" for="localReparo">Local Reparo</label>
                                                             <select name="localReparo" class="form-control" id="localReparo">
                                                                 <option value="<?=$dado['local_reparo']?>"><?=$dado['local_reparo']?></option>

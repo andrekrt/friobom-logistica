@@ -161,15 +161,23 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         <div id="formulario">
                             <input type="hidden" name="token" value="<?=$dados[0]['token']?>">
                             <div class="form-row">
-                                <div class="form-group col-md-3 espaco">
+                                <div class="form-group col-md-2 espaco">
                                     <label for="veiculo">Placa Veículo</label>
                                     <input type="text" readonly name="veiculo" class="form-control" value="<?= $dados[0]['placa'] ?>">
                                 </div>
-                                <div class="form-group col-md-4 espaco">
+                                <div class="form-group col-md-3 espaco">
+                                    <label for="motorista">Motorista</label>
+                                    <input type="text" readonly name="motorista" class="form-control" value="<?= $dados[0]['motorista'] ?>">
+                                </div>
+                                <div class="form-group col-md-2 espaco">
+                                    <label for="rota">Rota</label>
+                                    <input type="text" readonly name="rota" class="form-control" value="<?= $dados[0]['rota'] ?>">
+                                </div>
+                                <div class="form-group col-md-3 espaco">
                                     <label for="problema">Problema</label>
                                     <input type="text" readonly name="problema" id="problema" class="form-control" value="<?=$dados[0]['problema'] ?>">
                                 </div>
-                                <div class="form-group col-md-3 espaco">
+                                <div class="form-group col-md-2 espaco">
                                     <label for="localReparo">Local Reparo</label>
                                     <input type="text" id="localReparo" readonly name="localReparo" class="form-control" value="<?= $dados[0]['local_reparo'] ?>">
                                 </div>

@@ -16,6 +16,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
 
     $dataAtual = date("Y/m/d");
     $placa = filter_input(INPUT_POST, 'veiculo');
+    $motorista = filter_input(INPUT_POST, 'motorista');
+    $rota = filter_input(INPUT_POST,'rota');
     $problema = filter_input(INPUT_POST, 'descricao');
     $localReparo = filter_input(INPUT_POST, 'localReparo');
     
@@ -31,10 +33,12 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
 
         $valorTotal = $valorUnit[$i]*$qtd[$i];
 
-        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, local_reparo, imagem, peca_servico, qtd, vl_unit, vl_total, situacao, usuario) VALUES (:token, :dataAtual, :placa, :problema, :localReparo, :imagem, :peca, :qtd, :vlUnit, :vlTotal, :situacao, :usuario)");
+        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, local_reparo, imagem, peca_servico, qtd, vl_unit, vl_total, situacao, usuario) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :localReparo, :imagem, :peca, :qtd, :vlUnit, :vlTotal, :situacao, :usuario)");
         $sql->bindValue(':token', $newToken);
         $sql->bindValue(':dataAtual', $dataAtual);
         $sql->bindValue(':placa', $placa);
+        $sql->bindValue(':motorista', $motorista);
+        $sql->bindValue(':rota', $rota);
         $sql->bindValue(':problema', $problema);
         $sql->bindValue(':localReparo', $localReparo);
         $sql->bindValue(':imagem', $imagem[$i]);
