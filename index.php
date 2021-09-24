@@ -134,7 +134,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                 <li class="nav-item"> <a class="nav-link" href="controle-despesas/complementos.php"> Complementos </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="controle-despesas/form-lancar-despesas.php"> Lançar Despesa </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="controle-despesas/gerar-planilha.php"> Planilha de Despesas </a> </li>
-                                <li class="nav-item"> <a onclick="menuEntregas()"> Entregas Capital </a>
+                                <li class="nav-item"> <a class="subtitulo" onclick="menuEntregas()"> Entregas Capital </a>
                                     <nav id="submenuCapital">
                                         <ul class="nav flex-column">
                                             <li class="nav-item"> <a href="controle-despesas/entregas-capital/form-entregas.php"> Registrar Entregas </a> </li>
@@ -181,6 +181,41 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                 <li class="nav-item"> <a href="almoxerifado/saidas.php" class="nav-link"> Saída </a> </li>
                                 <li class="nav-item"> <a href="almoxerifado/ordem-servico.php" class="nav-link"> Ordem de Serviço </a> </li>
                                 <li class="nav-item"> <a href="fornecedores/fornecedores.php" class="nav-link"> Fornecedores </a> </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="item">
+                        <a onclick="menuPneu()">
+                            <img src="assets/images/menu/pneu.png" alt="">
+                        </a>
+                        <nav id="submenuPneu">
+                            <ul class="nav flex-column">
+                                <li class="nav-item ">  <a class="subtitulo" onclick="menuManutencao()"> Manutenções </a> 
+                                    <nav id="submenuManutencao">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item"> <a href="pneus/manutencao/form-manutencao.php"> Registrar Manutenção </a> </li>
+                                            <li class="nav-item"> <a href="pneus/manutencao/manutencoes.php">  Manutenções Realizadas </a> </li>
+                                        </ul> 
+                                    </nav>
+                                </li>
+                                <li class="nav-item ">  <a class="subtitulo" onclick="menuRodizio()"> Rodízios </a> 
+                                    <nav id="submenuRodizio">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item"> <a href="pneus/rodizio/form-rodizio.php"> Realizar Rodízio </a> </li>
+                                            <li class="nav-item"> <a href="pneus/rodizio/rodizio.php">  Rodízios Realizadas </a> </li>
+                                        </ul> 
+                                    </nav>
+                                </li>
+                                <li class="nav-item "> <a class="subtitulo" onclick="menuSuco()"> Medição de Suco </a>   
+                                    <nav id="submenuSuco">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item"> <a href="pneus/suco/form-suco.php"> Medir Suco </a> </li>
+                                            <li class="nav-item"> <a href="pneus/suco/sucos.php"> Medidas de Suco </a> </li>
+                                        </ul> 
+                                    </nav>
+                                </li>
+                                <li class="nav-item"> <a href="pneus/form-pneus.php" class="nav-link"> Cadastrar Pneu </a> </li>
+                                <li class="nav-item"> <a href="pneus/pneus.php" class="nav-link"> Pneu Cadastrados </a> </li>
                             </ul>
                         </nav>
                     </div>

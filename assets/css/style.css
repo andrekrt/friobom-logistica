@@ -159,7 +159,7 @@ a .nome{
 
 .item li a:hover{
     border-bottom: 2px solid #000;
-    color: #fff;
+    color: #000;
 }
 
 .item .active a{
@@ -170,6 +170,10 @@ a .nome{
 .item nav{
     display: none;
     width: 100%;
+}
+
+.item a.subtitulo{
+    color: #000;
 }
 
 /*tela principal*/
@@ -371,7 +375,6 @@ img.icone{
 .icone-acoes {
     height: 50px;
 }
-
 
 @media(max-width:768px){
     .area-indice-val{

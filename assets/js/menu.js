@@ -98,6 +98,47 @@ function menuEntregas(){
     
 }
 
+function menuPneu(){
+
+    if(document.getElementById("submenuPneu").style.display == "none" || document.getElementById("submenuPneu").style.display == "" ){
+        document.getElementById("submenuPneu").style.display = "block";
+    }else{
+        document.getElementById("submenuPneu").style.display = "none";
+    }
+    
+}
+
+function menuRodizio(){
+
+    if(document.getElementById("submenuRodizio").style.display == "none" || document.getElementById("submenuRodizio").style.display == "" ){
+        document.getElementById("submenuRodizio").style.display = "block";
+    }else{
+        document.getElementById("submenuRodizio").style.display = "none";
+    }
+    
+}
+
+function menuManutencao(){
+
+    if(document.getElementById("submenuManutencao").style.display == "none" || document.getElementById("submenuManutencao").style.display == "" ){
+        document.getElementById("submenuManutencao").style.display = "block";
+    }else{
+        document.getElementById("submenuManutencao").style.display = "none";
+    }
+    
+}
+
+function menuSuco(){
+
+    if(document.getElementById("submenuSuco").style.display == "none" || document.getElementById("submenuSuco").style.display == "" ){
+        document.getElementById("submenuSuco").style.display = "block";
+    }else{
+        document.getElementById("submenuSuco").style.display = "none";
+    }
+    
+}
+
+
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
         document.getElementById('menu-lateral').style.display='block';
