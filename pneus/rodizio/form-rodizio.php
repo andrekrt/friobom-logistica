@@ -97,7 +97,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <label for="kmInicial">Km Atual Novo Veículo</label>
                                 <input type="text" required name="kmInicial" class="form-control" id="kmInicial">
                             </div>
-                            
+                            <div class="form-group col-md-2 espaco">
+                                <label for="localizacao">Localização Atual</label>
+                                <input type="text" required name="localizacao" class="form-control" id="localizacao">
+                            </div>
                         </div>                    
                     </div>
                     <div class="form-group">

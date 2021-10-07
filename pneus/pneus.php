@@ -294,6 +294,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                                             <label for="kmFinal">Km final do Veículo</label>
                                                             <input type="text" name="kmFinal" id="kmFinal" required class="form-control" >
                                                         </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label for="motivo">Motivo do Descarte</label>
+                                                            <input type="text" name="motivo" id="motivo" required class="form-control" >
+                                                        </div>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
