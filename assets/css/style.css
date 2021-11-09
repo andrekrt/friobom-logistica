@@ -376,6 +376,21 @@ img.icone{
     height: 50px;
 }
 
+/*icone excel*/
+.icon-exp{
+    display: flex;
+    justify-content: end;
+}
+.icon-exp img{
+    height: 50px;
+    margin: 5px;
+}
+
+/*icone ações*/
+.icon-acoes img{
+    height: 30px;
+}
+
 @media(max-width:768px){
     .area-indice-val{
         grid-template-columns: repeat(3, 1fr);
