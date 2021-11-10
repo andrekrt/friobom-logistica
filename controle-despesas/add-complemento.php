@@ -25,7 +25,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $inserir->bindValue(':idUsuario', $idUsuario);
 
     if($inserir->execute()){
-        header("Location: complementos.php");
+        echo "<script> alert('Complemento Lançado!')</script>";
+        echo "<script> window.location.href='complementos.php' </script>";
     }else{
         print_r($inserir->errorInfo());
     }
