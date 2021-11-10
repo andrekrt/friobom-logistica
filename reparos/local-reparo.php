@@ -3,232 +3,208 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 4 || $_SESSION['tipoUsuario'] == 99){
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 4 || $_SESSION['tipoUsuario'] == 99) {
 
-    $nomeUsuario = $_SESSION['nomeUsuario'];
-    $tipoUsuario = $_SESSION['tipoUsuario'];
-    $idUsuario = $_SESSION['idUsuario'];
-
-    $pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
-
-}else{
+} else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
 }
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Local de Reparo</title>
-        <link rel="stylesheet" href="../assets/css/style.css">
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../assets/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRIOBOM - TRANSPORTE</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    </head>
-    <body>
-        <div class="container-fluid corpo">
-            <?php require('../menu-lateral.php') ?>
-            <!-- Tela com os dados -->
-            <div class="tela-principal">
-                <div class="menu-superior">
-                    <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/reparos.png" alt="">
-                    </div>
-                    <div class="title">
-                        <h2>Locais de Reparo</h2>
-                    </div>
-                    <div class="menu-mobile">
-                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+    <!-- arquivos para datatable -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
+
+</head>
+<body>
+    <div class="container-fluid corpo">
+        <?php require('../menu-lateral.php') ?>
+        <!-- Tela com os dados -->
+        <div class="tela-principal">
+            <div class="menu-superior">
+                <div class="icone-menu-superior">
+                    <img src="../assets/images/icones/reparos.png" alt="">
+                </div>
+                <div class="title">
+                    <h2>Locais de Reparo</h2>
+                </div>
+                <div class="menu-mobile">
+                    <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                </div>
+            </div>
+            <!-- dados exclusivo da página-->
+            <div class="menu-principal">
+                <div class="icon-exp">
+                    <div class="area-opcoes-button">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalLocal" data-whatever="@mdo" name="localReparo">Novo Local de Reparo</button>
                     </div>
                 </div>
-                <!-- dados exclusivo da página-->
-                <div class="menu-principal">
-                    <!-- iniciando filtro por veiculo -->
-                    <div class="filtro">
-                        <form action="" class="form-inline" method="post">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <select name="local" id="local" class="form-control">
-                                        <option value=""></option>
-                                        <?php
-                                            $sql = $db->query("SELECT nome_local FROM local_reparo ORDER BY nome_local ASC");
-                                            if($sql->rowCount()>0){
-                                                $dados = $sql->fetchAll();
-                                                foreach($dados as $dado):
-                                        ?>
-                                            <option value="<?=$dado['nome_local']?>"><?=$dado['nome_local']?></option>
-                                        <?php
-                                                endforeach;
-                                            }
-                                        ?>
-                                    </select>
-                                    <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
-                                </div>
-                            </div>
-                        </form>
-                        <div class="area-opcoes-button">     
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalLocal" data-whatever="@mdo" name="localReparo">Novo Local de Reparo</button>
-                        </div> 
-                    </div>
-                    <!-- fim filtro por veiculo -->
-                    <!-- MODAL CADASTRO DE local de reparo -->
-                    <div class="modal fade" id="modalLocal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Cadastro de Local de Reparo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="add-local-reparo.php" method="post">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-4 espaco ">
-                                                <label for="local"> Local de Reparo </label>
-                                                <input type="text" required name="local" class="form-control" id="local">
-                                            </div>
-                                            <div class="form-group col-md-4 espaco ">
-                                                <label for="responsavel"> Responsável </label>
-                                                <input type="text" required name="responsavel" class="form-control" id="responsavel">
-                                            </div>
-                                            <div class="form-group col-md-4 espaco ">
-                                                <label for="telefone"> Telefone </label>
-                                                <input type="text" required name="telefone" class="form-control" id="telefone">
-                                            </div>
-                                        </div>    
-                                         
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" name="analisar" class="btn btn-primary">Cadastrar</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- FIM MODAL CADASTRO DE local de reparo-->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-dark table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-center text-nowrap">Local</th>
-                                    <th scope="col" class="text-center text-nowrap">Responsável</th>
-                                    <th scope="col" class="text-center text-nowrap">Telefone</th>
-                                    <th scope="col" class="text-center text-nowrap">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                
-                                if(isset($_POST['filtro']) && !empty($_POST['local'])){
-                                    $localReparo = filter_input(INPUT_POST,'local');
-                                    $sql = $db->prepare("SELECT * FROM local_reparo WHERE nome_local = :localReparo");
-                                    $sql->bindValue(':localReparo', $localReparo);
-                                    $sql->execute();
-
-                                    $totalLocais = $sql->rowCount();
-                                    $qtdPorPagina = 10;
-                                    $numPaginas = ceil($totalLocais / $qtdPorPagina);
-                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
-                                    
-                                }else{
-                                    $sql = $db->query("SELECT * FROM local_reparo");
-
-                                    $totalLocais = $sql->rowCount();
-                                    $qtdPorPagina = 10;
-                                    $numPaginas = ceil($totalLocais / $qtdPorPagina);
-                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
-
-                                    $sql = $db->query("SELECT * FROM local_reparo LIMIT $paginaInicial, $qtdPorPagina");
-                                    
-                                }
-                                $dados = $sql->fetchAll();
-                                foreach($dados as $dado):
-                                ?>
-                                <tr id="<?=$dado['id_local']?>">
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['nome_local'];?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['responsavel'];?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['telefone'];?>  </td>
-                                    <td scope="col" class="text-center text-nowrap">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?=$dado['id_local']; ?>" data-whatever="@mdo" value="<?=$dado['id_local']; ?>" name="idocorrencia">Visualisar</button>
-                                    </td>
-                                </tr>
-                                <!-- INICIO MODAL editar-->
-                                <div class="modal fade" id="modal<?=$dado['id_local']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Local de Reparo</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="atualiza-local-reparo.php" enctype="multipart/form-data" method="post">
-                                                    <div class="form-row">
-                                                        <input type="hidden" name="idLocal" value="<?=$dado['id_local']?>">
-                                                        <div class="form-group espaco col-md-4">
-                                                            <label for="localReparo" >Local Reparo</label>
-                                                            <input type="text" name="localReparo" class="form-control" id="localReparo" value="<?= $dado['nome_local']; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-4">
-                                                            <label for="responsavel" >Responsável</label>
-                                                            <input type="text" class="form-control" name="responsavel" id="responsavel" value="<?=$dado['responsavel']?>">
-                                                        </div>
-                                                        <div class="form-group col-md-3 espaco">
-                                                            <label for="telefone"  >Telefone</label>
-                                                            <input type="text" name="telefone" class="form-control" id="telefone2" value="<?= $dado['telefone']; ?>">
-                                                        </div>
-                                                    </div>    
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a href="excluir-local-reparo.php?idLocal=<?=$dado['id_local']; ?>" class="btn btn-danger" onclick="return confirm('Certeza que deseja excluir?')"> Excluir </a>
-                                                <button type="submit" name="atualizar" class="btn btn-primary">Atualizar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FIM MODAL editar -->  
-                                <?php 
-                                endforeach;
-
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table id='tableLocal' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center text-nowrap">Local</th>
+                                <th scope="col" class="text-center text-nowrap">Responsável</th>
+                                <th scope="col" class="text-center text-nowrap">Telefone</th>
+                                <th scope="col" class="text-center text-nowrap">Ações</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/menu.js"></script>
-        <script src="../assets/js/jquery.mask.js"></script>
-        <script>
-            jQuery(function($){
-                $("#telefone").mask("(00)00000-0000");
-                $("#telefone2").mask("(00)00000-0000");
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/menu.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $('#tableLocal').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':'proc_pesq_local.php'
+                },
+                'columns': [
+                    { data: 'nome_local' },
+                    { data: 'responsavel' },
+                    { data: 'telefone' },
+                    { data: 'acoes' },
+                ],
+                "language":{
+                    "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+                },
             });
-        </script>
-        <script>
-            $(document).ready(function() {
-                $('#local').select2();
-            });
-        </script>
-    </body>
+        });
+
+        //abrir modal
+        $('#tableLocal').on('click', '.editbtn', function(event){
+            var table = $('#tableLocal').DataTable();
+            var trid = $(this).closest('tr').attr('id');
+            var id = $(this).data('id');
+
+            $('#modalEditar').modal('show');
+
+            $.ajax({
+                url:"get_single_local.php",
+                data:{id:id},
+                type:'post',
+                success: function(data){
+                    var json = JSON.parse(data);
+                    $('#id').val(json.id_local);
+                    $('#localReparo').val(json.nome_local);
+                    $('#responsavel').val(json.responsavel);
+                    $('#telefone2').val(json.telefone);
+                }
+            })
+        });
+    </script>
+
+<!-- modal visualisar e editar -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Local de Reparo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="atualiza-local-reparo.php" method="post">
+                    <input type="hidden" name="id" id="id" value="">
+                    <input type="hidden" name="trid" id="trid" value="">
+                    <div class="form-row">
+                        <div class="form-group espaco col-md-4">
+                            <label for="localReparo" >Local Reparo</label>
+                            <input type="text" name="localReparo" class="form-control" id="localReparo" value="">
+                        </div>
+                        <div class="form-group espaco col-md-4">
+                            <label for="responsavel" >Responsável</label>
+                            <input type="text" class="form-control" name="responsavel" id="responsavel" value="">
+                        </div>
+                        <div class="form-group col-md-3 espaco">
+                            <label for="telefone"  >Telefone</label>
+                            <input type="text" name="telefone" class="form-control" id="telefone2" value="">
+                        </div>
+                    </div> 
+            </div>
+            <div class="modal-footer">
+                    <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                        </div>
+                    <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL CADASTRO DE local de reparo -->
+<div class="modal fade" id="modalLocal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastro de Local de Reparo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="add-local-reparo.php" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-4 espaco ">
+                            <label for="local"> Local de Reparo </label>
+                            <input type="text" required name="local" class="form-control" id="local">
+                        </div>
+                        <div class="form-group col-md-4 espaco ">
+                            <label for="responsavel"> Responsável </label>
+                            <input type="text" required name="responsavel" class="form-control" id="responsavel">
+                        </div>
+                        <div class="form-group col-md-4 espaco ">
+                            <label for="telefone"> Telefone </label>
+                            <input type="text" required name="telefone" class="form-control" id="telefone">
+                        </div>
+                    </div>    
+                        
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="analisar" class="btn btn-primary">Cadastrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIM MODAL CADASTRO DE local de reparo-->
+
+<script src="../assets/js/jquery.mask.js"></script>
+<script>
+    jQuery(function($){
+        $("#telefone").mask("(00)00000-0000");
+        $("#telefone2").mask("(00)00000-0000");
+    });
+</script>
+</body>
 </html>

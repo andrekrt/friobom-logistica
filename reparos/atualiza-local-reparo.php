@@ -5,7 +5,7 @@ require("../conexao.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 4 || $_SESSION['tipoUsuario'] == 99)){
 
-    $idLocal = filter_input(INPUT_POST, 'idLocal');
+    $idLocal = filter_input(INPUT_POST, 'id');
     $nomeLocal = filter_input(INPUT_POST, 'localReparo');
     $responsavel = filter_input(INPUT_POST, 'responsavel');
     $telefone = filter_input(INPUT_POST, 'telefone');

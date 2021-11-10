@@ -48,7 +48,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
         $sql->bindValue(':id', $idSolicitacao[$i]);
 
         if($sql->execute()){
-            echo "<script> alert('Peça Adicionada!')</script>";
+            echo "<script> alert('Solicitação Atualizada!')</script>";
             echo "<script> window.location.href='solicitacoes.php' </script>"; 
         }else{
             print_r($sql->errorInfo());
