@@ -5,312 +5,102 @@ require("../conexao.php");
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario']==4)) {
 
-    $nomeUsuario = $_SESSION['nomeUsuario'];
-    $pagina = (isset($_GET['pagina'])) ? $_GET['pagina'] : 1;
-
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ocorrências</title>
-        <link rel="stylesheet" href="../assets/css/style.css">
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../assets/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRIOBOM - TRANSPORTE</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    </head>
-    <body>
-        <div class="container-fluid corpo">
-            <?php require('../menu-lateral.php') ?>
-            <div class="tela-principal">
-                <div class="menu-superior">
-                    <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/ocorrencia.png" alt="">
-                    </div>
-                    <div class="title">
-                        <h2>Relatório </h2>
-                    </div>
-                    <div class="menu-mobile">
-                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
-                    </div>
+    <!-- arquivos para datatable -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
+
+</head>
+<body>
+    <div class="container-fluid corpo">
+        <?php require('../menu-lateral.php') ?>
+        <!-- Tela com os dados -->
+        <div class="tela-principal">
+            <div class="menu-superior">
+                <div class="icone-menu-superior">
+                    <img src="../assets/images/icones/ocorrencia.png" alt="">
                 </div>
-                <div class="menu-principal">
-                    <div class="filtro">
-                        <form  action="" class="form-inline " method="post">
-                            <div class="form-row">
-                                <select name="motorista" id="motorista" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $filtro = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas ORDER BY nome_motorista ASC");
-                                    if ($filtro->rowCount() > 0) {
-                                        $dados = $filtro->fetchAll();
-                                        foreach ($dados as $dado):
-
-                                    ?>
-                                            <option value="<?=$dado['cod_interno_motorista'] ?>"> <?=$dado['nome_motorista'] ?> </option>
-                                    <?php
-
-                                        endforeach;
-                                    }
-
-                                    ?>
-                                </select>
-                                <input type="submit" value="Filtrar" name="filtro" class="btn btn-success">
-                            </div>
-                        </form>
-                        <a href="ocorrencias-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a> 
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-dark table-bordered">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-center text-nowrap">Motorista</th>
-                                    <th scope="col" class="text-center text-nowrap">Ocorrências por Má Condução </th>
-                                    <th scope="col" class="text-center text-nowrap">Ocorrências por Mau Comportamento </th>
-                                    <th scope="col" class="text-center text-nowrap">Qtd Ocorrências</th>
-                                    <th scope="col" class="text-center text-nowrap">Qtd Advertências</th>
-                                    <th scope="col" class="text-center text-nowrap">Total de Custos</th>
-                                    <th scope="col" class="text-center text-nowrap">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                
-                                if(isset($_POST['filtro']) && !empty($_POST['motorista'])){
-
-                                    $motorista = filter_input(INPUT_POST,'motorista');
-                                    $sql = $db->prepare("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE ocorrencias.cod_interno_motorista = :motorista GROUP BY ocorrencias.cod_interno_motorista  ");
-                                    $sql->bindValue(':motorista', $motorista);
-                                    $sql->execute();
-
-                                    $totalOcorrencias = $sql->rowCount();
-                                    $qtdPorPagina = 10;
-                                    $numPaginas = ceil($totalOcorrencias / $qtdPorPagina);
-                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
-
-                                }else{
-                                   
-                                    $sql = $db->query("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista GROUP BY ocorrencias.cod_interno_motorista");
-
-                                    $totalOcorrencias = $sql->rowCount();
-                                    $qtdPorPagina = 10;
-                                    $numPaginas = ceil($totalOcorrencias / $qtdPorPagina);
-                                    $paginaInicial = ($qtdPorPagina * $pagina) - $qtdPorPagina;
-
-                                    $sql = $db->query("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista GROUP BY ocorrencias.cod_interno_motorista LIMIT $paginaInicial, $qtdPorPagina");
-
-                                }
-
-                                $dados = $sql->fetchAll();
-                                foreach($dados as $dado):
-
-                                    //qtd de má condução
-                                    $qtdConduta = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia");
-                                    $qtdConduta->bindValue(':motorista', $dado['cod_interno_motorista']);
-                                    $qtdConduta->bindValue(':ocorrencia', 'Má Condução');
-                                    $qtdConduta->execute();
-                                    $qtdConduta = $qtdConduta->rowCount();
-
-                                    //qtd de mau comportamento
-                                    $qtdComportamneto = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia");
-                                    $qtdComportamneto->bindValue(':motorista', $dado['cod_interno_motorista']);
-                                    $qtdComportamneto->bindValue(':ocorrencia', 'Mau Comportamento');
-                                    $qtdComportamneto->execute();
-                                    $qtdComportamneto = $qtdComportamneto->rowCount();
-
-                                ?>
-                                <tr id="<?=$dado['cod_interno_motorista']?>" >
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['nome_motorista'];?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$qtdConduta;?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$qtdComportamneto;?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['ocorrencias'] ;?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?=$dado['advertencia'] ;?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> <?= "R$ ". str_replace(".",",",$dado['custoTotal']) ;?>  </td>
-                                    <td scope="col" class="text-center text-nowrap"> 
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<?= $dado['cod_interno_motorista']; ?>" data-whatever="@mdo" value="<?= $dado['cod_interno_motorista']; ?>" name="cod_interno_motorista">Visualisar</button>
-                                    </td>
-                                    <script type="text/javascript">
-                                        var $qtdOcorrencias = <?=$dado['ocorrencias']?>;
-                                        if($qtdOcorrencias == 2){
-                                           var container = document.getElementById('<?=$dado['cod_interno_motorista']?>');
-                                           container.style.background = 'orange';
-                                        }else if($qtdOcorrencias>=3){
-                                            var container = document.getElementById('<?=$dado['cod_interno_motorista']?>');
-                                           container.style.background = 'red';
-                                        }
-                                    </script>
-                                </tr>
-                                <!-- INICIO MODAL -->
-                                <div class="modal fade" id="modal<?= $dado['cod_interno_motorista']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Ocorrências <?=$dado['nome_motorista']?></h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                
-                                                <form action="">
-                                                <?php
-                                                    $sql = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista");
-                                                    $sql->bindValue(':motorista', $dado['cod_interno_motorista']);
-                                                    $sql->execute();
-                                                    $ocorrencias = $sql->fetchAll();
-                                                    foreach($ocorrencias as $ocorrencia):
-                                                ?>
-                                                    <div class="form-row">
-                                                        <div class="form-group espaco col-md-1">
-                                                            <label>Ocorrência</label>
-                                                            <input type="text" readonly  class="form-control" value="<?=$ocorrencia['idocorrencia']; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Data</label>
-                                                            <input type="date" readonly  class="form-control" value="<?=$ocorrencia['data_ocorrencia']; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Veículo</label>
-                                                            <input type="text" readonly  class="form-control" value="<?=$ocorrencia['placa']; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Carregamento</label>
-                                                            <input type="text" readonly  class="form-control" value="<?=$ocorrencia['num_carregamento']; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Tipo</label>
-                                                            <input type="text" readonly  class="form-control" value="<?=$ocorrencia['tipo_ocorrencia']; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Ocorrencia</label>
-                                                            <?=$ocorrencia['img_ocorrencia']==""?"<span class='form-control' readonly>Sem Anexo</span>":"<a class='form-control' readonly href='uploads/$ocorrencia[idocorrencia]/ocorrencias' target='_blank'>Anexo</a>" ;?>
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Advertência</label>
-                                                            <?=$ocorrencia['img_advertencia']==""?"<span class='form-control' readonly>Sem Advêrtencia</span>":"<a class='form-control' readonly href='uploads/$ocorrencia[idocorrencia]/advertencias' target='_blank'>Anexo</a>" ;?>
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Laudo</label>
-                                                            <?=$ocorrencia['img_laudo']==""?"<span class='form-control' readonly>Sem Laudo</span>":"<a class='form-control' readonly href='uploads/$ocorrencia[idocorrencia]/laudos' target='_blank'>Anexo</a>" ;?>
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Custo Total</label>
-                                                            <input type="text" readonly  class="form-control" value="<?="R$ ". str_replace(".",",",$ocorrencia['vl_total_custos']) ; ?>">
-                                                        </div>
-                                                        <div class="form-group espaco col-md-2">
-                                                            <label>Resolvido</label>
-                                                            <input type="text" readonly  class="form-control" value="<?=$ocorrencia['situacao'] ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-6 espaco">
-                                                            <label for="descricaoProblema">Descrição do Problema</label>
-                                                            <textarea name="descricaoProblema" id="descricaoProblema" class="form-control" readonly rows="3"><?=$ocorrencia['descricao_problema']?></textarea>
-                                                        </div>
-                                                        <div class="form-group col-md-6 espaco">
-                                                            <label for="descricaoCustos">Descrição dos Custos</label>
-                                                            <textarea name="descricaoCustos" id="descricaoCustos" class="form-control" readonly rows="3"><?=$ocorrencia['descricao_custos']?></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                <?php        
-                                                    endforeach;
-
-                                                ?>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- FIM MODAL --> 
-                                <?php    
-                                endforeach;
-
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Iniciando paginação -->
-                    <?php
-
-                    $paginaAnterior = $pagina - 1;
-                    $paginaPosterior = $pagina + 1;
-
-                    ?>
-                    <nav aria-label="Navegação de página exemplo" class="paginacao">
-                        <ul class="pagination pagination-sm">
-                            <li class="page-item">
-                                <?php
-                                if ($paginaAnterior != 0) {
-                                    echo "<a class='page-link' href='relatorio.php?pagina=$paginaAnterior' aria-label='Anterior'>
-                                        <span aria-hidden='true'>&laquo;</span>
-                                        <span class='sr-only'>Anterior</span>
-                                    </a>";
-                                } else {
-                                    echo "<a class='page-link' aria-label='Anterior'> 
-                                            <span aria-hidden='true'>&laquo;</span>
-                                            <span class='sr-only'>Anterior</span>
-                                        </a>";
-                                }
-                                ?>
-
-                            </li>
-                            <?php
-                            for ($i = 1; $i < $numPaginas + 1; $i++) {
-                                echo "<li class='page-item'><a class='page-link' href='relatorio.php?pagina=$i'>$i</a></li>";
-                            }
-                            ?>
-                            <li class="page-item">
-                                <?php
-                                if ($paginaPosterior <= $numPaginas) {
-                                    echo " <a class='page-link' href='relatorio.php?pagina=$paginaPosterior' aria-label='Próximo'>
-                                        <span aria-hidden='true'>&raquo;</span>
-                                        <span class='sr-only'>Próximo</span>
-                                    </a>";
-                                } else {
-                                    echo " <a class='page-link' aria-label='Próximo'>
-                                                <span aria-hidden='true'>&raquo;</span>
-                                                <span class='sr-only'>Próximo</span>
-                                        </a> ";
-                                }
-                                ?>
-
-                            </li>
-                        </ul>
-                    </nav>
+                <div class="title">
+                    <h2> Ocorrências</h2>
                 </div>
-                <!-- finalizando dados exclusivo da página -->
+                <div class="menu-mobile">
+                    <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                </div>
+            </div>
+            <!-- dados exclusivo da página-->
+            <div class="menu-principal">
+                <div class="icon-exp">
+                    <a href="ocorrencias-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a> 
+                </div>
+                <div class="table-responsive">
+                    <table id='tableRel' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center text-nowrap">Motorista</th>
+                                <th scope="col" class="text-center text-nowrap">Ocorrências por Má Condução </th>
+                                <th scope="col" class="text-center text-nowrap">Ocorrências por Mau Comportamento </th>
+                                <th scope="col" class="text-center text-nowrap">Qtd Ocorrências</th>
+                                <th scope="col" class="text-center text-nowrap">Qtd Advertências</th>
+                                <th scope="col" class="text-center text-nowrap">Total de Custos</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/menu.js"></script>
-        <script src="../assets/js/jquery.mask.js"></script>
-        <script>
-            jQuery(function($){
-                $("#vlTotal").mask('###0,00', {reverse: true});
-            })
-        </script>
-        <script>
-        $(document).ready(function() {
-            $('#motorista').select2();
+    </div>
+
+    <script src="../assets/js/menu.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $('#tableRel').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':'proc_pesq_rel.php'
+                },
+                'columns': [
+                    { data: 'nome_motorista'},
+                    { data: 'ma_conducao' },
+                    { data: 'mau_comportamento' },
+                    { data: 'ocorrencias' },
+                    { data: 'advertencia' },
+                    { data: 'custoTotal' },
+                ],
+                "language":{
+                    "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+                },
+            });
         });
+
         
-        </script>        
-    </body>
+    </script>
+</body>
 </html>

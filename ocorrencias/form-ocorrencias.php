@@ -165,7 +165,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <select name="situacao" required id="situacao" class="form-control">
                                 <option value=""></option>
                                 <option value="SIM">SIM</option>
-                                <option value="NÃo">NÃO</option>
+                                <option value="NÃO">NÃO</option>
                             </select>
                         </div>
                     </div>

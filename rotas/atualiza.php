@@ -6,7 +6,7 @@ require("../conexao.php");
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario'] ==99){
 
     $codRota = filter_input(INPUT_POST, 'codRota');
-    $rota = filter_input(INPUT_POST, 'rota');
+    $rota = filter_input(INPUT_POST, 'nomeRota');
     $horaFechamento1 = filter_input(INPUT_POST, 'horaFechamento1');
     $horaFechamento2 = filter_input(INPUT_POST, 'horaFechamento2');
     $ceps = filter_input(INPUT_POST, 'ceps');

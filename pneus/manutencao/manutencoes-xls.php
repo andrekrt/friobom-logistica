@@ -19,7 +19,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         
             if($tipoUsuario==4 || $tipoUsuario==3 || $tipoUsuario==99){
 
-                $arquivo = 'suco.xls';
+                $arquivo = 'manutencoes.xls';
 
                 $html = '';
                 $html .= '<table border="1">';

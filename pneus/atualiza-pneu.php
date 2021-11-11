@@ -16,7 +16,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $posicao = strtoupper(filter_input(INPUT_POST, 'posicao'));
     $situacao = filter_input(INPUT_POST, 'situacao');
     $localizacao = filter_input(INPUT_POST, 'localizacao');
-    $veiculo = strtoupper(filter_input(INPUT_POST, 'veiculo'));
+    $veiculo = filter_input(INPUT_POST, 'veiculo');
     $kmVeiculo = filter_input(INPUT_POST, 'kmVeiculo');
     $suco01 = filter_input(INPUT_POST, 'suco01');
     $suco02 = filter_input(INPUT_POST, 'suco02');

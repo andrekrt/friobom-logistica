@@ -7,12 +7,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
 
     $codMotorista = filter_input(INPUT_GET, 'codMotorista');
     $delete = $db->query("DELETE FROM motoristas WHERE cod_interno_motorista = '$codMotorista' ");
-
     if($delete){
         echo "<script> alert('Excluído com Sucesso!')</script>";
         echo "<script> window.location.href='motoristas.php' </script>";
     }else{
-        echo "Erro, contatar o adminstrador!";
+        print_r($db->errorInfo());
     }
 
 }else{
