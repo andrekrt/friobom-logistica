@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 99) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 3 || $_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 4) {
     $tipoUsuario = $_SESSION['tipoUsuario'];
 
     $idPneu = filter_input(INPUT_GET, 'idPneu');
@@ -190,7 +190,26 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <a href="excluir-peca-solicitacao.php?idSolic=<?=$solicitacao['id']?>"  class="btn btn-danger"> Excluir </a>
                         </div>  
                     </div>
-                    <?php endforeach; ?>
+                    <?php 
+                    endforeach; 
+                    if($tipoUsuario==4):
+                    ?>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="situacao" class="col-form-label">Situação</label>
+                            <select class="form-control" name="situacao" id="situacao">
+                                <option value="<?=$dado['situacao']?>"><?=$dado['situacao']?></option>
+                                <option value="Reprovado">Reprovado</option>
+                                <option value="Aprovado">Aprovado</option>
+                                <option value="Em análise"> Em Análise</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-10">
+                            <label for="obs" class="col-form-label">Observações</label>
+                            <input type="text" id="obs" name="obs" class="form-control">
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <div  class="form-row">
                     <?php if($dado['situacao']!="Aprovado"): ?>
                         <div class="form-group col-md-2">

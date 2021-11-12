@@ -65,10 +65,10 @@ foreach($empRecords as $row){
             "local_reparo"=>$row['local_reparo'],
             "peca"=> $row['peca'],
             "qtd"=>str_replace(".",",",$row['qtd']),
-            "vl_total"=>"R$ ". str_replace(".",",",$row['vl_total']) ,
+            "vlTotal"=>"R$ ". str_replace(".",",",$row['vlTotal']) ,
             "situacao"=>$row['situacao'],
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?token='.$row['id'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "acoes"=> '<a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?token='.$row['token'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
         );
 }
 

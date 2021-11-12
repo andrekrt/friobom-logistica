@@ -104,7 +104,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
                     { data: 'local_reparo' },
                     { data: 'peca' },
                     { data: 'qtd' },
-                    { data: 'vl_total' },
+                    { data: 'vlTotal' },
                     { data: 'situacao'},
                     { data: 'nome_usuario'},
                     { data: 'acoes'},
