@@ -61,6 +61,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                     <form action="add-solicitacao-adicional.php" class="despesas" method="post" enctype="multipart/form-data">
                         <div id="formulario">
                             <input type="hidden" name="token" value="<?=$dados[0]['token']?>">
+                            <input type="hidden" name="data" value="<?=date("Y-m-d", strtotime($dados[0]['data_atual']))?>">
                             <div class="form-row">
                                 <div class="form-group col-md-2 espaco">
                                     <label for="veiculo">Placa Veículo</label>

@@ -6,7 +6,7 @@ require("../conexao.php");
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
 
     $newToken = filter_input(INPUT_POST, 'token');
-    $dataAtual = date("Y/m/d");
+    $dataAtual = filter_input(INPUT_POST, 'data');
     $placa = filter_input(INPUT_POST, 'veiculo');
     $problema = filter_input(INPUT_POST, 'problema');
     $localReparo = filter_input(INPUT_POST, 'localReparo');

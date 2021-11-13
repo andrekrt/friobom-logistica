@@ -121,6 +121,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         <div class="form-group col-md-2">
                             <label class="col-form-label" for="localReparo">Local Reparo</label>
                             <select name="localReparo" class="form-control" id="localReparo">
+                                <option value="<?=$dado['local_reparo']?>"><?=$dado['local_reparo']?></option>
                                 <?php
 
                                 $sql = $db->query("SELECT * FROM local_reparo");
