@@ -112,6 +112,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
+                "aoColumnDefs":[
+                    {'bSortable':false, 'aTargets':[6]},
+                    {'bSortable':false, 'aTargets':[7]},
+                    {'bSortable':false, 'aTargets':[8]},
+                    {'bSortable':false, 'aTargets':[9]},
+                    {'bSortable':false, 'aTargets':[10]},
+                    {'bSortable':false, 'aTargets':[11]},
+                    {'bSortable':false, 'aTargets':[12]}
+                ],
             });
         });
 

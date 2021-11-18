@@ -56,6 +56,7 @@ $data = array();
 foreach($empRecords as $row){
     $codVeiculo = $row['cod_interno_veiculo'];
     $kmRestante = $row['km_atual']-$row['km_ultima_revisao'];
+    $cor = "";
     if ($row['categoria']=='Truck' && $kmRestante >= 20000) {
         $situacao = "Pronto para Revisão";
     } elseif($row['categoria']=='Toco' && $kmRestante >= 20000) {
