@@ -121,6 +121,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     {'bSortable':false, 'aTargets':[12]}
                 ],
             });
+           
         });
 
         //abrir modal

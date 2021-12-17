@@ -131,6 +131,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     $('#kmAtual').val(json.km_atual);
                 }
             })
+
         });
     </script>
 

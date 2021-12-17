@@ -84,7 +84,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 ?>
                             </select>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-4">
                             <label for="motorista" class="col-form-label">Motorista</label>
                             <select name="motorista" id="motorista" class="form-control">
                                 <option value="<?=$dado['motorista']?>"><?=$dado['motorista']?></option>
@@ -114,10 +114,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
-                            <label class="col-form-label" for="descricao">Descrição do Problema</label>
-                            <input type="text" required value="<?=$dado['problema']?>" name="descricao" class="form-control" id="descricao">
-                        </div>
+                        
                         <div class="form-group col-md-2">
                             <label class="col-form-label" for="localReparo">Local Reparo</label>
                             <select name="localReparo" class="form-control" id="localReparo">
@@ -131,6 +128,16 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     <option value="<?=$categoria['nome_local'] ?>"><?=$categoria['nome_local'] ?></option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-10">
+                            <label class="col-form-label" for="descricao">Descrição do Problema</label>
+                            <input type="text" required value="<?=$dado['problema']?>" name="descricao" class="form-control" id="descricao">
+                        </div>
+                        <div class="form-group col-md-2 ">
+                            <label class="col-form-label" for="frete">Valor Frete</label>
+                            <input type="text" required name="frete" value="<?=$dado['frete']?>" class="form-control" id="frete">
                         </div>
                     </div>
                     
@@ -174,6 +181,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         <div class="form-group col-md-1">
                             <label for="vlUnit" class="col-form-label">Valor Unit.</label>
                             <input type="text" class="form-control" name="vlUnit[]" id="vlUnit" value="<?=$solicitacao['vl_unit']?>">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="desconto" class="col-form-label">Desconto</label>
+                            <input type="text" class="form-control" name="desconto[]" id="desconto" value="<?=$solicitacao['desconto']?>">
                         </div>
                         <div class="form-group col-md-1">
                             <label for="vlTotal" class="col-form-label">Valor Total</label>

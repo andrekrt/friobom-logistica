@@ -59,6 +59,7 @@ foreach($empRecords as $row){
     $cor = "";
     if ($row['categoria']=='Truck' && $kmRestante >= 20000) {
         $situacao = "Pronto para Revisão";
+        
     } elseif($row['categoria']=='Toco' && $kmRestante >= 20000) {
         $situacao = "Pronto para Revisão";
     }elseif($row['categoria']=='3/4' && $kmRestante >= 15000){
