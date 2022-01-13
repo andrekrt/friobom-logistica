@@ -51,7 +51,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
                 <div class="icon-exp">
-                    <a href="pneus-xls"><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="pneus-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table id='tablePneus' class='table table-striped table-bordered nowrap' style="width: 100%;">
