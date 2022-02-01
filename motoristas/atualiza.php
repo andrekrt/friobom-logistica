@@ -7,8 +7,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
 
     $codMotorista = filter_input(INPUT_POST, 'codMotorista');
     $nomeMotorista = filter_input(INPUT_POST, 'nomeMotorista');
+    $salario = str_replace(",",".", filter_input(INPUT_POST, 'salario'));
     $cnh = filter_input(INPUT_POST, 'cnh')?filter_input(INPUT_POST, 'cnh'):null;
-    $validadeCnh = filter_input(INPUT_POST, 'vencimentoCnh')?filter_input(INPUT_POST, 'vencimentoCnh'):'0000/00/00';
+    $validadeCnh = filter_input(INPUT_POST, 'validadeCnh')?filter_input(INPUT_POST, 'validadeCnh'):null;
     $toxicologico = filter_input(INPUT_POST, 'toxicologico');
     $validadeToxicologico = filter_input(INPUT_POST, 'vencimentoToxicologico');
     $ativo = filter_input(INPUT_POST, 'ativo');
@@ -17,8 +18,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     }else{
         $ativo = 1;
     }
-    $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo WHERE cod_interno_motorista = :codMotorista ");
+
+    echo $validadeCnh;
+   // echo "$codMotorista<br>$nomeMotorista<br>$cnh<br>$validadeCnh<br>$toxicologico<br>$validadeToxicologico<br>$ativo";
+
+    $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, salario = :salario WHERE cod_interno_motorista = :codMotorista ");
     $atualiza->bindValue(':nomeMotorista', $nomeMotorista);
+    $atualiza->bindValue('salario', $salario);
     $atualiza->bindValue(':cnh', $cnh);
     $atualiza->bindValue(':validadeCnh', $validadeCnh);
     $atualiza->bindValue(':toxicologico', $toxicologico);

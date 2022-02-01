@@ -59,6 +59,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <input type="text" required name="nomeMotorista" class="form-control" id="nomeMotorista">
                         </div>
                         <div class="form-group col-md-12 espaco">
+                            <label for="salario"> Salário</label>
+                            <input type="text" required name="salario" class="form-control" id="salario">
+                        </div>
+                        <div class="form-group col-md-12 espaco">
                             <label for="cnh"> CNH </label>
                             <input type="text" name="cnh" class="form-control" id="cnh">
                         </div>
@@ -87,6 +91,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/menu.js"></script>
+    <script src="../assets/js/jquery.mask.js"></script>
+<script >
+    $(document).ready(function(){
+        $('#salario').mask("###0,00", {reverse: true});
+    });
+</script>
 </body>
 
 </html>

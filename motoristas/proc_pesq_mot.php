@@ -22,19 +22,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM motoristas");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM motoristas WHERE ativo = 1");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM motoristas WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM motoristas WHERE 1 AND ativo = 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM motoristas WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM motoristas WHERE 1 AND ativo = 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -57,7 +57,7 @@ foreach($empRecords as $row){
             "toxicologico"=>$row['toxicologico'],
             "validade_toxicologico"=>date("d/m/Y", strtotime($row['validade_toxicologico'])),
             "salario"=>"R$ " . str_replace(".",",",$row['salario']),
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_motorista'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?codMotorista='.$row['cod_interno_motorista'].' " data-id="'.$row['cod_interno_motorista'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_motorista'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
         );
 }
 
