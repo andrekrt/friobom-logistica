@@ -27,19 +27,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos ");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE ativo = 1");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE 1 AND ativo = 1".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM veiculos WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM veiculos WHERE 1 AND ativo = 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -80,7 +80,7 @@ foreach($empRecords as $row){
             "km_revisao_diferencial"=>$row['km_revisao_diferencial'],
             "km_restante"=>$row['km_atual']-$row['km_ultima_revisao'],
             "situacao"=>$situacao,
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?codVeiculo='.$row['cod_interno_veiculo'].' " data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="desativar.php?codVeiculo='.$row['cod_interno_veiculo'].' " data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-danger btn-sm deleteBtn" >Desativar</a>'
         );
 }
 
