@@ -28,6 +28,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<td class="text-center font-weight-bold"> Token  </td>';
         $html .= '<td class="text-center font-weight-bold"> Data </td>';
         $html .= '<td class="text-center font-weight-bold"> Placa </td>';
+        $html .= '<td class="text-center font-weight-bold"> Categoria </td>';
         $html .= '<td class="text-center font-weight-bold"> Motorista </td>';
         $html .= '<td class="text-center font-weight-bold"> Rota </td>';
         $html .= '<td class="text-center font-weight-bold"> Problema </td>';
@@ -44,7 +45,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<td class="text-center font-weight-bold"> Obs. </td>';
         $html .= '</tr>';
 
-        $revisao = $db->query("SELECT solicitacoes_new.*, usuarios.nome_usuario, peca_reparo.* FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios" );
+        $revisao = $db->query("SELECT solicitacoes_new.*, usuarios.nome_usuario, peca_reparo.*, veiculos.categoria FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN veiculos ON solicitacoes_new.placa = veiculos.placa_veiculo" );
         $dados = $revisao->fetchAll();
         foreach($dados as $dado){
             
@@ -52,6 +53,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
             $html .= '<td>'.$dado['token'] .'</td>';
             $html .= '<td>'. date("d/m/Y",strtotime($dado['data_atual'] )) .'</td>';
             $html .= '<td>'. $dado['placa'] .'</td>';
+            $html .= '<td>'. $dado['categoria'] .'</td>';
             $html .= '<td>'. $dado['motorista'] .'</td>';
             $html .= '<td>'. $dado['rota'] .'</td>';
             $html .= '<td>'. $dado['problema'] .'</td>';
