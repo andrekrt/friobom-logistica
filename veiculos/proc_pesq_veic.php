@@ -56,6 +56,7 @@ $data = array();
 foreach($empRecords as $row){
     $codVeiculo = $row['cod_interno_veiculo'];
     $kmRestante = $row['km_atual']-$row['km_ultima_revisao'];
+    $kmRestanteAlinhamento = $row['km_atual']-$row['km_alinhamento'];
     $cor = "";
     if ($row['categoria']=='Truck' && $kmRestante >= 20000) {
         $situacao = "Pronto para Revisão";
@@ -67,21 +68,31 @@ foreach($empRecords as $row){
     }else{
         $situacao = "Aguardando";
     }
+
+    //situacao alinhamento
+    if($kmRestanteAlinhamento>=5000){
+        $situacaoAlinhamento = 'Pronto para Alinhamento';
+    }else{
+        $situacaoAlinhamento = 'Aguardando';
+    }
     $data[] = array(
-            "cod_interno_veiculo"=>$row['cod_interno_veiculo'],
-            "tipo_veiculo"=>$row['tipo_veiculo'],
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "categoria"=>$row['categoria'],
-            "peso_maximo"=>$row['peso_maximo'],
-            "cubagem"=>$row['cubagem'],
-            "km_ultima_revisao"=>$row['km_ultima_revisao'],
-            "data_revisao"=> date("d/m/Y", strtotime($row['data_revisao'])),
-            "km_atual"=>$row['km_atual'],
-            "km_revisao_diferencial"=>$row['km_revisao_diferencial'],
-            "km_restante"=>$row['km_atual']-$row['km_ultima_revisao'],
-            "situacao"=>$situacao,
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="desativar.php?codVeiculo='.$row['cod_interno_veiculo'].' " data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-danger btn-sm deleteBtn" >Desativar</a>'
-        );
+        "cod_interno_veiculo"=>$row['cod_interno_veiculo'],
+        "tipo_veiculo"=>$row['tipo_veiculo'],
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "categoria"=>$row['categoria'],
+        "peso_maximo"=>$row['peso_maximo'],
+        "cubagem"=>$row['cubagem'],
+        "km_ultima_revisao"=>$row['km_ultima_revisao'],
+        "data_revisao"=> date("d/m/Y", strtotime($row['data_revisao'])),
+        "km_atual"=>$row['km_atual'],
+        "km_revisao_diferencial"=>$row['km_revisao_diferencial'],
+        "km_restante"=>$row['km_atual']-$row['km_ultima_revisao'],
+        "km_alinhamento"=>$row['km_alinhamento'],
+        "km_restante_alinhamento"=>$kmRestanteAlinhamento,
+        "alinhamento"=>$situacaoAlinhamento,
+        "situacao"=>$situacao,
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="desativar.php?codVeiculo='.$row['cod_interno_veiculo'].' " data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-danger btn-sm deleteBtn" >Desativar</a>'
+    );
 }
 
 ## Response

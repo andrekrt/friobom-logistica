@@ -17,6 +17,7 @@
                     <li class="nav-item"> <a class="nav-link" href="../../veiculos/veiculos.php"> Veículos </a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../../veiculos/form-veiculos.php"> Cadastrar Veículo </a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../../veiculos/revisao.php"> Revisões </a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../veiculos/alinhamentos.php"> Alinhamentos </a>  </li>
                     <li class="nav-item"> <a href="../../veiculos/relatorio.php" class="na-link">Despesas por Veículo</a> </li>
                     <li class="nav-item"> <a href="../../veiculos/gastos.php" class="na-link">Relatório</a> </li>
                 </ul>

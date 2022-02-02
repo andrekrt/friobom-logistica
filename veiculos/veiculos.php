@@ -68,10 +68,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap"> Revisão Óleo (KM) </th>
                                 <th scope="col" class="text-center text-nowrap">Revisão Diferencial (KM) </th>
                                 <th scope="col" class="text-center text-nowrap"> Km Atual </th>
-                                <th scope="col" class="text-center text-nowrap"> Km Restante </th>
-                                <th scope="col" class="text-center text-nowrap"> Situação </th>
+                                <th scope="col" class="text-center text-nowrap"> Km Restante(Revisão)</th>
+                                <th scope="col" class="text-center text-nowrap"> Revisão </th>
+                                <th scope="col" class="text-center text-nowrap"> Km Alinhamento</th>
+                                <th scope="col" class="text-center text-nowrap"> Km Restante(Alinhamento)</th>
+                                <th scope="col" class="text-center text-nowrap"> Alinhamento</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações</th>
-                                
                             </tr>
                         </thead>
                         
@@ -110,6 +112,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'km_atual' },
                     { data: 'km_restante'},
                     { data: 'situacao'},
+                    { data: 'km_alinhamento'},
+                    {data: 'km_restante_alinhamento'}, 
+                    {data: 'alinhamento'}, 
                     { data: 'acoes'},
                 ],
                 "language":{

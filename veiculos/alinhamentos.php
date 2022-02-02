@@ -43,7 +43,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <img src="../assets/images/icones/veiculo.png" alt="">
                 </div>
                 <div class="title">
-                    <h2>Revisões</h2>
+                    <h2>Alinhamentos</h2>
                 </div>
                 <div class="menu-mobile">
                     <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
@@ -53,18 +53,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             <div class="menu-principal">
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalRevisao" data-whatever="@mdo" name="revisao">Lançar Revisão</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalRevisao" data-whatever="@mdo" name="revisao">Novo Alinhamento</button>
                     </div>
-                    <a href="revisao-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="alinhamentos-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
-                    <table id='tableRevisao' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                    <table id='tableAli' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-center text-nowrap" >  Placa Veículo </th>
-                                <th scope="col" class="text-center text-nowrap">Km Revisão</th>
-                                <th scope="col" class="text-center text-nowrap">Tipo Revisão</th>
                                 <th scope="col" class="text-center text-nowrap">Data Revisão</th>
+                                <th scope="col" class="text-center text-nowrap" > Placa Veículo </th>
+                                <th scope="col" class="text-center text-nowrap">Km Alinhamento</th>
+                                <th scope="col" class="text-center text-nowrap">Tipo Alinhamento</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações</th>
                             </tr>
                         </thead>
@@ -86,49 +86,45 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
     
     <script>
         $(document).ready(function(){
-            $('#tableRevisao').DataTable({
+            $('#tableAli').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':'proc_pesq_rev.php'
+                    'url':'proc_pesq_ali.php'
                 },
                 'columns': [
-                    { data: 'placa_veiculo' },
-                    { data: 'km_revisao'},
-                    { data: 'tipo_revisao' },
-                    { data: 'data_revisao' },
+                    { data: 'data_alinhamento'},
+                    { data: 'placa_veiculo'},
+                    { data: 'km_alinhamento'},
+                    { data: 'tipo_alinhamento'},
                     { data: 'acoes'},
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
-                "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[4]}
-                ],
             });
         });
 
         //abrir modal edtiar
-        $('#tableRevisao').on('click', '.editbtn', function(event){
-            var table = $('#tableRevisao').DataTable();
+        $('#tableAli').on('click', '.editbtn', function(event){
+            var table = $('#tableAli').DataTable();
             var trid = $(this).closest('tr').attr('id');
             var id = $(this).data('id');
 
             $('#modalEditar').modal('show');
 
             $.ajax({
-                url:"get_single_rev.php",
+                url:"get_single_ali.php",
                 data:{id:id},
                 type:'post',
                 success: function(data){
                     var json = JSON.parse(data);
-                    $('#id').val(json.id);
-                    $('#kmRevisao').val(json.km_revisao);
-                    $('#tipoRevisao').val(json.tipo_revisao);
+                    $('#id').val(json.idalinhamento);
+                    $('#dataAlinhamento').val(json.data_alinhamento);
                     $('#placa').val(json.placa_veiculo);
-                    $('#dataRevisao').val(json.data_revisao);
-                    $('#kmAtual').val(json.km_atual);
+                    $('#kmAlinhamento').val(json.km_alinhamento);
+                    $('#tipo').val(json.tipo_alinhamento);
                 }
             })
 
@@ -140,11 +136,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Veículo</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Alinhamento</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="atualiza-revisao.php" method="post">
+                <form action="atualiza-alinhamento.php" method="post">
                     <input type="hidden" name="id" id="id" value="">
                     <input type="hidden" name="trid" id="trid" value="">
                     <div class="form-row">
@@ -161,19 +157,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="kmRevisao" class="col-form-label">Km da Revisão</label>
-                            <input type="text" required name="kmRevisao" class="form-control" id="kmRevisao" value="">
+                            <label for="kmAlinhamento" class="col-form-label">Km do Alinhamento</label>
+                            <input type="text" required name="kmAlinhamento" class="form-control" id="kmAlinhamento" value="">
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="dataRevisao" class="col-form-label">Data da Revisão</label>
-                            <input type="date" required name="dataRevisao" class="form-control" id="dataRevisao" value="">
+                            <label for="dataAlinhamento" class="col-form-label">Data do Alinhamento</label>
+                            <input type="date" required name="dataAlinhamento" class="form-control" id="dataAlinhamento" value="">
                         </div>
                         <div class="form-group col-md-3 ">
-                            <label for="tipoRevisao" class="col-form-label">Tipo de Revisão </label>
-                            <select name="tipoRevisao" id="tipoRevisao" class="form-control">
+                            <label for="tipo" class="col-form-label">Tipo de Alinhamento </label>
+                            <select name="tipo" id="tipo" class="form-control">
                                 <option value=""></option>
-                                <option value="Diferencial">Diferencial</option>
-                                <option value="Óleo">Óleo</option>
+                                <option value="Alinhamento">Alinhamento</option>
+                                <option value="Balanceamento">Balanceamento</option>
                             </select>
                         </div>
                     </div>
@@ -201,10 +197,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                 </button>
             </div>
             <div class="modal-body">
-                <form action="add-revisao.php" method="post">
+                <form action="add-alinhamento.php" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-3 espaco ">
-                            <label for="descricao">Placa </label>
+                            <label for="descricao">Placa</label>
                             <select required name="placa" id="placa" class="form-control">
                                 <option value=""></option>
                                 <?php $pecas = $db->query("SELECT * FROM veiculos");
@@ -216,18 +212,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             </select>
                         </div>
                         <div class="form-group col-md-3 espaco ">
-                            <label for="kmRevisao">Km da Revisão </label>
-                            <input type="text" required name="kmRevisao" id="kmRevisao" class="form-control">
+                            <label for="kmAlinhamento">Km do Alinhamento </label>
+                            <input type="text" required name="kmAlinhamento" id="kmAlinhamento" class="form-control">
                         </div>
                         <div class="form-group col-md-3 espaco ">
-                            <label for="dataRevisao">Data da Revisão </label>
-                            <input type="date" required name="dataRevisao" id="dataRevisao" class="form-control">
+                            <label for="dataAlinhamento">Data do Alinhamento </label>
+                            <input type="date" required name="dataAlinhamento" id="dataAlinhamento" class="form-control">
                         </div>
                         <div class="form-group col-md-3 espaco ">
-                            <label for="tipoRevisao">Tipo de Revisão </label>
-                            <select name="tipoRevisao" id="tipoRevisao" class="form-control">
-                                <option value="Diferencial">Diferencial</option>
-                                <option value="Óleo">Óleo</option>
+                            <label for="tipo">Tipo </label>
+                            <select name="tipo" id="tipo" class="form-control">
+                                <option value=""></option>
+                                <option value="Alinhamento">Alinhamento</option>
+                                <option value="Balanceamento">Balanceamento</option>
                             </select>
                         </div>
                     </div>    
