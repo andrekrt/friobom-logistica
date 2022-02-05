@@ -48,6 +48,17 @@
             </nav>
         </div>
         <div class="item">
+            <a onclick="menuColaboradores()">
+                <img src="../../assets/images/menu/colaboradores.png" >
+            </a>
+            <nav id="submenuColaborador">
+                <ul class="nav flex-column">
+                    <li class="nav-item"> <a class="nav-link" href="../../colaboradores/colaboradores.php"> Colaboradores </a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../../colaboradores/auxiliares.php"> Auxiliares de Rota </a> </li>
+                </ul> 
+            </nav> 
+        </div>
+        <div class="item">
             <a onclick="menuOcorrencias()">
                 <img src="../../assets/images/menu/ocorrencias.png" alt="">
             </a>

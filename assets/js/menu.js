@@ -28,6 +28,16 @@ function menuMotorista(){
     
 }
 
+function menuColaboradores(){
+
+    if(document.getElementById("submenuColaborador").style.display == "none" || document.getElementById("submenuColaborador").style.display == "" ){
+        document.getElementById("submenuColaborador").style.display = "block";
+    }else{
+        document.getElementById("submenuColaborador").style.display = "none";
+    }
+    
+}
+
 function menuDespesas(){
 
     if(document.getElementById("submenuDespesa").style.display == "none" || document.getElementById("submenuDespesa").style.display == "" ){
