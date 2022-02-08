@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 4) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 4)) {
 
    
 } else {
@@ -92,8 +92,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     'url':'proc_pesq_colab.php'
                 },
                 'columns': [
-                    { data: 'nome_colaborador' },
                     { data: 'cpf_colaborador'},
+                    { data: 'nome_colaborador' },
                     { data: 'salario_colaborador' },
                     { data: 'extra' },
                     { data: 'cargo_colaborador' },

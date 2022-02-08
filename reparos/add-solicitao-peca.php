@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] !=  3){
 
     //$token = sprintf('%07X', mt_rand(0, 0xFFFFFFF));
     $consultaToken = $db->query("SELECT MAX(token) as token FROM solicitacoes_new");

@@ -3,7 +3,7 @@
 session_start();
 require("../../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
     $idManutencao = filter_input(INPUT_POST, 'idmanutencao');
     $pneu = filter_input(INPUT_POST, 'pneu');

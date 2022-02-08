@@ -17,7 +17,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
     <body>
         <?php
         
-            if($tipoUsuario==1 || $tipoUsuario==99){
+            if($_SESSION['tipoUsuario'] != 2 && $_SESSION['tipoUsuario'] != 3){
 
                 $arquivo = 'auxiliares.xls';
 

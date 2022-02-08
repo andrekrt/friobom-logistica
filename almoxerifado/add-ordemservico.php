@@ -4,7 +4,7 @@ session_start();
 require("../conexao.php");
 date_default_timezone_set('America/Sao_Paulo');
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario'] ==99){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
     
     $idUsuario = $_SESSION['idUsuario'];
     $dataAbertura = date("Y-m-d H:i:s");

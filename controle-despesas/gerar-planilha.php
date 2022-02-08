@@ -26,7 +26,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
     <body>
         <?php 
         
-            if($tipoUsuario==1 || $tipoUsuario==99){
+            if($_SESSION['tipoUsuario'] != 4){
                 $arquivo = 'despesas.xls';
                 $html = '';
                 $html .= '<table border="1">';

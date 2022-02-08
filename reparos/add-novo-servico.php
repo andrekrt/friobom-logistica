@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] !=  3){
     if(isset($_POST['novo-servico'])){
         $idSolicPrincipal = filter_input(INPUT_POST, 'id');
         $servicoAdicional = filter_input(INPUT_POST, 'servico02');

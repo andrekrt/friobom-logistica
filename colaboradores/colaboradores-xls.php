@@ -17,7 +17,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
     <body>
         <?php
         
-            if($tipoUsuario==1 || $tipoUsuario==99){
+            if($tipoUsuario==4 || $tipoUsuario==99){
 
                 $arquivo = 'colaboradores.xls';
 

@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false&& $_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
     $idEntrada = filter_input(INPUT_POST,'identrada');
     $dataNota = filter_input(INPUT_POST, 'dataNf')?filter_input(INPUT_POST, 'dataNf'):null;

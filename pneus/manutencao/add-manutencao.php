@@ -3,7 +3,7 @@
 session_start();
 require("../../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
     $pneu = filter_input(INPUT_POST, 'pneu');
     $consultaPneu = $db->prepare("SELECT * FROM pneus WHERE idpneus = :pneu");

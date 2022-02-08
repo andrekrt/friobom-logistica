@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] !=  3){
 
     $token = filter_input(INPUT_POST, 'token');
     $placa = filter_input(INPUT_POST, 'veiculo'); 

@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] ==99){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
     $idDespesa = filter_input(INPUT_GET, 'id');
     
     $sql = $db->query("DELETE FROM viagem WHERE iddespesas = '$idDespesa' ");
