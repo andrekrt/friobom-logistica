@@ -54,6 +54,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalOrdemServico" data-whatever="@mdo" name="idOrdemServico">Nova Ordem de Serviço</button>
                     </div>
+                    <a href="os-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a> 
                 </div>
                 <div class="table-responsive">
                     <table id='tableOS' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
@@ -198,6 +199,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Preventiva">Preventiva</option>
                                 <option value="Manutenção Externa">Manutenção Externa</option>
                                 <option value="Troca de Óleo">Troca de Óleo</option>
+                                <option value="Higienização">Higienização</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
@@ -282,6 +284,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Preventiva">Preventiva</option>
                                 <option value="Manutenção Externa">Manutenção Externa</option>
                                 <option value="Troca de Óleo">Troca de Óleo</option>
+                                <option value="Higienização">Higienização</option>
                             </select>
                         </div>
                         <div class="form-group col-md-5 espaco ">
