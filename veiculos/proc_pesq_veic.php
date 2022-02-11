@@ -70,7 +70,7 @@ foreach($empRecords as $row){
     }
 
     //situacao alinhamento
-    if($kmRestanteAlinhamento>=5000){
+    if($kmRestanteAlinhamento>=7000){
         $situacaoAlinhamento = 'Pronto para Alinhamento';
     }else{
         $situacaoAlinhamento = 'Aguardando';

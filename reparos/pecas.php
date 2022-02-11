@@ -183,6 +183,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Embreagem">Embreagem</option>
                                 <option value="Diferencial">Diferencial</option>
                                 <option value="Bateria">Bateria</option>
+                                <option value="Tacografo">Tacografo</option>
+                                <option value="Contrato de manutenção volvo">Contrato de manutenção volvo</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -264,6 +266,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Embreagem">Embreagem</option>
                                 <option value="Diferencial">Diferencial</option>
                                 <option value="Bateria">Bateria</option>
+                                <option value="Tacografo">Tacografo</option>
+                                <option value="Contrato de manutenção volvo">Contrato de manutenção volvo</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4 espaco ">

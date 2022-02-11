@@ -35,20 +35,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $sql->bindValue(':idSuco', $idSuco);
     
     if($sql->execute()){
-        $atualizaPneu = $db->prepare("UPDATE pneus SET suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04 WHERE idpneus = :idpneu");
-        $atualizaPneu->bindValue(':suco01', $suco01);
-        $atualizaPneu->bindValue(':suco02', $suco02);
-        $atualizaPneu->bindValue(':suco03', $suco03);
-        $atualizaPneu->bindValue(':suco04', $suco04);
-        $atualizaPneu->bindValue(':idpneu', $idpneu);
-
-        if($atualizaPneu->execute()){
-            echo "<script> alert('Suco Atualizado!!')</script>";
-            echo "<script> window.location.href='sucos.php' </script>";
-        }else{
-            print_r($atualizaPneu->errorInfo());
-        }
-        
+        echo "<script> alert('Suco Atualizado!!')</script>";
+        echo "<script> window.location.href='sucos.php' </script>";  
     }else{
         print_r($sql->errorInfo());
     }

@@ -32,9 +32,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 </head>
 
 <body>
@@ -50,59 +48,38 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <h2>Registrar Suco</h2>
                 </div>
                 <div class="menu-mobile">
-                    <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                    <img src="../../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
                 </div>
             </div>
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
                 <form action="add-suco.php" class="despesas" enctype="multipart/form-data" method="post" id="">
                     <div id="formulario">
-                         
                         <div class="form-row">
-                            <div class="form-grupo col-md-1 espaco">
-                                <label for="pneu">Nº Fogo</label>
-                                <select required name="pneu" id="pneu" class="form-control">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="veiculo">Veículo</label>
+                                <select required name="veiculo" id="veiculo" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $sql=$db->query("SELECT * FROM pneus");
-                                    $pneus = $sql->fetchAll();
-                                    foreach($pneus as $pneu):
+                                    $veiculos = $db->query("SELECT DISTINCT(veiculo) FROM pneus");
+                                    $veiculos = $veiculos->fetchAll();
+                                    foreach($veiculos as $veiculo):
                                     ?>
-                                    <option value="<?=$pneu['idpneus'] ?>"><?=$pneu['num_fogo']?></option>
+                                    <option value="<?=$veiculo['veiculo']?>"><?=$veiculo['veiculo']?></option>
                                     <?php
                                     endforeach;
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-1 espaco">
-                                <label for="kmVeiculo">Km Veículo</label>
-                                <input type="text" name="kmVeiculo" id="kmVeiculo" class="form-control" required>
+                            <div class="form-group col-md-2 espaco"> 
+                                <label for="kmVeiculo">Km Veículo</label> 
+                                <input type="text" name="kmVeiculo" id="kmVeiculo" class="form-control" required> 
                             </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="carcaca">Avalição por Carcaça</label>
-                                <input type="text" required name="carcaca" id="carcaca" class="form-control">
-                            </div>
-                            <div class="form-group col-md-1 espaco">
-                                <label for="suco01">Suco 01</label>
-                                <input type="text" required name="suco01" class="form-control" id="suco01">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="suco02">Suco 02</label>
-                                <input type="text" required name="suco02" class="form-control" id="suco02">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="suco03">Suco 03</label>
-                                <input type="text" required name="suco03" class="form-control" id="suco03">
-                            </div>
-                            <div class="form-group col-md-1 espaco">
-                                <label for="suco04">Suco 04</label>
-                                <input type="text" required name="suco04" class="form-control" id="suco04">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="calibragem">Calibragem</label>
-                                <input type="text" name="calibragem" class="form-control" id="calibragem">
-                            </div>
-                        </div>                    
+                        </div>
+                        <div id="pneus_veiculos">
+                            
+                        </div>
+                                           
                     </div>
                     <div class="form-group">
                         <button type="submit" name="entradas" class="btn btn-primary"> Registrar Suco</button>
@@ -112,13 +89,31 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
         </div>
     </div>
 
-    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="../../assets/js/bootstrap.bundle.min.js"></script> -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../assets/js/menu.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#pneu').select2();
+        // $(document).ready(function() {
+        //     $('#pneu').select2();
+        // });
+        $(function(){
+            $('#veiculo').change(function(){
+                if($(this).val()){
+                    $.getJSON('pesq_pneus.php?search=',{veiculo: $(this).val(), ajax: 'true'}, function(j){
+                        
+                        var options = '';
+                        for(var i = 0; i < j.length; i++){
+                           
+                            options += '<input type="hidden" value="' + j[i].idpneu + '" name="idpneu[]"> <input type="hidden" value="' + j[i].km + '" name="kmPneu[]">   <div class="form-row"> <div class="form-grupo col-md-1 espaco"> <label for="pneu">Nº Fogo</label> <input type="text" id="fogo" class="form-control" value="' + j[i].fogo + '" readonly name="fogo[]"> </div> <div class="form-group col-md-2 espaco"> <label for="carcaca">Avalição por Carcaça</label> <input type="text" required name="carcaca[]" id="carcaca" class="form-control"> </div> <div class="form-group col-md-1 espaco"> <label for="suco01">Suco 01</label> <input type="text" required name="suco01[]" class="form-control" id="suco01"> </div> <div class="form-group col-md-2 espaco"> <label for="suco02">Suco 02</label> <input type="text" required name="suco02[]" class="form-control" id="suco02"> </div> <div class="form-group col-md-2 espaco"> <label for="suco03">Suco 03</label> <input type="text" required name="suco03[]" class="form-control" id="suco03">  </div> <div class="form-group col-md-1 espaco"> <label for="suco04">Suco 04</label> <input type="text" required name="suco04[]" class="form-control" id="suco04"> </div> <div class="form-group col-md-2 espaco"> <label for="calibragem">Calibragem</label> <input type="text" name="calibragem[]" class="form-control" id="calibragem">  </div> </div> '
+                        }
+                        $('#pneus_veiculos').empty();
+                        $('#pneus_veiculos').append(options);
+                    });
+                }
+            });
         });
     </script>
+
 </body>
 
 </html>
