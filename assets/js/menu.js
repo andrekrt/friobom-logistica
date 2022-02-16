@@ -148,6 +148,16 @@ function menuSuco(){
     
 }
 
+function menuTk(){
+
+    if(document.getElementById("submenuTk").style.display == "none" || document.getElementById("submenuTk").style.display == "" ){
+        document.getElementById("submenuTk").style.display = "block";
+    }else{
+        document.getElementById("submenuTk").style.display = "none";
+    }
+    
+}
+
 
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
