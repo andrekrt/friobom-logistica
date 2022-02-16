@@ -35,29 +35,65 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<tr>';
         $html .= '<td class="text-center font-weight-bold"> Código  </td>';
         $html .= '<td class="text-center font-weight-bold"> Tipo </td>';
+        $html .= '<td class="text-center font-weight-bold"> Categoria </td>';
         $html .= '<td class="text-center font-weight-bold"> Placa </td>';
         $html .= '<td class="text-center font-weight-bold"> Peso Máximo </td>';
         $html .= '<td class="text-center font-weight-bold"> Cubagem </td>';
-        $html .= '<td class="text-center font-weight-bold"> DAta Última Revisão </td>';
-        $html .= '<td class="text-center font-weight-bold"> Km Última Revisão </td>';
+        $html .= '<td class="text-center font-weight-bold"> Data Última Revisão </td>';
+        $html .= '<td class="text-center font-weight-bold"> Última Revisão de Óleo </td>';
+        $html .= '<td class="text-center font-weight-bold"> Última Revisão Diferencial</td>';
         $html .= '<td class="text-center font-weight-bold"> Km Atual </td>';
-        $html .= '<td class="text-center font-weight-bold"> Km Restante </td>';
+        $html .= '<td class="text-center font-weight-bold"> Km Restante de Revisão </td>';
+        $html .= '<td class="text-center font-weight-bold"> Status Revisão</td>';
+        $html .= '<td class="text-center font-weight-bold"> Km último Alinhamento</td>';
+        $html .= '<td class="text-center font-weight-bold">Status ALinhamento</td>';
+        $html .= '<td class="text-center font-weight-bold">Ativo</td>';
         $html .= '</tr>';
 
         $revisao = $db->query("SELECT * FROM veiculos");
         $dados = $revisao->fetchAll();
         foreach($dados as $dado){
+
             $kmRestante = $dado['km_atual']-$dado['km_ultima_revisao'];
+            $kmRestanteAlinhamento = $dado['km_atual']-$dado['km_alinhamento'];
+            if ($dado['categoria']=='Truck' && $kmRestante >= 20000) {
+                $situacao = "Pronto para Revisão";
+            } elseif($dado['categoria']=='Toco' && $kmRestante >= 20000) {
+                $situacao = "Pronto para Revisão";
+            }elseif($dado['categoria']=='Mercedinha' && $kmRestante >= 15000){
+                $situacao = "Pronto para Revisão";
+            }else{
+                $situacao = "Aguardando";
+            }
+             //situacao alinhamento
+            if($kmRestanteAlinhamento>=7000){
+                $situacaoAlinhamento = 'Pronto para Alinhamento';
+            }else{
+                $situacaoAlinhamento = 'Aguardando';
+            }
+
+            if($dado['ativo']==0){
+                $ativo = "NÃO";
+            }else{
+                $ativo = "SIM";
+            }
+
             $html .= '<tr>';
             $html .= '<td>'.$dado['cod_interno_veiculo'] .'</td>';
             $html .= '<td>'. $dado['tipo_veiculo'] .'</td>';
+            $html .= '<td>'. $dado['categoria'] .'</td>';
             $html .= '<td>'. $dado['placa_veiculo'] .'</td>';
             $html .= '<td>'. $dado['peso_maximo'] .'</td>';
             $html .= '<td>'. $dado['cubagem'] .'</td>';
             $html .= '<td>'. date("d/m/Y", strtotime($dado['data_revisao']))  .'</td>';
             $html .= '<td>'. $dado['km_ultima_revisao'] .'</td>';
+            $html .= '<td>'. $dado['km_revisao_diferencial'] .'</td>';
             $html .= '<td>'. $dado['km_atual']  .'</td>';
             $html .= '<td>'. $kmRestante .'</td>';
+            $html .= '<td>'. $situacao .'</td>';
+            $html .= '<td>'. $kmRestanteAlinhamento .'</td>';
+            $html .= '<td>'. $situacaoAlinhamento .'</td>';
+            $html .= '<td>'. $ativo .'</td>';
             $html .= '</tr>';
         }
         $html .= '</table>';

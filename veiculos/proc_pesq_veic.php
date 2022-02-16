@@ -63,7 +63,7 @@ foreach($empRecords as $row){
         
     } elseif($row['categoria']=='Toco' && $kmRestante >= 20000) {
         $situacao = "Pronto para Revisão";
-    }elseif($row['categoria']=='3/4' && $kmRestante >= 15000){
+    }elseif($row['categoria']=='Mercedinha' && $kmRestante >= 15000){
         $situacao = "Pronto para Revisão";
     }else{
         $situacao = "Aguardando";
