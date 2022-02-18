@@ -35,6 +35,4 @@ function atualizaTK($idTk){
 
 }
 
-atualizaTK(5);
-
 ?>

@@ -24,6 +24,18 @@
             </nav>
         </div>
         <div class="item">
+            <a class="" onclick="menuTk()">
+                <img src="../../assets/images/menu/thermoking.png">
+            </a>
+            <nav id="submenuTk">
+                <ul class="nav flex-column">
+                    <li class="nav-item"> <a class="nav-link" href="../../thermoking/thermoking.php"> Thermoking </a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../../thermoking/revisao.php"> Revisão de Thermoking</a> </li>
+                    
+                </ul>
+            </nav>
+        </div>
+        <div class="item">
             <a onclick="menuRota()">
                 <img src="../../assets/images/menu/rotas.png" alt="">
             </a>

@@ -239,6 +239,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         $kmAtual->bindValue(':codVeiculo', $codVeiculo);
         $kmAtual->execute();
 
+        $hrTkAtual = $db->prepare("UPDATE thermoking SET hora_atual = :hrTkAtual WHERE veiculo = :veiculo");
+        $hrTkAtual->bindValue(':hrTkAtual', $hrTk4Abast);
+        $hrTkAtual->bindValue(':veiculo', $codVeiculo);
+        $hrTkAtual->execute();
+
         if($sql){
             header("Location: despesas.php");
         }else{
