@@ -19,7 +19,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $_SESSION['tipoUsuario'] = $tipoUsuario;
         $_SESSION['nomeUsuario'] = $nomeUsuario;
 
-        $qtdeVeiculos = $db->query("SELECT * FROM veiculos")->rowCount();
+        $qtdeVeiculos = $db->query("SELECT * FROM veiculos WHERE ativo = 1")->rowCount();
         $qtdRotas = $db->query("SELECT * FROM rotas")->rowCount();
         $qtdViagem = $db->query("SELECT * FROM viagem")->rowCount();
         $qtdMotoristas = $db->query("SELECT * FROM motoristas")->rowCount();
@@ -338,7 +338,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                 
                                 <?php
 
-                                    $sql = $db->query("SELECT veiculos.categoria, SUM(km_rodado) as kmRodado, SUM(litros) as litros FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE veiculos.categoria = '3/4' ");
+                                    $sql = $db->query("SELECT veiculos.categoria, SUM(km_rodado) as kmRodado, SUM(litros) as litros FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE veiculos.categoria = 'Mercedinha' ");
                                     $dados = $sql->fetch();
                                     echo number_format($dados['kmRodado']/$dados['litros'],2, ",", ".");
                                 
