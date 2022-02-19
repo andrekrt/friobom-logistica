@@ -2,6 +2,7 @@
 
 session_start();
 require("../conexao.php");
+include("../thermoking/funcao.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
 
@@ -155,7 +156,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $servicos = filter_input(INPUT_POST, 'servicos')? str_replace(",", ".",filter_input(INPUT_POST, 'servicos')) :0;
     $nomeAjudante = filter_input(INPUT_POST, 'nomeAjud');
 
-    echo "ID: $idDespesa<br>
+    /*echo "ID: $idDespesa<br>
     Código do Veículo: $codVeiculo<br>
      Tipo do Veículo: $tipoVeiculo<br>
     Placa do Veículo: $placaVeiculo<br>
@@ -215,7 +216,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     Descarga: $descarga<br>
     Travessia: $travessia<br>
     Serviço: $servicos<br>
-    Nome Ajudante: $nomeAjudante<BR><BR>";
+    Nome Ajudante: $nomeAjudante<BR><BR>";*/
 
     $salario = $db->prepare("SELECT salario FROM motoristas WHERE cod_interno_motorista = :codMotorista");
     $salario->bindValue('codMotorista', $codMotorista);
@@ -315,6 +316,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         $kmAtual->bindValue(':kmFinal', $kmFinal);
         $kmAtual->bindValue(':codVeiculo', $codVeiculo);
         $kmAtual->execute();
+
+        $hrTkAtual = $db->prepare("UPDATE thermoking SET hora_atual = :hrTkAtual WHERE veiculo = :veiculo");
+        $hrTkAtual->bindValue(':hrTkAtual', $hrTk4Abast);
+        $hrTkAtual->bindValue(':veiculo', $codVeiculo);
+        $hrTkAtual->execute();
+
+        calculoTk($codVeiculo);
 
         if($sql->execute()){
             header("Location: despesas.php");

@@ -2,6 +2,7 @@
 
 session_start();
 require("../conexao.php");
+include("../thermoking/funcao.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
 
@@ -243,6 +244,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         $hrTkAtual->bindValue(':hrTkAtual', $hrTk4Abast);
         $hrTkAtual->bindValue(':veiculo', $codVeiculo);
         $hrTkAtual->execute();
+
+        calculoTk($codVeiculo);
 
         if($sql){
             header("Location: despesas.php");
