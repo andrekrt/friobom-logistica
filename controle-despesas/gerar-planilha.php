@@ -39,6 +39,8 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                 $html .= '<td class="text-center font-weight-bold"> Data Carregamento </td>';
                 $html .= '<td class="text-center font-weight-bold"> Data Saída </td>';
                 $html .= '<td class="text-center font-weight-bold"> Data Retorno </td>';
+                $html .= '<td class="text-center font-weight-bold"> Mês Retorno </td>';
+                $html .= '<td class="text-center font-weight-bold"> Dia Retorno </td>';
                 $html .= '<td class="text-center font-weight-bold"> Dias em Rota </td>';
                 $html .= '<td class="text-center font-weight-bold"> Carregamento </td>';
                 $html .= '<td class="text-center font-weight-bold"> Código Rota </td>';
@@ -104,7 +106,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                 $html .= '<td class="text-center font-weight-bold"> Ajudante </td>';
                 $html .= '</tr>';
                 
-                $sql = $db->query("SELECT * FROM viagem");
+                $sql = $db->query("SELECT *, MONTH(data_chegada) as mes, YEAR(data_chegada) as ano FROM viagem");
                 $dados = $sql->fetchAll();
                 foreach($dados as $dado){
                     $html .= '<tr>';
@@ -116,6 +118,8 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                     $html .= '<td>' .$dado['data_carregamento'].  '</td>';
                     $html .= '<td>' .$dado['data_saida'].  '</td>';
                     $html .= '<td>' .$dado['data_chegada'].  '</td>';
+                    $html .= '<td>' .$dado['mes'].  '</td>';
+                    $html .= '<td>' .$dado['ano'].  '</td>';
                     $html .= '<td>' .$dado['dias_em_rota'].  '</td>';
                     $html .= '<td>' .$dado['num_carregemento'].  '</td>';
                     $html .= '<td>' .$dado['cod_rota'].  '</td>';

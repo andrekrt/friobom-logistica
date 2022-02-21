@@ -27,6 +27,8 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<tr>';
         $html .= '<td class="text-center font-weight-bold"> Token  </td>';
         $html .= '<td class="text-center font-weight-bold"> Data </td>';
+        $html .= '<td class="text-center font-weight-bold"> Mês </td>';
+        $html .= '<td class="text-center font-weight-bold"> Ano </td>';
         $html .= '<td class="text-center font-weight-bold"> Placa </td>';
         $html .= '<td class="text-center font-weight-bold"> Categoria Veículo</td>';
         $html .= '<td class="text-center font-weight-bold"> Motorista </td>';
@@ -45,13 +47,15 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<td class="text-center font-weight-bold"> Obs. </td>';
         $html .= '</tr>';
 
-        $revisao = $db->query("SELECT solicitacoes_new.*, usuarios.nome_usuario, peca_reparo.*, veiculos.categoria as categoriaVeiculo FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN veiculos ON solicitacoes_new.placa = veiculos.placa_veiculo" );
+        $revisao = $db->query("SELECT solicitacoes_new.*, MONTH(data_atual) as mes, YEAR(data_atual) as ano, usuarios.nome_usuario, peca_reparo.*, veiculos.categoria as categoriaVeiculo FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN veiculos ON solicitacoes_new.placa = veiculos.placa_veiculo" );
         $dados = $revisao->fetchAll();
         foreach($dados as $dado){
             
             $html .= '<tr>';
             $html .= '<td>'.$dado['token'] .'</td>';
             $html .= '<td>'. date("d/m/Y",strtotime($dado['data_atual'] )) .'</td>';
+            $html .= '<td>'. $dado['mes'] .'</td>';
+            $html .= '<td>'. $dado['ano'] .'</td>';
             $html .= '<td>'. $dado['placa'] .'</td>';
             $html .= '<td>'. $dado['categoriaVeiculo'] .'</td>';
             $html .= '<td>'. $dado['motorista'] .'</td>';
