@@ -64,8 +64,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Peso Máximo</th>
                                 <th scope="col" class="text-center text-nowrap">Cubagem</th>
-                                <th scope="col" class="text-center text-nowrap"> Data Última Revisão</th>
+                                <th scope="col" class="text-center text-nowrap"> Data Revisão Óleo</th>
                                 <th scope="col" class="text-center text-nowrap"> Revisão Óleo (KM) </th>
+                                <th scope="col" class="text-center text-nowrap"> Data Revisão Diferencial</th>
                                 <th scope="col" class="text-center text-nowrap">Revisão Diferencial (KM) </th>
                                 <th scope="col" class="text-center text-nowrap"> Km Atual </th>
                                 <th scope="col" class="text-center text-nowrap"> Km Restante(Revisão)</th>
@@ -106,8 +107,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                     { data: 'placa_veiculo' },
                     { data: 'peso_maximo' },
                     { data: 'cubagem' },
-                    { data: 'data_revisao' },
+                    { data: 'data_revisao_oleo' },
                     { data: 'km_ultima_revisao' },
+                    { data: 'data_revisao_diferencial' },
                     { data: 'km_revisao_diferencial' },
                     { data: 'km_atual' },
                     { data: 'km_restante'},
