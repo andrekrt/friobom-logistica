@@ -1,5 +1,6 @@
 <?php
-
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
 session_start();
 require("../conexao.php");
 
@@ -13,15 +14,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Planilha</title>
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../assets/css/style.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../assets/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#ffffff">
+        
     </head>
     <body>
         <?php 
@@ -40,7 +33,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                 $html .= '<td class="text-center font-weight-bold"> Data Saída </td>';
                 $html .= '<td class="text-center font-weight-bold"> Data Retorno </td>';
                 $html .= '<td class="text-center font-weight-bold"> Mês Retorno </td>';
-                $html .= '<td class="text-center font-weight-bold"> Dia Retorno </td>';
+                $html .= '<td class="text-center font-weight-bold"> Ano Retorno </td>';
                 $html .= '<td class="text-center font-weight-bold"> Dias em Rota </td>';
                 $html .= '<td class="text-center font-weight-bold"> Carregamento </td>';
                 $html .= '<td class="text-center font-weight-bold"> Código Rota </td>';
@@ -118,7 +111,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                     $html .= '<td>' .$dado['data_carregamento'].  '</td>';
                     $html .= '<td>' .$dado['data_saida'].  '</td>';
                     $html .= '<td>' .$dado['data_chegada'].  '</td>';
-                    $html .= '<td>' .$dado['mes'].  '</td>';
+                    $html .= '<td>' .strftime('%B', strtotime($dado['data_chegada'])).  '</td>';
                     $html .= '<td>' .$dado['ano'].  '</td>';
                     $html .= '<td>' .$dado['dias_em_rota'].  '</td>';
                     $html .= '<td>' .$dado['num_carregemento'].  '</td>';

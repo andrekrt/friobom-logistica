@@ -1,5 +1,6 @@
 <?php
-
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
 session_start();
 require("../conexao.php");
 
@@ -54,7 +55,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
             $html .= '<tr>';
             $html .= '<td>'.$dado['token'] .'</td>';
             $html .= '<td>'. date("d/m/Y",strtotime($dado['data_atual'] )) .'</td>';
-            $html .= '<td>'. $dado['mes'] .'</td>';
+            $html .= '<td>'.strftime('%B', strtotime($dado['data_atual'])) .'</td>';
             $html .= '<td>'. $dado['ano'] .'</td>';
             $html .= '<td>'. $dado['placa'] .'</td>';
             $html .= '<td>'. $dado['categoriaVeiculo'] .'</td>';
