@@ -186,7 +186,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                             <label for="categoria" class="col-form-label">Categoria</label>
                             <select class="form-control" name="categoria" id="categoria">
                                 <option >  </option>
-                                <option value="3/4">3/4</option>
+                                <option value="Mercedinha">Mercedinha</option>
                                 <option value="Toco">Toco</option>
                                 <option value="Truck">Truck</option>
                             </select>
@@ -204,20 +204,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                         <div class="form-group col-md-6">
                             <label for="cubagem" class="col-form-label">Cubagem</label>
                             <input type="text" class="form-control" name="cubagem" id="cubagem" >
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-5">
-                            <label for="kmUltimaRevisao" class="col-form-label">Km da Última Revisão</label>
-                            <input type="text" class="form-control" name="kmUltimaRevisao" id="kmUltimaRevisao" required >
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="dataRevisao" class="col-form-label">Data Última Revisão</label>
-                            <input type="date" class="form-control" name="dataRevisao" id="dataRevisao" required >
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="kmAtual" class="col-form-label">Km Atual</label>
-                            <input type="text" required class="form-control" name="kmAtual" id="kmAtual" >
                         </div>
                     </div>
             </div>

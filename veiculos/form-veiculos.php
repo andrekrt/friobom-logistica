@@ -72,7 +72,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <select name="categoria" class="form-control" id="categoria">
                                     <option value="Truck">Truck</option>
                                     <option value="Toco">Toco</option>
-                                    <option value="3/4">3/4</option>
+                                    <option value="Mercedinha">Mercedinha</option>
                                     <option value="Frota Leve">Frota Leve</option>
                                 </select>
                             </div>

@@ -9,22 +9,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $tipoVeiculo = filter_input(INPUT_POST, 'tipoVeiculo');
     $placa = filter_input(INPUT_POST, 'placa');
     $categoria = filter_input(INPUT_POST, 'categoria');
-    $kmUltimaRevisao = filter_input(INPUT_POST, 'kmUltimaRevisao');
-    $kmAtual = filter_input(INPUT_POST, 'kmAtual');
     $peso = filter_input(INPUT_POST, 'peso');
     $cubagem = str_replace(",", ".", filter_input(INPUT_POST, 'cubagem'));
-    $dataRevisao = filter_input(INPUT_POST, 'dataRevisao');
 
-    $atualiza = $db->prepare("UPDATE veiculos SET tipo_veiculo = :tipoVeiculo, placa_veiculo = :placa, km_ultima_revisao = :ultimaRevisao, km_atual=:kmAtual, categoria = :categoria, peso_maximo = :peso, cubagem = :cubagem, data_revisao = :dataRevisao WHERE cod_interno_veiculo = :codVeiculo ");
+    $atualiza = $db->prepare("UPDATE veiculos SET tipo_veiculo = :tipoVeiculo, placa_veiculo = :placa, categoria = :categoria, peso_maximo = :peso, cubagem = :cubagem WHERE cod_interno_veiculo = :codVeiculo ");
     $atualiza->bindValue(':tipoVeiculo', $tipoVeiculo);
     $atualiza->bindValue(':placa', $placa);
-    $atualiza->bindValue(':ultimaRevisao', $kmUltimaRevisao);
-    $atualiza->bindValue(':kmAtual', $kmAtual);
     $atualiza->bindValue(':categoria', $categoria);
     $atualiza->bindValue(':peso', $peso);
     $atualiza->bindValue(':cubagem', $cubagem);
     $atualiza->bindValue(':codVeiculo', $codVeiculo);
-    $atualiza->bindValue(':dataRevisao', $dataRevisao);
 
     //echo "$codVeiculo <br>$tipoVeiculo<br>$placa";
 
