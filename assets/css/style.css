@@ -391,6 +391,11 @@ img.icone{
     height: 30px;
 }
 
+/* checkbox OS */
+.check-os{
+    margin-right: 20px;
+}
+
 @media(max-width:768px){
     .area-indice-val{
         grid-template-columns: repeat(3, 1fr);

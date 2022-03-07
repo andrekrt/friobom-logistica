@@ -64,7 +64,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap">Data Abertura</th>
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
                                 <th scope="col" class="text-center text-nowrap">Descrição Problema</th>
-                                <th scope="col" class="text-center text-nowrap">Tipo Manutenção</th>
+                                <th scope="col" class="text-center text-nowrap">Tipo de Manutenção</th>
+                                <th scope="col" class="text-center text-nowrap">Corretiva</th>
+                                <th scope="col" class="text-center text-nowrap">Preventiva</th>
+                                <th scope="col" class="text-center text-nowrap">Manutenção Externa</th>
+                                <th scope="col" class="text-center text-nowrap">Troca de Óleo</th>
+                                <th scope="col" class="text-center text-nowrap">Higienização</th>
                                 <th scope="col" class="text-center text-nowrap"> Agente Causador </th>
                                 <th scope="col" class="text-center text-nowrap"> Nº Requisição </th>
                                 <th scope="col" class="text-center text-nowrap"> Nº Solicitação </th>
@@ -105,6 +110,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'placa' },
                     { data: 'descricao_problema' },
                     { data: 'tipo_manutencao' },
+                    { data: 'corretiva' },
+                    { data: 'preventiva' },
+                    { data: 'externa' },
+                    { data: 'oleo' },
+                    { data: 'higienizacao' },
                     { data: 'causador' },
                     { data: 'requisicao_saida' },
                     { data: 'solicitacao_peca' },
@@ -142,17 +152,26 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     $('#dataAbertura').val(json.data_abertura);
                     $('#placa').val(json.placa);
                     $('#problema').val(json.descricao_problema);
-                    $('#manutencao').val(json.tipo_manutencao);
                     $('#causador').val(json.causador);
                     $('#requisicao').val(json.requisicao_saida);
                     $('#solicitacao').val(json.solicitacao_peca);
                     $('#numNf').val(json.num_nf);
                     $('#situacao').val(json.situacao);
-                    $('#obs').val(json.obs);                 
+                    $('#obs').val(json.obs); 
+
+                    (json.corretiva == 1) ? $('#corretiva').attr("checked", "") : $('#corretiva').removeAttr("checked");
+                    (json.preventiva == 1) ? $('#preventiva').attr("checked", "") : $('#preventiva').removeAttr("checked");
+                    (json.externa == 1) ? $('#externa').attr("checked", "") : $('#externa').removeAttr("checked");
+                    (json.oleo == 1) ? $('#oleo').attr("checked", "") : $('#oleo').removeAttr("checked");
+                    (json.higienizacao == 1) ? $('#higienizacao').attr("checked", "") : $('#higienizacao').removeAttr("checked");
+                    
                 }
             })
         });
     </script>
+
+<!-- Verificando checkboxs preenchidos -->
+
 
 <!-- modal visualisar e editar -->
 <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -192,17 +211,30 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                     </div>   
                     <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="manutencao" class="col-form-label">Tipo de Manutenção</label>
-                            <select name="manutencao" required id="manutencao" class="form-control">
-                                <option value="Corretiva">Corretiva</option>
-                                <option value="Preventiva">Preventiva</option>
-                                <option value="Manutenção Externa">Manutenção Externa</option>
-                                <option value="Troca de Óleo">Troca de Óleo</option>
-                                <option value="Higienização">Higienização</option>
-                            </select>
+                        <div class="form-group  form-check check-os">
+                            <input type="checkbox" class="form-check-input"  id="corretiva" name="corretiva">
+                            <label class="form-check-label" for="corretiva">Corretiva</label>
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group   form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="preventiva" name="preventiva">
+                            <label class="form-check-label" for="preventiva">Preventiva</label>
+                        </div>
+                        <div class="form-group   form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="externa" name="externa">
+                            <label class="form-check-label" for="externa">Manutenção Externa</label>
+                        </div>
+                        <div class="form-group   form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="oleo" name="oleo">
+                            <label class="form-check-label" for="oleo">Troca de Óleo</label>
+                        </div>
+                        <div class="form-group  form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="higienizacao" name="higienizacao">
+                            <label class="form-check-label" for="higienizacao">Higienização</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        
+                        <div class="form-group col-md-3">
                             <label for="causador" class="col-form-label">Causador</label>
                             <input type="text" class="form-control" name="causador" id="causador" value="">
                         </div>
@@ -218,7 +250,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <label for="numNf" class="col-form-label">Nº NF</label>
                             <input type="text" class="form-control" name="numNf" id="numNf" value="">
                         </div>
-                        <div class="form-group col-md-2">
+                        <div class="form-group col-md-3">
                             <label for="situacao" class="col-form-label">Situação</label>
                             <select name="situacao" id="situacao" class="form-control">
                                 <option value="Encerrada">Encerrada</option>
@@ -274,28 +306,39 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <label for="problema"> Descrição Problema </label>
                             <input type="text" required name="problema" id="problema" class="form-control">
                         </div>
-                    </div>    
+                    </div>   
                     <div class="form-row">
-                        <div class="form-group col-md-2 espaco ">
-                            <label for="manutencao"> Tipo de Manutenção </label>
-                            <select required name="manutencao" id="manutencao" class="form-control">
-                                <option value=""></option>
-                                <option value="Corretiva">Corretiva</option>
-                                <option value="Preventiva">Preventiva</option>
-                                <option value="Manutenção Externa">Manutenção Externa</option>
-                                <option value="Troca de Óleo">Troca de Óleo</option>
-                                <option value="Higienização">Higienização</option>
-                            </select>
+                        <div class="form-group espaco form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="corretiva" name="corretiva">
+                            <label class="form-check-label" for="corretiva">Corretiva</label>
                         </div>
+                        <div class="form-group  espaco form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="preventiva" name="preventiva">
+                            <label class="form-check-label" for="preventiva">Preventiva</label>
+                        </div>
+                        <div class="form-group  espaco form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="externa" name="externa">
+                            <label class="form-check-label" for="externa">Manutenção Externa</label>
+                        </div>
+                        <div class="form-group  espaco form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="oleo" name="oleo">
+                            <label class="form-check-label" for="oleo">Troca de Óleo</label>
+                        </div>
+                        <div class="form-group  espaco form-check check-os">
+                            <input type="checkbox" class="form-check-input" id="higienizacao" name="higienizacao">
+                            <label class="form-check-label" for="higienizacao">Higienização</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-5 espaco ">
                             <label for="causador"> Agente Causador </label>
                             <input type="text" name="causador" id="causador" class="form-control">
                         </div>
-                        <div class="form-group col-md-2 espaco ">
+                        <div class="form-group col-md-3 espaco ">
                             <label for="requisicao">Nº Requisição de Peças </label>
                             <input type="text" name="requisicao" class="form-control" id="requisicao">
                         </div>
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-4 espaco ">
                             <label for="solicitacao">Nº Solicitação de Peças(Serviços) </label>
                             <input type="text" name="solicitacao" class="form-control" id="solicitacao">
                         </div>

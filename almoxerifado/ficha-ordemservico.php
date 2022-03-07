@@ -15,7 +15,11 @@ if($sql->execute()){
 
         $dataAbertura = date("d/m/Y", strtotime($dado['data_abertura']));
         $placa = $dado['placa'];
-        $tipoRevisao = $dado['tipo_manutencao'];
+        $corretiva = $dado['corretiva']?"Corretiva":"";
+        $preventiva = $dado['preventiva']?"Preventiva":"";
+        $externa = $dado['externa']?"Manutenção Externa":"";
+        $oleo = $dado['oleo']?"Troca de Óleo":"";
+        $higienizacao = $dado['higienizacao']?"Higienização":"";
         $horaAbertura = date("H:i:s", strtotime($dado['data_abertura']));
         $obs = $dado['obs'];
 
@@ -60,14 +64,16 @@ $mpdf->WriteHTML("
         <img  src='../assets/images/cab-ordem.png'>
         <table border='1' style='width:668px'>
             <tr>
-                <td style='font-weight:bold' >Hora Abertura da Ordem de Serviço</td>
+                <td colspan='3' style='font-weight:bold' >Hora Abertura da Ordem de Serviço</td>
                 <td>$horaAbertura</td>
-                <td style='font-weight:bold'>Tipo de Revisão</td>
-                <td>$tipoRevisao</td>
             </tr>
             <tr>
                 <td style='font-weight:bold'>Observações</td>
                 <td colspan='3'>$obs</td>
+            </tr>
+            <tr>
+                <td  style='font-weight:bold'> Tipo de Revisão </td>
+                <td colspan='3'>$corretiva $preventiva $externa $oleo $higienizacao</td>
             </tr>
         </table>
         <img  src='../assets/images/rodape-ordem.png'>
