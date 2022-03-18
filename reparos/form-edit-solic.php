@@ -231,7 +231,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
                         </div>
                         <div class="form-group col-md-3">
-                        <?php if($dado['situacao']!="Aprovado" && ($tipoUsuario==99 || $tipoUsuario==3))  : ?>
+                        <?php if($dado['situacao']!="Aprovado" && ($tipoUsuario==99 || $tipoUsuario!=3))  : ?>
                             <a class="btn btn-success" href="solicitacao-adicional.php?token=<?=$dado['token']?>" >Adiconar Peças/Serviço</a>
                         <?php endif; ?>
                         </div>
