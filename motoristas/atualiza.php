@@ -11,7 +11,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $cnh = filter_input(INPUT_POST, 'cnh')?filter_input(INPUT_POST, 'cnh'):null;
     $validadeCnh = filter_input(INPUT_POST, 'validadeCnh')?filter_input(INPUT_POST, 'validadeCnh'):null;
     $toxicologico = filter_input(INPUT_POST, 'toxicologico');
-    $validadeToxicologico = filter_input(INPUT_POST, 'vencimentoToxicologico');
+    $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
     $ativo = filter_input(INPUT_POST, 'ativo');
     if($ativo=='on'){
         $ativo = 0;
