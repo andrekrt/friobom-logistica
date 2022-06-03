@@ -14,7 +14,7 @@ if( isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
     $peso = filter_input(INPUT_POST, 'peso');
     $cubagem = str_replace(",", ".",filter_input(INPUT_POST, 'cubagem') ) ;
 
-    $consulta = $db->query("SELECT * FROM veiculos WHERE cod_interno_veiculo = '$codVeiculo'");
+    $consulta = $db->query("SELECT * FROM veiculos WHERE cod_interno_veiculo = '$codVeiculo' OR placa_veiculo = '$placaVeiculo'");
 
     if($consulta->rowCount()>0){
         echo "<script>alert('Esse Veículo já está cadastrado!');</script>";

@@ -87,7 +87,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
 
-        echo $html;
+        echo $html; 
 
     }
 
