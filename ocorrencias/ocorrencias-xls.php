@@ -45,12 +45,12 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                     $html .= '<td>'.$dado['idocorrencia']. '</td>';
                     $html .= '<td>'.$dado['cod_interno_motorista']. '</td>';
                     $html .= '<td>'.$dado['data_ocorrencia']. '</td>';
-                    $html .= '<td>'.$dado['tipo_ocorrencia']. '</td>';
-                    $html .= '<td>'. $dado['advertencia']. '</td>';
-                    $html .= '<td>'. $dado['laudo'] . '</td>';
-                    $html .= '<td>'. $dado['descricao_custos'] . '</td>';
-                    $html .= '<td>'. $dado['vl_total_custos'] . '</td>';
-                    $html .= '<td>'. $dado['situacao'] . '</td>';
+                    $html .= '<td>'. utf8_decode($dado['tipo_ocorrencia']) . '</td>';
+                    $html .= '<td>'. utf8_decode($dado['advertencia']) . '</td>';
+                    $html .= '<td>'. utf8_decode($dado['laudo'])  . '</td>';
+                    $html .= '<td>'. utf8_decode($dado['descricao_custos'])  . '</td>';
+                    $html .= '<td>'. number_format($dado['vl_total_custos'],2,",",".")  . '</td>';
+                    $html .= '<td>'. utf8_decode($dado['situacao'])  . '</td>';
                     $html .= '</tr>';
 
                 }
