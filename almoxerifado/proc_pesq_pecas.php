@@ -62,17 +62,18 @@ foreach($empRecords as $row){
     $totalEstoque = $row['total_entrada']-$row['total_saida'];
     $data[] = array(
             "idpeca"=>$row['idpeca'],
-            "descricao_peca"=>$row['descricao_peca'],
-            "un_medida"=>$row['un_medida'],
-            "grupo_peca"=>$row['grupo_peca'],
+            "descricao_peca"=>utf8_encode($row['descricao_peca']) ,
+            "un_medida"=>utf8_encode($row['un_medida']),
+            "grupo_peca"=>utf8_encode($row['grupo_peca']),
             "estoque_minimo"=>str_replace(".",",",$row['estoque_minimo']),
             "total_entrada"=>str_replace(".",",",$row['total_entrada']),
             "total_saida"=> str_replace(".",",",$row['total_saida']),
             "total_estoque"=> str_replace(".",",",$row['total_estoque']) ,
+            "qtd_inv"=> str_replace(".",",",$row['qtd_inv']) ,
             "valor_total"=>"R$ " . str_replace(".",",",$row['valor_total']) ,
-            "situacao"=>$row['situacao'],
+            "situacao"=>utf8_encode($row['situacao']),
             "data_cadastro"=>date("d/m/Y", strtotime($row['data_cadastro'])) ,
-            "nome_usuario"=>$row['nome_usuario'],
+            "nome_usuario"=>utf8_encode($row['nome_usuario']),
             "acoes"=> '<a href="javascript:void();" data-id="'.$row['idpeca'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?idPeca='.$row['idpeca'].' " data-id="'.$row['idpeca'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
         );
 }

@@ -68,6 +68,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap"> Total Entrada </th>
                                 <th scope="col" class="text-center text-nowrap"> Total Saída </th>
                                 <th scope="col" class="text-center text-nowrap"> Total Estoque </th>
+                                <th scope="col" class="text-center text-nowrap"> Estoque Inventário </th>
                                 <th scope="col" class="text-center text-nowrap"> Total Comprado </th>
                                 <th scope="col" class="text-center text-nowrap"> Situação </th>
                                 <th scope="col" class="text-center text-nowrap"> Data Cadastro </th>
@@ -107,6 +108,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'total_entrada' },
                     { data: 'total_saida' },
                     { data: 'total_estoque' },
+                    { data: 'qtd_inv' },
                     { data: 'valor_total' },
                     { data: 'situacao' },
                     { data: 'data_cadastro' },
