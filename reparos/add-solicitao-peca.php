@@ -22,7 +22,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $localReparo = filter_input(INPUT_POST, 'localReparo');
     $frete = str_replace(",",".", filter_input(INPUT_POST, 'frete'));
 
-    echo $frete;
+    // echo $frete;
     
     $situacao = "Em análise";
     $usuario = $_SESSION['idUsuario'];

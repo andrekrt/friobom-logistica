@@ -6,7 +6,7 @@ require("../conexao.php");
 $data = date("d/m/y");
 $token = filter_input(INPUT_GET,"token");
 
-$sql = $db->prepare("SELECT id, token, data_atual, placa, problema, local_reparo, imagem as anexo, GROUP_CONCAT('- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, solicitacoes_new.situacao, usuario, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token GROUP BY problema, placa");
+$sql = $db->prepare("SELECT id, token, data_atual, placa, problema, local_reparo, imagem as anexo, GROUP_CONCAT('- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, solicitacoes_new.situacao, usuario, frete, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token GROUP BY problema, placa");
 $sql->bindValue(':token',$token);
 $sql->execute();
 
@@ -23,12 +23,11 @@ foreach($dados as $dado){
     $qtd = str_replace(".",",",str_replace(",","<br>",$dado['qtd']))  ;
     $vlUnit = str_replace(".",",",str_replace(",","<br>",$dado['vlUnit']))  ;
     $vlTotal = str_replace(".",",", str_replace(",","<br>", $dado['vlTotal'])) ;
-    $vlFinal = str_replace(".",",",$dado['vlFinal']) ;
- ?>
-
-<?php
+    $frete = $dado['frete'];
+    $vlFinalCalc = $frete + $dado['vlFinal'];
+    $vlFinal = str_replace(".",",",$vlFinalCalc);
+    $freteForm = number_format($frete, 2, ",",".");
 }
-
 
 $mpdf = new Mpdf();
 $mpdf->WriteHTML("
@@ -78,25 +77,27 @@ $mpdf->WriteHTML("
                     <td> <span style='font-weight:bold'> Solicitação Nº: </span>  $token</td>
                     <td> <span style='font-weight:bold'> Data da Solicitação: </span>  $dataSolic</td>
                     <td> <span style='font-weight:bold'> Data da Aprovação: </span>  $dataAprovacao</td>
-                    <td  style='text-align:center'> <span style='font-weight:bold'> Veículo: </span> $veiculo </td>
+                    <td  style='text-align:center' colspan='2'> <span style='font-weight:bold'> Veículo: </span> $veiculo </td>
                 </tr>
                 <tr>
                     <td> <span style='font-weight:bold'> Peças/Serviços: </span>  </td>
                     <td> <span style='font-weight:bold'> Qtd: </span>  </td>
                     <td > <span style='font-weight:bold'> Valor(Unit.): </span>  </td>
+                    <td > <span style='font-weight:bold'> Frete: </span>  </td>
                     <td > <span style='font-weight:bold'> Valor Total: </span>  </td>
                 </tr>
                 <tr>
                     <td> $peca </td>
                     <td> $qtd </td>
                     <td>$vlUnit</td>
+                    <td>R$ $freteForm</td>
                     <td>$vlTotal</td>
                 </tr>
                 <tr>
                     <td> <span style='font-weight:bold'> Problema: </span>  $descricao</td>
                     <td > <span style='font-weight:bold'> Local do Reparo: </span>  $local </td>
                     <td > <span style='font-weight:bold'> Obs.: </span>  $obs </td>
-                    <td > <span style='font-weight:bold'> Valor Final </span> R$ $vlFinal </td>
+                    <td colspan='2'> <span style='font-weight:bold' > Valor Final </span> R$ $vlFinal </td>
                 </tr>
             </table><br>
             
@@ -110,8 +111,6 @@ $mpdf->WriteHTML("
     </body>
 </html>
 ");
-
-
 
 $mpdf->Output();
 
