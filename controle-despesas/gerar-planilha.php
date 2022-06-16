@@ -97,6 +97,8 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                 $html .= '<td class="text-center font-weight-bold"> Travessia </td>';
                 $html .= '<td class="text-center font-weight-bold"> Outros Serviços </td>';
                 $html .= '<td class="text-center font-weight-bold"> Ajudante </td>';
+                $html .= '<td class="text-center font-weight-bold"> Chapa 01 </td>';
+                $html .= '<td class="text-center font-weight-bold"> Chapa 02 </td>';
                 $html .= '</tr>';
                 
                 $sql = $db->query("SELECT *, MONTH(data_chegada) as mes, YEAR(data_chegada) as ano FROM viagem");
@@ -176,6 +178,8 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                     $html .= '<td>' .$dado['travessia'].  '</td>';
                     $html .= '<td>' .$dado['outros_servicos'].  '</td>';
                     $html .= '<td>' .$dado['nome_ajudante'].  '</td>';
+                    $html .= '<td>' .$dado['chapa01'].  '</td>';
+                    $html .= '<td>' .$dado['chapa02'].  '</td>';
                     $html .= '</tr>';
                 }
                 $html .= '</table>';

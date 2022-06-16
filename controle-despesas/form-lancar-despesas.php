@@ -257,6 +257,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <input type="text" name="nomeAjud" class="form-control" id="nomeAjud">
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-goup col-md-4 espaco">
+                                <label for="chapa1">Nome Chapa 1</label>
+                                <input type="text" name="chapa1" class="form-control" id="chapa1">
+                            </div>
+                            <div class="form-goup col-md-4 espaco">
+                                <label for="chapa2">Nome Chapa 2</label>
+                                <input type="text" name="chapa2" class="form-control" id="chapa2">
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>
                     </form>
                 </div>
@@ -269,5 +279,29 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         <script type="text/javascript" src="personalizado.js"></script>
         <script type="text/javascript" src="motoristas.js"></script>
         <script type="text/javascript" src="rotas.js"></script>
+        <script src="../assets/js/jquery.mask.js"></script>
+        <script>
+             jQuery(function($){
+                $("#vlTransp").mask('###0,00', {reverse: true});
+                $("#vlDev").mask('###0,00', {reverse: true});
+                $("#pesoCarga").mask('###0,00', {reverse: true});
+                $("#lt1Abast").mask('###0,00', {reverse: true});
+                $("#vl1Abast").mask('###0,00', {reverse: true});
+                $("#lt2Abast").mask('###0,00', {reverse: true});
+                $("#vl2Abast").mask('###0,00', {reverse: true});
+                $("#lt3Abast").mask('###0,00', {reverse: true});
+                $("#vl3Abast").mask('###0,00', {reverse: true});
+                $("#lt4Abast").mask('###0,00', {reverse: true});
+                $("#vl4Abast").mask('###0,00', {reverse: true});
+                $("#diariasMot").mask('###0,00', {reverse: true});
+                $("#diariasAjud").mask('###0,00', {reverse: true});
+                $("#diariasChapa").mask('###0,00', {reverse: true});
+                $("#gastosAjud").mask('###0,00', {reverse: true});
+                $("#tomada").mask('###0,00', {reverse: true});
+                $("#descarga").mask('###0,00', {reverse: true});
+                $("#travessia").mask('###0,00', {reverse: true});
+                $("#servicos").mask('###0,00', {reverse: true});
+            })
+        </script>
     </body>
 </html>
