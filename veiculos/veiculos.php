@@ -186,9 +186,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                             <label for="categoria" class="col-form-label">Categoria</label>
                             <select class="form-control" name="categoria" id="categoria">
                                 <option >  </option>
-                                <option value="Mercedinha">Mercedinha</option>
-                                <option value="Toco">Toco</option>
                                 <option value="Truck">Truck</option>
+                                <option value="Toco">Toco</option>
+                                <option value="Mercedinha">Mercedinha</option>
+                                <option value="Frota Leve">Frota Leve</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">

@@ -172,7 +172,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                         <div class="form-group col-md-5">
                             <label for="peca"  class="col-form-label">Peça</label>
-                            <select required name="peca" id="peca" class="form-control">
+                            <select required name="peca" id="pecaEdit" class="form-control">
                                 <?php $pecas = $db->query("SELECT * FROM peca_estoque");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
@@ -193,7 +193,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                         <div class="form-group col-md-4">
                             <label for="placa" class="col-form-label">Placa</label>
-                            <select required name="placa" id="placa" class="form-control">
+                            <select required name="placa" id="placaEdit" class="form-control">
                                 <?php $veiculos = $db->query("SELECT * FROM veiculos");
                                 $placas = $veiculos->fetchAll();
                                 foreach($placas as $placa):
@@ -294,6 +294,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             dropdownParent:"#modalEntrada"
         });
         $('#placaSa').select2({
+            width: '100%',
+            dropdownParent:"#modalEntrada"
+        });
+        $('#pecaEdit').select2({
+            width: '100%',
+            dropdownParent:"#modalEntrada"
+        });
+        $('#placaEdit').select2({
             width: '100%',
             dropdownParent:"#modalEntrada"
         });

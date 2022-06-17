@@ -31,8 +31,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
 
-     <!-- select02 -->
-     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- select02 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 </head>
@@ -186,7 +186,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                         <div class="form-group col-md-5">
                             <label for="peca" class="col-form-label"> Peça </label>
-                            <select required name="peca" id="peca" class="form-control">
+                            <select required name="peca" id="pecaEdit" class="form-control">
                                 <?php $pecas = $db->query("SELECT * FROM peca_estoque");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
@@ -221,7 +221,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                         <div class="form-group col-md-6">
                             <label for="fornecedor" class="col-form-label">Fornecedor</label>
-                            <select required name="fornecedor" id="fornecedor" class="form-control">
+                            <select required name="fornecedor" id="fornecedorEdit" class="form-control">
                                 <?php $fornecedores = $db->query("SELECT * FROM fornecedores");
                                 $fornecedores = $fornecedores->fetchAll();
                                 foreach($fornecedores as $fornecedor):
@@ -305,7 +305,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                         <div class="form-group col-md-6 espaco">
                             <label for="fornecedor"> Fornecedor </label>
-                            <select required name="fornecedor" id="fornecedor" class="form-control">
+                            <select required name="fornecedor" id="fornecedorCad" class="form-control">
                                 <option value=""></option>
                                 <?php $fornecedores = $db->query("SELECT * FROM fornecedores");
                                 $fornecedores = $fornecedores->fetchAll();
@@ -341,6 +341,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
 
     $(document).ready(function(){
         $('#pecaCad').select2({
+            width: '100%',
+            dropdownParent:"#modalEntrada"
+        });
+        $('#fornecedorCad').select2({
+            width: '100%',
+            dropdownParent:"#modalEntrada"
+        });
+        $('#pecaEdit').select2({
+            width: '100%',
+            dropdownParent:"#modalEntrada"
+        });
+        $('#fornecedorEdit').select2({
             width: '100%',
             dropdownParent:"#modalEntrada"
         });

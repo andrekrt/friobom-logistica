@@ -169,17 +169,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </nav> 
                     </div>
                     <div class="item">
-                        <a onclick="menuCheck()">
-                            <img src="assets/images/menu/check-list.png" alt="">
-                        </a>
-                        <nav id="submenuCheck">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="check-list/check-list.php"> Check-Lists </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="check-list/form-check.php"> Fazer Check-List </a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
                         <a onclick="menuReparos()">
                             <img src="assets/images/menu/reparos.png" alt="">
                         </a>

@@ -70,6 +70,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <div class="form-group col-md-12 espaco ">
                                 <label for="categoria"> Categoria </label>
                                 <select name="categoria" class="form-control" id="categoria">
+                                    <option value=""></option>
                                     <option value="Truck">Truck</option>
                                     <option value="Toco">Toco</option>
                                     <option value="Mercedinha">Mercedinha</option>

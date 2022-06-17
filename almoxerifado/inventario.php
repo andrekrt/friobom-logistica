@@ -160,7 +160,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
-                                <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". utf8_encode($peca['descricao_peca']) ?></option>
+                                <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". ($peca['descricao_peca']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -205,7 +205,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     $pecas = $pecas->fetchAll();
                                     foreach($pecas as $peca):
                                     ?>
-                                    <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". utf8_encode($peca['descricao_peca']) ?></option>
+                                    <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". ($peca['descricao_peca']) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
