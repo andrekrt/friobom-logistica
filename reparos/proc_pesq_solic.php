@@ -56,21 +56,21 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "token"=>$row['token'],
-            "data_atual"=>date("d/m/Y", strtotime($row['data_atual'])),
-            "placa"=>$row['placa'],
-            "motorista"=>$row['motorista'],
-            "rota"=>$row['rota'],
-            "problema"=>$row['problema'],
-            "local_reparo"=>$row['local_reparo'],
-            "peca"=> $row['peca'],
-            "qtd"=>str_replace(".",",",$row['qtd']),
-            "vlTotal"=>"R$ ". str_replace(".",",",$row['vlTotal']) ,
-            "frete"=> "R$ ". str_replace(".", ",", $row['frete']),
-            "situacao"=>$row['situacao'],
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?token='.$row['token'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
-        );
+        "token"=>$row['token'],
+        "data_atual"=>date("d/m/Y", strtotime($row['data_atual'])),
+        "placa"=>$row['placa'],
+        "motorista"=>$row['motorista'],
+        "rota"=>$row['rota'],
+        "problema"=>$row['problema'],
+        "local_reparo"=>$row['local_reparo'],
+        "peca"=> $row['peca'],
+        "qtd"=>str_replace(".",",",$row['qtd']),
+        "vlTotal"=>"R$ ". str_replace(".",",",$row['vlTotal']+$row['frete']) ,
+        "frete"=> "R$ ". str_replace(".", ",", $row['frete']),
+        "situacao"=>$row['situacao'],
+        "nome_usuario"=>$row['nome_usuario'],
+        "acoes"=> '<a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?token='.$row['token'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+    );
 }
 
 ## Response
