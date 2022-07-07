@@ -5,19 +5,6 @@ session_start();
 require("../conexao.php");
 
 $tipoUsuario = $_SESSION['tipoUsuario'];
-
-?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Planilha</title>
-        
-    </head>
-    <body>
-        <?php 
         
             if($_SESSION['tipoUsuario'] != 4){
                 $arquivo = 'despesas.xls';
@@ -164,7 +151,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
                     $html .= '<td>' . str_replace(".", ",", $dado['litros'] ).  '</td>';
                     $html .= '<td>' . str_replace(".", ",",$dado['mediaSemTk'] ) .  '</td>';
                     $html .= '<td>' . str_replace(".", ",",$dado['consumo_tk']) .  '</td>';
-                    $html .= '<td>' . str_replace(".", ".",$dado['media_comtk']) .  '</td>';
+                    $html .= '<td>' . str_replace(".", ",",$dado['media_comtk']) .  '</td>';
                     $html .= '<td>' . str_replace(".", ",",$dado['valor_total_abast']) .  '</td>';
                     $html .= '<td>' . str_replace(".", ",",$dado['diarias_motoristas'] ) .  '</td>';
                     $html .= '<td>' . str_replace(".", ",",$dado['diarias_ajudante']) .  '</td>';

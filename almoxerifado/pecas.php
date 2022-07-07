@@ -207,6 +207,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Chaves Elétricas">Chaves Elétricas</option>
                                 <option value="Chaves Mecânicas">Chaves Mecânicas</option>
                                 <option value="Chaves Refrigeração"> Chaves Refrigeração</option>
+                                <option value="Parafusos">Parafusos</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
@@ -308,6 +309,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Chaves Elétricas">Chaves Elétricas</option>
                                 <option value="Chaves Mecânicas">Chaves Mecânicas</option>
                                 <option value="Chaves Refrigeração"> Chaves Refrigeração</option>
+                                <option value="Parafusos">Parafusos</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2 espaco ">

@@ -55,6 +55,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalPecaServico" data-whatever="@mdo" name="pecaServico">Nova Peça/Serviço</button>
                     </div>
+                    <a href="pecas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table id='tablePecas' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
@@ -186,6 +187,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Tacografo">Tacografo</option>
                                 <option value="Contrato de manutenção volvo">Contrato de manutenção volvo</option>
                                 <option value="Recapagem">Recapagem</option>
+                                <option value="Parafusos">Parafusos</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -270,6 +272,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Tacografo">Tacografo</option>
                                 <option value="Contrato de manutenção volvo">Contrato de manutenção volvo</option>
                                 <option value="Recapagem">Recapagem</option>
+                                <option value="Parafusos">Parafusos</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4 espaco ">

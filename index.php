@@ -121,6 +121,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                 <li class="nav-item"> <a class="nav-link" href="motoristas/motoristas.php"> Motoristas </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="motoristas/form-motorista.php"> Cadastrar Motorista </a> </li>
                                 <li class="nav-item"> <a href="motoristas/dados.php" class="nav-link"> Relatório</a> </li>
+                                <li class="nav-item"> <a href="motoristas/media.php" class="nav-link"> Médias de Consumo</a> </li>
                             </ul> 
                         </nav> 
                     </div>
@@ -232,6 +233,19 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             </ul>
                         </nav>
                     </div>
+                    <!-- <div class="item">
+                        <a onclick="menuPosto()">
+                            <img src="assets/images/menu/posto.png" alt="">
+                        </a>
+                        <nav id="submenuPosto">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"> <a href="posto/estoque.php" class="nav-link"> Estoque </a> </li>
+                                <li class="nav-item"> <a href="posto/entradas.php" class="nav-link"> Entradas </a> </li>
+                                <li class="nav-item"> <a href="posto/abastecimento.php" class="nav-link"> Abastecimentos </a> </li>
+                                <li class="nav-item"> <a href="posto/inventario.php" class="nav-link"> Inventário </a> </li>
+                            </ul>
+                        </nav>
+                    </div> -->
                     <div class="item">
                         <a href="sair.php">
                             <img src="assets/images/menu/sair.png" alt="">

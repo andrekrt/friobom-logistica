@@ -158,6 +158,16 @@ function menuTk(){
     
 }
 
+function menuPosto(){
+
+    if(document.getElementById("submenuPosto").style.display == "none" || document.getElementById("submenuPosto").style.display == "" ){
+        document.getElementById("submenuPosto").style.display = "block";
+    }else{
+        document.getElementById("submenuPosto").style.display = "none";
+    }
+    
+}
+
 
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){

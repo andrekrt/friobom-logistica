@@ -325,7 +325,7 @@ a .nome{
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 5px;
-    width: 75%;
+    width: 100%;
 }
 
 .filtro select{
@@ -394,6 +394,17 @@ img.icone{
 /* checkbox OS */
 .check-os{
     margin-right: 20px;
+}
+
+/*posto*/
+@keyframes fa-blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0; }
+}
+.fa-blink{
+    animation: fa-blink .75s linear infinite;
+    
 }
 
 @media(max-width:768px){
