@@ -12,7 +12,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
 
     if($delete->execute()){
         echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='saidas.php' </script>";
+        echo "<script> window.location.href='ordem-servico.php' </script>";
     }else{
         print_r($db->errorInfo());
     }

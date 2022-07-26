@@ -45,56 +45,93 @@ $estilo = "
     
 ";
 
-$mpdf->writeHTML($estilo,1);
-$mpdf->WriteHTML("
-<!DOCTYPE html>
-<html lang='pt-br'>
-    <body>
-        <table border='1' style='width:668px'>
-            <tr>
-                <td colspan='2'><img class='logo' src='../assets/images/logo.png'></td>
-                <td colspan='4'> <h2 class='titulo'>FICHA DE ACOMPANHAMENTO DE SERVIÇO REALIZADO NO VEÍCULO OFICINA</h2> </td>
-            </tr>
-            <tr>
-                <td colspan='2'> <span style='font-weight:bold'>DATA:</span>  $dataAbertura</td>
-                <td colspan='2'><span style='font-weight:bold'>PLACA:</span> $placa</td>
-                <td colspan='2'><span style='font-weight:bold'>O.S:</span> $idOrdemServico</td>
-            </tr>
-        </table>
-        <img  src='../assets/images/cab-ordem.png'>
-        <table border='1' style='width:668px'>
-            <tr>
-                <td colspan='3' style='font-weight:bold' >Hora Abertura da Ordem de Serviço</td>
-                <td>$horaAbertura</td>
-            </tr>
-            <tr>
-                <td style='font-weight:bold'>Observações</td>
-                <td colspan='3'>$obs</td>
-            </tr>
-            <tr>
-                <td  style='font-weight:bold'> Tipo de Revisão </td>
-                <td colspan='3'>$corretiva $preventiva $externa $oleo $higienizacao</td>
-            </tr>
-        </table>
-        <img  src='../assets/images/rodape-ordem.png'>
-    </body>
-</html>
-");
+// $mpdf->writeHTML($estilo,1);
+// $mpdf->WriteHTML("
+// <!DOCTYPE html>
+// <html lang='pt-br'>
+//     <body>
+//         <table border='1' style='width:668px'>
+//             <tr>
+//                 <td colspan='2'><img class='logo' src='../assets/images/logo.png'></td>
+//                 <td colspan='4'> <h2 class='titulo'>FICHA DE ACOMPANHAMENTO DE SERVIÇO REALIZADO NO VEÍCULO OFICINA</h2> </td>
+//             </tr>
+//             <tr>
+//                 <td colspan='2'> <span style='font-weight:bold'>DATA:</span>  $dataAbertura</td>
+//                 <td colspan='2'><span style='font-weight:bold'>PLACA:</span> $placa</td>
+//                 <td colspan='2'><span style='font-weight:bold'>O.S:</span> $idOrdemServico</td>
+//             </tr>
+//         </table>
+//         <img  src='../assets/images/cab-ordem.png'>
+//         <table border='1' style='width:668px'>
+//             <tr>
+//                 <td colspan='3' style='font-weight:bold' >Hora Abertura da Ordem de Serviço</td>
+//                 <td>$horaAbertura</td>
+//             </tr>
+//             <tr>
+//                 <td style='font-weight:bold'>Observações</td>
+//                 <td colspan='3'>$obs</td>
+//             </tr>
+//             <tr>
+//                 <td  style='font-weight:bold'> Tipo de Revisão </td>
+//                 <td colspan='3'>$corretiva $preventiva $externa $oleo $higienizacao</td>
+//             </tr>
+//         </table>
+//         <img  src='../assets/images/rodape-ordem.png'>
+//     </body>
+// </html>
+// ");
 
+//$mpdf->Output();
+$consulta = $db->prepare("SELECT * FROM ordem_servico LEFT JOIN saida_estoque ON ordem_servico.idordem_servico = saida_estoque.os LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca WHERE idordem_servico = :idOrdemServico");
+$consulta->bindValue(':idOrdemServico', $idOrdemServico);
+$consulta->execute();
+$pecas = $consulta->fetchAll();
+
+$html = "
+<table border='1' style='width:668px'>
+    <tr>
+        <td colspan='2'><img class='logo' src='../assets/images/logo.png'></td>
+        <td colspan='4'> <h2 class='titulo'>FICHA DE ACOMPANHAMENTO DE SERVIÇO REALIZADO NO VEÍCULO OFICINA</h2> </td>
+    </tr>
+    <tr>
+        <td colspan='2'> <span style='font-weight:bold'>DATA:</span>  $dataAbertura</td>
+        <td colspan='2'><span style='font-weight:bold'>PLACA:</span> $placa</td>
+        <td colspan='2'><span style='font-weight:bold'>O.S:</span> $idOrdemServico</td>
+    </tr>
+</table>
+<table border='1' style='width:668px;'>
+    <tr>
+        <td colspan='3' style='font-weight:bold'>Hora Abertura da Ordem de Serviço</td>
+        <td>$horaAbertura</td>
+    </tr>
+        <tr>
+        <td style='font-weight:bold'>Observações</td>
+            <td colspan='3'>$obs</td>
+    </tr>
+    <tr>
+        <td  style='font-weight:bold'> Tipo de Revisão </td>
+        <td colspan='3'>$corretiva $preventiva $externa $oleo $higienizacao</td>
+    </tr>
+</table>
+<table border='1' style='width:668px; margin-top:10px' >
+    <tr>
+        <th>Serviço</th>
+        <th>Categoria Serviço</th>
+        <th>Peça</th>
+        <th>Qtd</th>
+    </tr>";
+    foreach($pecas as $peca):
+    $html .=  "<tr>";
+    $html .=  "<td>$peca[descricao] </td>";
+    $html .=  "<td>$peca[categoria] </td>";
+    $html .=  "<td>$peca[descricao_peca] </td>";
+    $html .=  "<td>$peca[qtd] </td>";
+    $html .=  "</tr>";
+    endforeach;
+    $html.="</table>";
+
+$mpdf->writeHTML($estilo,1);
+$mpdf->WriteHTML($html);
 $mpdf->Output();
 
 ?>
-<tr></tr>
-<tr >
-    <td class='subtitulo'>FUNÇÃO</td>
-    <td class='subtitulo'>NOME</td>
-    <td colspan='2' class='subtitulo'>INÍCIO</td>
-    <td></td>
-    <td colspan='2' class='subtitulo'>TÉRMINO</td>
-</tr>
-<tr>
-    <td>LAVADOR</td>
-    <td> ______________________________ </td>
-    <td>Hora Ent.:</td>
-    <td></td>
-</tr>

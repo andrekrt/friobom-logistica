@@ -54,9 +54,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
                 <div class="icon-exp">
-                    <div class="area-opcoes-button">
+                    <!-- <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Nova Saída</button>
-                    </div>
+                    </div> -->
                     <a href="saidas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
@@ -70,8 +70,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap"> Solicitante </th>
                                 <th scope="col" class="text-center text-nowrap"> Placa </th>
                                 <th scope="col" class="text-center text-nowrap"> Observações </th>
+                                <th scope="col" class="text-center text-nowrap"> Serviço </th>
+                                <th scope="col" class="text-center text-nowrap"> Requisição </th>
+                                <th scope="col" class="text-center text-nowrap"> OS </th>
                                 <th scope="col" class="text-center text-nowrap"> Usuário que Lançou </th>
-                                <th scope="col" class="text-center text-nowrap"> Ações  </th>
+                               
                             </tr>
                         </thead>
                     </table>
@@ -105,44 +108,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'solicitante' },
                     { data: 'placa' },
                     { data: 'obs' },
+                    { data: 'servico' },
+                    { data: 'requisicao' },
+                    { data: 'os' },
                     { data: 'nome_usuario' },
-                    { data: 'acoes' },
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                },
-                "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[8]}
-                ],
+                }
             });
         });
 
-        //abrir modal
-        $('#tableSaida').on('click', '.editbtn', function(event){
-            var table = $('#tableSaida').DataTable();
-            var trid = $(this).closest('tr').attr('id');
-            var id = $(this).data('id');
-
-            $('#modalEditar').modal('show');
-
-            $.ajax({
-                url:"get_single_saida.php",
-                data:{id:id},
-                type:'post',
-                success: function(data){
-                    var json = JSON.parse(data);
-                    $('#idsaida').val(json.idsaida_estoque);
-                    $('#data').val(json.data_saida);
-                    $('#qtd').val(json.qtd);
-                    $('#peca').val(json.peca_idpeca);
-                    $('#solicitante').val(json.solicitante);
-                    $('#placa').val(json.placa);
-                    $('#obs').val(json.obs);
-                    $('#qtd').val(json.qtd);
-                    $('#usuario').val(json.id_usuario);                 
-                }
-            })
-        });
     </script>
 
 <!-- modal visualisar e editar -->

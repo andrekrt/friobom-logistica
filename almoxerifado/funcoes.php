@@ -102,6 +102,46 @@ function atualizaEStoque($qtdEntrada, $qtdSaida, $qtdEstoque, $estoqueMinimo, $v
     
 }
 
+function addSaida($qtd, $peca, $placa, $obs, $servico, $os, $usuario, $requisicao){
+    require("../conexao.php");
+
+        $dataSaida = date("Y-m-d");
+        $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao_saida, :idUsuario)");
+        $inserir->bindValue(':dataSaida', $dataSaida);
+        $inserir->bindValue(':qtd', $qtd);
+        $inserir->bindValue(':peca', $peca);
+        $inserir->bindValue(':placa', $placa);
+        $inserir->bindValue(':obs', $obs);
+        $inserir->bindValue(':servico', $servico);
+        $inserir->bindValue(':os', $os);
+        $inserir->bindValue(':requisicao_saida', $requisicao);
+        $inserir->bindValue(':idUsuario', $usuario);
+ 
+        if($inserir->execute()){  
+            return true;    
+        }else{
+            return false;
+        }
+
+}
+
+function atualisaSaida($idSaida, $servico, $peca, $qtd, $requisicao, $placa, $obs){
+    require("../conexao.php");
+
+    $atualiza=$db->prepare("UPDATE saida_estoque SET servico = :servico, peca_idpeca = :peca, qtd = :qtd, requisicao_saida = :requisicao, placa = :placa, obs = :obs WHERE idsaida_estoque = :idSaida; ");
+    $atualiza->bindValue(':servico', $servico);
+    $atualiza->bindValue(':peca', $peca);
+    $atualiza->bindValue(':qtd', $qtd);
+    $atualiza->bindValue(':requisicao', $requisicao);
+    $atualiza->bindValue(':placa', $placa);
+    $atualiza->bindValue(':obs', $obs);
+    $atualiza->bindValue(':idSaida', $idSaida);
+    if($atualiza->execute()){  
+        return true;    
+    }else{
+        return false;
+    }
+}
 
 
 ?>

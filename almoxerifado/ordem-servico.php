@@ -68,15 +68,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap">Data Abertura</th>
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
                                 <th scope="col" class="text-center text-nowrap">Descrição Problema</th>
-                                <th scope="col" class="text-center text-nowrap">Tipo de Manutenção</th>
                                 <th scope="col" class="text-center text-nowrap">Corretiva</th>
                                 <th scope="col" class="text-center text-nowrap">Preventiva</th>
                                 <th scope="col" class="text-center text-nowrap">Manutenção Externa</th>
                                 <th scope="col" class="text-center text-nowrap">Troca de Óleo</th>
                                 <th scope="col" class="text-center text-nowrap">Higienização</th>
                                 <th scope="col" class="text-center text-nowrap"> Agente Causador </th>
-                                <th scope="col" class="text-center text-nowrap"> Nº Requisição </th>
-                                <th scope="col" class="text-center text-nowrap"> Nº Solicitação </th>
                                 <th scope="col" class="text-center text-nowrap"> Nº NF </th>
                                 <th scope="col" class="text-center text-nowrap"> Observações </th>
                                 <th scope="col" class="text-center text-nowrap"> Situação  </th>
@@ -113,15 +110,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'data_abertura' },
                     { data: 'placa' },
                     { data: 'descricao_problema' },
-                    { data: 'tipo_manutencao' },
                     { data: 'corretiva' },
                     { data: 'preventiva' },
                     { data: 'externa' },
                     { data: 'oleo' },
                     { data: 'higienizacao' },
                     { data: 'causador' },
-                    { data: 'requisicao_saida' },
-                    { data: 'solicitacao_peca' },
                     { data: 'num_nf' },
                     { data: 'obs' },
                     { data: 'situacao' },
@@ -137,229 +131,113 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                 ],
             });
         });
-
-        //abrir modal
-        $('#tableOS').on('click', '.editbtn', function(event){
-            var table = $('#tableOS').DataTable();
-            var trid = $(this).closest('tr').attr('id');
-            var id = $(this).data('id');
-
-            $('#modalEditar').modal('show');
-
-            $.ajax({
-                url:"get_single_os.php",
-                data:{id:id},
-                type:'post',
-                success: function(data){
-                    var json = JSON.parse(data);
-                    $('#idOrdemServico').val(json.idordem_servico);
-                    $('#dataAbertura').val(json.data_abertura);
-                    $('#placa').val(json.placa);
-                    $('#problema').val(json.descricao_problema);
-                    $('#causador').val(json.causador);
-                    $('#requisicao').val(json.requisicao_saida);
-                    $('#solicitacao').val(json.solicitacao_peca);
-                    $('#numNf').val(json.num_nf);
-                    $('#situacao').val(json.situacao);
-                    $('#obs').val(json.obs); 
-
-                    (json.corretiva == 1) ? $('#corretiva').attr("checked", "") : $('#corretiva').removeAttr("checked");
-                    (json.preventiva == 1) ? $('#preventiva').attr("checked", "") : $('#preventiva').removeAttr("checked");
-                    (json.externa == 1) ? $('#externa').attr("checked", "") : $('#externa').removeAttr("checked");
-                    (json.oleo == 1) ? $('#oleo').attr("checked", "") : $('#oleo').removeAttr("checked");
-                    (json.higienizacao == 1) ? $('#higienizacao').attr("checked", "") : $('#higienizacao').removeAttr("checked");
-                    
-                }
-            })
-        });
     </script>
-
-<!-- Verificando checkboxs preenchidos -->
-
-
-<!-- modal visualisar e editar -->
-<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ordem de Serviço</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="atualiza-ordemservico.php" method="post">
-                    <input type="hidden" name="id" id="id" value="">
-                    <input type="hidden" name="trid" id="trid" value="">
-                    <div class="form-row">
-                        <div class="form-group col-md-1">
-                            <label for="idOrdemServico" class="col-form-label">ID</label>
-                            <input type="text" readonly name="idOrdemServico" class="form-control" id="idOrdemServico" value="">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="dataAbertura" class="col-form-label">Data Abertura</label>
-                            <input type="date-timelocal" readonly name="dataAbertura" class="form-control" id="dataAbertura" value="">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="placa" readonly  class="col-form-label">Placa</label>
-                            <select required name="placa" id="placaEdit" class="form-control">
-                                <?php $pecas = $db->query("SELECT * FROM veiculos");
-                                $pecas = $pecas->fetchAll();
-                                foreach($pecas as $peca):
-                                ?>
-                                <option value="<?=$peca['placa_veiculo']?>"><?=$peca['placa_veiculo']?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-7">
-                            <label for="problema" class="col-form-label">Descrição Problema</label>
-                            <input type="text" required name="problema" class="form-control" id="problema" value="">
-                        </div>
-                    </div>   
-                    <div class="form-row">
-                        <div class="form-group  form-check check-os">
-                            <input type="checkbox" class="form-check-input"  id="corretiva" name="corretiva">
-                            <label class="form-check-label" for="corretiva">Corretiva</label>
-                        </div>
-                        <div class="form-group   form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="preventiva" name="preventiva">
-                            <label class="form-check-label" for="preventiva">Preventiva</label>
-                        </div>
-                        <div class="form-group   form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="externa" name="externa">
-                            <label class="form-check-label" for="externa">Manutenção Externa</label>
-                        </div>
-                        <div class="form-group   form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="oleo" name="oleo">
-                            <label class="form-check-label" for="oleo">Troca de Óleo</label>
-                        </div>
-                        <div class="form-group  form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="higienizacao" name="higienizacao">
-                            <label class="form-check-label" for="higienizacao">Higienização</label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        
-                        <div class="form-group col-md-3">
-                            <label for="causador" class="col-form-label">Causador</label>
-                            <input type="text" class="form-control" name="causador" id="causador" value="">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="requisicao" class="col-form-label">Nº Requisição de Saída</label>
-                            <input type="text" class="form-control" name="requisicao" id="requisicao" value="">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="solicitacao" class="col-form-label">Nº Solicitação de Peças</label>
-                            <input type="text" class="form-control" name="solicitacao" id="solicitacao" value="">
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label for="numNf" class="col-form-label">Nº NF</label>
-                            <input type="text" class="form-control" name="numNf" id="numNf" value="">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="situacao" class="col-form-label">Situação</label>
-                            <select name="situacao" id="situacao" class="form-control">
-                                <option value="Encerrada">Encerrada</option>
-                                <option value="Em Aberto">Em Aberto</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="obs" class="col-form-label">Observações</label>
-                            <input type="text" class="form-control" name="obs" id="obs" value="">
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                    <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Atualizar</button>
-                        </div>
-                    <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </form> 
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- MODAL CADASTRO DE ordem de serviço -->
 <div class="modal fade" id="modalOrdemServico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ordem de Serviço</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form action="add-ordemservico.php" method="post">
-                    <div class="form-row">
-                        <div class="form-group col-md-2 espaco ">
-                            <label for="descricao">Placa </label>
-                            <select required name="placa" id="placa" class="form-control">
-                                <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM veiculos");
-                                $pecas = $pecas->fetchAll();
-                                foreach($pecas as $peca):
-                                ?>
-                                <option value="<?=$peca['placa_veiculo']?>"><?=$peca['placa_veiculo']?></option>
-                                <?php endforeach; ?>
-                            </select>
+                    <div id="formulario">
+                        <div class="form-row">
+                            <div class="form-group col-md-2 espaco ">
+                                <label for="descricao">Placa </label>
+                                <select required name="placa" id="placa" class="form-control">
+                                    <option value=""></option>
+                                    <?php $pecas = $db->query("SELECT * FROM veiculos");
+                                    $pecas = $pecas->fetchAll();
+                                    foreach($pecas as $peca):
+                                    ?>
+                                    <option value="<?=$peca['placa_veiculo']?>"><?=$peca['placa_veiculo']?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-10 espaco ">
+                                <label for="problema"> Descrição Problema </label>
+                                <input type="text" required name="problema" id="problema" class="form-control">
+                            </div>
+                        </div>   
+                        <div class="form-row">
+                            <div class="form-group espaco form-check check-os">
+                                <input type="checkbox" class="form-check-input" id="corretiva" name="corretiva">
+                                <label class="form-check-label" for="corretiva">Corretiva</label>
+                            </div>
+                            <div class="form-group  espaco form-check check-os">
+                                <input type="checkbox" class="form-check-input" id="preventiva" name="preventiva">
+                                <label class="form-check-label" for="preventiva">Preventiva</label>
+                            </div>
+                            <div class="form-group  espaco form-check check-os">
+                                <input type="checkbox" class="form-check-input" id="externa" name="externa">
+                                <label class="form-check-label" for="externa">Manutenção Externa</label>
+                            </div>
+                            <div class="form-group  espaco form-check check-os">
+                                <input type="checkbox" class="form-check-input" id="higienizacao" name="higienizacao">
+                                <label class="form-check-label" for="higienizacao">Higienização</label>
+                            </div>
                         </div>
-                        <div class="form-group col-md-10 espaco ">
-                            <label for="problema"> Descrição Problema </label>
-                            <input type="text" required name="problema" id="problema" class="form-control">
-                        </div>
-                    </div>   
-                    <div class="form-row">
-                        <div class="form-group espaco form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="corretiva" name="corretiva">
-                            <label class="form-check-label" for="corretiva">Corretiva</label>
-                        </div>
-                        <div class="form-group  espaco form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="preventiva" name="preventiva">
-                            <label class="form-check-label" for="preventiva">Preventiva</label>
-                        </div>
-                        <div class="form-group  espaco form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="externa" name="externa">
-                            <label class="form-check-label" for="externa">Manutenção Externa</label>
-                        </div>
-                        <div class="form-group  espaco form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="oleo" name="oleo">
-                            <label class="form-check-label" for="oleo">Troca de Óleo</label>
-                        </div>
-                        <div class="form-group  espaco form-check check-os">
-                            <input type="checkbox" class="form-check-input" id="higienizacao" name="higienizacao">
-                            <label class="form-check-label" for="higienizacao">Higienização</label>
+                        <div class="form-row">
+                            <div class="form-group col-md-4 espaco ">
+                                <label for="causador"> Agente Causador </label>
+                                <input type="text" name="causador" id="causador" class="form-control">
+                            </div>
+                            <div class="form-group col-md-3 espaco ">
+                                <label for="nf"> NF </label>
+                                <input type="text" name="nf" class="form-control" id="nf">
+                            </div>
+                            <div class="form-group col-md-5 espaco ">
+                                <label for="obs">Obs. </label>
+                                <input type="text" name="obs" class="form-control" id="obs">
+                            </div>
+                        </div>  
+                        <div class="form-row">
+                            <div class="form-group col-md-3 espaco ">
+                                <label for="servico"> Serviço </label>
+                                <select required name="servico[]" id="servico" class="form-control">
+                                    <option value=""></option>
+                                    <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado");
+                                    $servicos = $servicos->fetchAll();
+                                    foreach($servicos as $servico):
+                                    ?>
+                                    <option value="<?=$servico['idservicos']?>"><?=$servico['descricao']?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco ">
+                                <label for="peca"> Peça </label>
+                                <select required name="peca[]" id="peca" class="form-control">
+                                    <option value=""></option>
+                                    <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                    $pecas = $pecas->fetchAll();
+                                    foreach($pecas as $peca):
+                                    ?>
+                                    <option value="<?=$peca['idpeca']?>"><?=$peca['idpeca']." - ". $peca['descricao_peca']?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco ">
+                                <label for="qtd"> Qtd </label>
+                                <input type="text" name="qtd[]" id="qtd" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2 espaco ">
+                                <label for="requisicao"> Nº Requisição de Peça </label>
+                                <input type="text" name="requisicao[]" id="requisicao" class="form-control">
+                            </div>
+                            <div style="margin: auto; margin-left: 0;">
+                                <button type="button" class="btn btn-danger" id="add-peca">Adicionar Peça</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-5 espaco ">
-                            <label for="causador"> Agente Causador </label>
-                            <input type="text" name="causador" id="causador" class="form-control">
-                        </div>
-                        <div class="form-group col-md-3 espaco ">
-                            <label for="requisicao">Nº Requisição de Peças </label>
-                            <input type="text" name="requisicao" class="form-control" id="requisicao">
-                        </div>
-                        <div class="form-group col-md-4 espaco ">
-                            <label for="solicitacao">Nº Solicitação de Peças(Serviços) </label>
-                            <input type="text" name="solicitacao" class="form-control" id="solicitacao">
-                        </div>
-                    </div>  
-                    <div class="form-row">
-                        <div class="form-group col-md-3 espaco ">
-                            <label for="numNf"> Nº NF </label>
-                            <input type="text" name="numNf" class="form-control" id="numNf">
-                        </div>
-                        <div class="form-group col-md-9 espaco ">
-                            <label for="obs"> Observações </label>
-                            <input type="text" name="obs" class="form-control" id="obs">
-                        </div>
-                    </div>
+                    
             </div>
             <div class="modal-footer">
-                <button type="submit" name="analisar" class="btn btn-primary">Cadastrar</button>
+                <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
                 </form>
             </div>
         </div>
@@ -370,14 +248,24 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
+
+        var cont = 1;
+        $('#add-peca').click(function(){
+            
+            cont++;
+
+            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-3 espaco "> <label for="servico"> Serviço </label> <select required name="servico[]" id="servico" class="form-control"> <option value=""></option> <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado"); $servicos = $servicos->fetchAll(); foreach($servicos as $servico): ?> <option value="<?=$servico['idservicos']?>"><?=$servico['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3 espaco "> <label for="peca"> Peça </label> <select required name="peca[]" id="peca" class="form-control"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_estoque"); $pecas = $pecas->fetchAll(); foreach($pecas as $peca):?> <option value="<?=$peca['idpeca']?>"><?=$peca['idpeca']." - ". $peca['descricao_peca']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="qtd"> Qtd </label> <input type="text" name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-group col-md-2 espaco "> <label for="requisicao"> Nº Requisição de Peça </label> <input type="text" name="requisicao[]" id="requisicao" class="form-control"> </div>  </div>');
+
+        });
+
         $('#placa').select2({
             width: '100%',
             dropdownParent:"#modalOrdemServico"
         });
-        $('#placaEdit').select2({
-            width: '100%',
-            dropdownParent:"#modalEditar"
-        });
+        // $('#placaEdit').select2({
+        //     width: '100%',
+        //     dropdownParent:"#modalEditar"
+        // });
         
     });
 </script>

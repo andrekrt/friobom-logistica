@@ -8,42 +8,52 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
 
     $idUsuario = $_SESSION['idUsuario'];
 
-    $dataSaida = filter_input(INPUT_POST, 'dataSaida');
+    $dataSaida = date("Y-m-d", strtotime(filter_input(INPUT_POST, 'dataAbertura'))) ;
     $qtd = str_replace(",",".",filter_input(INPUT_POST, 'qtd')) ;
-    $solicitante = filter_input(INPUT_POST, 'solicitante');
-    $peca = filter_input(INPUT_POST, 'peca');
     $placa = filter_input(INPUT_POST, 'placa');
     $obs = filter_input(INPUT_POST, 'obs');  
-    $totalEstoque = contaEstoque($peca);
+    $os = filter_input(INPUT_POST, 'idOrdemServico');
 
+    $peca = $_POST['peca'];
+    $servico = $_POST['servico'];
+    $qtd = $_POST['qtd'];
+    $requisicao = $_POST['requisicao'];
 
-    //echo "$qtdSaidas<br>$custo<br>$totalComprado<br>$totalEstoque<br>$novoEstoque";
+    // print_r($peca)."<br>";
+    // print_r($servico)."<br>";
+    // print_r($qtd)."<br>";
+    // print_r($requisicao)."<br>";
 
-    if($qtd<=$totalEstoque){
+    for($i=0; $i<count($qtd);$i++){
+        if(contaEstoque($peca[$i])<$qtd[$i]){
+            echo "<script>alert('estoque insuficiente')</script>";
+            echo "<script>window.location.href='form-saidapeca-os.php?idOs=$os'</script>"; 
+            exit;
+        }
+    }
 
-        $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, solicitante, placa, obs, id_usuario) VALUES (:dataSaida, :qtd, :peca, :solicitante, :placa, :obs, :idUsuario)");
+    for($i=0;$i<count($peca);$i++){
+        $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao, :idUsuario)");
         $inserir->bindValue(':dataSaida', $dataSaida);
-        $inserir->bindValue(':qtd', $qtd);
-        $inserir->bindValue(':peca', $peca);
-        $inserir->bindValue(':solicitante', $solicitante);
+        $inserir->bindValue(':qtd', $qtd[$i]);
+        $inserir->bindValue(':peca', $peca[$i]);
         $inserir->bindValue(':placa', $placa);
         $inserir->bindValue(':obs', $obs);
+        $inserir->bindValue(':servico', $servico[$i]);
+        $inserir->bindValue(':os', $os);
+        $inserir->bindValue(':requisicao', $requisicao[$i]);
         $inserir->bindValue(':idUsuario', $idUsuario);
- 
+
         if($inserir->execute()){
             
             echo "<script>alert('Saída Lançada com Sucesso!');</script>";
-            echo "<script>window.location.href='saidas.php'</script>";      
+            echo "<script>window.location.href='ordem-servico.php'</script>";      
             
         }else{
             print_r($inserir->errorInfo());
         }
-
-    }else{
-        echo "<script>alert('Estoque Insuficiente');</script>";
-        echo "<script>window.location.href='saidas.php'</script>";
     }
-
+    
 }
 
 ?>

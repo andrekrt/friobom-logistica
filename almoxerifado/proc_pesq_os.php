@@ -66,7 +66,6 @@ foreach($empRecords as $row){
             "data_abertura"=>date("d/m/Y",strtotime($row['data_abertura'])) ,
             "placa"=>$row['placa'],
             "descricao_problema"=>$row['descricao_problema'],
-            "tipo_manutencao"=>$row['tipo_manutencao'],
             "corretiva"=>$row['corretiva']?"SIM":"NÃO",
             "preventiva"=>$row['preventiva']?"SIM":"NÃO",
             "externa"=>$row['externa']?"SIM":"NÃO",
@@ -75,12 +74,10 @@ foreach($empRecords as $row){
             "causador"=>$row['causador'],
             "situacao"=>$row['situacao'],
             "data_encerramento"=> date("d/m/Y",strtotime($row['data_encerramento'])) ,
-            "requisicao_saida"=>$row['requisicao_saida'] ,
-            "solicitacao_peca"=>$row['solicitacao_peca'],
             "num_nf"=>$row['num_nf'],
             "obs"=>$row['obs'],
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a  href="javascript:void();"  data-id="'.$row['idordem_servico'].'"  class="editbtn icon-acoes" ><img src="../assets/images/icones/update.png" alt=""></a> ' . $acoes
+            "acoes"=> '<a  href="form-edit-os.php?idOs='.$row['idordem_servico'].'"  data-id="'.$row['idordem_servico'].'"  class="editbtn icon-acoes" ><img src="../assets/images/icones/update.png" alt=""></a> ' . $acoes
         );
 }
 

@@ -31,13 +31,13 @@ $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM saida_estoque LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM saida_estoque LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM saida_estoque LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM saida_estoque LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -60,8 +60,10 @@ foreach($empRecords as $row){
             "solicitante"=>$row['solicitante'],
             "placa"=> $row['placa'],
             "obs"=>$row['obs'] ,
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsaida_estoque'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-saida.php?idSaida='.$row['idsaida_estoque'].' " data-id="'.$row['idsaida_estoque'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "servico"=>$row['descricao'],
+            "requisicao"=>$row['requisicao_saida'] ,
+            "os"=>$row['os'] ,
+            "nome_usuario"=>$row['nome_usuario']
         );
 }
 

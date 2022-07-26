@@ -130,6 +130,7 @@
                     <li class="nav-item"> <a href="../almoxerifado/inventario.php" class="nav-link"> Inventário </a> </li>
                     <li class="nav-item"> <a href="../almoxerifado/ordem-servico.php" class="nav-link"> Ordem de Serviço </a> </li>
                     <li class="nav-item"> <a href="../fornecedores/fornecedores.php" class="nav-link"> Fornecedores </a> </li>
+                    <li class="nav-item"> <a href="../almoxerifado/servicos.php" class="nav-link"> Serviços </a> </li>
                 </ul>
             </nav>
         </div>
