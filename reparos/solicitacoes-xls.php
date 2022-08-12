@@ -28,6 +28,7 @@ if( $_SESSION['tipoUsuario'] !=  3){
     $html .= '<td class="text-center font-weight-bold"> Medida </td>';
     $html .= '<td class="text-center font-weight-bold"> Valor Unit. </td>';
     $html .= '<td class="text-center font-weight-bold"> Valor Total </td>';
+    $html .= '<td class="text-center font-weight-bold"> Frete </td>';
     $html .= '<td class="text-center font-weight-bold"> Solicitante </td>';
     $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Situação').' </td>';
     $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data Aprovação').' </td>';
@@ -55,6 +56,7 @@ if( $_SESSION['tipoUsuario'] !=  3){
         $html .= '<td>'. $dado['un_medida']  .'</td>';
         $html .= '<td>'. str_replace(".",",",$dado['vl_unit'])   .'</td>';
         $html .= '<td>'. str_replace(".",",",$dado['vl_total'])   .'</td>';
+        $html .= '<td>'. str_replace(".",",",$dado['frete'])   .'</td>';
         $html .= '<td>'. utf8_decode($dado['nome_usuario'])   .'</td>';
         $html .= '<td>'. utf8_decode($dado['situacao'])   .'</td>';
         $html .= '<td>'. date("d/m/Y", strtotime($dado['data_aprovacao'] ))  .'</td>';
