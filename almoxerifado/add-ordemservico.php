@@ -34,8 +34,12 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     // print_r($qtd)."<br>";
     // print_r($numRequisicao);
     $i=0;
+    //echo count($qtd);
     for($i; $i<count($qtd);$i++){
         if(contaEstoque($pecas[$i])<$qtd[$i]){
+
+            // echo "EStoque = ". contaEstoque($pecas[$i]);
+            // echo "QTd = " . $qtd[$i];
             echo "<script>alert('estoque insuficiente')</script>";
             echo "<script>window.location.href='ordem-servico.php'</script>"; 
             exit;

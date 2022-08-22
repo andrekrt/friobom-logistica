@@ -120,6 +120,17 @@
             </nav> 
         </div>
         <div class="item">
+            <a onclick="menuCheck()">
+                <img src="../assets/images/menu/menu-checklist.png" alt="">
+            </a>
+            <nav id="submenuCheck">
+                <ul class="nav flex-column">
+                    <li class="nav-item"> <a class="nav-link" href="../checklist/checklists.php"> Check-Lists </a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../checklist/form-check.php">Realizar Check List </a> </li>
+                </ul> 
+            </nav> 
+        </div>
+        <div class="item">
             <a onclick="menuAlmoxerifado()">
                 <img src="../assets/images/menu/almoxerifado.png" alt="">
             </a>

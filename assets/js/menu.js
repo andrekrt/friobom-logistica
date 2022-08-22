@@ -158,6 +158,16 @@ function menuTk(){
     
 }
 
+function menuCheck(){
+
+    if(document.getElementById("submenuCheck").style.display == "none" || document.getElementById("submenuCheck").style.display == "" ){
+        document.getElementById("submenuCheck").style.display = "block";
+    }else{
+        document.getElementById("submenuCheck").style.display = "none";
+    }
+    
+}
+
 function menuPosto(){
 
     if(document.getElementById("submenuPosto").style.display == "none" || document.getElementById("submenuPosto").style.display == "" ){
@@ -167,7 +177,6 @@ function menuPosto(){
     }
     
 }
-
 
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){

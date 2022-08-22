@@ -143,7 +143,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     $('#dataNf').val(json.data_nf);
                     $('#numNf').val(json.num_nf);
                     $('#numPedido').val(json.num_pedido);
-                    $('#peca').val(json.peca_idpeca);
+                    $('#pecaEdit').val(json.peca_idpeca);
                     $('#preco').val(json.preco_custo);
                     $('#totalComprado').val(json.vl_total_comprado);
                     $('#qtd').val(json.qtd);
@@ -191,7 +191,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
-                                <option value="<?=$peca['idpeca']?>"><?=$peca['descricao_peca']?></option>
+                                <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". $peca['descricao_peca']?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -348,14 +348,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             width: '100%',
             dropdownParent:"#modalEntrada"
         });
-        $('#pecaEdit').select2({
-            width: '100%',
-            dropdownParent:"#modalEntrada"
-        });
-        $('#fornecedorEdit').select2({
-            width: '100%',
-            dropdownParent:"#modalEntrada"
-        });
+       
     });
 </script>
 </body>

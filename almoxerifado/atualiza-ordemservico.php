@@ -31,14 +31,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $qtd = str_replace(",",".",$_POST['qtd']);
     $requisicao = $_POST['requisicao'];
 
-    $i=0;
-    for($i; $i<count($qtd);$i++){
-        if(contaEstoque($pecas[$i])<$qtd[$i]){
-            echo "<script>alert('estoque insuficiente')</script>";
-            echo "<script>window.location.href='ordem-servico.php'</script>"; 
-            exit;
-        }
-    }
+    // $i=0;
+    // for($i; $i<count($qtd);$i++){
+    //     if(contaEstoque($pecas[$i])<$qtd[$i]){
+    //         echo "<script>alert('estoque insuficiente')</script>";
+    //         echo "<script>window.location.href='ordem-servico.php'</script>"; 
+    //         exit;
+    //     }
+    // }
 
     $atualiza = $db->prepare("UPDATE ordem_servico SET placa = :placa, descricao_problema = :problema, corretiva = :corretiva, preventiva =:preventiva, externa = :externa, higienizacao = :higienizacao, causador = :causador, situacao = :situacao, data_encerramento = :dataEncerramento, num_nf = :nf, obs = :obs WHERE idordem_servico = :idordemServico");
     $atualiza->bindValue(':placa', $placa);
