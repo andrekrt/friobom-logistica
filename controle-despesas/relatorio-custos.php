@@ -158,7 +158,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         ?>    
                         </tr>
                         <tr> 
-                            <td></td> 
+                            <td  scope="col" class="text-center text-nowrap font-weight-bold">Faturamento</td> 
+                            <?php 
+                            for($i=0; $i<12; $i++):
+                                echo "<td>". number_format($faturado[$i],2,",",".") . "</td>";
+                            endfor;
+                            ?>
                         </tr>
                         <tr>
                             <td scope="col" class="text-center text-nowrap font-weight-bold" > Custo %</td>

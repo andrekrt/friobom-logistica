@@ -121,7 +121,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                 <li class="nav-item"> <a class="nav-link" href="motoristas/motoristas.php"> Motoristas </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="motoristas/form-motorista.php"> Cadastrar Motorista </a> </li>
                                 <li class="nav-item"> <a href="motoristas/dados.php" class="nav-link"> Relatório</a> </li>
-                                <li class="nav-item"> <a href="motoristas/media.php" class="nav-link"> Médias de Consumo</a> </li>
+                                <li class="nav-item"> <a href="motoristas/consumo.php" class="nav-link"> Médias de Consumo</a> </li>
                             </ul> 
                         </nav> 
                     </div>
