@@ -22,8 +22,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $qtdeVeiculos = $db->query("SELECT * FROM veiculos WHERE ativo = 1")->rowCount();
         $qtdRotas = $db->query("SELECT * FROM rotas")->rowCount();
         $qtdViagem = $db->query("SELECT * FROM viagem")->rowCount();
-        $qtdMotoristas = $db->query("SELECT * FROM motoristas")->rowCount();
-        $qtdeRepatos = $db->query("SELECT * FROM solicitacoes")->rowCount();
+        $qtdMotoristas = $db->query("SELECT * FROM motoristas WHERE ativo =1")->rowCount();
+        $qtdeRepatos = $db->query("SELECT * FROM solicitacoes_new")->rowCount();
 
         $totalKmRodado = $db->query("SELECT SUM(km_rodado) as kmRodado FROM viagem");
         $totalKmRodado = $totalKmRodado->fetch();
@@ -31,11 +31,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $totalAbastecido=$totalAbastecido->fetch();
         $mediaCombustivel = $totalKmRodado['kmRodado']/$totalAbastecido['litros'];
         
-        $totalReparo01 = $db->query("SELECT SUM(valor) as total01 FROM solicitacoes");
-        $totalReparo02 = $db->query("SELECT SUM(valor) as total02 FROM solicitacoes02");
-        $totalReparo01=$totalReparo01->fetch();
-        $totalReparo02=$totalReparo02->fetch();
-        $totalGeral = $totalReparo01['total01']+$totalReparo02['total02'];
         
     }else{
         header("Location:login.php");
