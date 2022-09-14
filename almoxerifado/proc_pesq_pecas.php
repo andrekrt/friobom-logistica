@@ -52,14 +52,7 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
-    $qtdEntradas = contaEntradas($row['idpeca'])?contaEntradas($row['idpeca']):0;
-    $qtdSaida = contaSaida($row['idpeca'])?contaSaida($row['idpeca']):0;
-    $estoque = $qtdEntradas-$qtdSaida;
-    $estoqueMinimo = $row['estoque_minimo'];
-    $valorComprado = valorTotalPeca($row['idpeca']);
-    atualizaEStoque($qtdEntradas, $qtdSaida, $estoque, $estoqueMinimo, $valorComprado,$row['idpeca']); 
-
-    $totalEstoque = $row['total_entrada']-$row['total_saida'];
+    
     $data[] = array(
             "idpeca"=>$row['idpeca'],
             "descricao_peca"=>utf8_encode($row['descricao_peca']) ,

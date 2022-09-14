@@ -45,7 +45,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         $inserir->bindValue(':idUsuario', $idUsuario);
 
         if($inserir->execute()){
-            
+            atualizaEStoque($peca[$i]);
             echo "<script>alert('Saída Lançada com Sucesso!');</script>";
             echo "<script>window.location.href='ordem-servico.php'</script>";      
             

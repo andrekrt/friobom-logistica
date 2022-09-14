@@ -32,6 +32,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false&& $_SES
     $inserir->bindValue(':numPedido', $numPedido);
 
     if($inserir->execute()){
+        atualizaEStoque($peca);
         echo "<script>alert('Entrada Lançada com Sucesso!');</script>";
         echo "<script>window.location.href='entradas.php'</script>";    
         

@@ -32,6 +32,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false&& $_S
     $atualiza->bindValue(':idEntrada', $idEntrada);
 
     if($atualiza->execute()){
+        atualizaEStoque($peca);
         echo "<script> alert('Atualizado com Sucesso!')</script>";
         echo "<script> window.location.href='entradas.php' </script>";
     }else{

@@ -15,7 +15,6 @@ function contaEntradas($idPeca){
     }else{
         return $entradas['entradas'];
     }
-
     
 }
 
@@ -33,7 +32,6 @@ function contaSaida($idPeca){
         return $saidas['saidas'];
     }
 
-    
 }
 
 function contaEstoque($idPeca){
@@ -82,8 +80,26 @@ function precoMedio($idPeca){
 
 }
 
-function atualizaEStoque($qtdEntrada, $qtdSaida, $qtdEstoque, $estoqueMinimo, $valorComprado, $idPeca){
+function estoqueMinimo($idPeca){
     require("../conexao.php");
+
+    $estoqueMinimo = $db->prepare("SELECT estoque_minimo FROM peca_estoque WHERE idpeca = :idPeca");
+    $estoqueMinimo->bindValue(':idPeca', $idPeca);
+    $estoqueMinimo->execute();
+    $estoqueMinimo = $estoqueMinimo->fetch();
+    $estoqueMinimo = $estoqueMinimo['estoque_minimo'];
+
+    return $estoqueMinimo;
+}
+
+function atualizaEStoque($idPeca){
+    require("../conexao.php");
+
+    $qtdEntradas = contaEntradas($idPeca);
+    $qtdSaidas = contaSaida($idPeca);
+    $qtdEstoque = $qtdEntradas-$qtdSaidas;
+    $valorComprado = valorTotalPeca($idPeca);
+    $estoqueMinimo = estoqueMinimo($idPeca);
 
     if($qtdEstoque<$estoqueMinimo){
         $situacao = "SOLICITAR";
@@ -92,13 +108,18 @@ function atualizaEStoque($qtdEntrada, $qtdSaida, $qtdEstoque, $estoqueMinimo, $v
     }
 
     $atualiza = $db->prepare("UPDATE peca_estoque SET total_entrada = :totalEntrada, total_saida = :totalSaida, total_estoque = :totalEstoque, situacao = :situacao, valor_total = :totalComprado WHERE idpeca = :idPeca ");
-    $atualiza->bindValue(':totalEntrada', $qtdEntrada);   
-    $atualiza->bindValue(':totalSaida', $qtdSaida);    
+    $atualiza->bindValue(':totalEntrada', $qtdEntradas);   
+    $atualiza->bindValue(':totalSaida', $qtdSaidas);    
     $atualiza->bindValue(':totalEstoque', $qtdEstoque);  
     $atualiza->bindValue(':idPeca', $idPeca);  
     $atualiza->bindValue(':situacao', $situacao);   
     $atualiza->bindValue(':totalComprado', $valorComprado);
-    $atualiza->execute();
+
+    if($atualiza->execute()){
+        return true;
+    }else{
+        return false;
+    }
     
 }
 
@@ -118,6 +139,7 @@ function addSaida($qtd, $peca, $placa, $obs, $servico, $os, $usuario, $requisica
         $inserir->bindValue(':idUsuario', $usuario);
  
         if($inserir->execute()){  
+            atualizaEStoque($peca);
             return true;    
         }else{
             return false;
@@ -137,11 +159,11 @@ function atualisaSaida($idSaida, $servico, $peca, $qtd, $requisicao, $placa, $ob
     $atualiza->bindValue(':obs', $obs);
     $atualiza->bindValue(':idSaida', $idSaida);
     if($atualiza->execute()){  
+        atualizaEStoque($peca);
         return true;    
     }else{
         return false;
     }
 }
-
 
 ?>
