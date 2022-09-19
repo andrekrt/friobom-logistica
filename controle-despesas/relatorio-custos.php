@@ -3,7 +3,7 @@
 use Mpdf\Tag\Td;
 
 session_start();
-require("../conexao.php");
+require("../conexao-on.php");
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] != 4 ) {
 
@@ -120,28 +120,37 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         <tr>
                             <td scope="col" class="text-center text-nowrap font-weight-bold" > Salário Motoristas</td>
                         <?php
-                        $SalarioMot = $db->query("SELECT SUM(salario) as salarioMot FROM motoristas WHERE ativo =1");
-                        $SalarioMot = $SalarioMot->fetch();
-                        for($i=0;$i<12;$i++):
-                            echo "<td>". number_format($SalarioMot['salarioMot'],2,",",".")  ."</td>";
+                        $mes = date('Y-m');
+                        for($i=0;$i<12;$i++):                            
+                            $mes = date("Y-m", strtotime('-1 months', strtotime(date($mes))));
+                            $SalarioMot = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Motoristas' AND mes_ano = '$mes'");
+                            $SalarioMot = $SalarioMot->fetch();
+                            echo "<td>". number_format($SalarioMot['pagamento'],2,",",".")  ."</td>";
+                            $salariosMotoristas[] = $SalarioMot['pagamento'];
                         endfor;
                         echo "</tr>";
 
                         echo "<tr>";
                         echo "<td scope='col' class='text-center text-nowrap font-weight-bold'> Salário Ajudantes </td>";
-                        $SalarioAjud = $db->query("SELECT SUM(salario_auxiliar) as salarioAjud FROM auxiliares_rota WHERE ativo =1");
-                        $SalarioAjud=$SalarioAjud->fetch();
+                        $mes = date('Y-m');
                         for($i=0;$i<12;$i++):
-                            echo "<td>". number_format($SalarioAjud['salarioAjud'],2,",",".")  ."</td>";
+                            $mes = date("Y-m", strtotime('-1 months', strtotime(date($mes))));
+                            $SalarioAjud = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Auxiliares' AND mes_ano = '$mes'");
+                            $SalarioAjud=$SalarioAjud->fetch();
+                            echo "<td>". number_format($SalarioAjud['pagamento'],2,",",".")  ."</td>";
+                            $salariosAuxiliares[]=$SalarioAjud['pagamento'];
                         endfor;
                         echo "</tr>";
 
                         echo "<tr>";
                         echo "<td scope='col' class='text-center text-nowrap font-weight-bold'> Salário Internos </td>"; 
-                        $salarioInt = $db->query("SELECT SUM(salario_colaborador+salario_extra) as salarioInt FROM colaboradores WHERE ativo =1");
-                        $salarioInt = $salarioInt->fetch(); 
+                        $mes = date('Y-m');
                         for($i=0;$i<12;$i++):
-                            echo "<td>". number_format($salarioInt['salarioInt'],2,",",".")  ."</td>";
+                            $mes = date("Y-m", strtotime('-1 months', strtotime(date($mes))));
+                            $salarioInt = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Interno' AND mes_ano = '$mes'");
+                            $salarioInt = $salarioInt->fetch(); 
+                            echo "<td>". number_format($salarioInt['pagamento'],2,",",".")  ."</td>";
+                            $salariosInternos[] = $salarioInt['pagamento'];
                         endfor;
                         echo "</tr>";
                         ?>
@@ -150,7 +159,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <td scope="col" class="text-center text-nowrap font-weight-bold" > TOTAL</td>
                         <?php 
                         for($i=0; $i<12; $i++):
-                            $total = $motoristas[$i]+$ajudantes[$i]+$chapas[$i]+$outros[$i]+$abastecimento[$i]+$valoreManutencao[$i]+$SalarioMot['salarioMot']+$SalarioAjud['salarioAjud']+$salarioInt['salarioInt'];
+                            $total = $motoristas[$i]+$ajudantes[$i]+$chapas[$i]+$outros[$i]+$abastecimento[$i]+$valoreManutencao[$i]+$salariosMotoristas[$i]+$salariosAuxiliares[$i]+$salariosInternos[$i];
                             echo "<td>". number_format($total,2,",",".")  . "</td>";
                             $valorTotal[] = $total;
                         endfor;

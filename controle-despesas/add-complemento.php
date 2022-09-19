@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require("../conexao.php");
+require("../conexao-on.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
 
