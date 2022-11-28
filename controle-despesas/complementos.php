@@ -31,6 +31,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
     <!-- arquivos para datatable -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -85,7 +86,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#tableComple').DataTable({
@@ -160,7 +161,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
                         </div>
                         <div class="form-group col-md-3 ">
                             <label for="veiculo" class="col-form-label">Veículo</label>
-                            <select required name="veiculo" id="veiculo" class="form-control">
+                            <select required name="veiculo" id="veiculoEdit" class="form-control">
                                 <?php $pecas = $db->query("SELECT * FROM veiculos");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
@@ -171,7 +172,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
                         </div>
                         <div class="form-group col-md-7">
                             <label for="motorista" class="col-form-label">Motorista</label>
-                            <select required name="motorista" id="motorista" class="form-control">
+                            <select required name="motorista" id="motoristaEdit" class="form-control">
                                 <?php $motoristas = $db->query("SELECT * FROM motoristas");
                                 $motoristas = $motoristas->fetchAll();
                                 foreach($motoristas as $motorista):
@@ -282,6 +283,24 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
 <script>
     $('#vlAbast').mask('#.##0,00', {reverse: true});
     $('#ltAbast').mask('#.##0,00', {reverse: true});
+    $(document).ready(function(){
+        $('#veiculo').select2({
+            width: '100%',
+            dropdownParent:"#modalComplemento"
+        });
+        $('#motorista').select2({
+            width: '100%',
+            dropdownParent:"#modalComplemento"
+        });
+        $('#veiculoEdit').select2({
+            width: '100%',
+            dropdownParent:"#modalEditar"
+        });
+        $('#motoristaEdit').select2({
+            width: '100%',
+            dropdownParent:"#modalEditar"
+        });
+    });
 </script>
 </body>
 </html>

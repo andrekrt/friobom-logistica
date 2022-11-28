@@ -64,10 +64,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <?php
                                 $mesAtual = date('Y-m'); 
                                 for($i=0;$i<12; $i++): 
-                                    $mesAtual = date('Y-m', strtotime('-1 months', strtotime(date($mesAtual))));
                             ?>
-                                <th scope="col" class="text-center text-nowrap" > <?=date('m/Y', strtotime($mesAtual))?> </th>
-                            <?php endfor; ?>
+                                    <th scope="col" class="text-center text-nowrap" > <?=date('m/Y', strtotime($mesAtual))?> </th>
+                            <?php
+                                    $mesAtual = date('Y-m', strtotime('-1 months', strtotime(date($mesAtual))));
+                             endfor; ?>
                             </tr>
                         </thead>
                         <tr>

@@ -123,7 +123,7 @@
         </div>
         <div class="item">
             <a onclick="menuCheck()">
-                <img src="../assets/images/menu/menu-checklist.png" alt="">
+                <img src="../../assets/images/menu/menu-checklist.png" alt="">
             </a>
             <nav id="submenuCheck">
                 <ul class="nav flex-column">

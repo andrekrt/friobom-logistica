@@ -32,7 +32,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 </head>
 
 <body>
@@ -89,13 +90,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
         </div>
     </div>
 
-    <!-- <script src="../../assets/js/bootstrap.bundle.min.js"></script> -->
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../assets/js/menu.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        // $(document).ready(function() {
-        //     $('#pneu').select2();
-        // });
+        $(document).ready(function() {
+            $('#veiculo').select2();
+        });
         $(function(){
             $('#veiculo').change(function(){
                 if($(this).val()){

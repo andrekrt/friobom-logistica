@@ -211,7 +211,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             </div>
                             <div class="form-group col-md-3 espaco ">
                                 <label for="peca"> Peça </label>
-                                <select required name="peca[]" id="peca" class="form-control">
+                                <select name="peca[]" id="peca" class="form-control">
                                     <option value=""></option>
                                     <?php $pecas = $db->query("SELECT * FROM peca_estoque");
                                     $pecas = $pecas->fetchAll();

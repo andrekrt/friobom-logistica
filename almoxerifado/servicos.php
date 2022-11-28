@@ -151,6 +151,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Mecânica">Mecânica</option>
                                 <option value="Thermoking">Thermoking</option>
                                 <option value="Elétrica">Elétrica</option>
+                                <option value="Revisão Preventiva">Revisão Preventiva</option>
                             </select>
                         </div>
                     </div> 
@@ -191,6 +192,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value="Mecânica">Mecânica</option>
                                 <option value="Thermoking">Thermoking</option>
                                 <option value="Elétrica">Elétrica</option>
+                                <option value="Revisão Preventiva">Revisão Preventiva</option>
                             </select>
                         </div>
                     </div>                                      
