@@ -12,8 +12,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $ceps = filter_input(INPUT_POST, 'ceps');
     $fechamento1 = filter_input(INPUT_POST, 'fechamento1');
     $fechamento2 = filter_input(INPUT_POST, 'fechamento2');
+    $metaDias = str_replace(",",".", filter_input(INPUT_POST, 'metaDias'));
 
-    $atualiza = $db->prepare("UPDATE rotas SET nome_rota = :rota, fechamento1 = :fechamento1, fechamento2 = :fechamento2, hora_fechamento1 = :horaFechamento1, hora_fechamento2 = :horaFechamento2, ceps = :ceps WHERE cod_rota = :codRota");
+    $atualiza = $db->prepare("UPDATE rotas SET nome_rota = :rota, fechamento1 = :fechamento1, fechamento2 = :fechamento2, hora_fechamento1 = :horaFechamento1, hora_fechamento2 = :horaFechamento2, ceps = :ceps, meta_dias = :metaDias WHERE cod_rota = :codRota");
     $atualiza->bindValue(':codRota',$codRota);
     $atualiza->bindValue(':rota', $rota);
     $atualiza->bindValue(':ceps', $ceps);
@@ -21,6 +22,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $atualiza->bindValue(':horaFechamento2', $horaFechamento2);
     $atualiza->bindValue(':fechamento1', $fechamento1);
     $atualiza->bindValue(':fechamento2', $fechamento2);
+    $atualiza->bindValue(':metaDias', $metaDias);
 
     if($atualiza->execute()){
         echo "<script> alert('Atualizado com Sucesso!')</script>";

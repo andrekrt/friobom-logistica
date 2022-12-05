@@ -56,6 +56,7 @@ foreach($empRecords as $row){
             "hora_fechamento1"=>$row['hora_fechamento1'],
             "fechamento2"=>$row['fechamento2'],
             "hora_fechamento2"=>$row['hora_fechamento2'],
+            "meta_dias"=>number_format($row['meta_dias'],1,",",","),
             "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_rota'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?codRotas='.$row['cod_rota'].' " data-id="'.$row['cod_rota'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
         );
 }

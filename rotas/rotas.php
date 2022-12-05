@@ -61,6 +61,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center text-nowrap">Hora 1º Fechamento</th>
                                 <th scope="col" class="text-center text-nowrap"> Dia 2º Fechamento</th>
                                 <th scope="col" class="text-center text-nowrap"> Hora 2º Fechamento</th>
+                                <th scope="col" class="text-center text-nowrap">Meta de Dias em Rota</th>
                                 <th scope="col" class="text-center text-nowrap">Ações</th>
                             </tr>
                         </thead>
@@ -92,6 +93,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'hora_fechamento1' },
                     { data: 'fechamento2' },
                     { data: 'hora_fechamento2' },
+                    { data: 'meta_dias' },
                     { data: 'acoes'},
                 ],
                 "language":{
@@ -123,6 +125,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     $('#horaFechamento1').val(json.hora_fechamento1);
                     $('#fechamento2').val(json.fechamento2);
                     $('#horaFechamento2').val(json.hora_fechamento2);
+                    $('#metaDias').val(json.meta_dias);
                 }
             })
         });
@@ -182,6 +185,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         <div class="form-group col-md-3 ">
                             <label for="horaFechamento2" class="col-form-label">Hora 1º Fechamento</label>
                             <input type="time" name="horaFechamento2" id="horaFechamento2" value="" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3 ">
+                            <label for="metaDias" class="col-form-label">Meta de Dias em Rota</label>
+                            <input type="text" name="metaDias" id="metaDias" value="" class="form-control">
                         </div>
                     </div>
             </div>

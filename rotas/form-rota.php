@@ -77,7 +77,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <option value="Segunda à Sexta">Segunda à Sexta</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="horaFechamento1">Hora de Fechamento 1</label>
                                 <input type="time" class="form-control" required name="horaFechamento1" id="horaFechamento1">
                             </div>
@@ -93,9 +93,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                     <option value="Sábado">Sábado</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="horaFechamento2">Hora de Fechamento 2 </label>
                                 <input type="time" class="form-control" required name="horaFechamento2" id="horaFechamento2">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="metaDias">Meta de Dias em Rota</label>
+                                <input type="text" class="form-control" required name="metaDias" id="metaDias">
                             </div>
                         </div>
                         <div class="form-row">
