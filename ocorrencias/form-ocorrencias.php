@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] == 99) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario']==2)) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
 } else {
@@ -106,6 +106,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <option value=""></option>
                                 <option value="Má Condução">Má Condução</option>
                                 <option value="Mau Comportamento">Mau Comportamento</option>
+                                <option value="Mau Uso do Fusion">Mau Uso do Fusion</option>
+                                <option value="Velocidade Excedida">Velocidade Excedida</option>
                             </select>
                         </div>
                         <div class="input-group mb-3 form-grupo col-md-4 centro-file">

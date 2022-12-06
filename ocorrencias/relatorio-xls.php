@@ -5,7 +5,7 @@ require("../conexao.php");
 
 $tipoUsuario = $_SESSION['tipoUsuario'];
         
-    if($tipoUsuario==99 || $tipoUsuario==4){
+    if($tipoUsuario==99 || $tipoUsuario==2){
 
         $arquivo = 'ocorrencias-por-motorista.xls';
 

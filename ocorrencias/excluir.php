@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && ($_SESSION['tipoUsuario'] == 4)){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && ($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario']==2)){
 
     $idOcorrencias = filter_input(INPUT_GET, 'idOcorrencia');
 
