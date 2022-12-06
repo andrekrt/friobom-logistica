@@ -74,6 +74,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                                 <th scope="col" class="text-center text-nowrap"> Km Alinhamento</th>
                                 <th scope="col" class="text-center text-nowrap"> Km Restante(Alinhamento)</th>
                                 <th scope="col" class="text-center text-nowrap"> Alinhamento</th>
+                                <th scope="col" class="text-center text-nowrap"> Média de Combustível</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações</th>
                             </tr>
                         </thead>
@@ -117,6 +118,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                     { data: 'km_alinhamento'},
                     {data: 'km_restante_alinhamento'}, 
                     {data: 'alinhamento'}, 
+                    {data: 'media_combustivel'}, 
                     { data: 'acoes'},
                 ],
                 "language":{
@@ -154,6 +156,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                     $('#kmUltimaRevisao').val(json.km_ultima_revisao);
                     $('#dataRevisao').val(json.data_revisao);
                     $('#kmAtual').val(json.km_atual);
+                    $('#mediaCombustivel').val(json.media_combustivel);
                 }
             })
         });
@@ -198,13 +201,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false  && 
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="peso" class="col-form-label">Peso Máximo</label>
                             <input type="text" class="form-control" name="peso" id="peso" >
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <label for="cubagem" class="col-form-label">Cubagem</label>
                             <input type="text" class="form-control" name="cubagem" id="cubagem" >
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="metaCombustivel" class="col-form-label">Meta de Combustível</label>
+                            <input type="text" name="metaCombustivel" id="metaCombustivel" class="form-control">
                         </div>
                     </div>
             </div>

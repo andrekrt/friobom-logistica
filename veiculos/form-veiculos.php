@@ -79,13 +79,17 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-6 espaco">
+                            <div class="form-group col-md-4 espaco">
                                 <label for="peso">Peso Máximo(Kg)</label>
                                 <input type="text" name="peso" id="peso" class="form-control">
                             </div>
-                            <div class="form-group col-md-6 espaco">
+                            <div class="form-group col-md-4 espaco">
                                 <label for="cubagem">Cubagem(m3)</label>
                                 <input type="text" name="cubagem" id="cubagem" class="form-control">
+                            </div>
+                            <div class="form-group col-md-4 espaco">
+                                <label for="metaCombustivel">Meta de Combustível</label>
+                                <input type="text" name="metaCombustivel" id="metaCombustivel" class="form-control">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>

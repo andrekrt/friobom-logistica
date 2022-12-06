@@ -11,14 +11,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $categoria = filter_input(INPUT_POST, 'categoria');
     $peso = filter_input(INPUT_POST, 'peso');
     $cubagem = str_replace(",", ".", filter_input(INPUT_POST, 'cubagem'));
+    $metaCombustivel = str_replace(",", ".",filter_input(INPUT_POST, 'metaCombustivel') ) ;
 
-    $atualiza = $db->prepare("UPDATE veiculos SET tipo_veiculo = :tipoVeiculo, placa_veiculo = :placa, categoria = :categoria, peso_maximo = :peso, cubagem = :cubagem WHERE cod_interno_veiculo = :codVeiculo ");
+    $atualiza = $db->prepare("UPDATE veiculos SET tipo_veiculo = :tipoVeiculo, placa_veiculo = :placa, categoria = :categoria, peso_maximo = :peso, cubagem = :cubagem, meta_combustivel = :metaCombustivel WHERE cod_interno_veiculo = :codVeiculo ");
     $atualiza->bindValue(':tipoVeiculo', $tipoVeiculo);
     $atualiza->bindValue(':placa', $placa);
     $atualiza->bindValue(':categoria', $categoria);
     $atualiza->bindValue(':peso', $peso);
     $atualiza->bindValue(':cubagem', $cubagem);
     $atualiza->bindValue(':codVeiculo', $codVeiculo);
+    $atualiza->bindValue(':metaCombustivel', $metaCombustivel);
 
     //echo "$codVeiculo <br>$tipoVeiculo<br>$placa";
 

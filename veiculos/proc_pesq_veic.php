@@ -92,6 +92,7 @@ foreach($empRecords as $row){
         "km_restante_alinhamento"=>$kmRestanteAlinhamento,
         "alinhamento"=>$situacaoAlinhamento,
         "situacao"=>$situacao,
+        "media_combustivel"=>number_format($row['meta_combustivel'],2,",",".") ,
         "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="desativar.php?codVeiculo='.$row['cod_interno_veiculo'].' " data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-danger btn-sm deleteBtn" >Desativar</a>'
     );
 }

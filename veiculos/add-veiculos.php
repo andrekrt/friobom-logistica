@@ -13,6 +13,7 @@ if( isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
     $categoria = filter_input(INPUT_POST, 'categoria');
     $peso = filter_input(INPUT_POST, 'peso');
     $cubagem = str_replace(",", ".",filter_input(INPUT_POST, 'cubagem') ) ;
+    $metaCombustivel = str_replace(",", ".",filter_input(INPUT_POST, 'metaCombustivel') ) ;
 
     $consulta = $db->query("SELECT * FROM veiculos WHERE cod_interno_veiculo = '$codVeiculo' OR placa_veiculo = '$placaVeiculo'");
 
@@ -20,13 +21,14 @@ if( isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_S
         echo "<script>alert('Esse Veículo já está cadastrado!');</script>";
         echo "<script>window.location.href='form-veiculos.php'</script>";
     }else{
-        $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, peso_maximo, cubagem) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :peso, :cubagem) ");
+        $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, peso_maximo, cubagem, meta_combustivel) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :peso, :cubagem, :metaCombustivel) ");
         $sql->bindValue(':codVeiculo', $codVeiculo);
         $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
         $sql->bindValue(':placaVeiculo', $placaVeiculo);
         $sql->bindValue(':categoria', $categoria);
         $sql->bindValue(':peso', $peso);
         $sql->bindValue(':cubagem', $cubagem);
+        $sql->bindValue(':metaCombustivel', $metaCombustivel);
         if($sql->execute()){
 
             echo "<script>alert('Veículo Cadastrado!');</script>";
