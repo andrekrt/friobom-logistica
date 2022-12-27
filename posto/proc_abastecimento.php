@@ -56,8 +56,13 @@ foreach($empRecords as $row){
         "idcombustivel_saida"=>$row['idcombustivel_saida'],
         "data_abastecimento"=>date("d/m/Y", strtotime($row['data_abastecimento'])),
         "litro_abastecimento"=> number_format($row['litro_abastecimento'],2,",","."),
+        "valor_medio"=> number_format($row['preco_medio'],2,",","."),
+        "valor_total"=> number_format($row['valor_total'],2,",","."),
         "carregamento"=>$row['carregamento'] ,
+        "km"=>$row['km'] ,
         "placa_veiculo"=>$row['placa_veiculo'],
+        "rota"=>$row['rota'],
+        "motorista"=>$row['motorista'],
         "tipo_abastecimento"=>($row['tipo_abastecimento']),
         "nome_usuario"=>$row['nome_usuario'],
         "acoes"=> '  <a href="excluir-entrada.php?idSaida='.$row['idcombustivel_saida'].' " data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'

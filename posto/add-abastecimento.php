@@ -12,6 +12,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     $placa =  filter_input(INPUT_POST, 'placa');
     $carregamento = filter_input(INPUT_POST, 'carregamento');
     $tipoAbastecimento = filter_input(INPUT_POST, 'tipo');
+    $km = filter_input(INPUT_POST, 'km');
     $estoqueAtual = contaEstoque();
 
     //echo "$dataAbastecimento<br>$litro<br>$carregamento<br>$placa<br>$tipoAbastecimento<br>$usuario";
@@ -29,10 +30,19 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
             echo "<script>alert('Estoque Insuficiente');</script>";
             echo "<script>window.location.href='abastecimento.php'</script>";
         }else{
-            $inserir = $db->prepare("INSERT INTO combustivel_saida (data_abastecimento, litro_abastecimento, carregamento, placa_veiculo, tipo_abastecimento, usuario) VALUES (:dataAbastecimento, :litros, :carregamento, :placa, :tipo, :usuario)");
+
+            $total = $db->query("SELECT SUM(total_litros) AS  litros, SUM(valor_total) as valor FROM combustivel_entrada");
+            $total = $total->fetch();
+            $precoMedio = $total['valor']/$total['litros'];
+            $valorTotal = $precoMedio*$litro;
+
+            $inserir = $db->prepare("INSERT INTO combustivel_saida (data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, km, placa_veiculo, tipo_abastecimento, usuario) VALUES (:dataAbastecimento, :litros, :precoMedio, :valorTotal, :carregamento, :km, :placa, :tipo, :usuario)");
             $inserir->bindValue(':dataAbastecimento', $dataAbastecimento);
             $inserir->bindValue(':litros', $litro);
+            $inserir->bindValue(':precoMedio', $precoMedio);
+            $inserir->bindValue(':valorTotal', $valorTotal);
             $inserir->bindValue(':carregamento', $carregamento);
+            $inserir->bindValue(':km', $km);
             $inserir->bindValue(':placa', $placa);
             $inserir->bindValue(':tipo', $tipoAbastecimento);
             $inserir->bindValue(':usuario', $usuario);

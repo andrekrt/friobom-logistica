@@ -182,7 +182,7 @@
                 </ul>
             </nav>
         </div>
-        <!-- <div class="item">
+        <div class="item">
             <a onclick="menuPosto()">
                 <img src="../assets/images/menu/posto.png" alt="">
             </a>
@@ -194,7 +194,7 @@
                     <li class="nav-item"> <a href="../posto/inventario.php" class="nav-link"> Inventário </a> </li>
                 </ul>
             </nav>
-        </div> -->
+        </div>
         <div class="item">
             <a href="../sair.php">
                 <img src="../assets/images/menu/sair.png" alt="">

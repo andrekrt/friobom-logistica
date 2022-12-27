@@ -114,6 +114,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[8]}
                 ],
+                "order":[
+                    0, 'desc'
+                ]
             });
         });
 

@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 8 || $_SESSION['tipoUsuario'] == 99)) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99)) {
 
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -67,8 +67,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Data Abastecimento</th>
                                 <th scope="col" class="text-center text-nowrap">Litros Abastecido</th>
+                                <th scope="col" class="text-center text-nowrap">Valor Médio</th>
+                                <th scope="col" class="text-center text-nowrap">Valor Total</th>
                                 <th scope="col" class="text-center text-nowrap">Carregamento</th>
+                                <th scope="col" class="text-center text-nowrap">Km</th>
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
+                                <th scope="col" class="text-center text-nowrap">Rota</th>
+                                <th scope="col" class="text-center text-nowrap">Motorista</th>
                                 <th scope="col" class="text-center text-nowrap">Tipo de Abastecimento</th>
                                 <th scope="col" class="text-center text-nowrap"> Usuário que Lançou </th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
@@ -97,21 +102,29 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_abastecimento.php'
                 },
                 'columns': [
-                    { data: 'idcombustivel_saida' },
-                    { data: 'data_abastecimento' },
-                    { data: 'litro_abastecimento' },
-                    { data: 'carregamento' },
-                    { data: 'placa_veiculo' },
-                    { data: 'tipo_abastecimento' },
-                    { data: 'nome_usuario' },
-                    { data: 'acoes' },
+                    { data: 'idcombustivel_saida'},
+                    { data: 'data_abastecimento'},
+                    { data: 'litro_abastecimento'},
+                    { data: 'valor_medio'},
+                    { data: 'valor_total'},
+                    { data: 'carregamento'},
+                    { data: 'km'},
+                    { data: 'placa_veiculo'},
+                    { data: 'rota'},
+                    { data: 'motorista'},
+                    { data: 'tipo_abastecimento'},
+                    { data: 'nome_usuario'},
+                    { data: 'acoes'},
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[7]}
+                    {'bSortable':false, 'aTargets':[12]}
                 ],
+                "order":[
+                    0, 'desc'
+                ]
             });
         });
     </script>
@@ -129,27 +142,50 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="modal-body">
                 <form action="add-abastecimento.php" method="post">
                     <div class="form-row">
-                        <div class="form-group col-md-3 espaco ">
-                            <label for="carregamento"> Carregamento</label>
-                            <input type="text" required name="carregamento" class="form-control" id="carregamento">
-                        </div>
+                        
                         <div class="form-group col-md-3 espaco ">
                             <label for="placa"> Placa Veículo</label>
-                            <select required name="placa" id="placa" class="form-control">
+                            <input type="text" id="placa" name="placa" required class="form-control">
+                        </div>
+                        <div class="form-group col-md-3 espaco ">
+                            <label for="rota"> Rota</label>
+                            <select required name="rota" id="rota" class="form-control">
                                 <option value=""></option>
-                                <?php $veiculos = $db->query("SELECT * FROM veiculos");
-                                $veiculos = $veiculos->fetchAll();
-                                foreach($veiculos as $veiculo):
+                                <?php $rotas = $db->query("SELECT * FROM rotas");
+                                $rotas = $rotas->fetchAll();
+                                foreach($rotas as $rota):
                                 ?>
-                                <option value="<?=$veiculo['placa_veiculo']?>"><?= $veiculo['placa_veiculo']?></option>
+                                <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-4 espaco ">
+                            <label for="motorista"> Motorista</label>
+                            <select required name="motorista" id="motorista" class="form-control">
+                                <option value=""></option>
+                                <?php $motoristas = $db->query("SELECT * FROM motoristas");
+                                $motoristas = $motoristas->fetchAll();
+                                foreach($motoristas as $motorista):
+                                ?>
+                                <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="carregamento"> Carregamento</label>
+                            <input type="text" required name="carregamento" class="form-control" id="carregamento">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
                             <label for="litro"> Litros</label>
                             <input type="text" required  name="litro" class="form-control" id="litro">
                         </div>
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="km"> Km</label>
+                            <input type="text" required  name="km" class="form-control" id="km">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
                             <label for="tipo"> Tipo de Abastecimento</label>
                             <select name="tipo" required id="tipo" class="form-control">
                                 <option value=""></option>
@@ -176,7 +212,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     })
 
     $(document).ready(function(){
-        $('#placa').select2({
+       
+        $('#motorista').select2({
+            width: '100%',
+            dropdownParent:"#modalEntrada"
+        });
+        $('#rota').select2({
             width: '100%',
             dropdownParent:"#modalEntrada"
         });
