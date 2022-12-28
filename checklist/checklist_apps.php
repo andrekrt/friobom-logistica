@@ -52,7 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
                 <div class="icon-exp">
-                    <a href="checklist-csv.php"><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="checklist-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table id='checklist' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
@@ -61,13 +61,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                                 <th scope="col" class="text-center text-nowrap" > ID </th>
                                 <th scope="col" class="text-center text-nowrap">Data Saída</th>
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
-                                <th scope="col" class="text-center text-nowrap">Carregamento</th>
-                                <th scope="col" class="text-center text-nowrap">Hora do Tk</th>
                                 <th scope="col" class="text-center text-nowrap">Imagens Saída</th>
-                                <th scope="col" class="text-center text-nowrap">Imagens Retorno</th>
-                                <th scope="col" class="text-center text-nowrap">Check List</th>
+                                <th scope="col" class="text-center text-nowrap">Qtd Nf's</th>
+                                <th scope="col" class="text-center text-nowrap">Valor Carga </th>
+                                <th scope="col" class="text-center text-nowrap">Km Saída</th>
+                                <th scope="col" class="text-center text-nowrap"> Rota </th>
+                                <th scope="col" class="text-center text-nowrap">Motorista </th>
+                                <th scope="col" class="text-center text-nowrap"> Ajudante </th>
+                                <th scope="col" class="text-center text-nowrap">Data Chegada </th>
+                                <th scope="col" class="text-center text-nowrap"> Km Rota</th>
+                                <th scope="col" class="text-center text-nowrap">Litros Abastecido</th>
+                                <th scope="col" class="text-center text-nowrap">Valor Abastecido</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações</th>
-                               
                             </tr>
                         </thead>
                     </table>
@@ -91,24 +96,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                     'url':'pesq-checklist.php'
                 },
                 'columns': [
-                    { data: 'id'},
-                    {data: 'data_check'},
-                    {data: 'veiculo'},
-                    {data: 'carregamento'},
-                    {data: 'hr_tk'},
-                    {data: 'fotos_saidas'},
-                    {data: 'fotos_retorno'},
-                    {data: 'tipo_check'},
-                    {data: 'acoes'}
-                  
+                    { data: 'idchecklist' },
+                    { data: 'saida' },
+                    { data: 'placa_veiculo' },
+                    { data: 'anexos' },
+                    { data: 'qtdnf' },
+                    { data: 'vl_carga' },
+                    { data: 'km_saida' },
+                    { data: 'nome_rota' },
+                    { data: 'nome_motorista' },
+                    { data: 'ajudante' },
+                    { data: 'chegada' },
+                    { data: 'km_rota' },
+                    { data: 'litros_abastecido'},
+                    { data: 'valor_abastecido'},
+                    { data: 'acoes'},
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[8]}
+                    {'bSortable':false, 'aTargets':[15]}
                 ],
-                "order":[0,'desc']
             });
         });
     </script>

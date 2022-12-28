@@ -18,29 +18,30 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (placa_veiculo LIKE :placa_veiculo OR nome_rota LIKE :nome_rota OR nome_motorista LIKE :nome_motorista OR ajudante LIKE :ajudante ) ";
+	$searchQuery = " AND (veiculo LIKE :veiculo OR hr_tk LIKE :hr_tk OR carregamento OR :carregamento OR tipo_checklist LIKE :tipo_checklist OR obs LIKE :obs) ";
     $searchArray = array( 
-        'placa_veiculo'=>"%$searchValue%", 
-        'nome_rota'=>"%$searchValue%",
-        'nome_motorista'=>"%$searchValue%",
-        'ajudante'=>"%$searchValue%",
+        'veiculo'=>"%$searchValue%", 
+        'hr_tk'=>"%$searchValue%",
+        'carregamento'=>"%$searchValue%",
+        'tipo_checklist'=>"%$searchValue%",
+        'obs'=>"%$searchValue%"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist_apps");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist_apps WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM checklist LEFT JOIN veiculos ON checklist.veiculo = veiculos.cod_interno_veiculo LEFT JOIN rotas ON checklist.rota = rotas.cod_rota LEFT JOIN motoristas ON checklist.motorista = motoristas.cod_interno_motorista LEFT JOIN usuarios ON checklist.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM checklist_apps LEFT JOIN checklist_apps_retorno02 ON checklist_apps.id = checklist_apps_retorno02.checksaida WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -55,38 +56,22 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
-    $edit = "";
-    $delete = "";
-    $pdf = "";
-    $retorno = "";
-    if($row['chegada']<"2022-01-01"){
-        $edit = ' <a href="form-edit-check.php?id='.$row['idchecklist'].'" class="btn btn-info btn-sm editbtn" >Editar</a>';
-        $delete = ' <a href="excluir-check.php?id='.$row['idchecklist'].' " class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
-        $retorno = ' <a href="form-retorno.php?id='.$row['idchecklist'].'" class="btn btn-success btn-sm deleteBtn" >Retorno</a>';
-        $pdf = ' <a href="ficha.php?id='.$row['idchecklist'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>';
+    if($row['id_ret']){
+        $retorno = '<a href="https://friobom036.sharepoint.com/sites/Anexos/imagensRetorno/'.$row['id_ret'].'" target="_blank" >Fotos</a>';
     }else{
-        $pdf = ' <a href="ficha.php?id='.$row['idchecklist'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>';
-        $edit = ' <a href="form-edit-retorno.php?id='.$row['idchecklist'].'" class="btn btn-info btn-sm editbtn" >Editar Retorno</a>';
+        $retorno = 'Ainda não retornou';
     }
     $data[] = array(
-        "idchecklist"=>$row['idchecklist'],
-        "saida"=>date("d/m/Y",strtotime($row['saida'])),
-        "placa_veiculo"=>$row['placa_veiculo'],
-        "anexos"=> '<a target="_blank" href="uploads/'.$row['idchecklist'].'/saida">Fotos</a> ',
-        "retorno"=> '<a target="_blank" href="uploads/'.$row['idchecklist'].'/retorno">Fotos</a> ',
-        "qtdnf"=>$row['qtdnf'],
-        "vl_carga"=>$row['vl_carga'],
-        "km_saida"=>$row['km_saida'],
-        "nome_rota"=>$row['nome_rota'],
-        "nome_motorista"=>$row['nome_motorista'],
-        "ajudante"=>$row['ajudante'],
-        "chegada"=>date("d/m/Y",strtotime($row['chegada'])),
-        "km_rota"=>$row['km_rota'],
-        "litros_abastecido"=>$row['litros_abastecido'],
-        "valor_abastecido"=>$row['valor_abastecido'],
-        "usuario"=>$row['nome_usuario'],
-        "acoes"=> $edit. $retorno. $pdf. $delete
-    );
+            "id"=>$row['id'],
+            "data_check"=>date("d/m/Y", strtotime($row['data'])),
+            "veiculo"=>$row['veiculo'],
+            "carregamento"=>$row['carregamento_ret'],
+            "hr_tk"=>$row['hr_tk'],
+            "fotos_saidas"=>'<a href="https://friobom036.sharepoint.com/sites/Anexos/imagens/'.$row['id'].'" target="_blank" >Fotos</a>',
+            "fotos_retorno"=>$retorno,
+            "tipo_check"=>$row['tipo_checklist'],
+            "acoes"=> ' <a href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>'
+        );
 }
 
 ## Response
