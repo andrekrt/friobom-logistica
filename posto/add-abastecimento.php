@@ -13,6 +13,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     $carregamento = filter_input(INPUT_POST, 'carregamento');
     $tipoAbastecimento = filter_input(INPUT_POST, 'tipo');
     $km = filter_input(INPUT_POST, 'km');
+    $motorista = filter_input(INPUT_POST, 'motorista');
+    $rota = filter_input(INPUT_POST, 'rota');
     $estoqueAtual = contaEstoque();
 
     //echo "$dataAbastecimento<br>$litro<br>$carregamento<br>$placa<br>$tipoAbastecimento<br>$usuario";
@@ -36,12 +38,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
             $precoMedio = $total['valor']/$total['litros'];
             $valorTotal = $precoMedio*$litro;
 
-            $inserir = $db->prepare("INSERT INTO combustivel_saida (data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, km, placa_veiculo, tipo_abastecimento, usuario) VALUES (:dataAbastecimento, :litros, :precoMedio, :valorTotal, :carregamento, :km, :placa, :tipo, :usuario)");
+            $inserir = $db->prepare("INSERT INTO combustivel_saida (data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, motorista, rota, km, placa_veiculo, tipo_abastecimento, usuario) VALUES (:dataAbastecimento, :litros, :precoMedio, :valorTotal, :carregamento, :motorista, :rota, :km, :placa, :tipo, :usuario)");
             $inserir->bindValue(':dataAbastecimento', $dataAbastecimento);
             $inserir->bindValue(':litros', $litro);
             $inserir->bindValue(':precoMedio', $precoMedio);
             $inserir->bindValue(':valorTotal', $valorTotal);
             $inserir->bindValue(':carregamento', $carregamento);
+            $inserir->bindValue(':motorista', $motorista);
+            $inserir->bindValue(':rota', $rota);
             $inserir->bindValue(':km', $km);
             $inserir->bindValue(':placa', $placa);
             $inserir->bindValue(':tipo', $tipoAbastecimento);

@@ -127,6 +127,32 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 ]
             });
         });
+
+        //abrir modal
+        $('#tableAbast').on('click', '.editbtn', function(event){
+            var table = $('#tableAbast').DataTable();
+            var trid = $(this).closest('tr').attr('id');
+            var id = $(this).data('id');
+
+            $('#modalEditar').modal('show');
+
+            $.ajax({
+                url:"get_abastecimento.php",
+                data:{id:id},
+                type:'post',
+                success: function(data){
+                    var json = JSON.parse(data);
+                    $('#id').val(json.idcombustivel_saida);
+                    $('#placaEdit').val(json.placa_veiculo);
+                    $('#motoristaEdit').val(json.motorista);
+                    $('#rotaEdit').val(json.rota);
+                    $('#carregamentoEdit').val(json.carregamento);     
+                    $('#litroEdit').val(json.litro_abastecimento);
+                    $('#kmEdit').val(json.km);
+                    $('#tipoEdit').val(json.tipo_abastecimento);                 
+                }
+            })
+        });
     </script>
 
 <!-- MODAL lançamento de abastecimento -->
@@ -204,11 +230,87 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 </div>
 <!-- FIM MODAL lançamento de abastecimento-->
 
+<!-- MODAL edição de abastecimento -->
+<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Abastecimento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="atualiza-abastecimento.php" method="post">
+                    <div class="form-row">
+                    <input type="hidden" id="id" name="id">
+                        <div class="form-group col-md-3 espaco ">
+                            <label for="placa"> Placa Veículo</label>
+                            <input type="text" id="placaEdit" name="placa" required class="form-control">
+                        </div>
+                        <div class="form-group col-md-3 espaco ">
+                            <label for="rota"> Rota</label>
+                            <select required name="rota" id="rotaEdit" class="form-control">
+                                <option value=""></option>
+                                <?php $rotas = $db->query("SELECT * FROM rotas");
+                                $rotas = $rotas->fetchAll();
+                                foreach($rotas as $rota):
+                                ?>
+                                <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4 espaco ">
+                            <label for="motorista"> Motorista</label>
+                            <select required name="motorista" id="motoristaEdit" class="form-control">
+                                <option value=""></option>
+                                <?php $motoristas = $db->query("SELECT * FROM motoristas");
+                                $motoristas = $motoristas->fetchAll();
+                                foreach($motoristas as $motorista):
+                                ?>
+                                <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="carregamento"> Carregamento</label>
+                            <input type="text" required name="carregamento" class="form-control" id="carregamentoEdit">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="litro"> Litros</label>
+                            <input type="text" required  name="litro" class="form-control" id="litroEdit">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="km"> Km</label>
+                            <input type="text" required  name="km" class="form-control" id="kmEdit">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="tipo"> Tipo de Abastecimento</label>
+                            <select name="tipo" required id="tipoEdit" class="form-control">
+                                <option value=""></option>
+                                <option value="Saída">Saída</option>
+                                <option value="Retorno">Retorno</option>
+                            </select>
+                        </div>
+                    </div>    
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIM MODAL edição de abastecimento-->
+
 <script src="../assets/js/jquery.mask.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     jQuery(function($){
         $("#litro").mask('###0,00', {reverse: true});
+        $("#litroEdit").mask('###0,00', {reverse: true});
     })
 
     $(document).ready(function(){
@@ -221,6 +323,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             width: '100%',
             dropdownParent:"#modalEntrada"
         });
+        
     });
   
 </script>
