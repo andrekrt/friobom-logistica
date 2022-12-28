@@ -64,11 +64,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         </div>
                         <div class="form-group col-md-12 espaco">
                             <label for="cnh"> CNH </label>
-                            <input type="text" name="cnh" class="form-control" id="cnh">
+                            <input type="text" required name="cnh" class="form-control" id="cnh">
                         </div>
                         <div class="form-group col-md-12 espaco">
                             <label for="validadeCNH"> Validade CNH </label>
-                            <input type="date" name="validadeCNH" class="form-control" id="validadeCNH">
+                            <input type="date" required name="validadeCNH" class="form-control" id="validadeCNH">
                         </div>
                         <div class="form-group col-md-12 espaco">
                             <label for="situacaoToxicologico"> Exame Toxicológico </label>

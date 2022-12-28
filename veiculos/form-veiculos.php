@@ -69,7 +69,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         <div class="form-row">
                             <div class="form-group col-md-12 espaco ">
                                 <label for="categoria"> Categoria </label>
-                                <select name="categoria" class="form-control" id="categoria">
+                                <select name="categoria" required class="form-control" id="categoria">
                                     <option value=""></option>
                                     <option value="Truck">Truck</option>
                                     <option value="Toco">Toco</option>
@@ -81,15 +81,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         <div class="form-row">
                             <div class="form-group col-md-4 espaco">
                                 <label for="peso">Peso Máximo(Kg)</label>
-                                <input type="text" name="peso" id="peso" class="form-control">
+                                <input type="text" required name="peso" id="peso" class="form-control">
                             </div>
                             <div class="form-group col-md-4 espaco">
                                 <label for="cubagem">Cubagem(m3)</label>
-                                <input type="text" name="cubagem" id="cubagem" class="form-control">
+                                <input type="text" required name="cubagem" id="cubagem" class="form-control">
                             </div>
                             <div class="form-group col-md-4 espaco">
                                 <label for="metaCombustivel">Meta de Combustível</label>
-                                <input type="text" name="metaCombustivel" id="metaCombustivel" class="form-control">
+                                <input type="text" required name="metaCombustivel" id="metaCombustivel" class="form-control">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>
