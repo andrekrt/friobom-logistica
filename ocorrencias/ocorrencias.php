@@ -203,6 +203,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value=""></option>
                                 <option value="Má Condução">Má Condução</option>
                                 <option value="Mau Comportamento">Mau Comportamento</option>
+                                <option value="Mau Uso do Fusion">Mau Uso do Fusion</option>
+                                <option value="Velocidade Excedida">Velocidade Excedida</option>
+                                <option value="Tombamento">Tombamento</option>
+                                <option value="Atolamento">Atolamento</option>
+                                <option value="Colisão">Colisão</option>
                             </select>
                         </div>
                         <div class="input-group mb-3 form-grupo col-md-3 centro-file">
