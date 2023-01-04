@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -51,12 +52,18 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    $botao = "";
+    if($_SESSION['tipoUsuario']==4){
+        $botao = '<a href="javascript:void();" data-id="'.$row['idinventario'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-inventario.php?idInventario='.$row['idinventario'].' " data-id="'.$row['idinventario'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+    }
     $data[] = array(
         "idinventario"=>$row['idinventario'],
         "data_inventario"=>date("d/m/Y", strtotime($row['data_inventario'])),
+        "volume_anterior"=>number_format($row['volume_anterior'],2,",",".")."l",
         "qtd_encontrada"=> number_format($row['qtd_encontrada'],2,",",".")."l",
+        "volume_divergente"=>number_format($row['volume_divergente'],2,",",".") ,
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idinventario'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-inventario.php?idInventario='.$row['idinventario'].' " data-id="'.$row['idinventario'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+        "acoes"=> $botao
     );
 }
 

@@ -1,0 +1,7 @@
+ID; Data Abastecimento; Litros Abastecimento; R$/Lt; Valor Total; Carregamento; Km; Placa; Rota; Motorista; Tipo Abastecimento;Usuário que Lançou
+5;22/12/2022;273,00;5,81;1.586,13; 101010; ; PSZ-6669;;;Saída;Andre Santos
+6;22/12/2022;15,00;5,81;87,15; 5454; 123456; ptt-9b50;CODÓ;ANTONIO WILLAME COUTINHO DE OLIVEIRA;Saída;Andre Santos
+7;22/12/2022;150,25;5,81;872,95; 54879; 10000; OXY-6512;CODÓ;LUIS ;Saída;Andre Santos
+8;27/12/2022;1.515,51;5,81;8.805,11; 101010; 43713; OXY-4041;;;Retorno;Andre Santos
+9;28/12/2022;151,45;5,81;879,92; 85003; 124578; OXY-4041;;;Retorno;Andre Santos
+10;28/12/2022;10,50;5,81;61,01; 0213; 80000; ptt9b50;CODÓ;RAFAEL RODRIGUES DE SOUSA;Saída;Andre Santos

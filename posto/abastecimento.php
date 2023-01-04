@@ -58,7 +58,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Novo Abastecimento</button>
                     </div>
-                    <a href="abastecimento-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="abastecimento-csv.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table id='tableAbast' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
@@ -322,6 +322,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $('#rota').select2({
             width: '100%',
             dropdownParent:"#modalEntrada"
+        });
+
+        //buscar infor no erp
+        $("carregamento").blur(function(){
+            var $motorista = $("#motorista");
+            var $rota = $("#rota");
+            var carregamento = $(this).val();
+
+            $.getJSON('consulta.php', {carregamento},
+                function(retorno){
+                    
+                }
+            );
         });
         
     });

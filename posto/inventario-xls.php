@@ -3,43 +3,28 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 8 || $_SESSION['tipoUsuario'] == 99)){
+$db->exec("set names utf8");
+$sql = $db->query("SELECT * FROM combustivel_inventario LEFT JOIN usuarios ON combustivel_inventario.usuario = usuarios.idusuarios");
+$dados = $sql->fetchAll();
 
-        $arquivo = 'inventario.xls';
+$fp = fopen("inventario.csv", "w");
+$escreve = fwrite($fp, "ID;Data Inventario; Volume Anterior(Litros); Volume Inventaridado (Litros); Volume Divergente(Litros);". utf8_decode('Usuário que Lançou') );
 
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> ID </td>';
-        $html .= '<td class="text-center font-weight-bold">Data Inventario</td>';
-        $html .= '<td class="text-center font-weight-bold"> Volume Encontrado (Litros) </td>';
-        $html .= '<td class="text-center font-weight-bold">' .utf8_decode('Usuário que Lançou'). '</td>';
-        $html .= '</tr>';
+foreach($dados as $dado){
+    $escreve=fwrite($fp,
+        "\n$dado[idinventario];". date("d/m/Y", strtotime($dado['data_inventario'])). ";" .number_format($dado['volume_anterior'],2,",","."). ";" .number_format($dado['qtd_encontrada'],2,",","."). ";" .number_format($dado['volume_divergente'],2,",","."). ";". utf8_decode($dado['nome_usuario'])
+    );
+}
 
-        $sql = $db->query("SELECT * FROM combustivel_inventario LEFT JOIN usuarios ON combustivel_inventario.usuario = usuarios.idusuarios");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
+fclose($fp);
 
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['idinventario']. '</td>';
-            $html .= '<td>'.date("d/m/Y", strtotime($dado['data_inventario'])). '</td>';
-            $html .= '<td>'.number_format($dado['qtd_encontrada'],2,",","."). '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_usuario'])  . '</td>';
-            $html .= '</tr>';
+header("Cache-Control: public");
+header("Content-Description: File Transfer");
+header("Content-Disposition: attachment; filename=inventario.csv");
+header("Content-Type: application/zip");
+header("Content-Transfer-Encoding: binary");
 
-        }
+// Read the file
+readfile('inventario.csv');
+exit;
 
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-        
-    }
-
-?>
