@@ -17,17 +17,19 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $suco04 = $_POST['suco04'];
     $calibragem = $_POST['calibragem'];
     $usuario = $_SESSION['idUsuario']; 
+    $vida = $_POST['vida'];
 
     for($i=0; $i<count($idpneu);$i++){
         $kmPneu = $kmVeiculo-$kmInicialPneu[$i];
 
         //echo $suco01[$i]."<br>".$suco02[$i]."<br>".$suco03[$i]."<br>".$suco04[$i]."<br><br>";
         
-        $sql = $db->prepare("INSERT INTO sucos (data_medicao, km_veiculo, km_pneu, carcaca, suco01, suco02, suco03, suco04, calibragem, pneus_idpneus, usuario) VALUES (:dataMedida, :kmVeiculo, :kmPneu, :carcaca, :suco01, :suco02, :suco03, :suco04, :calibragem, :pneu, :usuario)");
+        $sql = $db->prepare("INSERT INTO sucos (data_medicao, km_veiculo, km_pneu, carcaca, vida, suco01, suco02, suco03, suco04, calibragem, pneus_idpneus, usuario) VALUES (:dataMedida, :kmVeiculo, :kmPneu, :carcaca, :vida, :suco01, :suco02, :suco03, :suco04, :calibragem, :pneu, :usuario)");
         $sql->bindValue(':dataMedida', $dataMedicao);
         $sql->bindValue(':kmVeiculo', $kmVeiculo);
         $sql->bindValue(':kmPneu', $kmPneu);
         $sql->bindValue(':carcaca', $carcaca[$i]);
+        $sql->bindValue(':vida', $vida[$i]);
         $sql->bindValue(':suco01', $suco01[$i]);
         $sql->bindValue(':suco02', $suco02[$i]);
         $sql->bindValue(':suco03', $suco03[$i]);

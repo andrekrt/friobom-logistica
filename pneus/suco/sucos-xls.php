@@ -32,7 +32,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<td class="text-center font-weight-bold"> Cadastrado </td>';
         $html .= '</tr>';
 
-        $sql = $db->query("SELECT * FROM sucos LEFT JOIN pneus ON sucos.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios");
+        $sql = $db->query("SELECT data_medicao, num_fogo, medida, calibragem_maxima, marca, num_serie, sucos.vida, veiculo, km_veiculo, km_pneu, carcaca, posicao_inicio, sucos.suco01, sucos.suco02, sucos.suco03, sucos.suco04, calibragem, nome_usuario FROM sucos LEFT JOIN pneus ON sucos.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON sucos.usuario = usuarios.idusuarios");
         $dados = $sql->fetchAll();
         foreach($dados as $dado){
 
