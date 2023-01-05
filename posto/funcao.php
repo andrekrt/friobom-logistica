@@ -4,7 +4,7 @@ function contaEstoque(){
     require("../conexao.php");
 
     //qtd de ENTRADAS
-    $entradas = $db->query("SELECT SUM(total_litros) as totalLitros FROM combustivel_entrada");
+    $entradas = $db->query("SELECT SUM(total_litros) as totalLitros FROM combustivel_entrada WHERE situacao = 'Aprovado'");
     $qtdEntradas = $entradas->fetch();
     $qtdEntradas = $qtdEntradas['totalLitros']?$qtdEntradas['totalLitros']:0;
 

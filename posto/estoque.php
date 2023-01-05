@@ -3,14 +3,19 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 8 || $_SESSION['tipoUsuario'] == 99)){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 4)){
 
     //qtd de ENTRADAS
-    $entradas = $db->query("SELECT SUM(total_litros) as totalLitros, SUM(valor_total) as valorTotal FROM combustivel_entrada");
+    $entradas = $db->query("SELECT SUM(total_litros) as totalLitros, SUM(valor_total) as valorTotal FROM combustivel_entrada WHERE situacao='Aprovado'");
     $qtdEntradas = $entradas->fetch();
     $valorTotal = $qtdEntradas['valorTotal']?$qtdEntradas['valorTotal']:0;
     $qtdEntradas = $qtdEntradas['totalLitros']?$qtdEntradas['totalLitros']:0;
-    $precoMedio = $valorTotal/$qtdEntradas;
+    if($valorTotal==0 || $qtdEntradas==0){
+        $precoMedio=0;
+    }else{
+        $precoMedio = $valorTotal/$qtdEntradas;
+    }
+    
 
     //qtd saidas
     $saidas = $db->query("SELECT SUM(litro_abastecimento) as litroAbastecimento FROM combustivel_saida");
@@ -27,7 +32,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     $volume = $inventario['qtd_encontrada'];
 
 }else{
-    header("Location:login.php");
+    echo "<script>alert('Acesso não permitido');</script>";
+    echo "<script>window.location.href='index.php'</script>"; 
 }
 
 ?>

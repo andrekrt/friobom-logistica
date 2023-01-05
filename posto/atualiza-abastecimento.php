@@ -4,7 +4,7 @@ session_start();
 require("../conexao.php");
 include("funcao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99)){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 4)){
     
     $usuario = $_SESSION['idUsuario'];
     $litro = str_replace(",",".",filter_input(INPUT_POST, 'litro'));
@@ -24,7 +24,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
         echo "<script>window.location.href='abastecimento.php'</script>";
     }else{
 
-        $total = $db->query("SELECT SUM(total_litros) AS  litros, SUM(valor_total) as valor FROM combustivel_entrada");
+        $total = $db->query("SELECT SUM(total_litros) AS  litros, SUM(valor_total) as valor FROM combustivel_entrada WHERE situacao = 'Aprovado'");
         $total = $total->fetch();
         $precoMedio = $total['valor']/$total['litros'];
         $valorTotal = $precoMedio*$litro;
@@ -52,6 +52,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
 
     } 
 
+}else{
+    echo "<script>alert('Acesso não permitido');</script>";
+    echo "<script>window.location.href='abastecimento.php'</script>"; 
 }
 
 ?>

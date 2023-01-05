@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 8 || $_SESSION['tipoUsuario'] == 99)) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] ==4)) {
 
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -68,9 +68,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Data Entrada</th>
                                 <th scope="col" class="text-center text-nowrap">Valor por Litro</th>
                                 <th scope="col" class="text-center text-nowrap">Litros</th>
+                                <th scope="col" class="text-center text-nowrap">Frete</th>
                                 <th scope="col" class="text-center text-nowrap">Valor Total</th>
                                 <th scope="col" class="text-center text-nowrap">Fornecedor</th>
                                 <th scope="col" class="text-center text-nowrap">Qualidade</th>
+                                <th scope="col" class="text-center text-nowrap">Situação</th>
                                 <th scope="col" class="text-center text-nowrap"> Usuário que Lançou </th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
                             </tr>
@@ -102,9 +104,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'data_entrada' },
                     { data: 'valor_litro' },
                     { data: 'total_litros' },
+                    { data: 'frete'},
                     { data: 'valor_total' },
                     { data: 'nome_fantasia' },
                     { data: 'qualidade' },
+                    { data: 'situacao' },
                     { data: 'nome_usuario' },
                     { data: 'acoes' },
                 ],
@@ -138,7 +142,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#vlLitroEdit').val(json.valor_litro);
                     $('#totalLtEdit').val(json.total_litros);
                     $('#qualidadeEdit').val(json.qualidade);
-                    $('#fornecedorEdit').val(json.fornecedor);                   
+                    $('#fornecedorEdit').val(json.fornecedor);   
+                    $('#freteEdit').val(json.frete);   
+                    $('#situacao').val(json.situacao);     
+                    $('#nf').val(json.nf);                 
                 }
             })
         });
@@ -157,13 +164,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <input type="hidden" name="id" id="id" value="">
                     <input type="hidden" name="trid" id="trid" value="">
                     <div class="form-row">
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
                             <label for="vlLitro"> Valor Litro</label>
                             <input type="text" required name="vlLitro" class="form-control" id="vlLitroEdit">
                         </div>
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
                             <label for="totalLt"> Total de Litros</label>
                             <input type="text" required name="totalLt" class="form-control" id="totalLtEdit">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="frete"> Frete</label>
+                            <input type="text" required name="frete" class="form-control" id="freteEdit">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="nf">NF</label>
+                            <input type="text" required name="nf" class="form-control" id="nf">
                         </div>
                         <div class="form-group col-md-3 espaco ">
                             <label for="qualidade"> Qualidade do Combustível</label>
@@ -179,6 +194,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 ?>
                                 <option value="<?=$fornecedor['id']?>"><?= $fornecedor['id']." - ". utf8_encode($fornecedor['nome_fantasia'])?></option>
                                 <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3 espaco ">
+                            <label for="situacao"> Situação </label>
+                            <select required name="situacao" id="situacao" class="form-control">
+                                <option value=""></option>
+                                <option value="Reprovado">Reprovado</option>
+                                <option value="Aprovado">Aprovado</option>
                             </select>
                         </div>
                     </div>  
@@ -210,13 +233,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="modal-body">
                 <form action="add-combustivel.php" method="post">
                     <div class="form-row">
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
                             <label for="vlLitro"> Valor Litro</label>
                             <input type="text" required name="vlLitro" class="form-control" id="vlLitro">
                         </div>
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
                             <label for="totalLt"> Total de Litros</label>
                             <input type="text" required name="totalLt" class="form-control" id="totalLt">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="frete">Frete</label>
+                            <input type="text" required name="frete" class="form-control" id="frete">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="nf">NF</label>
+                            <input type="text" required name="nf" class="form-control" id="nf">
                         </div>
                         <div class="form-group col-md-3 espaco ">
                             <label for="qualidade"> Qualidade do Combustível</label>
@@ -251,8 +282,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     jQuery(function($){
         $("#vlLitro").mask('###0,00', {reverse: true});
         $("#totalLt").mask('###0,00', {reverse: true});
+        $("#frete").mask('###0,00', {reverse: true});
         $("#vlLitroEdit").mask('###0,00', {reverse: true});
         $("#totalLtEdit").mask('###0,00', {reverse: true});
+        $("#freteEdit").mask('###0,00', {reverse: true});
     })
 
     $(document).ready(function(){

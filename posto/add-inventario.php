@@ -4,7 +4,7 @@ session_start();
 require("../conexao.php");
 include "funcao.php";
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 8 || $_SESSION['tipoUsuario'] == 99)){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99)){
     
     $usuario = $_SESSION['idUsuario'];
     $dataInventario = date("Y-m-d");
@@ -29,6 +29,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
         print_r($inserir->errorInfo());
     }
 
+}else{
+    echo "<script>alert('Acesso não permitido');</script>";
+    echo "<script>window.location.href='inventario.php'</script>"; 
 }
 
 ?>

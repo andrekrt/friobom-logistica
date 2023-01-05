@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -52,16 +53,22 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    $botao = "";
+    if($_SESSION['tipoUsuario']==4){
+        $botao='<a href="javascript:void();" data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-entrada.php?idEntrada='.$row['idcombustivel_entrada'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+    }
     $data[] = array(
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
         "data_entrada"=>date("d/m/Y", strtotime($row['data_entrada'])),
         "valor_litro"=>"R$ ". number_format($row['valor_litro'],2,",","."),
+        "frete"=>"R$ ". number_format($row['frete'],2,",","."),
         "total_litros"=>number_format($row['total_litros'],2,",",".") ,
         "valor_total"=>"R$ " . number_format($row['valor_total'],2,",","."),
         "nome_fantasia"=>utf8_encode($row['nome_fantasia']),
         "qualidade"=>$row['qualidade'],
+        "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-entrada.php?idEntrada='.$row['idcombustivel_entrada'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+        "acoes"=> $botao
     );
 }
 

@@ -1,5 +1,5 @@
 <?php
-include '../conexao-on.php';
+include '../conexao.php';
 
 $consulta = $db->prepare("SELECT SUM(total_litros) as totalLitros, SUM(valor_total) as valorTotal FROM combustivel_entrada");
 if($consulta->execute()){

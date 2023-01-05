@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 8 || $_SESSION['tipoUsuario'] == 99)){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 4)){
 
     $id = filter_input(INPUT_GET, 'idSaida');
 
@@ -18,7 +18,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     }
 
 }else{
-    echo "Erro";
+    echo "<script>alert('Acesso não permitido');</script>";
+    echo "<script>window.location.href='abastecimento.php'</script>"; 
 }
 
 ?>
