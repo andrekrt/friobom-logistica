@@ -280,10 +280,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     jQuery(function($){
-        $("#vlLitro").mask('###0,00', {reverse: true});
+        $("#vlLitro").mask('###0,0000', {reverse: true});
         $("#totalLt").mask('###0,00', {reverse: true});
         $("#frete").mask('###0,00', {reverse: true});
-        $("#vlLitroEdit").mask('###0,00', {reverse: true});
+        $("#vlLitroEdit").mask('###0,0000', {reverse: true});
         $("#totalLtEdit").mask('###0,00', {reverse: true});
         $("#freteEdit").mask('###0,00', {reverse: true});
     })

@@ -60,7 +60,7 @@ foreach($empRecords as $row){
     $data[] = array(
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
         "data_entrada"=>date("d/m/Y", strtotime($row['data_entrada'])),
-        "valor_litro"=>"R$ ". number_format($row['valor_litro'],2,",","."),
+        "valor_litro"=>"R$ ". number_format($row['valor_litro'],4,",","."),
         "frete"=>"R$ ". number_format($row['frete'],2,",","."),
         "total_litros"=>number_format($row['total_litros'],2,",",".") ,
         "valor_total"=>"R$ " . number_format($row['valor_total'],2,",","."),
