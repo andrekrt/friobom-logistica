@@ -187,7 +187,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         <nav id="submenuCheck">
                             <ul class="nav flex-column">
                                 <li class="nav-item"> <a class="nav-link" href="checklist/checklists.php"> Check-Lists </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="checklist/form-check.php">Realizar Check List </a> </li>
+                                <!-- <li class="nav-item"> <a class="nav-link" href="checklist/form-check.php">Realizar Check List </a> </li> -->
                             </ul> 
                         </nav> 
                     </div>
