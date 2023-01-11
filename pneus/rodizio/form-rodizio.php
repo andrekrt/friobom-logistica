@@ -64,7 +64,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <select required name="pneu" id="pneu" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $sql=$db->query("SELECT * FROM pneus");
+                                    $sql=$db->query("SELECT * FROM pneus WHERE uso = 1");
                                     $pneus = $sql->fetchAll();
                                     foreach($pneus as $pneu):
                                     ?>
@@ -74,7 +74,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="kmFinal">Km Final do Veículo Anterior</label>
                                 <input type="text" name="kmFinal" id="kmFinal" class="form-control" required>
                             </div>
@@ -100,6 +100,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                             <div class="form-group col-md-2 espaco">
                                 <label for="localizacao">Localização Atual</label>
                                 <input type="text" required name="localizacao" class="form-control" id="localizacao">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="posicao">Posição Atual</label>
+                                <input type="text" required name="posicao" class="form-control" id="posicao">
                             </div>
                         </div>                    
                     </div>

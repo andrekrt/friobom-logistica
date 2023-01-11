@@ -23,6 +23,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $kmInicialNovo = filter_input(INPUT_POST, 'kmInicial');
     $kmRodadoTotal = $kmRodadoTotal+$kmRodadoAnterior;
     $localizacao = filter_input(INPUT_POST, 'localizacao');
+    $posicao = filter_input(INPUT_POST, 'posicao');
     $usuario = $_SESSION['idUsuario'];
 
     //echo "$dataRodizio<br>$pneu<br>$veiculoAnterior<br>$kmInicialVeiculoAnterior<br>$kmFinalVeiculoAnterior<br>$kmRodadoAnterior<br>$novoVeiculo<br>$kmInicialNovo";
@@ -39,12 +40,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $sql->bindValue(':usuario', $usuario);
     
     if($sql->execute()){
-        $atualizaPneu = $db->prepare("UPDATE pneus SET veiculo = :novoVeiculo, km_inicial = :kmInicialNovo, km_rodado = :kmRodadoTotal, localizacao = :localizacao WHERE idpneus = :idpneu");
+        $atualizaPneu = $db->prepare("UPDATE pneus SET veiculo = :novoVeiculo, km_inicial = :kmInicialNovo, km_rodado = :kmRodadoTotal, localizacao = :localizacao, posicao_inicio = :posicao WHERE idpneus = :idpneu");
         $atualizaPneu->bindValue(':novoVeiculo', $novoVeiculo);
         $atualizaPneu->bindValue(':kmInicialNovo', $kmInicialNovo);
         $atualizaPneu->bindValue(':kmRodadoTotal', $kmRodadoTotal);
         $atualizaPneu->bindValue(':idpneu', $pneu);
         $atualizaPneu->bindValue(':localizacao', $localizacao );
+        $atualizaPneu->bindValue(':posicao', $posicao );
         if($atualizaPneu->execute()){
             echo "<script> alert('Rodízio Lançado!!')</script>";
             echo "<script> window.location.href='rodizio.php' </script>";
