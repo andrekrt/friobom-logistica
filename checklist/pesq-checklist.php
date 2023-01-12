@@ -18,24 +18,24 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (veiculo LIKE :veiculo OR hr_tk LIKE :hr_tk OR carregamento OR :carregamento OR tipo_checklist LIKE :tipo_checklist OR obs LIKE :obs) ";
+	$searchQuery = " AND (veiculo LIKE :veiculo OR hr_tk LIKE :hr_tk OR carregamento_ret LIKE :carregamento_ret OR hr_tk_ret LIKE :hr_tk_ret OR obs LIKE :obs) ";
     $searchArray = array( 
         'veiculo'=>"%$searchValue%", 
         'hr_tk'=>"%$searchValue%",
-        'carregamento'=>"%$searchValue%",
-        'tipo_checklist'=>"%$searchValue%",
+        'carregamento_ret'=>"%$searchValue%",
+        'hr_tk_ret'=>"%$searchValue%",
         'obs'=>"%$searchValue%"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist_apps");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist_apps LEFT JOIN checklist_apps_retorno02 ON checklist_apps.id = checklist_apps_retorno02.checksaida");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist_apps WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM checklist_apps LEFT JOIN checklist_apps_retorno02 ON checklist_apps.id = checklist_apps_retorno02.checksaida WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
@@ -56,22 +56,16 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
-    if($row['id_ret']){
-        $retorno = '<a href="https://friobom036.sharepoint.com/sites/Anexos/imagensRetorno/'.$row['id_ret'].'" target="_blank" >Fotos</a>';
-    }else{
-        $retorno = 'Ainda não retornou';
-    }
     $data[] = array(
-            "id"=>$row['id'],
-            "data_check"=>date("d/m/Y", strtotime($row['data'])),
-            "veiculo"=>$row['veiculo'],
-            "carregamento"=>$row['carregamento_ret'],
-            "hr_tk"=>$row['hr_tk'],
-            "fotos_saidas"=>'<a href="https://friobom036.sharepoint.com/sites/Anexos/imagens/'.$row['id'].'" target="_blank" >Fotos</a>',
-            "fotos_retorno"=>$retorno,
-            "tipo_check"=>$row['tipo_checklist'],
-            "acoes"=> ' <a href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>'
-        );
+        "id"=>$row['id'],
+        "veiculo"=>$row['veiculo'],
+        "dataSaida"=>date("d/m/Y", strtotime($row['data'])),
+        "hr_tkSaida"=>$row['hr_tk'],
+        "dataRetorno"=>$row['data_ret']==null?"":date("d/m/Y", strtotime($row['data_ret'])) ,
+        "hr_tkRetorno"=>$row['hr_tk_ret'],
+        "carregamento"=>$row['carregamento_ret'],
+        "acoes"=> ' <a href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>'
+    );
 }
 
 ## Response

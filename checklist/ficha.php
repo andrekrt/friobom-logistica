@@ -57,7 +57,7 @@ if($sql->execute()){
         $hrTkRet = $dado['hr_tk_ret'];
         $carregamentoRet = $dado['carregamento_ret'];
         $tipoRet = $dado['tipo_checklist_ret'];
-        $dataCheckRet = date("d/m/Y", strtotime($dado['data_ret']));
+        $dataCheckRet =$dado['data_ret']==null?"":date("d/m/Y", strtotime($dado['data_ret']));
         $cabineRet = $dado['cabine_ret'];
         $retrovisoresRet = $dado['retrovisores_ret'];
         $parabrisaRet = $dado['parabrisa_ret'];
