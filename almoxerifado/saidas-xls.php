@@ -13,14 +13,14 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<table border="1">';
         $html .= '<tr>';
         $html .= '<td class="text-center font-weight-bold"> ID </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data Saída') .'</td>';
+        $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Data Saída','ISO-8859-1', 'UTF-8') .'</td>';
         $html .= '<td class="text-center font-weight-bold"> Qtd </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Peça').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Valor Médio').' </td>';
+        $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Peça','ISO-8859-1', 'UTF-8').'  </td>';
+        $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Valor Médio','ISO-8859-1', 'UTF-8').' </td>';
         $html .= '<td class="text-center font-weight-bold"> Solicitante </td>';
         $html .= '<td class="text-center font-weight-bold"> Placa </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode(' Observações').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Saída').' </td>';
+        $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding(' Observações','ISO-8859-1', 'UTF-8').' </td>';
+        $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Saída', 'ISO-8859-1', 'UTF-8').' </td>';
         
         $html .= '</tr>';
 
@@ -34,12 +34,12 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
             $html .= '<td>'.$dado['idsaida_estoque']. '</td>';
             $html .= '<td>'.$dado['data_saida']. '</td>';
             $html .= '<td>'. number_format($dado['qtd'],2,",",".") . '</td>';
-            $html .= '<td>'. utf8_decode($dado['descricao_peca']) . '</td>';
+            $html .= '<td>'.$dado['idpeca']." - ". mb_convert_encoding($dado['descricao_peca'],'ISO-8859-1', 'UTF-8') . '</td>';
             $html .= '<td>'. number_format($valorMedio,2,",",".") . '</td>';
-            $html .= '<td>'. utf8_decode($dado['solicitante'],2,",",".")  . '</td>';
+            $html .= '<td>'. mb_convert_encoding($dado['solicitante'],'ISO-8859-1', 'UTF-8')  . '</td>';
             $html .= '<td>'. $dado['placa'] . '</td>';
-            $html .= '<td>'. utf8_decode($dado['obs'])  . '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_usuario'])  . '</td>';
+            $html .= '<td>'. mb_convert_encoding($dado['obs'],'ISO-8859-1', 'UTF-8')  . '</td>';
+            $html .= '<td>'. mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')  . '</td>';
             $html .= '</tr>';
 
         }

@@ -63,7 +63,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     <table id='tableSaida' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-center text-nowrap">ID</th>
+                                <th scope="col" class="text-center text-nowrap">Nº Saída</th>
                                 <th scope="col" class="text-center text-nowrap">Data Saída</th>
                                 <th scope="col" class="text-center text-nowrap">Qtd</th>
                                 <th scope="col" class="text-center text-nowrap">Peça</th>

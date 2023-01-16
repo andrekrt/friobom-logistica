@@ -15,12 +15,12 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (descricao_peca LIKE :descricao_peca OR 
-        solicitante LIKE :solicitante OR placa OR :placa ) ";
+	$searchQuery = " AND (descricao_peca LIKE :descricao_peca OR solicitante LIKE :solicitante OR placa OR :placa OR idpeca LIKE :idpeca) ";
     $searchArray = array( 
         'descricao_peca'=>"%$searchValue%", 
         'solicitante'=>"%$searchValue%",
-        'placa'=>"%$searchValue%"
+        'placa'=>"%$searchValue%",
+        'idpeca'=>"%$searchValue%"
     );
 }
 
@@ -56,7 +56,7 @@ foreach($empRecords as $row){
             "idsaida_estoque"=>$row['idsaida_estoque'],
             "data_saida"=>date("d/m/Y", strtotime($row['data_saida'])),
             "qtd"=>$row['qtd'],
-            "descricao_peca"=>$row['descricao_peca'],
+            "descricao_peca"=>$row['idpeca']. " - ". $row['descricao_peca'],
             "solicitante"=>$row['solicitante'],
             "placa"=> $row['placa'],
             "obs"=>$row['obs'] ,
