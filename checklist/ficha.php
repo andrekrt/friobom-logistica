@@ -332,10 +332,12 @@ $mpdf->WriteHTML("
             <td colspan='4' style='height:100px'>$obsRet</td>
         </tr>
         </table>
-        <div style='width:100%; margin-top:10px'>
+        <div style='width:100%;'>
             
-            <p style='border-top:1px solid #000; width:75%; text-align:center; margin-left:auto;margin-right:auto'>Ass. do Enc. do Transporte</p>
+            <p style='border-top:1px solid #000; width:40%; float:left; margin-top:50px; text-align:center'>Ass. do Enc. do Transporte</p>
+            <p style='border-top:1px solid #000; width:40%; float:right; margin-top:0px; text-align:center'>Ass. Motorista</p>
         </div>
+        
     </body>
 </html>
 ");
