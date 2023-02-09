@@ -1,0 +1,9 @@
+ID; Data Operação ; Volume(lt);Carregamento; Placa/Fornecedor; Usuário que Lançou
+1;07/02/2023;Abastecimento;10,05;;;Andre Santos
+3;07/01/2023;Entrada;100,00;;;Recursos Humanos
+4;08/02/2023;Abastecimento;1.515,51;101010;OXY-4041;Andre Santos
+5;08/02/2023;Abastecimento;1.515,51;;OXY-4041;Andre Santos
+6;08/02/2023;Abastecimento;15,00;;OXY-4041;Andre Santos
+7;08/02/2023;Entrada;10.000,00;;2;Recursos Humanos
+8;08/02/2023;Inventário;15.000,00;;;Andre Santos
+10;08/02/2023;Entrada;10.000,00;;Lucca e Paulo Contábil Ltda;Recursos Humanos

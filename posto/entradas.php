@@ -146,6 +146,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#freteEdit').val(json.frete);   
                     $('#situacao').val(json.situacao);     
                     $('#nf').val(json.nf);                 
+                    $('#dataEntrada').val(json.data_entrada);
                 }
             })
         });
@@ -163,6 +164,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 <form action="atualiza-entrada.php" method="post">
                     <input type="hidden" name="id" id="id" value="">
                     <input type="hidden" name="trid" id="trid" value="">
+                    <input type="hidden" id="dataEntrada" name="dataEntrada">
                     <div class="form-row">
                         <div class="form-group col-md-2 espaco ">
                             <label for="vlLitro"> Valor Litro</label>

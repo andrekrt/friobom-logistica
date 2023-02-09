@@ -14,6 +14,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     $qualidade = filter_input(INPUT_POST, 'qualidade');
     $situacao = filter_input(INPUT_POST, 'situacao');
     $nf= filter_input(INPUT_POST, 'nf');
+    $dataEntrada = filter_input(INPUT_POST, 'dataEntrada');
+    $usuario=$_SESSION['idUsuario'];
 
     //echo "$dataEntrada<br>$valorlitro<br>$totalLitro<br>$valorTotal<br>$fornecedor<br>$qualidade<br>$usuario";
 
@@ -28,9 +30,27 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     $inserir->bindValue(':situacao', $situacao);
     $inserir->bindValue(':id', $idEntrada);
 
+    //CONSULTAR FORNECEDOR
+    $sqlFornecedor = $db->prepare("SELECT * FROM fornecedores WHERE id=:id");
+    $sqlFornecedor->bindValue(':id', $fornecedor);
+    $sqlFornecedor->execute();
+    $nomeFornecedor = $sqlFornecedor->fetch();
+    $nomeFornecedor=$nomeFornecedor['nome_fantasia'];
+
     if($inserir->execute()){
-        echo "<script>alert('Entrada Atualizada com Sucesso!');</script>";
-        echo "<script>window.location.href='entradas.php'</script>";    
+        $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, placa, usuario) VALUES (:dataOp, :tipoOp, :volume, :placa, :usuario)");
+        $sqlExtrato->bindValue(':dataOp', $dataEntrada);
+        $sqlExtrato->bindValue(':tipoOp', "Entrada");
+        $sqlExtrato->bindValue(':volume', $totalLitro);
+        $sqlExtrato->bindValue(':placa', $nomeFornecedor);
+        $sqlExtrato->bindValue(':usuario', $usuario);
+        if($sqlExtrato->execute()){
+            echo "<script>alert('Entrada Atualizada com Sucesso!');</script>";
+            echo "<script>window.location.href='entradas.php'</script>";
+        }else{
+            print_r($sqlExtrato->errorInfo());
+        }
+            
         
     }else{
         print_r($inserir->errorInfo());

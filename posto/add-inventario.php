@@ -22,8 +22,18 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
     $inserir->bindValue(':usuario', $usuario);
 
     if($inserir->execute()){
-        echo "<script>alert('Inventário Registrado!');</script>";
-        echo "<script>window.location.href='inventario.php'</script>";    
+        $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, usuario) VALUES (:dataOp, :tipoOp, :volume, :usuario)");
+        $sqlExtrato->bindValue(':dataOp', $dataInventario);
+        $sqlExtrato->bindValue(':tipoOp', "Inventário");
+        $sqlExtrato->bindValue(':volume', $litros);
+        $sqlExtrato->bindValue(':usuario', $usuario);
+        if($sqlExtrato->execute()){
+            echo "<script>alert('Inventário Registrado!');</script>";
+            echo "<script>window.location.href='inventario.php'</script>"; 
+        }else{
+            print_r($sqlExtrato->errorInfo());
+        }
+           
         
     }else{
         print_r($inserir->errorInfo());

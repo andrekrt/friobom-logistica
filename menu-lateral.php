@@ -192,6 +192,7 @@
                     <li class="nav-item"> <a href="../posto/entradas.php" class="nav-link"> Entradas </a> </li>
                     <li class="nav-item"> <a href="../posto/abastecimento.php" class="nav-link"> Abastecimentos </a> </li>
                     <li class="nav-item"> <a href="../posto/inventario.php" class="nav-link"> Inventário </a> </li>
+                    <li class="nav-item"> <a href="../posto/extrato.php" class="nav-link"> Extrato </a> </li>
                 </ul>
             </nav>
         </div>

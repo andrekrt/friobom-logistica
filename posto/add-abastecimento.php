@@ -52,8 +52,20 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
             $inserir->bindValue(':usuario', $usuario);
 
             if($inserir->execute()){
-                echo "<script>alert('Abastecimento Lançada com Sucesso!');</script>";
-                echo "<script>window.location.href='abastecimento.php'</script>";    
+                $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, carregamento, placa, usuario) VALUES (:dataOp, :tipoOp, :volume,:carga, :placa, :usuario)");
+                $sqlExtrato->bindValue(':dataOp', $dataAbastecimento);
+                $sqlExtrato->bindValue(':tipoOp', "Abastecimento");
+                $sqlExtrato->bindValue(':volume', $litro);
+                $sqlExtrato->bindValue(':carga', $carregamento);
+                $sqlExtrato->bindValue(':placa', $placa);
+                $sqlExtrato->bindValue(':usuario', $usuario);
+                if($sqlExtrato->execute()){
+                    echo "<script>alert('Abastecimento Lançada com Sucesso!');</script>";
+                    echo "<script>window.location.href='abastecimento.php'</script>";  
+                }else{
+                    print_r($sqlExtrato->errorInfo());
+                }
+                  
                 
             }else{
                 print_r($inserir->errorInfo());
