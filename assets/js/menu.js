@@ -178,6 +178,16 @@ function menuPosto(){
     
 }
 
+function menuLocalizacao(){
+
+    if(document.getElementById("submenuLocalizacao").style.display == "none" || document.getElementById("submenuLocalizacao").style.display == "" ){
+        document.getElementById("submenuLocalizacao").style.display = "block";
+    }else{
+        document.getElementById("submenuLocalizacao").style.display = "none";
+    }
+    
+}
+
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
         document.getElementById('menu-lateral').style.display='block';

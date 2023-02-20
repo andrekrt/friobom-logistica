@@ -257,6 +257,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </nav>
                     </div>
                     <div class="item">
+                        <a onclick="menuLocalizacao()">
+                            <img src="assets/images/menu/MENU-LOCALIZACAO.png" alt="">
+                        </a>
+                        <nav id="submenuLocalizacao">
+                            <li class="nav-item"> <a href="geolocalizacao/geolocalizacao.php"> Geolocalização Supervisores </a> </li>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="sair.php">
                             <img src="assets/images/menu/sair.png" alt="">
                         </a>
