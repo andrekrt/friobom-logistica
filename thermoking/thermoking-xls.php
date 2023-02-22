@@ -3,50 +3,36 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
+if($_SESSION['tipoUsuario'] == 99){
 
-if($_SESSION['tipoUsuario'] == 99 ){
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT idthermoking, placa_veiculo, tipo_veiculo, tipo_tk, hora_atual, hora_ultima_revisao, ultima_revisao_tk, hora_restante, situacao FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
 
-    $arquivo = 'thermoking.xls';
-    $html = '';
-    $html .= '<table border="1">';
-    $html .= '<tr>';
-    $html .= '<td class="text-center font-weight-bold"> ID  </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Placa de Veículo').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Modelo de Veículo').' </td>';
-    $html .= '<td class="text-center font-weight-bold"> Tipo TK </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Horímetro').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Horímetro Última Revisão').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data Última Revisão').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Horímetro Restante').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Situação').' </td>';
-    $html .= '</tr>';
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=thermoking.csv');
 
-    $revisao = $db->query("SELECT * FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo  = veiculos.cod_interno_veiculo");
-    $dados = $revisao->fetchAll();
+    $arquivo = fopen("php://output", "w");
+
+    $cabacelho = [
+        "ID",
+        mb_convert_encoding('Placa de Veículo','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Modelo de Veículo','ISO-8859-1', 'UTF-8'),
+        "Tipo TK",
+        mb_convert_encoding('Horímetro','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Horímetro Última Revisão','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Data Última Revisão','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Horímetro Restante','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Situação','ISO-8859-1', 'UTF-8')
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
+
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
     foreach($dados as $dado){
-        
-        $html .= '<tr>';
-        $html .= '<td>'.$dado['idthermoking'] .'</td>';
-        $html .= '<td>'. $dado['placa_veiculo'] .'</td>';
-        $html .= '<td>'. utf8_decode($dado['tipo_veiculo'])  .'</td>';
-        $html .= '<td>'. utf8_decode($dado['tipo_tk'])  .'</td>';
-        $html .= '<td>'. $dado['hora_atual'] .'</td>';
-        $html .= '<td>'. $dado['hora_ultima_revisao'] .'</td>';
-        $html .= '<td>'. date("d/m/Y", strtotime($dado['ultima_revisao_tk']))  .'</td>';
-        $html .= '<td>'. $dado['hora_restante'] .'</td>';
-        $html .= '<td>'. utf8_decode($dado['situacao'])  .'</td>';
-        $html .= '</tr>';
+        fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');
     }
-    $html .= '</table>';
 
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-    header('Cache-Control: max-age=0');
-    header('Cache-Control: max-age=1');
-
-    echo $html;
-
+    fclose($arquivo);
 }
 
-?>
+

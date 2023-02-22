@@ -3,92 +3,36 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if($_SESSION['tipoUsuario'] != 4 ){
+if($_SESSION['tipoUsuario'] != 4 ){
 
-        $arquivo = 'despesas-por-veiculo.xls';
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> Placa </td>';
-        $html .= '<td class="text-center font-weight-bold"> Tipo </td>';
-        $html .= '<td class="text-center font-weight-bold"> Qtd Viagens </td>';
-        $html .= '<td class="text-center font-weight-bold"> Km Rodado </td>';
-        $html .= '<td class="text-center font-weight-bold"> Total Abastecido </td>';
-        $html .= '<td class="text-center font-weight-bold"> Valor Abastecido </td>';
-        $html .= '<td class="text-center font-weight-bold"> Qtd Reparos </td>';
-        $html .= '<td class="text-center font-weight-bold"> Valor Reparos </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('R$/Km').' </td>';
-        $html .= '</tr>';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT placa_veiculo, tipo_veiculo, COUNT(placa_veiculo) as qtdViagem, SUM(km_rodado) as kmRodado, SUM(litros) as totalLitros, SUM(valor_total_abast) as valorLitros, COUNT(solicitacoes_new.placa) AS qtdSolicitacoes, SUM(solicitacoes_new.vl_total) as valorTotalSolicitacoes, (SUM(solicitacoes_new.vl_total)+SUM(litros)) / SUM(km_rodado) FROM `viagem` LEFT JOIN solicitacoes_new ON viagem.placa_veiculo = solicitacoes_new.placa GROUP BY placa_veiculo ORDER BY placa_veiculo");
 
-        $veiculos = $db->query("SELECT tipo_veiculo, placa_veiculo FROM veiculos");
-        $dados = $veiculos->fetchAll();
-        foreach($dados as $dado){
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['placa_veiculo'] .'</td>';
-            $html .= '<td>'. utf8_decode($dado['tipo_veiculo']) .'</td>';
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=despesas-por-veiculo.csv');
 
-            $qtdVeiculos = $db->query("SELECT * FROM viagem WHERE placa_veiculo = '$dado[placa_veiculo]' ");
-            $numVeiculo = $qtdVeiculos->rowCount();
+    $arquivo = fopen("php://output", "w");
 
-            $html .= '<td>'. $numVeiculo .'</td>';
+    $cabacelho = [
+        "Placa",
+        "Tipo",
+        "Qtd Viagens",
+        "Km Rodado",
+        "Total Abastecido",
+        "Valor Abastecido",
+        "Qtd Reparos",
+        "Valor Reparos",
+        mb_convert_encoding('R$/Km','ISO-8859-1', 'UTF-8'),
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
 
-            $kmRodado = $db->query("SELECT SUM(km_rodado) as totalKmRodado FROM viagem WHERE placa_veiculo = '$dado[placa_veiculo]'");
-            $totalKmRodado = $kmRodado->fetch();
-
-            $html .= '<td>'. $totalKmRodado['totalKmRodado'] .'</td>';
-
-            $sql = $db->query("SELECT placa_veiculo, SUM(litros) as totalLitros FROM viagem WHERE placa_veiculo = '$dado[placa_veiculo]' ");
-            $result = $sql->fetch();
-
-            $html .= '<td>'. number_format($result['totalLitros'],2, ",", ".") .'</td>';
-            
-            $sql = $db->query("SELECT placa_veiculo, SUM(valor_total_abast) as valorLitros FROM viagem WHERE placa_veiculo = '$dado[placa_veiculo]' ");
-            $result = $sql->fetch();
-
-            $html .= '<td>'. number_format($result['valorLitros'],2, ",", ".") .'</td>';
-
-            $sql = $db->query("SELECT placarVeiculo FROM solicitacoes WHERE placarVeiculo = '$dado[placa_veiculo]' ");
-            $result = $sql->rowCount();
-
-            echo $result;
-            $html .= '<td>'. $result .'</td>';
-
-            $sql = $db->query("SELECT solicitacoes.placarVeiculo, SUM(solicitacoes.valor) + SUM(solicitacoes02.valor) as totalDespesas FROM solicitacoes LEFT JOIN solicitacoes02 ON solicitacoes.id = solicitacoes02.idSocPrinc WHERE solicitacoes.placarVeiculo = '$dado[placa_veiculo]' ");
-            $result = $sql->fetch();
-
-            $html .= '<td>'. number_format($result['totalDespesas'],2, ",", ".") .'</td>';
-
-            $sql = $db->query("SELECT placa_veiculo, SUM(valor_total_abast) as valorLitros FROM viagem WHERE placa_veiculo = '$dado[placa_veiculo]' ");
-            $result = $sql->fetch();
-            $valorLitros = $result['valorLitros'];
-
-            $sql = $db->query("SELECT SUM(km_rodado) as totalKmRodado FROM viagem WHERE placa_veiculo = '$dado[placa_veiculo]'");
-            $result = $sql->fetch();
-            $kmRodado = $result['totalKmRodado'];
-            
-            $sql = $db->query("SELECT solicitacoes.placarVeiculo, SUM(solicitacoes.valor) + SUM(solicitacoes02.valor) as totalDespesas FROM solicitacoes LEFT JOIN solicitacoes02 ON solicitacoes.id = solicitacoes02.idSocPrinc WHERE solicitacoes.placarVeiculo = '$dado[placa_veiculo]' ");
-            $result = $sql->fetch();
-
-            $despesas = $result['totalDespesas'];
-
-            $mediaCusto= ($despesas+$valorLitros)/$kmRodado;
-
-            $html .= '<td>'. number_format($mediaCusto, 2, ",", ".") .'</td>';
-
-            $html .= '</tr>';
-
-        }
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html; 
-
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
+        fputcsv($arquivo, mb_convert_encoding(str_replace(".",",",$dado) ,'ISO-8859-1', 'UTF-8') , ';');
     }
 
-?>
+    fclose($arquivo);
+}
+
+

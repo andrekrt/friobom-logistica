@@ -3,53 +3,36 @@
 session_start();
 require("../../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
-        $arquivo = 'rodizio.xls';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT data_rodizio, num_fogo, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, nome_usuario FROM `rodizio_pneu` LEFT JOIN pneus ON rodizio_pneu.pneu = pneus.idpneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios");
 
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data do Rodízio').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Pneu </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Veículo Anterior').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Inicial Veículo Anterior').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Final Veículo Anterior').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Rodado Veículo Anterior').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Veículo Atual').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Inicial Veículo Atual').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Lançado por').' </td>';
-        $html .= '</tr>';
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=rodizio.csv');
 
-        $sql = $db->query("SELECT * FROM rodizio_pneu LEFT JOIN pneus ON rodizio_pneu.pneu = pneus.idpneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
+    $arquivo = fopen("php://output", "w");
 
-            $html .= '<tr>';
-            $html .= '<td>' . date("d/m/Y", strtotime($dado['data_rodizio'])) .  '</td>';
-            $html .= '<td>' .$dado['num_fogo'].  '</td>';
-            $html .= '<td>' .$dado['veiculo_anterior'].  '</td>';
-            $html .= '<td>' .$dado['km_inicial_veiculo_anterior'].  '</td>';
-            $html .= '<td>' .$dado['km_final_veiculo_anterior'].  '</td>';
-            $html .= '<td>' .$dado['km_rodado_veiculo_anterior'].  '</td>';
-            $html .= '<td>' .$dado['novo_veiculo'].  '</td>';
-            $html .= '<td>' .$dado['km_inicial_novo_veiculo'].  '</td>';
-            $html .= '<td>' . utf8_decode($dado['nome_usuario']) .  '</td>';
-            $html .= '</tr>';
-        }
+    $cabacelho = [
+        mb_convert_encoding('Data do Rodízio','ISO-8859-1', 'UTF-8'),
+       "Pneu",
+        mb_convert_encoding('Veículo Anterior','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Km Inicial Veículo Anterior','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Km Final Veículo Anterior','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Km Rodado Veículo Anterior','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Veículo Atual','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Km Inicial Veículo Atual','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Lançado por','ISO-8859-1', 'UTF-8'),
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
 
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-        exit;
-
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
+        fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');
     }
 
-?>
+    fclose($arquivo);
+}
+
+

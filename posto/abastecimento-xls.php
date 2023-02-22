@@ -1,61 +1,41 @@
 <?php
 
 session_start();
-require("../conexao.php");
+require("../conexao-on.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99)){
+if($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99){
 
-        $arquivo = 'saidas.xls';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT idcombustivel_saida, data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, km, placa_veiculo, rota, motorista, tipo_abastecimento, nome_usuario FROM combustivel_saida LEFT JOIN usuarios ON combustivel_saida.usuario = usuarios.idusuarios");
 
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> ID </td>';
-        $html .= '<td class="text-center font-weight-bold">Data Abastecimento</td>';
-        $html .= '<td class="text-center font-weight-bold"> Litros Abastecimento </td>';
-        $html .= '<td class="text-center font-weight-bold"> R$/Lt </td>';
-        $html .= '<td class="text-center font-weight-bold">Valor Total </td>';
-        $html .= '<td class="text-center font-weight-bold">Carregamento</td>';
-        $html .= '<td class="text-center font-weight-bold">Km</td>';
-        $html .= '<td class="text-center font-weight-bold">Placa</td>';
-        $html .= '<td class="text-center font-weight-bold">Rota</td>';
-        $html .= '<td class="text-center font-weight-bold">Motorista</td>';
-        $html .= '<td class="text-center font-weight-bold">Tipo de Abastecimento</td>';
-        $html .= '<td class="text-center font-weight-bold">' .utf8_decode('Usuário que Lançou'). '</td>';
-        $html .= '</tr>';        
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=saidas.csv');
 
-        $sql = $db->query("SELECT * FROM combustivel_saida LEFT JOIN usuarios ON combustivel_saida.usuario = usuarios.idusuarios");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
+    $arquivo = fopen("php://output", "w");
 
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['idcombustivel_saida']. '</td>';
-            $html .= '<td>'.date("d/m/Y", strtotime($dado['data_abastecimento'])). '</td>';
-            $html .= '<td>'.number_format($dado['litro_abastecimento'],2,",","."). '</td>';
-            $html .= '<td>'.number_format($dado['preco_medio'],2,",","."). '</td>';
-            $html .= '<td>'.number_format($dado['valor_total'],2,",","."). '</td>';
-            $html .= '<td>'.$dado['carregamento']. '</td>';
-            $html .= '<td>'.$dado['km']. '</td>';
-            $html .= '<td>'.$dado['placa_veiculo'] . '</td>';
-            $html .= '<td>'.utf8_decode($dado['rota'])  . '</td>';
-            $html .= '<td>'.utf8_decode($dado['motorista'])  . '</td>';
-            $html .= '<td>'. utf8_decode($dado['tipo_abastecimento'])  . '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_usuario'])  . '</td>';
-            $html .= '</tr>';
+    $cabacelho = [
+        "ID",
+        "Data Abastecimento",
+        "Litros Abastecimento",
+        mb_convert_encoding('R$/Lt','ISO-8859-1', 'UTF-8'),
+        "Valor Total",
+        "Carregamento",
+        "KM",
+        "Placa",
+        "Rota",
+        "Motorista",
+        "Tipo de Abastecimento",
+        mb_convert_encoding('Usuário que Lançou','ISO-8859-1', 'UTF-8')
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
 
-        }
-
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-        
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
+        fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');
     }
 
-?>
+    fclose($arquivo);
+}
+
+

@@ -8,11 +8,11 @@ $sql = $db->query("SELECT * FROM combustivel_entrada LEFT JOIN usuarios ON combu
 $dados = $sql->fetchAll();
 
 $fp = fopen("entradas.csv", "w");
-$escreve = fwrite($fp, "ID; Data Entrada; Valor por Litro;Litros; Valor Total; Fornecedor; Qualidade; ". utf8_decode('Usuário que Lançou') );
+$escreve = fwrite($fp, "ID; Data Entrada; Valor por Litro;Litros; Valor Total; Fornecedor; Qualidade; ". mb_convert_encoding('Usuário que Lançou','ISO-8859-1', 'UTF-8') );
 
 foreach($dados as $dado){
     $escreve=fwrite($fp,
-        "\n$dado[idcombustivel_entrada];". date("d/m/Y", strtotime($dado['data_entrada'])). ";".number_format($dado['valor_litro'],2,",","."). ";". number_format($dado['total_litros'],2,",",".") .";". number_format($dado['valor_total'],2,",",".") .";" .utf8_decode($dado['nome_fantasia']).";". utf8_decode($dado['qualidade']).";". utf8_decode($dado['nome_usuario'])
+        "\n$dado[idcombustivel_entrada];". date("d/m/Y", strtotime($dado['data_entrada'])). ";".number_format($dado['valor_litro'],2,",","."). ";". number_format($dado['total_litros'],2,",",".") .";". number_format($dado['valor_total'],2,",",".") .";" .mb_convert_encoding($dado['nome_fantasia'],'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['qualidade'],'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')
     );
 }
 

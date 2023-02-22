@@ -1,61 +1,41 @@
 <?php
 
 session_start();
-require("../conexao.php");
+require("../conexao-on.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
-        $arquivo = 'estoque.xls';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT idpeca, descricao_peca, un_medida, grupo_peca, estoque_minimo, total_entrada, total_saida, total_estoque, valor_total, situacao, data_cadastro, nome_usuario FROM `peca_estoque` LEFT JOIN usuarios ON peca_estoque.id_usuario = usuarios.idusuarios");
 
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> ID </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Descrição')  .'</td>';
-        $html .= '<td class="text-center font-weight-bold"> Medida </td>';
-        $html .= '<td class="text-center font-weight-bold"> Grupo </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Estoque Mínimo').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Total Entrada </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Total Saída').'  </td>';
-        $html .= '<td class="text-center font-weight-bold"> Total Estoque </td>';
-        $html .= '<td class="text-center font-weight-bold"> Total Comprado</td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Situação').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Data Cadastro </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Usuário que Cadastrou').'</td>';
-        $html .= '</tr>';
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=estoque.csv');
 
-        $sql = $db->query("SELECT * FROM `peca_estoque` LEFT JOIN usuarios ON peca_estoque.id_usuario = usuarios.idusuarios");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
+    $arquivo = fopen("php://output", "w");
 
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['idpeca']. '</td>';
-            $html .= '<td>'. utf8_decode($dado['descricao_peca']) . '</td>';
-            $html .= '<td>'.$dado['un_medida']. '</td>';
-            $html .= '<td>'. utf8_decode($dado['grupo_peca']) . '</td>';
-            $html .= '<td>'. number_format($dado['estoque_minimo'],1,",",".") . '</td>';
-            $html .= '<td>'. number_format($dado['total_entrada'],1,",",".") . '</td>';
-            $html .= '<td>'. number_format($dado['total_saida'],1,",",".") . '</td>';
-            $html .= '<td>'. number_format($dado['total_estoque'],1,",","."). '</td>';
-            $html .= '<td>'. number_format($dado['valor_total'],2,",",".") . '</td>';
-            $html .= '<td>'. utf8_decode($dado['situacao']) . '</td>';
-            $html .= '<td>'.date("d/m/Y",strtotime($dado['data_cadastro'])).  '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_usuario']) . '</td>';
-            $html .= '</tr>';
+    $cabacelho = [
+        "ID",
+        mb_convert_encoding('Descrição Peça','ISO-8859-1', 'UTF-8'),
+        "Medida",
+        "Grupo",
+        mb_convert_encoding('Estoque Mínimo','ISO-8859-1', 'UTF-8'),
+        "Total Entrada",
+        mb_convert_encoding('Total Saída','ISO-8859-1', 'UTF-8'),
+        "Total Estoque",
+        "Total Comprado",
+        mb_convert_encoding('Situação','ISO-8859-1', 'UTF-8'),
+        "Data Cadastro",
+        mb_convert_encoding('Usuário que Cadastrou','ISO-8859-1', 'UTF-8')
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
 
-        }
-
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-        
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
+        fputcsv($arquivo, mb_convert_encoding(str_replace(".",",",$dado) , 'ISO-8859-1', 'UTF-8') , ';');
     }
 
-?>
+    fclose($arquivo);
+}
+
+

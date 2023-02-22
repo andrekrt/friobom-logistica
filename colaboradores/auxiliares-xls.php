@@ -3,43 +3,31 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if($_SESSION['tipoUsuario'] != 2 && $_SESSION['tipoUsuario'] != 3){
+if($_SESSION['tipoUsuario'] != 2 && $_SESSION['tipoUsuario'] != 3){
 
-        $arquivo = 'auxiliares.xls';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT cpf_auxiliar, nome_auxiliar, salario_auxiliar, nome_rota FROM auxiliares_rota LEFT JOIN rotas ON auxiliares_rota.rota = rotas.cod_rota WHERE ativo = 1 ORDER BY nome_auxiliar");
 
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> CPF </td>';
-        $html .= '<td class="text-center font-weight-bold"> Nome </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Salário').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">Rota </td>';
-        $html .= '</tr>';
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=auxiliares.csv');
 
-        $sql = $db->query("SELECT * FROM auxiliares_rota LEFT JOIN rotas ON auxiliares_rota.rota = rotas.cod_rota WHERE ativo = 1 ORDER BY nome_auxiliar");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
+    $arquivo = fopen("php://output", "w");
 
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['cpf_auxiliar']. '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_auxiliar']) . '</td>';
-            $html .= '<td>'. number_format($dado['salario_auxiliar'],2,",",".")  . '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_rota'])  . '</td>';
-            $html .= '</tr>';
+    $cabacelho = [
+        "CPF",
+        "Nome",
+        mb_convert_encoding('Salário','ISO-8859-1', 'UTF-8'),
+        "Rota"
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
 
-        }
-
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
+        fputcsv($arquivo, mb_convert_encoding(str_replace(".",",",$dado) ,'ISO-8859-1', 'UTF-8') , ';');
     }
 
-?>
+    fclose($arquivo);
+}
+
+

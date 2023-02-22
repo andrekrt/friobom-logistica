@@ -3,39 +3,31 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if($_SESSION['tipoUsuario'] != 4 ){
+if($_SESSION['tipoUsuario'] != 4 ){
 
-        $arquivo = 'alinhamentos.xls';
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> Data Alinhamento </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Placa Veículo').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Km Alinhamento </td>';
-        $html .= '<td class="text-center font-weight-bold"> Tipo Alinhamento </td>';
-        $html .= '</tr>';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento FROM `alinhamentos_veiculo`");
 
-        $revisao = $db->query("SELECT * FROM alinhamentos_veiculo");
-        $dados = $revisao->fetchAll();
-        foreach($dados as $dado){
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['data_alinhamento'] .'</td>';
-            $html .= '<td>'. $dado['placa_veiculo'] .'</td>';
-            $html .= '<td>'. $dado['km_alinhamento'] .'</td>';
-            $html .= '<td>'. utf8_decode($dado['tipo_alinhamento'])  .'</td>';
-            $html .= '</tr>';
-        }
-        $html .= '</table>';
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=alinhamentos.csv');
 
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
+    $arquivo = fopen("php://output", "w");
 
-        echo $html;
+    $cabacelho = [
+        "Data Alinhamento",
+        mb_convert_encoding('Placa Veículo','ISO-8859-1', 'UTF-8'),
+        "Km Alinhamento",
+        "Tipo Alinhamento"
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
 
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
+        fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');
     }
 
-?>
+    fclose($arquivo);
+}
+
+

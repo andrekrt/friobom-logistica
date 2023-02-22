@@ -55,7 +55,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newPagamento" data-whatever="@mdo" name="">Novo Pagamento</button>
                     </div>
-                    <a href="colaboradores-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>    
+                    <a href="pagamento-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>    
                 </div>
                 <div class="table-responsive">
                     <table id='tablePag' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">

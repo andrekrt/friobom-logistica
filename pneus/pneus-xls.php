@@ -3,77 +3,38 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
-        
-    if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
-        $arquivo = 'pneus.xls';
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT * FROM pneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios");
+    $dados = $sql->fetchAll();
 
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> Data de Cadastro </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Nº Fogo').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Medida </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Calibragem Máxima').'  </td>';
-        $html .= '<td class="text-center font-weight-bold"> Marca </td>';
-        $html .= '<td class="text-center font-weight-bold"> Modelo </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Nº de Série').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Vida </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Posição Início').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Situação').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Localização').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Veículo Atual').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Inicial Veículo').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Final Veículo').'</td>';
-        $html .= '<td class="text-center font-weight-bold"> Km Rodado Pneu</td>';
-        $html .= '<td class="text-center font-weight-bold"> Suco 01 </td>';
-        $html .= '<td class="text-center font-weight-bold"> Suco 02 </td>';
-        $html .= '<td class="text-center font-weight-bold"> Suco 03 </td>';
-        $html .= '<td class="text-center font-weight-bold"> Suco 04 </td>';
-        $html .= '<td class="text-center font-weight-bold"> Ativo </td>';
-        $html .= '<td class="text-center font-weight-bold"> Cadastrado </td>';
-        $html .= '</tr>';
+    $fp = fopen("pneus.csv", "w");
+    $escreve = fwrite($fp, "Data de Cadastro;". mb_convert_encoding('Nº Fogo', 'ISO-8859-1', 'UTF-8') ."; Medida;". mb_convert_encoding('Calibragem Máxima','ISO-8859-1', 'UTF-8') ."; Marca; Modelo;". mb_convert_encoding('Nº de Série', 'ISO-8859-1', 'UTF-8') ."; Vida;".mb_convert_encoding('Posição Início','ISO-8859-1', 'UTF-8') ." ;".mb_convert_encoding('Situação','ISO-8859-1', 'UTF-8')." ;".mb_convert_encoding('Localização', 'ISO-8859-1', 'UTF-8')." ;". mb_convert_encoding('Veículo Atual','ISO-8859-1', 'UTF-8').";" .mb_convert_encoding('Km Inicial Veículo', 'ISO-8859-1', 'UTF-8').";". mb_convert_encoding('Km Final Veículo', 'ISO-8859-1', 'UTF-8').";Km Rodado; Suco 01; Suco 02; Suco 03; Suco 04; Ativo; Cadastrado");
 
-        $sql = $db->query("SELECT * FROM pneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
-
-            $html .= '<tr>';
-            $html .= '<td>' . date("d/m/Y", strtotime($dado['data_cadastro'])) .  '</td>';
-            $html .= '<td>' .$dado['num_fogo'].  '</td>';
-            $html .= '<td>' .$dado['medida'].  '</td>';
-            $html .= '<td>' .$dado['calibragem_maxima'].  '</td>';
-            $html .= '<td>' . utf8_decode($dado['marca']) .  '</td>';
-            $html .= '<td>' . utf8_decode($dado['modelo']) .  '</td>';
-            $html .= '<td>' .$dado['num_serie'].  '</td>';
-            $html .= '<td>' .$dado['vida'].  '</td>';
-            $html .= '<td>' .$dado['posicao_inicio'].  '</td>';
-            $html .= '<td>' . utf8_decode($dado['situacao']) .  '</td>';
-            $html .= '<td>' .$dado['localizacao'].  '</td>';
-            $html .= '<td>' .$dado['veiculo'].  '</td>';
-            $html .= '<td>' .$dado['km_inicial'].  '</td>';
-            $html .= '<td>' .$dado['km_final'].  '</td>';
-            $html .= '<td>' .$dado['km_rodado'].  '</td>';
-            $html .= '<td>' .$dado['suco01'].  '</td>';
-            $html .= '<td>' .$dado['suco02'].  '</td>';
-            $html .= '<td>' .$dado['suco03'].  '</td>';
-            $html .= '<td>' .$dado['suco04'].  '</td>';
-            $html .= '<td>' . utf8_decode($dado['uso']) .  '</td>';
-            $html .= '<td>' . utf8_decode($dado['nome_usuario']) .  '</td>';
-            $html .= '</tr>';
+    foreach($dados as $dado){
+        if($dado['uso']==1){
+            $uso = 'SIM';
+        }elseif($dado['uso']==0){
+            $uso="NÃO";
         }
-
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-        exit;
-
+        $escreve=fwrite($fp,
+            "\n". date("d/m/Y",strtotime($dado['data_cadastro'])).";". $dado['num_fogo']. ";".$dado['medida']. ";". $dado['calibragem_maxima'] .";". mb_convert_encoding($dado['marca'],'ISO-8859-1', 'UTF-8') .";".  mb_convert_encoding($dado['modelo'],'ISO-8859-1', 'UTF-8') ."; $dado[num_serie]; $dado[vida];". ($dado['posicao_inicio']).";". mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8') .";". ($dado['localizacao']).";". ($dado['veiculo']."; $dado[km_inicial];$dado[km_final]; $dado[km_rodado]; $dado[suco01]; $dado[suco02]; $dado[suco03]; $dado[suco04];".mb_convert_encoding($uso,'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8'). "")
+        );
     }
 
-?>
+    fclose($fp);
+
+    header("Cache-Control: public");
+    header("Content-Description: File Transfer");
+    header("Content-Disposition: attachment; filename=abastecimento.csv");
+    header("Content-Type: application/zip");
+    header("Content-Transfer-Encoding: binary");
+
+    // Read the file
+    readfile('pneus.csv');
+    exit;
+
+}
+
+

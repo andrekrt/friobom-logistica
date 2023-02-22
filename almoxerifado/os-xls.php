@@ -3,77 +3,54 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
+if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT * FROM ordem_servico LEFT JOIN usuarios ON ordem_servico.idusuario = usuarios.idusuarios");
+
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=os.csv');
+
+    $arquivo = fopen("php://output", "w");
+
+    $cabacelho = [
+        "ID",
+        "Data de Abertura",
+        "Placa",
+        mb_convert_encoding('Descrição Problema','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Tipo de Manutenção','ISO-8859-1', 'UTF-8'),
+        "Corretiva",
+        "Preventiva",
+        mb_convert_encoding('Manutenção Externa','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Troca de Óleo','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Higienização','ISO-8859-1', 'UTF-8'),
+        "Agente Causador",
+        mb_convert_encoding('Nº Requisição','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Nº Solicitação','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Nº NF','ISO-8859-1', 'UTF-8'),
+        "Obs",
+        mb_convert_encoding('Situação','ISO-8859-1', 'UTF-8'),
+        "Data Encerramento",
+        mb_convert_encoding('Lançado por','ISO-8859-1', 'UTF-8'),
+    ];
+    
+    fputcsv($arquivo, $cabacelho, ';');
+
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
+    foreach($dados as $dado){
         
-    if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+        $corretiva = $dado['corretiva']?"SIM":mb_convert_encoding("NÃO",'ISO-8859-1', 'UTF-8');
+        $preventiva = $dado['preventiva']?"SIM":mb_convert_encoding("NÃO",'ISO-8859-1', 'UTF-8');
+        $externa = $dado['externa']?"SIM":mb_convert_encoding("NÃO",'ISO-8859-1', 'UTF-8');
+        $oleo = $dado['oleo']?"SIM":mb_convert_encoding("NÃO",'ISO-8859-1', 'UTF-8');
+        $higienizacao = $dado['higienizacao']?"SIM":mb_convert_encoding("NÃO",'ISO-8859-1', 'UTF-8');
 
-        $arquivo = 'os.xls';
-
-        $html = '';
-        $html .= '<table border="1">';
-        $html .= '<tr>';
-        $html .= '<td class="text-center font-weight-bold"> ID </td>';
-        $html .= '<td class="text-center font-weight-bold">Data Abertura </td>';
-        $html .= '<td class="text-center font-weight-bold"> Placa </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Descrição Problema').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Tipo de Manutenção').'  </td>';
-        $html .= '<td class="text-center font-weight-bold"> Corretiva</td>';
-        $html .= '<td class="text-center font-weight-bold"> Preventiva</td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Manutenção Externa').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Troca de Óleo ').' </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Higienização').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Agente Causador </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Nº Requisição').'  </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Nº Solicitação')  .'</td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Nº NF').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Obs. </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Situação').' </td>';
-        $html .= '<td class="text-center font-weight-bold"> Data Encerramento </td>';
-        $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Lançado por').' </td>';
-        $html .= '</tr>';
-
-        $sql = $db->query("SELECT * FROM ordem_servico LEFT JOIN usuarios ON ordem_servico.idusuario = usuarios.idusuarios");
-        $dados = $sql->fetchAll();
-        foreach($dados as $dado){
-
-            $corretiva = $dado['corretiva']?"SIM":"NÃO";
-            $preventiva = $dado['preventiva']?"SIM":"NÃO";
-            $externa = $dado['externa']?"SIM":"NÃO";
-            $oleo = $dado['oleo']?"SIM":"NÃO";
-            $higienizacao = $dado['higienizacao']?"SIM":"NÃO";
-
-            $html .= '<tr>';
-            $html .= '<td>'.$dado['idordem_servico']. '</td>';
-            $html .= '<td>'.date("d/m/Y",strtotime($dado['data_abertura'])). '</td>';
-            $html .= '<td>'.$dado['placa']. '</td>';
-            $html .= '<td>'. utf8_decode($dado['descricao_problema']) . '</td>';
-            $html .= '<td>'. utf8_decode($dado['tipo_manutencao']) . '</td>';
-            $html .= '<td>'. utf8_decode($corretiva) . '</td>';
-            $html .= '<td>'. utf8_decode($preventiva) . '</td>';
-            $html .= '<td>'. utf8_decode($externa) . '</td>';
-            $html .= '<td>'. utf8_decode($oleo) . '</td>';
-            $html .= '<td>'. utf8_decode($higienizacao) . '</td>';
-            $html .= '<td>'. utf8_decode($dado['causador'])  . '</td>';
-            $html .= '<td>'. utf8_decode($dado['requisicao_saida'])  . '</td>';
-            $html .= '<td>'. utf8_decode($dado['solicitacao_peca']) . '</td>';
-            $html .= '<td>'. $dado['num_nf'] . '</td>';
-            $html .= '<td>'. utf8_decode($dado['obs']) . '</td>';
-            $html .= '<td>'. utf8_decode($dado['situacao']) . '</td>';
-            $html .= '<td>'.date("d/m/Y",strtotime($dado['data_encerramento'])).  '</td>';
-            $html .= '<td>'. utf8_decode($dado['nome_usuario']) . '</td>';
-            $html .= '</tr>';
-
-        }
-
-        $html .= '</table>';
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-
-        echo $html;
-        
+        fwrite($arquivo,
+            "\n $dado[idordem_servico];". date("d/m/Y",strtotime($dado['data_abertura'])). "; $dado[placa];" . mb_convert_encoding($dado['descricao_problema'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['tipo_manutencao'],'ISO-8859-1', 'UTF-8')."; $corretiva; $preventiva; $externa; $oleo; $higienizacao;". mb_convert_encoding($dado['causador'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['requisicao_saida'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['solicitacao_peca'],'ISO-8859-1', 'UTF-8'). ";$dado[num_nf]" . mb_convert_encoding($dado['obs'],'ISO-8859-1', 'UTF-8'). ";" . mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8').";".date("d/m/mY",strtotime($dado['data_encerramento'])).";".mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')
+        );
     }
 
-?>
+    fclose($arquivo);
+}
+
+

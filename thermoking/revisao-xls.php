@@ -3,44 +3,33 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
+if($_SESSION['tipoUsuario'] == 99){
+
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT idrevisao, placa_veiculo, tipo_veiculo, tipo_tk, data_revisao_tk, horimetro_revisao FROM revisao_tk LEFT JOIN thermoking ON revisao_tk.thermoking = thermoking.idthermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
+
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=revisao-tk.csv');
+
+    $arquivo = fopen("php://output", "w");
+
+    $cabacelho = [
+        "ID",
+        mb_convert_encoding('Placa de Veículo','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Modelo de Veículo','ISO-8859-1', 'UTF-8'),
+        "Tipo TK",
+        mb_convert_encoding('Data Revisão','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Horímetro Revisão','ISO-8859-1', 'UTF-8'),
+    ];
     
-if($_SESSION['tipoUsuario'] == 99 ){
+    fputcsv($arquivo, $cabacelho, ';');
 
-    $arquivo = 'revisao-tk.xls';
-    $html = '';
-    $html .= '<table border="1">';
-    $html .= '<tr>';
-    $html .= '<td class="text-center font-weight-bold"> ID  </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Placa de Veículo').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Modelo de Veículo').' </td>';
-    $html .= '<td class="text-center font-weight-bold"> Tipo TK </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data Revisão').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Horímetro Revisão').' </td>';
-    $html .= '</tr>';
-
-    $revisao = $db->query("SELECT * FROM revisao_tk LEFT JOIN thermoking ON revisao_tk.thermoking = thermoking.idthermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
-    $dados = $revisao->fetchAll();
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
     foreach($dados as $dado){
-        
-        $html .= '<tr>';
-        $html .= '<td>'.$dado['idrevisao'] .'</td>';
-        $html .= '<td>'. $dado['placa_veiculo'] .'</td>';
-        $html .= '<td>'. utf8_decode($dado['tipo_veiculo'])  .'</td>';
-        $html .= '<td>'. utf8_decode($dado['tipo_tk'])  .'</td>';
-        $html .= '<td>'. date("d/m/Y", strtotime($dado['data_revisao_tk'])) .'</td>';
-        $html .= '<td>'. $dado['horimetro_revisao'] .'</td>';
-        $html .= '</tr>';
+        fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');
     }
-    $html .= '</table>';
 
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-    header('Cache-Control: max-age=0');
-    header('Cache-Control: max-age=1');
-
-    echo $html;
-
+    fclose($arquivo);
 }
-    
-?>
+
+

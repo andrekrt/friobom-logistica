@@ -52,7 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
                 <div class="icon-exp">
-                    <a href="revisao-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="relatorio-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table id='tableRelatorio' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">

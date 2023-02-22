@@ -3,34 +3,38 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
+if($_SESSION['tipoUsuario'] != 4){
+
+    $db->exec("set names utf8");
+    $sql = $db->query("SELECT * FROM veiculos");
+
+    header('Content-Type:text/csv; charset=UTF-8');
+    header('Content-Disposition: attachement; filename=veiculos.csv');
+
+    $arquivo = fopen("php://output", "w");
+
+    $cabacelho = [
+        mb_convert_encoding('Código','ISO-8859-1', 'UTF-8'),
+        "Tipo",
+        "Categoria",
+        "Placa",
+        mb_convert_encoding('Peso Máximo','ISO-8859-1', 'UTF-8'),
+        "Cubagem",
+        mb_convert_encoding('Data Revisão Óleo','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Revisão Óleo(Km)','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Data Revisão Diferencial','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Revisão Diferencial(Km)','ISO-8859-1', 'UTF-8'),
+        "Km Atual",
+        mb_convert_encoding('Km Restante de Revisão','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Status Revisão','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Km Último Alinhamento','ISO-8859-1', 'UTF-8'),
+        "Status Alinhamento",
+        "Ativo"
+    ];
     
-if($_SESSION['tipoUsuario'] != 4 ){
+    fputcsv($arquivo, $cabacelho, ';');
 
-    $arquivo = 'veiculos.xls';
-    $html = '';
-    $html .= '<table border="1">';
-    $html .= '<tr>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Código').'  </td>';
-    $html .= '<td class="text-center font-weight-bold"> Tipo </td>';
-    $html .= '<td class="text-center font-weight-bold"> Categoria </td>';
-    $html .= '<td class="text-center font-weight-bold"> Placa </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Peso Máximo').' </td>';
-    $html .= '<td class="text-center font-weight-bold"> Cubagem </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data Revisão Óleo').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Revisão Óleo (Km)').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Data Revisão Diferencial').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Revisão Diferencial (Km)') .'</td>';
-    $html .= '<td class="text-center font-weight-bold"> Km Atual </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km Restante de Revisão').' </td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Status Revisão').'</td>';
-    $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Km último Alinhamento').'</td>';
-    $html .= '<td class="text-center font-weight-bold">Status ALinhamento</td>';
-    $html .= '<td class="text-center font-weight-bold">Ativo</td>';
-    $html .= '</tr>';
-
-    $revisao = $db->query("SELECT * FROM veiculos");
-    $dados = $revisao->fetchAll();
+    $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
     foreach($dados as $dado){
 
         $kmRestante = $dado['km_atual']-$dado['km_ultima_revisao'];
@@ -57,34 +61,14 @@ if($_SESSION['tipoUsuario'] != 4 ){
             $ativo = "SIM";
         }
 
-        $html .= '<tr>';
-        $html .= '<td>'.$dado['cod_interno_veiculo'] .'</td>';
-        $html .= '<td>'. utf8_decode($dado['tipo_veiculo'])  .'</td>';
-        $html .= '<td>'. utf8_decode($dado['categoria']) .'</td>';
-        $html .= '<td>'. $dado['placa_veiculo'] .'</td>';
-        $html .= '<td>'. $dado['peso_maximo'] .'</td>';
-        $html .= '<td>'. $dado['cubagem'] .'</td>';
-        $html .= '<td>'. date("d/m/Y", strtotime($dado['data_revisao_oleo']))  .'</td>';
-        $html .= '<td>'. $dado['km_ultima_revisao'] .'</td>';
-        $html .= '<td>'. date("d/m/Y", strtotime($dado['data_revisao_diferencial']))  .'</td>';
-        $html .= '<td>'. $dado['km_revisao_diferencial'] .'</td>';
-        $html .= '<td>'. $dado['km_atual']  .'</td>';
-        $html .= '<td>'. $kmRestante .'</td>';
-        $html .= '<td>'. utf8_decode($situacao)  .'</td>';
-        $html .= '<td>'. $kmRestanteAlinhamento .'</td>';
-        $html .= '<td>'. utf8_decode($situacaoAlinhamento) .'</td>';
-        $html .= '<td>'. utf8_decode($ativo) .'</td>';
-        $html .= '</tr>';
+        fwrite($arquivo, 
+            "\n$dado[cod_interno_veiculo];".mb_convert_encoding($dado['tipo_veiculo'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['categoria'],'ISO-8859-1', 'UTF-8')."; $dado[placa_veiculo]; $dado[peso_maximo]; $dado[cubagem];". date("d/m/Y", strtotime($dado['data_revisao_oleo']))."; $dado[km_ultima_revisao];".date("d/m/Y", strtotime($dado['data_revisao_diferencial']))."; $dado[km_revisao_diferencial]; $dado[km_atual]; $kmRestante;". mb_convert_encoding($situacao,'ISO-8859-1', 'UTF-8' )."; $kmRestanteAlinhamento;". mb_convert_encoding($situacaoAlinhamento,'ISO-8859-1', 'UTF-8' ).";".mb_convert_encoding($ativo,'ISO-8859-1', 'UTF-8' )
+        );
+
+        // fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');
     }
-    $html .= '</table>';
 
-    header('Content-Type: application/vnd.ms-excel');
-    header('Content-Disposition: attachment;filename="'.$arquivo.'"');
-    header('Cache-Control: max-age=0');
-    header('Cache-Control: max-age=1');
-
-    echo $html;
-
+    fclose($arquivo);
 }
 
-?>
+
