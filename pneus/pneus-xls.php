@@ -27,7 +27,7 @@ if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
     header("Cache-Control: public");
     header("Content-Description: File Transfer");
-    header("Content-Disposition: attachment; filename=abastecimento.csv");
+    header("Content-Disposition: attachment; filename=pneus.csv");
     header("Content-Type: application/zip");
     header("Content-Transfer-Encoding: binary");
 
