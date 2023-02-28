@@ -239,6 +239,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                 </li>
                                 <li class="nav-item"> <a href="pneus/form-pneus.php" class="nav-link"> Cadastrar Pneu </a> </li>
                                 <li class="nav-item"> <a href="pneus/pneus.php" class="nav-link"> Pneu Cadastrados </a> </li>
+                                <li class="nav-item"> <a href="pneus/pneus-descartados.php" class="nav-link"> Pneus Descartados </a> </li>
                             </ul>
                         </nav>
                     </div>
