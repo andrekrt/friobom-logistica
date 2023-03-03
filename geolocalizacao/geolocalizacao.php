@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require("../conexao-on.php");
+require("../conexao.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99)){
     $idUsuario = $_SESSION[ 'idUsuario'];
@@ -55,9 +55,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
-                    <!-- <div class="icon-exp">
-                        <a href="rescisoes-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
-                    </div> -->
+                    <div class="icon-exp">
+                        <a href="geolocalizacao-csv.php"><img src="../assets/images/excel.jpg" alt=""></a>
+                    </div>
                     <div class="table-responsive">
                         <table id='geo' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                             <thead>
@@ -68,6 +68,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                                     <th scope="col" class="text-center text-nowrap">Código Cliente</th>
                                     <th scope="col" class="text-center text-nowrap"> RCA</th> 
                                     <th scope="col" class="text-center text-nowrap"> Localização</th>  
+                                    <th scope="col" class="text-center text-nowrap"> Status</th>  
+                                    <th scope="col" class="text-center text-nowrap"> Ações</th>  
                                 </tr>
                             </thead>
                         </table>
@@ -109,6 +111,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                         { data: 'cod_cliente'},
                         { data: 'rca'},
                         { data: 'localizacao'},
+                        {data: 'status'},
+                        {data: 'acoes'}
                     ],
                     "language":{
                         "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
@@ -119,10 +123,78 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                 });
             });
 
-            
+            //abrir modal 
+            $('#geo').on('click', '.editbtn', function(event){
+                var table = $('#geo').DataTable();
+                var trid = $(this).closest('tr').attr('id');
+                var id = $(this).data('id');
+
+                $('#modalEndereco').modal('show');
+
+                $.ajax({
+                    url:"get_single.php",
+                    data:{id:id},
+                    type:'post',
+                    success: function(data){
+                        var json = JSON.parse(data);
+                        $('#endereco').val(json.ENDERENT);
+                        $('#bairro').val(json.BAIRROENT);
+                        $('#cidade').val(json.MUNICENT);
+                        $('#id').val(id);
+                        $('#cliente').val(json.CODCLI);
+                    }
+                })
+            });
+
         </script>
 
-        
+<!-- modal buscar endereço -->
+<div class="modal fade" id="modalEndereco" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Geolocalização</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="atualiza-localizacao.php" method="post">
+                    <input type="hidden" name="id" id="id" value="">
+                    <input type="hidden" name="cliente" id="cliente" value="">
+                    <div class="form-row">
+                        <input type="hidden" name="idpneu" id="idpneu">
+                        <div class="form-group col-md-3">
+                            <label for="endereco">Endereço</label>
+                            <input type="text" name="endereco" id="endereco" readonly class="form-control" value="">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" name="bairro" id="bairro" readonly class="form-control" value="">
+                        </div>
+                        <div class="form-group col-md-3 ">
+                            <label for="cidade">Cidade</label>
+                            <input type="text" name="cidade" id="cidade" class="form-control" readonly required value="">
+                        </div>
+                        <div class="form-group col-md-3 ">
+                            <label for="situacao">Situação</label>
+                            <select name="situacao" required id="situacao" class="form-control">
+                                <option value=""></option>
+                                <option value="Localização Real">Localização Real</option>
+                                <option value="Localização Próxima">Localização Próxima</option>
+                                <option value="Localização Fora do Raio">Localização Fora do Raio</option>
+                            </select>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                    <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                        </div>
+                    <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
     </body>
 
    

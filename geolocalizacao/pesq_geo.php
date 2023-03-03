@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include '../conexao-on.php';
+include '../conexao.php';
 
 ## Read value
 $draw = $_POST['draw'];
@@ -33,13 +33,13 @@ $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM localizacao ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM localizacao  WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM localizacao ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM localizacao  WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -62,7 +62,9 @@ foreach($empRecords as $row){
         "codigo_sup"=>$row['codigo_sup'],
         "cod_cliente"=>$row['cod_cliente'],
         "rca"=>$row['rca'],
-        "localizacao"=> '<a href="https://maps.google.com/?q='.$latitude.','.$logintude.'" target="_blank">Localização</a>'
+        "localizacao"=> '<a href="https://maps.google.com/?q='.$latitude.','.$logintude.'" target="_blank">Localização</a>',
+        "status"=>$row['situacao'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >visualizar</a>  '
     );
 }
 

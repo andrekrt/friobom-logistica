@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../conexao.php';
+include '../conexao-on.php';
 
 ## Read value
 $draw = $_POST['draw'];
@@ -63,8 +63,9 @@ foreach($empRecords as $row){
         "valor_litro"=>"R$ ". number_format($row['valor_litro'],4,",","."),
         "frete"=>"R$ ". number_format($row['frete'],2,",","."),
         "total_litros"=>number_format($row['total_litros'],2,",",".") ,
+        "valor_comb"=>number_format($row['total_litros']*$row['valor_litro'],2,",","."),
         "valor_total"=>"R$ " . number_format($row['valor_total'],2,",","."),
-        "nome_fantasia"=>utf8_encode($row['nome_fantasia']),
+        "nome_fantasia"=>mb_convert_encoding($row['nome_fantasia'],'ISO-8859-1', 'UTF-8'),
         "qualidade"=>$row['qualidade'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
