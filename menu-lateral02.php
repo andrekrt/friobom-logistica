@@ -207,6 +207,15 @@
             </nav>
         </div>
         <div class="item">
+            <a onclick="menuMetas()">
+                <img src="../../assets/images/menu/menu-metas.png" alt="">
+            </a>
+            <nav id="submenuMetas">
+                <li class="nav-item"> <a href="../../metas/metas.php"> Listar Metas</a> </li>
+                <li class="nav-item"> <a href="../../metas/form-metas.php"> Registrar Metas</a> </li>
+            </nav>
+        </div>
+        <div class="item">
             <a href="../../sair.php">
                 <img src="../../assets/images/menu/sair.png" alt="">
             </a>

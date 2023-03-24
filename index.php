@@ -174,7 +174,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             <ul class="nav flex-column">
                                 <li class="nav-item"> <a class="nav-link" href="reparos/solicitacoes.php"> Solicitações </a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
-                                <!-- <li class="nav-item"> <a class="nav-link" href="/reparos/relatorio.php"> Valores Gastos</a> </li> -->
+                               
                                 <li class="nav-item"> <a class="nav-link" href="reparos/local-reparo.php">Local de Reparo</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="reparos/pecas.php">Peças/Serviços</a> </li>
                             </ul> 
@@ -187,7 +187,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         <nav id="submenuCheck">
                             <ul class="nav flex-column">
                                 <li class="nav-item"> <a class="nav-link" href="checklist/checklists.php"> Check-Lists </a> </li>
-                                <!-- <li class="nav-item"> <a class="nav-link" href="checklist/form-check.php">Realizar Check List </a> </li> -->
+                                
                             </ul> 
                         </nav> 
                     </div>
@@ -263,6 +263,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </a>
                         <nav id="submenuLocalizacao">
                             <li class="nav-item"> <a href="geolocalizacao/geolocalizacao.php"> Geolocalização Supervisores </a> </li>
+                        </nav>
+                    </div>
+                    <div class="item">
+                        <a onclick="menuMetas()">
+                            <img src="assets/images/menu/menu-metas.png" alt="">
+                        </a>
+                        <nav id="submenuMetas">
+                            <li class="nav-item"> <a href="metas/metas.php"> Listar Metas</a> </li>
+                            <li class="nav-item"> <a href="metas/form-metas.php"> Registrar Metas</a> </li>
                         </nav>
                     </div>
                     <div class="item">
