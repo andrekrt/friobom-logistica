@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 2){
+if($_SESSION['tipoUsuario'] == 99 || $_SESSION['tipoUsuario'] == 2 || $_SESSION['tipoUsuario'] == 4){
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT idocorrencia, nome_motorista, data_ocorrencia, tipo_ocorrencia, advertencia, laudo, descricao_custos, vl_total_custos, situacao FROM `ocorrencias`LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista LEFt JOIN usuarios ON ocorrencias.usuario_lancou = usuarios.idusuarios");
