@@ -8,7 +8,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
     $dataSaida = filter_input(INPUT_POST, 'dataSaida');
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $supervisor = filter_input(INPUT_POST, 'supervisor', FILTER_VALIDATE_INT);
-    $veiculo = filter_input(INPUT_POST, 'veiculo');
     $velMax = filter_input(INPUT_POST, 'velMax');
     $cidadeSaida = filter_input(INPUT_POST, 'cidadeSaida', FILTER_VALIDATE_INT);
     $cidadeChegada = filter_input(INPUT_POST, 'cidadeChegada', FILTER_VALIDATE_INT);
@@ -26,10 +25,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
     $sqlCont->execute();  
     $qtdVisitas = $sqlCont->rowCount();
     
-    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, veiculo, chegada, velocidade_max, cidade_inicio, rca01, rca02, obs, cidade_final, diarias, qtd_visitas, usuario) VALUES (:saida, :supervisor, :veiculo, :chegada, :velocidade_max, :cidade_inicio, :rca01, :rca02, :obs, :cidade_final, :diarias, :qtd_visitas, :usuario)");
+    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, cidade_inicio, rca01, rca02, obs, cidade_final, diarias, qtd_visitas, usuario) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :cidade_inicio, :rca01, :rca02, :obs, :cidade_final, :diarias, :qtd_visitas, :usuario)");
     $sql->bindValue(':saida', $dataSaida);
     $sql->bindValue(':supervisor', $supervisor);
-    $sql->bindValue(':veiculo', $veiculo);
     $sql->bindValue(':chegada', $dataChegada);
     $sql->bindValue(':velocidade_max', $velMax);
     $sql->bindValue(':cidade_inicio', $cidadeSaida);

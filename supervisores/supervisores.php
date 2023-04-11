@@ -66,6 +66,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Código</th>
                                 <th scope="col" class="text-center text-nowrap">Supervisor</th>
                                 <th scope="col" class="text-center text-nowrap">Cidade Residência</th>
+                                <th scope="col" class="text-center text-nowrap">Veículo</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
                             </tr>
                         </thead>
@@ -95,6 +96,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'idsupervisor'},
                     { data: 'nome_supervisor'},
                     { data: 'cidade_residencia'},
+                    { data: 'veiculo'},
                     { data: 'acoes'},
                 ],
                 "language":{
@@ -125,7 +127,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     var json = JSON.parse(data);
                     $('#codigoEdit').val(json.idsupervisor);
                     $('#nomeEdit').val(json.nome_supervisor);  
-                    $('#residenciaEdit').val(json.cidade_residencia);                
+                    $('#residenciaEdit').val(json.cidade_residencia);  
+                    $('#veiculoEdit').val(json.veiculo);                
                 }
             })
         });
@@ -144,7 +147,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="modal-body">
                 <form action="add-supervisor.php" method="post">
                     <div class="form-row">
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
                             <label for="codigo"> Código de Supervisor</label>
                             <input type="text" class="form-control" required name="codigo" id="codigo">
                         </div>
@@ -152,7 +155,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="nome"> Nome Supervisor</label>
                             <input type="text" id="nome" name="nome" required class="form-control">
                         </div>
-                        <div class="form-group col-md-4 espaco ">
+                        <div class="form-group col-md-3 espaco ">
                             <label for="residencia"> Cidade Residência</label>
                             <select name="residencia" required id="residencia" class="form-control">
                                 <option value=""></option>
@@ -162,6 +165,23 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 foreach($cidades as $cidade):
                                 ?>
                                 <option value="<?=$cidade['idcidades']?>"><?=$cidade['nome_cidade']?></option>
+                                <?php
+                                endforeach;
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2 espaco">
+                            <label for="veiculo">Veículo</label>
+                            <select name="veiculo" required id="veiculo" class="form-control">
+                                <option value=""></option>
+                                <?php
+                                $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo");
+                                $veiculos->bindValue(':tipo', 'Frota Leve');
+                                $veiculos->execute();
+                                $veiculos=$veiculos->fetchAll(PDO::FETCH_ASSOC);
+                                foreach($veiculos as $veiculo):
+                                ?>
+                                <option value="<?=$veiculo['cod_interno_veiculo']?>"><?=$veiculo['placa_veiculo']?></option>
                                 <?php
                                 endforeach;
                                 ?>
@@ -191,7 +211,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="modal-body">
                 <form action="atualiza-supervisor.php" method="post">
                     <div class="form-row">
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-2 espaco ">
                             <label for="codigo"> Código de Supervisor</label>
                             <input type="text" class="form-control" required name="codigo" id="codigoEdit" readonly>
                         </div>
@@ -199,7 +219,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="nome"> Nome Supervisor</label>
                             <input type="text" id="nomeEdit" name="nome" required class="form-control">
                         </div>
-                        <div class="form-group col-md-4 espaco ">
+                        <div class="form-group col-md-3 espaco ">
                             <label for="residencia"> Cidade Residência</label>
                             <select name="residencia" required id="residenciaEdit" class="form-control">
                                 <option value=""></option>
@@ -209,6 +229,23 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 foreach($cidades as $cidade):
                                 ?>
                                 <option value="<?=$cidade['idcidades']?>"><?=$cidade['nome_cidade']?></option>
+                                <?php
+                                endforeach;
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2 espaco">
+                            <label for="veiculo">Veículo</label>
+                            <select name="veiculo" required id="veiculoEdit" class="form-control">
+                                <option value=""></option>
+                                <?php
+                                $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo");
+                                $veiculos->bindValue(':tipo', 'Frota Leve');
+                                $veiculos->execute();
+                                $veiculos=$veiculos->fetchAll(PDO::FETCH_ASSOC);
+                                foreach($veiculos as $veiculo):
+                                ?>
+                                <option value="<?=$veiculo['cod_interno_veiculo']?>"><?=$veiculo['placa_veiculo']?></option>
                                 <?php
                                 endforeach;
                                 ?>
@@ -233,10 +270,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
            width: '100%',
            dropdownParent:"#modalAdd"
        });   
-    //    $('#residenciaEdit').select2({
-    //        width: '100%',
-    //        dropdownParent:"#modalEditar"
-    //    });     
+       $('#veiculo').select2({
+           width: '100%',
+           dropdownParent:"#modalAdd"
+       });     
    });
 </script>
 </body>

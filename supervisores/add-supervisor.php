@@ -8,11 +8,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
     $codigo = filter_input(INPUT_POST, 'codigo');
     $nome = filter_input(INPUT_POST, 'nome');
     $cidade = filter_input(INPUT_POST, 'residencia');
+    $veiculo = filter_input(INPUT_POST, 'veiculo');
     
-    $sql = $db->prepare("INSERT INTO supervisores (idsupervisor, nome_supervisor, cidade_residencia) VALUES (:codigo, :supervisor, :cidade)");
+    $sql = $db->prepare("INSERT INTO supervisores (idsupervisor, nome_supervisor, cidade_residencia, veiculo) VALUES (:codigo, :supervisor, :cidade, :veiculo)");
     $sql->bindValue(':codigo', $codigo);
     $sql->bindValue(':supervisor', $nome);
     $sql->bindValue(':cidade', $cidade);
+    $sql->bindValue(':veiculo', $veiculo);
     if($sql->execute()){
         echo "<script> alert('Supervisor Cadastrado!')</script>";
         echo "<script> window.location.href='supervisores.php' </script>";

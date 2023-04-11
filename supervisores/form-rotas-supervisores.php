@@ -77,23 +77,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                                 </select>
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="veiculo">Veículo</label>
-                                <select name="veiculo" required id="veiculo" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo");
-                                    $veiculos->bindValue(':tipo', 'Frota Leve');
-                                    $veiculos->execute();
-                                    $veiculos=$veiculos->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach($veiculos as $veiculo):
-                                    ?>
-                                    <option value="<?=$veiculo['cod_interno_veiculo']?>"><?=$veiculo['placa_veiculo']?></option>
-                                    <?php
-                                    endforeach;
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2 espaco">
                                 <label for="velMax">Velocidade Máxima</label>
                                 <input type="text" class="form-control" required name="velMax" id="velMax" >
                             </div>
@@ -112,17 +95,18 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                                     ?>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="rca1"> RCA 1 </label>
                                 <input type="text" class="form-control"  name="rca1" id="rca1" >
                             </div>
+                        </div>
+                        <div class="form-row">
+                            
                             <div class="form-group col-md-2 espaco">
                                 <label for="rca2"> RCA 2 </label>
                                 <input type="text" class="form-control"  name="rca2" id="rca2">
                             </div>
-                            <div class="form-group col-md-8 espaco">
+                            <div class="form-group col-md-10 espaco">
                                 <label for="obs"> Cidades/Obs. </label>
                                 <input type="text" class="form-control"  name="obs" id="obs">
                             </div>

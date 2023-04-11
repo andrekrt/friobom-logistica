@@ -8,11 +8,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
     $codigo = filter_input(INPUT_POST, 'codigo');
     $nome = filter_input(INPUT_POST, 'nome');
     $cidade = filter_input(INPUT_POST, 'residencia');
+    $veiculo = filter_input(INPUT_POST, 'veiculo');
     
-    $sql = $db->prepare("UPDATE supervisores SET nome_supervisor=:supervisor, cidade_residencia = :cidade WHERE idsupervisor=:codigo ");
+    $sql = $db->prepare("UPDATE supervisores SET nome_supervisor=:supervisor, cidade_residencia = :cidade, veiculo=:veiculo WHERE idsupervisor=:codigo ");
     $sql->bindValue(':supervisor', $nome);
     $sql->bindValue(':codigo', $codigo);
     $sql->bindValue(':cidade', $cidade);
+    $sql->bindValue(':veiculo', $veiculo);
     if($sql->execute()){
         echo "<script> alert('Supervisor Atualizado!!')</script>";
         echo "<script> window.location.href='supervisores.php' </script>";

@@ -35,7 +35,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT idsupervisor, nome_supervisor, nome_cidade FROM supervisores LEFT JOIN cidades ON supervisores.cidade_residencia = cidades.idcidades WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT idsupervisor, nome_supervisor, nome_cidade, placa_veiculo FROM supervisores LEFT JOIN cidades ON supervisores.cidade_residencia = cidades.idcidades LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -54,6 +54,7 @@ foreach($empRecords as $row){
             "idsupervisor"=>$row['idsupervisor'] ,
             "nome_supervisor"=>$row['nome_supervisor'],
             "cidade_residencia"=>$row['nome_cidade'],
+            "veiculo"=>$row['placa_veiculo'],
             "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsupervisor'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-supervisor.php?codigo='.$row['idsupervisor'].' " data-id="'.$row['idsupervisor'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'return confirm("Deseja Excluir?");\'>Deletar</a>'
         );
 }
