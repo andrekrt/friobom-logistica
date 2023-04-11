@@ -13,7 +13,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $toxicoligco = filter_input(INPUT_POST,'situacaoToxicologico');
     $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
 
-    $consulta = $db->query("SELECT * FROM motoristas WHERE cod_interno_motorista = '$codMotorista' ");
+    $consulta = $db->query("SELECT * FROM motoristas WHERE cod_interno_motorista = '$codMotorista' OR cnh = '$cnh' ");
     if($consulta->rowCount()>0){
         echo "<script>alert('Esse Motorista já está cadastrado!');</script>";
         echo "<script>window.location.href='form-motorista.php'</script>";

@@ -10,20 +10,29 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $tipoTk = filter_input(INPUT_POST, 'tipotk');
     $horimetro = filter_input(INPUT_POST, 'horaAtual');
     
-    // echo "$placa<br>$tipoTk<br>$horimetro";
-
-    $inserir = $db->prepare("INSERT INTO thermoking (veiculo, tipo_tk, hora_atual) VALUES (:veiculo, :tipoTk, :horimetro)");
-    $inserir->bindValue(':veiculo', $placa);
-    $inserir->bindValue(':tipoTk', $tipoTk);
-    $inserir->bindValue(':horimetro', $horimetro);   
-
-    if($inserir->execute()){
-       echo "<script>alert('Thermoking Cadastrado!');</script>";
+    //verificar se o veiculo já tem tk vinculado
+    $sqlConsulta = $db->prepare("SELECT veiculo FROM thermoking WHERE veiculo = :veiculo");
+    $sqlConsulta->bindValue(':veiculo', $placa);
+    $sqlConsulta->execute();
+    if($sqlConsulta->rowCount()>0){
+        echo "<script>alert('Esse veículo já tem Thermoking vinculado!');</script>";
         echo "<script>window.location.href='thermoking.php'</script>";
-        
     }else{
-         print_r($inserir->errorInfo());
+        $inserir = $db->prepare("INSERT INTO thermoking (veiculo, tipo_tk, hora_atual) VALUES (:veiculo, :tipoTk, :horimetro)");
+        $inserir->bindValue(':veiculo', $placa);
+        $inserir->bindValue(':tipoTk', $tipoTk);
+        $inserir->bindValue(':horimetro', $horimetro);   
+    
+        if($inserir->execute()){
+           echo "<script>alert('Thermoking Cadastrado!');</script>";
+            echo "<script>window.location.href='thermoking.php'</script>";
+            
+        }else{
+             print_r($inserir->errorInfo());
+        }
     }
+
+   
 
 }
 
