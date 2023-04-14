@@ -4,7 +4,7 @@ session_start();
 require("../conexao.php");
 include_once "funcao.php";
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] ==99) {
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false ) {
 
     $token = filter_input(INPUT_GET, 'token');
     $sql = $db->prepare("SELECT * FROM metas WHERE token =:token");
@@ -101,9 +101,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                         <?php endforeach; ?>
                         </div>
                     </div>
+                    <?php if($_SESSION['tipoUsuario'] ==99): ?>
                     <div class="form-group">
                         <button type="submit" name="entradas" class="btn btn-primary"> Registrar</button>
                     </div>
+                <?php endif; ?>
                 </form>
             </div>
         </div>

@@ -3,7 +3,7 @@
 session_start();
 require("../conexao.php");
 
-if($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99){
+if($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99 || $_SESSION['tipoUsuario']==1){
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT idrotas, saida, nome_supervisor, placa_veiculo, chegada, velocidade_max, cidade1.nome_cidade as cidade_saida, rca01, rca02, obs, cidade2.nome_cidade as cidade_final, diarias, qtd_visitas, nome_usuario, cidade3.nome_cidade as residencia FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN cidades cidade1 ON rotas_supervisores.cidade_inicio = cidade1.idcidades LEFT JOIN cidades cidade2 ON rotas_supervisores.cidade_final = cidade2.idcidades LEFT JOIN cidades cidade3 ON supervisores.cidade_residencia = cidade3.idcidades LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios");
