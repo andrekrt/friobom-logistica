@@ -15,7 +15,7 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (saida LIKE :saida OR nome_supervisor LIKE :nome_supervisor OR placa_veiculo LIKE :placa_veiculo OR chegada LIKE :chegada OR velocidade_max LIKE :velocidade_max OR nome_cidade LIKE :nome_cidade OR rca01 LIKE :rca01 OR rca02 LIKE :rca02 OR obs LIKE :obs OR nome_usuario LIKE :nome_usuario) ";
+	$searchQuery = " AND (saida LIKE :saida OR nome_supervisor LIKE :nome_supervisor OR placa_veiculo LIKE :placa_veiculo OR chegada LIKE :chegada OR velocidade_max LIKE :velocidade_max OR rca01 LIKE :rca01 OR rca02 LIKE :rca02 OR obs LIKE :obs OR nome_usuario LIKE :nome_usuario) ";
     $searchArray = array( 
         'saida'=>"%$searchValue%",
         'nome_supervisor'=>"%$searchValue%",
@@ -26,7 +26,6 @@ if($searchValue != ''){
         'rca02'=>"%$searchValue%",
         'obs'=>"%$searchValue%",
         'nome_usuario'=>"%$searchValue%",
-        'nome_cidade'=>"%$searchValue%"
     );
 }
 

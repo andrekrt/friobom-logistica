@@ -278,6 +278,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </nav>
                     </div>
                     <div class="item">
+                        <a onclick="menuFusion()">
+                            <img src="assets/images/menu/menu-fusion.png" alt="">
+                        </a>
+                        <nav id="submenuFusion">
+                            <li class="nav-item"> <a href="fusion/form-fusion.php"> Registrar Viagem</a> </li>
+                            <li class="nav-item"> <a href="fusion/fusion.php"> Viagens</a> </li>
+                            <li class="nav-item"> <a href="fusion/dados-fusion.php"> Dados Viagens</a> </li>
+                        </nav>
+                    </div>
+                    <div class="item">
                         <a href="sair.php">
                             <img src="assets/images/menu/sair.png" alt="">
                         </a>

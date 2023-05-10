@@ -128,6 +128,16 @@ function menuRodizio(){
     
 }
 
+function menuFusion(){
+
+    if(document.getElementById("submenuFusion").style.display == "none" || document.getElementById("submenuFusion").style.display == "" ){
+        document.getElementById("submenuFusion").style.display = "block";
+    }else{
+        document.getElementById("submenuFusion").style.display = "none";
+    }
+    
+}
+
 function menuManutencao(){
 
     if(document.getElementById("submenuManutencao").style.display == "none" || document.getElementById("submenuManutencao").style.display == "" ){
