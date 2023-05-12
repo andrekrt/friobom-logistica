@@ -55,9 +55,13 @@ $data = array();
 foreach($empRecords as $row){
     $delete="";
     $editar = "";
-    if( $_SESSION['tipoUsuario']==4){
+    $ficha = "";
+    if( $_SESSION['tipoUsuario']==4 ){
         $delete='  <a href="excluir-entrada.php?idSaida='.$row['idcombustivel_saida'].' " data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
         $editar = ' <a href="javascript:void();" data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>';
+        
+    }elseif($_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario']==99){
+        $ficha = ' <a href="ficha-abastecimento.php?id='.$row['idcombustivel_saida'].' " data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>';
     }
     $data[] = array(
         "idcombustivel_saida"=>$row['idcombustivel_saida'],
@@ -72,7 +76,7 @@ foreach($empRecords as $row){
         "motorista"=>$row['motorista'],
         "tipo_abastecimento"=>($row['tipo_abastecimento']),
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=>  $editar . $delete
+        "acoes"=>  $editar . $delete . $ficha
     );
 }
 
