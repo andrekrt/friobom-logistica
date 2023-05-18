@@ -6,7 +6,7 @@ require("../../conexao.php");
 if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT data_cadastro, data_medicao, num_fogo, medida, calibragem_maxima, marca, num_serie, sucos.vida, veiculo, km_veiculo, km_pneu, carcaca, posicao_inicio, sucos.suco01 as medida01, sucos.suco02 as medida02, sucos.suco03 as medida03, sucos.suco04 as medida04 , pneus.suco01 as cadastro01, pneus.suco02 as cadastro02, pneus.suco03 as cadastro03, pneus.suco04 as cadastro04,  calibragem, nome_usuario FROM sucos LEFT JOIN pneus ON sucos.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON sucos.usuario = usuarios.idusuarios");
+    $sql = $db->query("SELECT data_cadastro, data_medicao, num_fogo, medida, calibragem_maxima, marca, num_serie, sucos.vida, sucos.veiculo, km_veiculo, km_pneu, carcaca, posicao_inicio, sucos.suco01 as medida01, sucos.suco02 as medida02, sucos.suco03 as medida03, sucos.suco04 as medida04 , pneus.suco01 as cadastro01, pneus.suco02 as cadastro02, pneus.suco03 as cadastro03, pneus.suco04 as cadastro04,  calibragem, nome_usuario FROM sucos LEFT JOIN pneus ON sucos.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON sucos.usuario = usuarios.idusuarios");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=suco.csv');

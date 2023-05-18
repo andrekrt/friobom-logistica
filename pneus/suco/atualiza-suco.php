@@ -21,8 +21,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $suco04 = filter_input(INPUT_POST, 'suco04');
     $calibragem = filter_input(INPUT_POST, 'calibragemAtual');    
     $kmPneu = $kmVeiculo-$pneu['km_inicial'];
+    $veiculo = filter_input(INPUT_POST, 'veiculo');
 
-    $sql = $db->prepare("UPDATE sucos SET km_veiculo = :kmVeiculo, km_pneu = :kmPneu, carcaca = :carcaca, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04, calibragem = :calibragem, pneus_idpneus = :pneu WHERE idsucos = :idSuco");
+    $sql = $db->prepare("UPDATE sucos SET km_veiculo = :kmVeiculo, km_pneu = :kmPneu, carcaca = :carcaca, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04, calibragem = :calibragem, pneus_idpneus = :pneu, veiculo=:veiculo WHERE idsucos = :idSuco");
     $sql->bindValue(':kmVeiculo', $kmVeiculo);
     $sql->bindValue(':kmPneu', $kmPneu);
     $sql->bindValue(':carcaca', $carcaca);
@@ -33,6 +34,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $sql->bindValue(':calibragem', $calibragem);
     $sql->bindValue(':pneu', $idpneu);
     $sql->bindValue(':idSuco', $idSuco);
+    $sql->bindValue(':veiculo', $veiculo);
     
     if($sql->execute()){
         echo "<script> alert('Suco Atualizado!!')</script>";
