@@ -223,7 +223,8 @@
             </a>
             <nav id="submenuFusion">
                 <li class="nav-item"> <a href="../fusion/form-fusion.php"> Registrar Viagem</a> </li>
-                <li class="nav-item"> <a href="../fusion/fusion.php"> Viagens</a> </li>
+                <li class="nav-item"> <a href="../fusion/fusion.php"> Viagens Pendentes</a> </li>
+                <li class="nav-item"> <a href="../fusion/fusion-finalizadas.php"> Viagens Finalizadas</a> </li>
                 <li class="nav-item"> <a href="../fusion/dados-fusion.php"> Dados Viagens</a> </li>
             </nav>
         </div>

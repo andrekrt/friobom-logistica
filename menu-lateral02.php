@@ -200,7 +200,7 @@
         </div>
         <div class="item">
             <a onclick="menuLocalizacao()">
-                <img src="../../assets/images/supervisores.png" alt="">
+                <img src="../../assets/images/menu/supervisores.png" alt="">
             </a>
             <nav id="submenuLocalizacao">
                 <li class="nav-item"> <a href="../../supervisores/supervisores.php"> Listar Supervisores </a> </li>
@@ -224,7 +224,8 @@
             </a>
             <nav id="submenuFusion">
                 <li class="nav-item"> <a href="../../fusion/form-fusion.php"> Registrar Viagem</a> </li>
-                <li class="nav-item"> <a href="../../fusion/fusion.php"> Viagens</a> </li>
+                <li class="nav-item"> <a href="../../fusion/fusion.php"> Viagens Pendentes</a> </li>
+                <li class="nav-item"> <a href="../../fusion/fusion-finalizadas.php"> Viagens Finalizadas</a> </li>
                 <li class="nav-item"> <a href="../../fusion/dados-fusion.php"> Dados Viagens</a> </li>
             </nav>
         </div>
