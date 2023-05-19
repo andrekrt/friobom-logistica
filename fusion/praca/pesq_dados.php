@@ -1,5 +1,5 @@
 <?php
-include '../conexao.php';
+include '../../conexao.php';
 
 ## Read value
 $draw = $_POST['draw'];
@@ -15,26 +15,26 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (saida LIKE :saida  ) ";
+	$searchQuery = " AND (data_chegada LIKE :data_chegada  ) ";
     $searchArray = array( 
-        'saida'=>"%$searchValue%"
+        'data_chegada'=>"%$searchValue%"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(distinct(date_format(termino_rota, '%m/%Y'))) AS allcount FROM fusion WHERE situacao = 'Finalizada' GROUP BY date_format(saida, '%m/%Y')");
+$stmt = $db->prepare("SELECT COUNT(distinct(date_format(data_chegada, '%m/%Y'))) AS allcount FROM fusion_praca WHERE situacao = 'Finalizado' GROUP BY date_format(data_chegada, '%m/%Y')");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(distinct(date_format(termino_rota, '%m/%Y'))) AS allcount FROM fusion  WHERE 1 AND situacao = 'Finalizada' ".$searchQuery . "GROUP BY date_format(saida, '%m/%Y')");
+$stmt = $db->prepare("SELECT COUNT(distinct(date_format(data_chegada, '%m/%Y'))) AS allcount FROM fusion_praca  WHERE 1 AND situacao = 'Finalizado' ".$searchQuery . "GROUP BY date_format(data_chegada, '%m/%Y')");
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT termino_rota, COUNT(*) as qtd, SUM(num_entregas) as totalEntregas, SUM(num_dev) as totalDevolucao, SUM(premio_possivel) as totalPremiacaoPossivel, SUM(premio_real) as totalPago, AVG(premio_alcancado) as percPremio FROM fusion WHERE 1 AND situacao = 'Finalizada' ".$searchQuery."GROUP BY date_format(saida, '%m/%Y') ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT data_chegada, COUNT(*) as qtd, SUM(num_entregas) as totalEntregas, SUM(num_devolucao) as totalDevolucao, SUM(premio_possivel) as totalPremiacaoPossivel, SUM(premio_real) as totalPago, AVG(perc_premio) as percPremio FROM fusion_praca WHERE 1 AND situacao = 'Finalizado' ".$searchQuery."GROUP BY date_format(data_chegada, '%m/%Y') ORDER BY idfusion_praca ASC LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -50,7 +50,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "saida"=>date("m/Y ", strtotime($row['termino_rota'])) ,
+            "saida"=>date("m/Y ", strtotime($row['data_chegada'])) ,
             "qtd"=>$row['qtd'],
             "entregas"=>$row['totalEntregas'],
             "devolucao"=>$row['totalDevolucao'],

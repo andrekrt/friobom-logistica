@@ -1,14 +1,14 @@
 <?php
 
 session_start();
-require("../conexao.php");
+require("../../conexao.php");
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99 )) {
 
    
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='../index.php'</script>";
+    echo "<script>window.location.href='../../index.php'</script>";
 }
 
 ?>
@@ -18,13 +18,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRIOBOM - TRANSPORTE</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
-    <link rel="manifest" href="../assets/favicon/site.webmanifest">
-    <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
@@ -39,53 +39,51 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
 </head>
 <body>
     <div class="container-fluid corpo">
-        <?php require('../menu-lateral.php') ?>
+        <?php require('../../menu-lateral02.php') ?>
         <!-- Tela com os dados -->
         <div class="tela-principal">
             <div class="menu-superior">
                 <div class="icone-menu-superior">
-                    <img src="../assets/images/icones/icone-fusion.png" alt="">
+                    <img src="../../assets/images/icones/icone-fusion.png" alt="">
                 </div>
                 <div class="title">
-                    <h2>Viagens Fusion Pendentes</h2>
+                    <h2>Viagens Praça Pendente</h2>
                 </div>
                 <div class="menu-mobile">
-                    <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                    <img src="../../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
                 </div>
             </div>
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
                 <div class="icon-exp">
-                    <a href="fusion-csv.php"><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="fusion-praca-csv.php"><img src="../../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
                     <table id='tableFusion' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
-
                                 <th scope="col" class="text-center text-nowrap" >Data Saída </th>
                                 <th scope="col" class="text-center text-nowrap" >Finalizou Rota</th>
                                 <th scope="col" class="text-center text-nowrap" >Chegada Empresa</th>
                                 <th scope="col" class="text-center text-nowrap">Carregamento</th>
                                 <th scope="col" class="text-center text-nowrap">Veículo</th>
-                                <th scope="col" class="text-center text-nowrap">Motorista</th>
+                                <th scope="col" class="text-center text-nowrap">Ajudante</th>
                                 <th scope="col" class="text-center text-nowrap" >Rota </th>
                                 <th scope="col" class="text-center text-nowrap" >Nº Entregas</th>
                                 <th scope="col" class="text-center text-nowrap">Entregas Realizadas</th>
-                                <th scope="col" class="text-center text-nowrap">Erros Fusion</th>
                                 <th scope="col" class="text-center text-nowrap">Nº Devoluções</th>
                                 <th scope="col" class="text-center text-nowrap" >Entregas Líquidas </th>
-                                <th scope="col" class="text-center text-nowrap" >% Uso Fusion</th>
-                                <th scope="col" class="text-center text-nowrap">% Check-List</th>
-                                <th scope="col" class="text-center text-nowrap">% Km/L </th>
+                                <th scope="col" class="text-center text-nowrap">Erros Fusion</th>
+                                <th scope="col" class="text-center text-nowrap" >Nº Devoluções sem Avisar </th>
                                 <th scope="col" class="text-center text-nowrap">% Devolução</th>
+                                <th scope="col" class="text-center text-nowrap" >% Entegas</th>
+                                <th scope="col" class="text-center text-nowrap">% Prestaçaõ de Contas</th>
                                 <th scope="col" class="text-center text-nowrap">% Dias em Rota</th>
-                                <th scope="col" class="text-center text-nowrap">% Velocidade Máxima</th>
                                 <th scope="col" class="text-center text-nowrap">Prêmio Máximo</th>
-                                <th scope="col" class="text-center text-nowrap">Prêmio Real</th>
+                                <th scope="col" class="text-center text-nowrap">Prêmio Pago</th>
                                 <th scope="col" class="text-center text-nowrap">% Prêmio</th>
-                                <th scope="col" class="text-center text-nowrap">Situção</th>
                                 <th scope="col" class="text-center text-nowrap">Usuário</th>
+                                <th scope="col" class="text-center text-nowrap">Situação</th>
                                 <th scope="col" class="text-center text-nowrap">Ações</th>
                             </tr>
                         </thead>
@@ -95,7 +93,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
         </div>
     </div>
 
-    <script src="../assets/js/menu.js"></script>
+    <script src="../../assets/js/menu.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
@@ -108,39 +106,38 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':'pesq_fusion.php'
+                    'url':'pesq_fusion_praca.php'
                 },
                 'columns': [
-                    { data: 'saida'},
-                    { data: 'termino_rota' },
-                    { data: 'chegada_empresa' },
-                    { data: 'carregamento'},
-                    { data: 'placa' },
-                    { data: 'motorista'},
-                    { data: 'rota' },
+                    { data: 'data_saida'},
+                    { data: 'data_finalizacao' },
+                    { data: 'data_chegada' },
+                    { data: 'carga'},
+                    { data: 'placa_veiculo' },
+                    { data: 'nome_auxiliar'},
+                    { data: 'nome_rota' },
                     { data: 'num_entregas' },
-                    { data: 'entregas_feitas' },
-                    { data: 'erros_fusion'},
-                    { data: 'num_dev' },
+                    { data: 'entregas_ok' },
+                    { data: 'num_devolucao' },
                     { data: 'entregas_liq'},
-                    { data: 'uso_fusion' },
-                    { data: 'checklist' },
-                    { data: 'media_km' },
-                    { data: 'devolucao' },
-                    { data: 'dias_rota'},
-                    { data: 'vel_max' },
+                    { data: 'num_uso_incorreto'},
+                    { data: 'devolucao_sem_aviso'},
+                    { data: 'perc_devolucao' },
+                    { data: 'perc_entregas' },
+                    { data: 'perc_contas' },
+                    { data: 'perc_rota' },
                     { data: 'premio_possivel'},
                     { data: 'premio_real' },
-                    { data: 'premio_alcancado' },
-                    { data: 'situacao' },
+                    { data: 'perc_premio' },
                     { data: 'nome_usuario' },
+                    { data: 'situacao'},
                     { data: 'acoes'},
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[23]}
+                    {'bSortable':false, 'aTargets':[22]}
                 ],
                 "order":[[0,"desc"]]
             });
@@ -160,19 +157,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                 type:'post',
                 success: function(data){
                     var json = JSON.parse(data);
-                    $('#saida').val(json.saida);
-                    $('#termino').val(json.termino_rota);
-                    $('#chegada').val(json.chegada_empresa);
-                    $('#carregamento').val(json.carregamento);
+                    $('#saida').val(json.data_saida);
+                    $('#termino').val(json.data_finalizacao);
+                    $('#chegada').val(json.data_chegada);
+                    $('#carga').val(json.carga);
                     $('#veiculo').val(json.veiculo);
-                    $('#motorista').val(json.motorista);
+                    $('#ajudante').val(json.ajudante);
                     $('#rota').val(json.rota);
                     $('#numEntregas').val(json.num_entregas);
-                    $('#entregasFeita').val(json.entegas_feitas);
-                    $('#erros').val(json.erros_fusion);
-                    $('#numDev').val(json.num_dev);
+                    $('#entregasFeita').val(json.entregas_ok);
+                    $('#numDev').val(json.num_devolucao);
+                    $('#erros').val(json.num_uso_incorreto);
+                    $('#devSemAvisar').val(json.devolucao_sem_aviso);
+                    $('#idfusion').val(json.idfusion_praca);
                     $('#situacao').val(json.situacao);
-                    $('#id').val(json.idfusion);
+                    $('#prestaConta').val(json.perc_contas);
+                    $('#prazo').val(json.perc_rota);
                 }
             })
         });
@@ -183,27 +183,27 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Fusion</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Fusion Praça</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="atualiza-fusion.php" method="post">
-                        <input type="hidden" name="id" id="id" value="">
+                        <input type="hidden" name="idfusion" id="idfusion" value="">
                         <div class="form-row">
                             <div class="form-group col-md-2 ">
                                 <label for="saida">Data Saída</label>
                                 <input type="date" class="form-control" required name="saida" id="saida">
                             </div>
                             <div class="form-group col-md-2 ">
-                                <label for="carregamento">Carregamento</label>
-                                <input type="text" class="form-control" required name="carregamento" id="carregamento">
+                                <label for="carga">Carregamento</label>
+                                <input type="text" class="form-control" required name="carga" id="carga">
                             </div>
                             <div class="form-group col-md-2 ">
                                 <label for="veiculo">Veículo</label>
                                 <select name="veiculo" id="veiculo" class="form-control" required>
                                     <option value=""></option>
                                     <?php
-                                    $sqlVeiculos = $db->query("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE ativo = 1 ORDER BY placa_veiculo ASC");
+                                    $sqlVeiculos = $db->query("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
                                     $veiculos=$sqlVeiculos->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($veiculos as $veiculo):
                                     ?>
@@ -225,15 +225,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                                 </select>
                             </div>
                             <div class="form-group col-md-2 ">
-                                <label for="motorista">Motorista</label>
-                                <select name="motorista" required id="motorista" class="form-control">
+                                <label for="ajudante">Ajudante</label>
+                                <select name="ajudante" required id="ajudante" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $sqlMotoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista ASC");
+                                    $sqlMotoristas = $db->query("SELECT idauxiliares, nome_auxiliar FROM auxiliares_rota ORDER BY nome_auxiliar ASC");
                                     $motoristas=$sqlMotoristas->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($motoristas as $motorista):
                                     ?>
-                                    <option value="<?=$motorista['cod_interno_motorista']?>"><?=$motorista['nome_motorista']?></option>
+                                    <option value="<?=$motorista['idauxiliares']?>"><?=$motorista['nome_auxiliar']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -243,7 +243,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-2 ">
+                            <div class="form-group col-md-3 ">
                                 <label for="termino">Data Término Rota</label>
                                 <input type="datetime-local" class="form-control" required name="termino" id="termino">
                             </div>
@@ -266,25 +266,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                             
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-2 ">
-                                <label for="devolucao">Houve Devolução?</label>
-                                <select name="devolucao" id="devolucao" required class="form-control">
-                                    <option value=""></option>
-                                    <option value="0">SIM</option>
-                                    <option value="1">NÃO</option>
-                                </select>
+                            <div class="form-group col-md-3 ">
+                                <label for="devSemAvisar">Nº Devoluções sem Avisa</label>
+                                <input type="text" class="form-control"  required name="devSemAvisar" id="devSemAvisar">
                             </div>
                             <div class="form-group col-md-3 ">
-                                <label for="diasRota">Chegou dentro do Prazo?</label>
-                                <select name="diasRota" id="diasRota" required class="form-control">
+                                <label for="prestaConta">Prestou Conta dentro do Prazo?</label>
+                                <select name="prestaConta" id="prestaConta" required class="form-control">
                                     <option value=""></option>
                                     <option value="1">SIM</option>
                                     <option value="0">NÃO</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 ">
-                                <label for="velMax">Ficou Dentro da Velocidade Permitida?</label>
-                                <select name="velMax" id="velMax" required class="form-control">
+                            <div class="form-group col-md-3 ">
+                                <label for="prazo">Finalizou no Prazo?</label>
+                                <select name="prazo" id="prazo" required class="form-control">
                                     <option value=""></option>
                                     <option value="1">SIM</option>
                                     <option value="0">NÃO</option>
@@ -294,8 +290,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
                                 <label for="situacao">Situação</label>
                                 <select name="situacao" id="situacao" required class="form-control">
                                     <option value=""></option>
+                                    <option value="Finalizado">Finalizado</option>
                                     <option value="Pendente">Pendente</option>
-                                    <option value="Finalizada">Finalizada</option>
                                 </select>
                             </div>
                         </div>
@@ -310,5 +306,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_
             </div>
         </div>
     </div>
+   
     </body>
 </html>

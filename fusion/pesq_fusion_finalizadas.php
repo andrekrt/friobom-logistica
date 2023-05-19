@@ -26,19 +26,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion WHERE situacao = 'Pendente'");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion WHERE situacao = 'Finalizada'");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND situacao = 'Pendente' ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND situacao = 'Finalizada' ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND situacao = 'Pendente' ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND situacao = 'Finalizada' ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -77,7 +77,7 @@ foreach($empRecords as $row){
             "premio_alcancado"=>number_format($row['premio_alcancado']*100,2,",",".")."%" ,
             "situacao"=>$row['situacao'],
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idfusion'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-fusion.php?id='.$row['idfusion'].' " data-id="'.$row['idfusion'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'return confirm("Deseja Excluir?");\'>Deletar</a>'
+            // "acoes"=> '<a href="javascript:void();" data-id="'.$row['idfusion'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-fusion.php?id='.$row['idfusion'].' " data-id="'.$row['idfusion'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'return confirm("Deseja Excluir?");\'>Deletar</a>'
         );
 }
 

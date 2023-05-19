@@ -138,6 +138,16 @@ function menuFusion(){
     
 }
 
+function menuFusionPraca(){
+
+    if(document.getElementById("submenuFusionPraca").style.display == "none" || document.getElementById("submenuFusionPraca").style.display == "" ){
+        document.getElementById("submenuFusionPraca").style.display = "block";
+    }else{
+        document.getElementById("submenuFusionPraca").style.display = "none";
+    }
+    
+}
+
 function menuManutencao(){
 
     if(document.getElementById("submenuManutencao").style.display == "none" || document.getElementById("submenuManutencao").style.display == "" ){

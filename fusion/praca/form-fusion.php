@@ -1,12 +1,11 @@
 <?php 
 
 session_start();
-require("../conexao.php");
+require("../../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99)){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario']==99)){
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
-    $id = filter_input(INPUT_GET, 'id');
     
 }else{
     echo "<script>alert('Acesso não permitido');</script>";
@@ -20,13 +19,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>FRIOBOM - LOGÍSTICA</title>
-        <link rel="stylesheet" href="../assets/css/style.css">
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
-        <link rel="manifest" href="../assets/favicon/site.webmanifest">
-        <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="stylesheet" href="../../assets/css/style.css">
+        <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon/favicon-16x16.png">
+        <link rel="manifest" href="../../assets/favicon/site.webmanifest">
+        <link rel="mask-icon" href="../../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
 
@@ -36,18 +35,18 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
     </head>
     <body>
         <div class="container-fluid corpo">
-            <?php require('../menu-lateral.php') ?>
+            <?php require('../../menu-lateral02.php') ?>
             <!-- Tela com os dados -->
             <div class="tela-principal">
                 <div class="menu-superior">
                     <div class="icone-menu-superior">
-                        <img src="../assets/images/icones/rotas.png" alt="">
+                        <img src="../../assets/images/icones/icone-fusion.png" alt="">
                     </div>
                     <div class="title">
-                        <h2>Saída Fusion</h2>
+                        <h2>Saída Fusion Praça</h2>
                     </div>
                     <div class="menu-mobile">
-                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
+                        <img src="../../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
                     </div>
                 </div>
                 <!-- dados exclusivo da página-->
@@ -67,7 +66,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                                 <select name="veiculo" id="veiculo" class="form-control" required>
                                     <option value=""></option>
                                     <?php
-                                    $sqlVeiculos = $db->query("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE ativo = 1");
+                                    $sqlVeiculos = $db->query("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos");
                                     $veiculos=$sqlVeiculos->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($veiculos as $veiculo):
                                     ?>
@@ -89,15 +88,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
                                 </select>
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="motorista">Motorista</label>
-                                <select name="motorista" required id="motorista" class="form-control">
+                                <label for="ajudante">Ajudante</label>
+                                <select name="ajudante" required id="ajudante" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $sqlMotoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 ORDER BY nome_motorista ASC");
+                                    $sqlMotoristas = $db->query("SELECT idauxiliares, nome_auxiliar FROM auxiliares_rota ORDER BY nome_auxiliar ASC");
                                     $motoristas=$sqlMotoristas->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($motoristas as $motorista):
                                     ?>
-                                    <option value="<?=$motorista['cod_interno_motorista']?>"><?=$motorista['nome_motorista']?></option>
+                                    <option value="<?=$motorista['idauxiliares']?>"><?=$motorista['nome_auxiliar']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -112,15 +111,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && ($_S
             </div>
         </div>
 
-        <script src="../assets/js/jquery.js"></script>
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/menu.js"></script>
+        <script src="../../assets/js/jquery.js"></script>
+        <script src="../../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../../assets/js/menu.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="../assets/js/jquery.mask.js"></script>
+        <script src="../../assets/js/jquery.mask.js"></script>
         <script>
             $(document).ready(function(){
                 $('#rota').select2();
-                $('#motorista').select2();
+                $('#ajudante').select2();
                 $('#veiculo').select2();
             });
         </script>
