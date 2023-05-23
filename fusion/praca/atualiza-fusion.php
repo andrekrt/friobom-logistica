@@ -3,7 +3,7 @@
 session_start();
 require("../../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99){
+if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99 || $_SESSION['tipoUsuario']==1)){
 
     $id = filter_input(INPUT_POST, 'idfusion');
     $saida = filter_input(INPUT_POST, 'saida');

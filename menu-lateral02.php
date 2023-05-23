@@ -227,6 +227,16 @@
                 <li class="nav-item"> <a href="../../fusion/fusion.php"> Viagens Pendentes</a> </li>
                 <li class="nav-item"> <a href="../../fusion/fusion-finalizadas.php"> Viagens Finalizadas</a> </li>
                 <li class="nav-item"> <a href="../../fusion/dados-fusion.php"> Dados Viagens</a> </li>
+                <li class="nav-item ">  <a class="subtitulo" onclick="menuFusionPraca()"> Fusion Praça </a> 
+                    <nav id="submenuFusionPraca">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"> <a href="../../fusion/praca/form-fusion.php"> Registrar Viagem Praça</a> </li>
+                            <li class="nav-item"> <a href="../../fusion/praca/fusion.php"> Viagens Pendentes Praça</a> </li>
+                            <li class="nav-item"> <a href="../../fusion/praca/fusion-finalizadas.php"> Viagens Finalizadas Praça</a> </li>
+                            <li class="nav-item"> <a href="../../fusion/praca/dados-fusion.php"> Dados Viagens Praça</a> </li>
+                        </ul> 
+                    </nav>
+                </li>
             </nav>
         </div>
         <div class="item">
