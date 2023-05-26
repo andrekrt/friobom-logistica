@@ -98,12 +98,12 @@ if($sql->execute()){
     print_r($sql->errorInfo());
 }
 
-$mpdf = new Mpdf();
+$mpdf = new Mpdf(['mode'=>'utf-8', 'margin_top'=>1, 'margin_left'=>3, 'margin_right'=>3, 'margin_bottom'=>0]);
 $mpdf->WriteHTML("
 <!DOCTYPE html>
 <html lang='pt-br'>
     <body style='width:100%'>
-        <img src='../assets/images/logo.png' style=' width:50%; margin-top:-50px; margin-left:auto; margin-right:auto '>
+        <img src='../assets/images/logo.png' style=' width:50%; margin-top:2; margin-left:auto; margin-right:auto '>
         <table border='' style='width:100%; margin-top:20px'>
             <tr>
                 <td>Placa: $placa</td>
@@ -328,12 +328,15 @@ $mpdf->WriteHTML("
             <th colspan='4' >Observações da Rota(RETORNO)</th>
         </tr>
         <tr>
-            <td colspan='4' style='height:100px'>$obs</td>
-            <td colspan='4' style='height:100px'>$obsRet</td>
+            <td colspan='4' style='height:50px'>$obs</td>
+            <td colspan='4' style='height:50px'>$obsRet</td>
         </tr>
         </table>
+        <div style='width:100%'>
+            <img src='../assets/images/caminhao01.png' style='width:45%; float:left'>
+            <img src='../assets/images/caminhao02.png' style='width:45%; float:right'>
+        </div>
         <div style='width:100%;'>
-            
             <p style='border-top:1px solid #000; width:40%; float:left; margin-top:50px; text-align:center'>Ass. do Enc. do Transporte</p>
             <p style='border-top:1px solid #000; width:40%; float:right; margin-top:0px; text-align:center'>Ass. Motorista</p>
         </div>
