@@ -62,9 +62,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Data Inventário</th>
-                                <th scope="col" class="text-center text-nowrap">Volume Anterior</th>
                                 <th scope="col" class="text-center text-nowrap">Volume Inventariada</th>
-                                <th scope="col" class="text-center text-nowrap">Volume Divergente</th>
                                 <th scope="col" class="text-center text-nowrap"> Usuário que Lançou </th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
                             </tr>
@@ -94,9 +92,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 'columns': [
                     { data: 'idinventario' },
                     { data: 'data_inventario' },
-                    { data: 'volume_anterior' },
                     { data: 'qtd_encontrada' },
-                    { data: 'volume_divergente' },
                     { data: 'nome_usuario' },
                     { data: 'acoes' },
                 ],

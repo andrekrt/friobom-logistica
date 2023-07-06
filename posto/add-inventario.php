@@ -14,11 +14,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($
 
     //echo "$dataEntrada<br>$valorlitro<br>$totalLitro<br>$valorTotal<br>$fornecedor<br>$qualidade<br>$usuario";
 
-    $inserir = $db->prepare("INSERT INTO combustivel_inventario (data_inventario, volume_anterior, qtd_encontrada, volume_divergente, usuario) VALUES (:dataInventario, :volumeAnterior, :litros, :volumeDivergente, :usuario)");
+    $inserir = $db->prepare("INSERT INTO combustivel_inventario (data_inventario , qtd_encontrada, usuario) VALUES (:dataInventario, :litros, :usuario)");
     $inserir->bindValue(':dataInventario', $dataInventario);
-    $inserir->bindValue(':volumeAnterior', $volumeAnterior);
     $inserir->bindValue(':litros', $litros);
-    $inserir->bindValue(':volumeDivergente', $volumeDivergente);
     $inserir->bindValue(':usuario', $usuario);
 
     if($inserir->execute()){

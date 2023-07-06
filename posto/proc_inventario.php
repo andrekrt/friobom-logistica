@@ -59,9 +59,7 @@ foreach($empRecords as $row){
     $data[] = array(
         "idinventario"=>$row['idinventario'],
         "data_inventario"=>date("d/m/Y", strtotime($row['data_inventario'])),
-        "volume_anterior"=>number_format($row['volume_anterior'],2,",",".")."l",
         "qtd_encontrada"=> number_format($row['qtd_encontrada'],2,",",".")."l",
-        "volume_divergente"=>number_format($row['volume_divergente'],2,",",".") ,
         "nome_usuario"=>$row['nome_usuario'],
         "acoes"=> $botao
     );
