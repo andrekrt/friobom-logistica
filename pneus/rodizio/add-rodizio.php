@@ -40,10 +40,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $sql->bindValue(':usuario', $usuario);
     
     if($sql->execute()){
+        $somaRodizio = $db->prepare("SELECT SUM(km_rodado_veiculo_anterior) as kmRodadoAnterior FROM rodizio_pneu WHERE pneu=:pneu");
+        $somaRodizio->bindValue(':pneu', $pneu);
+        $somaRodizio->execute();
+        $somaRodizio=$somaRodizio->fetch();
+        $valor = $somaRodizio['kmRodadoAnterior'];
+
         $atualizaPneu = $db->prepare("UPDATE pneus SET veiculo = :novoVeiculo, km_inicial = :kmInicialNovo, km_rodado = :kmRodadoTotal, localizacao = :localizacao, posicao_inicio = :posicao WHERE idpneus = :idpneu");
         $atualizaPneu->bindValue(':novoVeiculo', $novoVeiculo);
         $atualizaPneu->bindValue(':kmInicialNovo', $kmInicialNovo);
-        $atualizaPneu->bindValue(':kmRodadoTotal', $kmRodadoTotal);
+        $atualizaPneu->bindValue(':kmRodadoTotal',$valor);
         $atualizaPneu->bindValue(':idpneu', $pneu);
         $atualizaPneu->bindValue(':localizacao', $localizacao );
         $atualizaPneu->bindValue(':posicao', $posicao );

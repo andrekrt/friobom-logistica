@@ -18,10 +18,29 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
     $calibragem = $_POST['calibragem'];
     $usuario = $_SESSION['idUsuario']; 
     $vida = $_POST['vida'];
+    $kmRodado = $_POST['kmRodado'];
     $veiculo = $_POST['veiculo'];
 
-    for($i=0; $i<count($idpneu);$i++){
-        $kmPneu = $kmVeiculo-$kmInicialPneu[$i];
+    // verificar se é a primeira medida de suco desse veículo no mês
+    $registros = $db->prepare("SELECT * FROM sucos WHERE veiculo=:veiculo AND MONTH(data_medicao)=MONTH(CURRENT_DATE())");
+    $registros->bindValue(':veiculo', $veiculo);
+    $registros->execute();
+    $contRegistros = $registros->rowCount();
+
+
+    for($i=0; $i<count($idpneu);$i++){       
+        //pegar o km do veículo da ultima medidade de suco
+        $sucoMax = $db->prepare("SELECT MAX(idsucos) as idsuco, km_veiculo FROM sucos WHERE pneus_idpneus=:idpneu");
+        $sucoMax->bindValue(':idpneu', $idpneu[$i]);
+        $sucoMax->execute();
+        $valores = $sucoMax->fetch();
+        $kmVeiculoUltimaMedida= $valores['km_veiculo']; 
+
+        if($contRegistros<1){
+            $kmPneu = ($kmVeiculo-$kmInicialPneu[$i]);
+        }else{
+            $kmPneu = ($kmVeiculo-$kmVeiculoUltimaMedida);
+        }
 
         //echo $suco01[$i]."<br>".$suco02[$i]."<br>".$suco03[$i]."<br>".$suco04[$i]."<br><br>";
         
@@ -39,10 +58,19 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_
         $sql->bindValue(':pneu', $idpneu[$i]);
         $sql->bindValue(':veiculo',$veiculo);
         $sql->bindValue(':usuario', $usuario);
-
+       
         if($sql->execute()){
-            echo "<script> alert('Sucos Registrado!!')</script>";
-            echo "<script> window.location.href='form-suco.php' </script>";
+            $kmRodadoTotal = $kmPneu+$kmRodado[$i];
+            
+            $atualizaPneu = $db->prepare("UPDATE pneus SET km_rodado = :kmRodadoTotal WHERE idpneus = :idpneu");
+            $atualizaPneu->bindValue(':kmRodadoTotal', $kmRodadoTotal);
+            $atualizaPneu->bindValue(':idpneu', $idpneu[$i]);
+            if($atualizaPneu->execute()){
+                echo "<script> alert('Suco Registrado!!')</script>";
+                echo "<script> window.location.href='sucos.php' </script>";
+            }else{
+                print_r($atualizaPneu->errorInfo());
+            }
             
         }else{
             print_r($sql->errorInfo());

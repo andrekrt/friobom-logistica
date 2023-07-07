@@ -51,19 +51,19 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "num_fogo"=>$row['num_fogo'],
-            "data_medicao"=>date("d/m/Y H:i",strtotime( $row['data_medicao'])) ,
-            "km_veiculo"=>$row['km_veiculo'],
-            "km_pneu"=>$row['km_pneu'],
-            "carcaca"=>$row['carcaca'],
-            "suco01"=>$row['suco01'],
-            "suco02"=>$row['suco02'] ,
-            "suco03"=>$row['suco03'] ,
-            "suco04"=>$row['suco04'] ,
-            "calibragem"=>$row['calibragem'] ,
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsucos'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-suco.php?idsuco='.$row['idsucos'].' " data-id="'.$row['idsucos'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
-        );
+        "num_fogo"=>$row['num_fogo'],
+        "data_medicao"=>date("d/m/Y H:i",strtotime( $row['data_medicao'])) ,
+        "km_veiculo"=>$row['km_veiculo'],
+        "km_pneu"=>$row['km_pneu'],
+        "carcaca"=>$row['carcaca'],
+        "suco01"=>$row['suco01'],
+        "suco02"=>$row['suco02'] ,
+        "suco03"=>$row['suco03'] ,
+        "suco04"=>$row['suco04'] ,
+        "calibragem"=>$row['calibragem'] ,
+        "nome_usuario"=>$row['nome_usuario'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsucos'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> '
+    );
 }
 
 ## Response
