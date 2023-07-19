@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+$idModudulo = 11;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT identrada_estoque, data_nf, num_nf, num_pedido, CONCAT(idpeca, ' - ', descricao_peca) as peca, preco_custo, qtd, desconto, obs, apelido, vl_total_comprado FROM `entrada_estoque` LEFT JOIN peca_estoque ON entrada_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id");

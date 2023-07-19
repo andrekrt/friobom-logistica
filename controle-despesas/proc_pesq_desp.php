@@ -52,14 +52,23 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    if(is_dir('uploads/'.$row['iddespesas'])){
+        $fotos='<a target="_blank" href="http://192.168.10.32/logistica/controle-despesas/uploads/'.$row['iddespesas'].'">Fotos</a>';
+    }else{
+        $fotos = "Sem Foto";
+    }
     $data[] = array(
             "iddespesas"=>$row['iddespesas'],
             "num_carregemento"=>$row['num_carregemento'],
             "placa_veiculo"=>$row['placa_veiculo'],
             "nome_motorista"=> $row['nome_motorista'],
             "nome_rota"=>$row['nome_rota'],
+            "media"=>number_format($row['media_comtk'],2,",",".") ,
             "data_carregamento"=>date("d/m/Y H:i", strtotime($row['data_carregamento'])),
-            "acoes"=>  '<a class=" icon-acoes" target="_blank" href="gerar-pdf.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>
+            "avaliacao"=>$row['nota_carga'],
+            "obs"=>$row['obs_carga'],
+            "fotos"=>$fotos,
+            "acoes"=>  '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>
             <?php if($tipoUsuario==99):?>
                 <a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>
             <?php endif;?>

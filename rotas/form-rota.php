@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4 ){
+$idModudulo = 3;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
 

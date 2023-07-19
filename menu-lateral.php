@@ -107,6 +107,16 @@
             </nav>
         </div>
         <div class="item">
+            <a onclick="menuNfs()">
+                <img src="../assets/images/menu/menu-nf.png" alt="">
+            </a>
+            <nav id="submenuNf">
+                <ul class="nav flex-column">
+                    <li class="nav-item"> <a class="nav-link" href="../denegados/denegadas.php"> NF's Denegadas </a> </li>
+                </ul> 
+            </nav> 
+        </div>
+        <div class="item">
             <a onclick="menuReparos()">
                 <img src="../assets/images/menu/reparos.png" alt="">
             </a>

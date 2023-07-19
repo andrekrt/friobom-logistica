@@ -3,9 +3,16 @@
 session_start();
 require("../conexao.php");
 
-$tipoUsuario = $_SESSION['tipoUsuario'];
+$idModudulo = 4;
+$idUsuario = $_SESSION['idUsuario'];
 
-    if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] != 3){
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
         $primeiroDia = date("Y-m-01", strtotime('-1 months', strtotime(date('Y-m-d'))));
         $ultimodia = date("Y-m-t",strtotime('-1 months', strtotime(date('Y-m-d'))));

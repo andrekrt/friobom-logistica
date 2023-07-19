@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+$idModudulo = 4;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT nome_motorista, veiculos.categoria, COUNT(nome_motorista) as contagem, AVG(custo_entrega), SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento,SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia FROM viagem INNER JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo GROUP BY nome_motorista, veiculos.categoria");

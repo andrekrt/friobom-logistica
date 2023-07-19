@@ -63,7 +63,12 @@ if($sql){
         $hrTk4Abast = $dado['hr_tk_abast4'];
         $litrosComTK = ($hrTk4Abast-$hrTkInicial)*2;
         $totalLitrosSemTk = $litrosGeral-$litrosComTK;
-        $mediaComTk = number_format($kmRodado/$totalLitrosSemTk,2);
+        if($totalLitrosSemTk==0){
+            $mediaComTk=0;
+        }else{
+            $mediaComTk = number_format($kmRodado/$totalLitrosSemTk,2);
+        }
+        
         $mediaSemTk = $dado['mediaSemTk'];
         $kmPorLitro ;
         if($km1Percuso==0){
@@ -86,7 +91,7 @@ if($sql){
         }
 
         $kmPorLitro4;
-        if($km4Percuso==0){
+        if($km4Percuso==0 || $litroSemTk4==0){
             $kmPorLitro4=0;
         }else{
            $kmPorLitro4 = number_format($km4Percuso/$litroSemTk4,2);
@@ -421,105 +426,3 @@ $mpdf->WriteHTML("
 $mpdf->Output();
 
 ?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-    
-    <body>
-        <img src="../assets/images/logo.png" alt="">
-        <table border="1" style='width:50%'>
-            <thead>
-                <tr>
-                    <th>Código Veículo</th>
-                    <th>Veículo</th>
-                    <th>Placa</th>
-                    <th>Código Morotista</th>
-                    <th>Motorista</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style='text-align: center;'>
-                    <td> $codVeiculo </td>
-                    <td> $veiculo </td>
-                    <td>$placa</td>
-                    <td> $codMotorist </td>
-                    <td>$motorista</td>
-                </tr>
-            </tbody>
-            <thead>
-                <tr>
-                    <th>Data Carregamento</th>
-                    <th>Nº Carregamento</th>
-                    <th>Código Rota</th>
-                    <th>Rota</th>
-                    <th>Valor Transportado</th>
-                    <th>Valor Liquído</th>
-                    <th>Entregas</th>
-                    <th>Cargas</th>
-                    <th>Peso</th>
-                    <th>Combustível (Lt)</th>
-                    <th>Km Rodado</th>
-                    <th>Km/L s/Tk</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>$dataCarregamento</td>
-                    <td>$numCarregamento</td>
-                    <td>$codRota</td>
-                    <td>$rota</td>
-                    <td>$valorTransportado</td>
-                    <td>$valorLiquido</td>
-                    <td>$entregas</td>
-                    <td>$cargas</td>
-                    <td>$peso</td>
-                    <td>$combustivelTotal</td>
-                    <td>$kmRodado</td>
-                    <td>$kmPorLitroSemTk</td>
-                </tr>
-            </tbody>
-        </table><br><br>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th colspan='2'>Despesas Logistica</th>
-                    <th></th>
-                    <th colspan='2'> 1º Abastecimento</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>R$ Abastecimento</td>
-                    <td>$valorTotalAbastecimento</td>
-                    <td></td>
-                    <td>KM's</td>
-                    <td>Hori.</td>
-                </tr>
-                <tr>
-                    <td>Diarias</td>
-                    <td>R$ </td>
-                </tr>
-                <tr>
-                    <td>Tomada</td>
-                    <td>R$ $tomada</td>
-                </tr>
-                <tr>
-                    <td>Descarga</td>
-                    <td>R$ $descarga</td>
-                </tr>
-                <tr>
-                    <td>Travessia</td>
-                    <td>R$ $travessia</td>
-                </tr>
-                <tr>
-                    <td> Serviços / Peças </td>
-                    <td>R$ $outrosServicos</td>
-                </tr>
-                <tr>
-                    <td>TOTAL</td>
-                    <td>R$ </td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
-</html>

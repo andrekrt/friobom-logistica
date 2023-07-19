@@ -3,7 +3,16 @@
 session_start();
 require("../../conexao.php");
 
-if($_SESSION['tipoUsuario'] != 3 && $_SESSION['tipoUsuario'] != 4){
+$idModudulo = 12;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT data_manutencao, tipo_manutencao, num_fogo, medida, marca, modelo, vida, km_veiculo, km_pneu, valor, num_nf, fornecedor, manutencao_pneu.suco01, manutencao_pneu.suco02, manutencao_pneu.suco03, manutencao_pneu.suco04, nome_usuario FROM manutencao_pneu LEFT JOIN pneus ON manutencao_pneu.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON manutencao_pneu.usuario = usuarios.idusuarios");

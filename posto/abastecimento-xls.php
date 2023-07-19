@@ -3,7 +3,16 @@
 session_start();
 require("../conexao-on.php");
 
-if($_SESSION['tipoUsuario'] == 1 || $_SESSION['tipoUsuario'] == 99){
+$idModudulo = 13;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT idcombustivel_saida, data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, km, placa_veiculo, rota, motorista, tipo_abastecimento, nome_usuario FROM combustivel_saida LEFT JOIN usuarios ON combustivel_saida.usuario = usuarios.idusuarios");

@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
+$idModudulo = 7;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $idDespesa = filter_input(INPUT_GET, 'id');
@@ -259,11 +268,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="tomada">Tomada</label>
+                                <label for="tomada">Alomoço</label>
                                 <input type="text"  name="tomada" class="form-control" id="tomada" value="<?=$despesa['tomada']?>">
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="descarga">Descarga</label>
+                                <label for="descarga">Passagem</label>
                                 <input type="text" name="descarga" class="form-control" id="descarga" value="<?=$despesa['descarga']?>">
                             </div>
                             <div class="form-group col-md-2 espaco">

@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $_SESSION['tipoUsuario'] != 4) {
+$idModudulo = 7;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
    
 } else {
@@ -60,7 +69,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                                 <th scope="col" class="text-center"> Placa Veículo </th>
                                 <th scope="col" class="text-center"> Motorista </th>
                                 <th scope="col" class="text-center"> Rota </th>
+                                <th scope="col" class="text-center"> Média Km/L </th>
                                 <th scope="col" class="text-center"> Data Carregamento </th>
+                                <th scope="col" class="text-center"> Avaliação da Carga </th>
+                                <th scope="col" class="text-center"> Obs </th>
+                                <th scope="col" class="text-center"> Imagens da Carga </th>
                                 <th scope="col" class="text-center"> Ações </th>
                             </tr>
                         </thead>
@@ -91,14 +104,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && $
                     { data: 'placa_veiculo' },
                     { data: 'nome_motorista' },
                     { data: 'nome_rota' },
+                    { data: 'media'},
                     { data: 'data_carregamento' },
+                    { data: 'avaliacao' },
+                    { data: 'obs' },
+                    { data: 'fotos' },
                     { data: 'acoes'},
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[6]}
+                    {'bSortable':false, 'aTargets':[9]}
                 ],
             });
         });

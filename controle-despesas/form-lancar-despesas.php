@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
+$idModudulo = 7;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     
@@ -35,20 +44,21 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
             <!-- Tela com os dados -->
             <div class="tela-principal">
                 <div class="menu-superior">
-                    <div class="icone-menu-superior">
+                   <div class="icone-menu-superior">
                         <img src="../assets/images/icones/despesas.png" alt="">
-                    </div>
-                    <div class="title">
+                   </div>
+                   <div class="title">
                         <h2>Lançar Nova Despesa</h2>
-                    </div>
-                    <div class="menu-mobile">
-                        <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
-                    </div>
+                   </div>
                 </div>
                 <!-- dados exclusivo da página-->
                 <div class="menu-principal">
-                    <form action="add-despesas.php" class="despesas" method="post">
+                    <form action="add-despesas.php" class="despesas" method="post" enctype="multipart/form-data">
                         <div class="form-row"> 
+                            <div class="form-group col-md-3 espaco">
+                                <label for="nCarregamento">Nº Carregamento</label>
+                                <input type="text" required name="nCarregamento" class="form-control" id="nCarregamento">
+                            </div>
                             <div class="form-group col-md-2 espaco">
                                 <label for="codVeiculo">Código do Veículo</label>
                                 <input type="text" required name="codVeiculo" class="form-control" id="codVeiculo">
@@ -65,15 +75,12 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="codMotorista">Código do Motorista</label>
                                 <input type="text" required name="codMotorista" class="form-control" id="codMotorista">
                             </div>
-                            <div class="form-group col-md-3 espaco">
-                                <label for="nomeMotorista">Nome do Motorista</label>
-                                <input type="text" required name="motorista" class="form-control" id="nomeMotorista">
-                            </div>
+                            
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-3 espaco">
-                                <label for="nCarregamento">Nº Carregamento</label>
-                                <input type="text" required name="nCarregamento" class="form-control" id="nCarregamento">
+                                <label for="nomeMotorista">Nome do Motorista</label>
+                                <input type="text" required name="motorista" class="form-control" id="nomeMotorista">
                             </div>
                             <div class="form-group col-md-3 espaco">
                                 <label for="dataCarregamento">Data do Carregamento</label>
@@ -133,7 +140,6 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="km1Abast">KM 1º Abast. Externo</label>
                                 <input type="text" required name="km1Abast" class="form-control" id="km1Abast">
                             </div>
-                            
                             <div class="form-group col-md-3 espaco">
                                 <label for="lt1Abast">Litros 1º Abast. Externo</label>
                                 <input type="text" required name="lt1Abast" class="form-control" id="lt1Abast">
@@ -165,7 +171,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <input type="text" name="local2Abast" class="form-control" id="local2Abast">
                             </div>
                         </div>
-                        <div class="form-row">    
+                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="km3Abast">KM 3º Abast. Externo</label>
                                 <input type="text" name="km3Abast" class="form-control" id="km3Abast">
@@ -185,13 +191,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="km4Abast">KM Abast.Interno</label>
+                                <label for="km4Abast">KM Abast. Interno</label>
                                 <input type="text" name="km4Abast" class="form-control" id="km4Abast">
                             </div>
                             <div class="form-group col-md-2 espaco">
                                 <label for="hrKm4Abast">HR TK Chegada</label>
                                 <input type="text" name="hrKm4Abast" class="form-control" id="hrKm4Abast">
-                            </div> 
+                            </div>
                             <div class="form-group col-md-2 espaco">
                                 <label for="lt4Abast">Litros Abast.  Interno</label>
                                 <input type="text" name="lt4Abast" class="form-control" id="lt4Abast">
@@ -229,19 +235,21 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                             <div class="form-group col-md-2 espaco">
                                 <label for="diasRotaChapa">Dias em Rota Chapa</label>
                                 <input type="text" required name="diasRotaChapa" class="form-control" id="diasRotaChapa">
-                            </div>  
-                        </div>
-                        <div class="form-row">
+                            </div>
                             <div class="form-group col-md-2 espaco">
                                 <label for="gastosAjud">Outros Gastos</label>
                                 <input type="text" name="gastosAjud" class="form-control" id="gastosAjud">
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <!-- Campo Tomada foi apenas trocado para campo almoço -->
                             <div class="form-group col-md-2 espaco">
-                                <label for="tomada">Tomada</label>
+                                <label for="tomada">Almoço</label>
                                 <input type="text"  name="tomada" class="form-control" id="tomada">
                             </div>
+                            <!-- Campo descarga foi trocado por Passagem -->
                             <div class="form-group col-md-2 espaco">
-                                <label for="descarga">Descarga</label>
+                                <label for="descarga">Passagem</label>
                                 <input type="text" name="descarga" class="form-control" id="descarga">
                             </div>
                             <div class="form-group col-md-2 espaco">
@@ -252,7 +260,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="servicos">Serviços</label>
                                 <input type="text" name="servicos" class="form-control" id="servicos">
                             </div>
-                            <div class="form-group col-md-2 espaco">
+                            <div class="form-group col-md-4 espaco">
                                 <label for="nomeAjud">Nome Ajudante</label>
                                 <input type="text" name="nomeAjud" class="form-control" id="nomeAjud">
                             </div>
@@ -266,12 +274,33 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                                 <label for="chapa2">Nome Chapa 2</label>
                                 <input type="text" name="chapa2" class="form-control" id="chapa2">
                             </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="classificacao">Como foi sua carga?</label>
+                                <select name="classificacao" required class="form-control" id="classificacao">
+                                    <option value=""></option>
+                                    <option value="Ruim">Ruim</option>
+                                    <option value="Regular">Regular</option>
+                                    <option value="Boa">Boa</option>
+                                    <option value="Ótima">Ótima</option>  
+                                </select>
+                            </div>
+                            <div class="mb-3 form-grupo col-md-2 espaco">
+                                <label for="imagem" class="form-label">Imagem da carga</label>
+                                <input type="file" name="imagem" class="form-control" id="imagem" >    
+                            </div> 
                         </div>
-                        <button type="submit" class="btn btn-primary"> Cadastrar </button>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco">
+                                <label for="obs">Fale Mais Sobre Sua Carga</label>
+                                <textarea class="form-control" id="obs" rows="3" name="obs" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="cadastrar"> Cadastrar </button>
                     </form>
                 </div>
             </div>
         </div>
+
         <script src="../assets/js/jquery.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script>
@@ -279,9 +308,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         <script type="text/javascript" src="personalizado.js"></script>
         <script type="text/javascript" src="motoristas.js"></script>
         <script type="text/javascript" src="rotas.js"></script>
+        <script type="text/javascript" src="carreg.js"></script>
         <script src="../assets/js/jquery.mask.js"></script>
         <script>
-             jQuery(function($){
+            jQuery(function($){
                 $("#vlTransp").mask('###0,00', {reverse: true});
                 $("#vlDev").mask('###0,00', {reverse: true});
                 $("#pesoCarga").mask('###0,00', {reverse: true});
@@ -301,7 +331,27 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
                 $("#descarga").mask('###0,00', {reverse: true});
                 $("#travessia").mask('###0,00', {reverse: true});
                 $("#servicos").mask('###0,00', {reverse: true});
-            })
+            });
+
+            $(document).ready(function(){
+                $('#hrTkSaida').change(function(){
+                    var tkSaida = $('#hrTkSaida').val();
+                    if(tkSaida<=0){
+                        alert('Hora do Tk de Saída precisa ser Maior que Zero.');
+                        $('#hrTkSaida').val("");
+                    }
+                    
+                });
+                $('#hrKm4Abast').blur(function(){
+                    var tkSaida = $('#hrTkSaida').val();
+                    var tkRetorno = $('#hrKm4Abast').val();
+                    
+                    if(tkRetorno<tkSaida){
+                        alert('Hora do Tk de retorno precisa ser maior ou igual ao de saída');
+                        $('#hrKm4Abast').val("");
+                    }
+                });
+            });
         </script>
     </body>
 </html>

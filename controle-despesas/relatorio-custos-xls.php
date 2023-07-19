@@ -114,6 +114,13 @@ $salarioInt = $salarioInt->fetch();
     $html .= '</tr>';
 
     $html .= '<tr>';
+    $html .= "<th> Faturamento </th>";
+    foreach($custos as $custo){
+        $html .= '<td>'. number_format($custo['faturado'],2,",",".")  .'</td>';
+        $faturado[]=$custo['faturado'];
+    }
+
+    $html .= '<tr>';
     $html .= '<th> Custo %</th>' ;
     for($i=0;$i<12;$i++){
         $perCusto = ($valorTotal[$i]/$faturado[$i])*100;

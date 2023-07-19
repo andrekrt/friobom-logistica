@@ -6,7 +6,16 @@ session_start();
 require("../conexao.php");
 include("../thermoking/funcao.php");
 
-if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
+$idModudulo = 7;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $idUsuario = $_SESSION['idUsuario'];
 
@@ -18,6 +27,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $dataCarragemento = filter_input(INPUT_POST, 'dataCarregamento');
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $dataSaida = filter_input(INPUT_POST, 'dataSaida');
+    $classificacao = filter_input(INPUT_POST, 'classificacao');
+    $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;;
+    $obs = filter_input(INPUT_POST, 'obs');
+
     //calculo de diferença de datas
     $dataFinial = new DateTime($dataChegada);
     $dataInicial = new DateTime($dataSaida);
@@ -141,9 +154,9 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $kmRodado = $km1Perc + $km2Perc + $km3Perc + $km4Perc;
     $kmFinal = $kmSaida+$kmRodado;
     $litrosTotal = $lt1Abast + $lt2Abast + $lt3Abast + $lt4Abast;
-    $mediaSemTk = number_format($kmRodado/$litrosTotal,"2");
+    $mediaSemTk = number_format($kmRodado/$litrosTotal,"2", ".","");
     $consumoTotalTk = $percTk*2;
-    $mediaTk = number_format($kmRodado/ ($litrosTotal-$consumoTotalTk),2);
+    $mediaTk = number_format($kmRodado/ ($litrosTotal-$consumoTotalTk),2,".","");
     $valorTotalAbast = $vl1Abast + $vl2Abast + $vl3Abast + $vl4Abast;
     $diariaMotorista = str_replace(",", ".", filter_input(INPUT_POST, 'diariasMot')) ;
     $diasRotaMotorista = str_replace(",",".",filter_input(INPUT_POST, 'diasRota')) ;
@@ -160,66 +173,66 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $chapa01 = filter_input(INPUT_POST, 'chapa1');
     $chapa02 = filter_input(INPUT_POST, 'chapa2');
 
-    /*echo "Código do Veículo: $codVeiculo<br>
-     Tipo do Veículo: $tipoVeiculo<br>
-    Placa do Veículo: $placaVeiculo<br>
-    Código do Motorista: $codMotorista<br>
-    Nome do Motorista: $nomeMotorista<br>
-    Data do Carregamento: $dataCarragemento<br>
-    Número do Carregamento: $numCarregamento<br>
-    Código da Rota: $codRota<br>
-    Rota: $rota<br>
-    Valor Transportado: $vlTransp<br>
-    Valor Devolvido: $vlDev<br>
-    Valor Liquído $vlLiq<br>
-    Quantidade de Entregas: $qtdEntregas<br>
-    Carga: $cargas<br>
-    Peso da Carga: $pesoCarga<br>
-    Km de Saída: $kmSaida<br>
-    Hora TK de Saída:$hrTkSaida<br>
-    Km 1º Abastecimento: $km1Abast<br>
-    Hora TK 1° Abastecimento: $hrTk1Abast<br>
-    Litros 1º Abastecimento: $lt1Abast<br>
-    Valor 1º Abastecimento: $vl1Abast<br>
-    Km 1º Percusso: $km1Perc<br>
-    TK 1º Percusso: $tk1Perc<br>
-    Km/L S/TK: $kmPorLtSemtK<br><br>
-    Km 2º Abastecimento: $km2Abast<br>
-    Hora Tk 2º Abastecimento: $hrTk2Abast<br>
-    Litros 2º Abastecimento: $lt2Abast<br>
-    Valor 2º Abastecimento: $vl2Abast<br>
-    Km 2º Percusso: $km2Perc<br>
-    TK 2º Percusso: $tk2Perc<br>
-    Km/L S/TK: $kmPorLtSemtK2<br><br>
-    Km 3º Abastecimento: $km3Abast<br>
-    Hora TK 3º Abastecimento: $hrTk3Abast<br>
-    Litros 3º Abastecimento: $lt3Abast<br>
-    Valor 3º Abastecimento: $vl3Abast<br>
-    Km 3º Percusso: $km3Perc<br>
-    Tk 3º Percusso: $tk3Perc<br>
-    Km/L S/TK: $kmPorLtSemtK3<br><br>
-    Km 4º Abastecimento: $km4Abast<br>
-    Hora Tk 4º Abastecimento: $hrTk4Abast<br>
-    Litros 4º Abastecimento: $lt4Abast<br>
-    Valor 4º Abastecimento: $vl4Abast<br>
-    Km 4º Percusso: $km4Perc<br>
-    TK 4º Percusso: $tk4Perc<br>
-    Km/L S/TK: $kmPorLtSemtK4<br><br>
-    Km Rodada: $kmRodado<br>
-    Km Final: $kmFinal<br>
-    Litros Total: $litrosTotal<br>
-    Media Sem TK: $mediaSemTk<br>
-    Consumo Total Tk: $consumoTotalTk<br>
-    Media Tk: $mediaTk<br>
-    Valor Total Abastecimento: $valorTotalAbast<br>
-    Diaria Motorista: $diariaMotorista<br>
-    Diaria Ajudante: $diariaAjudante<br>
-    Gastos Ajudante: $gastosAjudante<br>
-    Tomada: $tomada<br>
-    Descarga: $descarga<br>
-    Travessia: $travessia<br>
-    Serviço: $servicos<br>
-    Nome Ajudante: $nomeAjudante<BR><BR>";*/
+    // echo "Código do Veículo: $codVeiculo<br>
+    //  Tipo do Veículo: $tipoVeiculo<br>
+    // Placa do Veículo: $placaVeiculo<br>
+    // Código do Motorista: $codMotorista<br>
+    // Nome do Motorista: $nomeMotorista<br>
+    // Data do Carregamento: $dataCarragemento<br>
+    // Número do Carregamento: $numCarregamento<br>
+    // Código da Rota: $codRota<br>
+    // Rota: $rota<br>
+    // Valor Transportado: $vlTransp<br>
+    // Valor Devolvido: $vlDev<br>
+    // Valor Liquído $vlLiq<br>
+    // Quantidade de Entregas: $qtdEntregas<br>
+    // Carga: $cargas<br>
+    // Peso da Carga: $pesoCarga<br>
+    // Km de Saída: $kmSaida<br>
+    // Hora TK de Saída:$hrTkSaida<br>
+    // Km 1º Abastecimento: $km1Abast<br>
+    // Hora TK 1° Abastecimento: $hrTk1Abast<br>
+    // Litros 1º Abastecimento: $lt1Abast<br>
+    // Valor 1º Abastecimento: $vl1Abast<br>
+    // Km 1º Percusso: $km1Perc<br>
+    // TK 1º Percusso: $tk1Perc<br>
+    // Km/L S/TK: $kmPorLtSemtK<br><br>
+    // Km 2º Abastecimento: $km2Abast<br>
+    // Hora Tk 2º Abastecimento: $hrTk2Abast<br>
+    // Litros 2º Abastecimento: $lt2Abast<br>
+    // Valor 2º Abastecimento: $vl2Abast<br>
+    // Km 2º Percusso: $km2Perc<br>
+    // TK 2º Percusso: $tk2Perc<br>
+    // Km/L S/TK: $kmPorLtSemtK2<br><br>
+    // Km 3º Abastecimento: $km3Abast<br>
+    // Hora TK 3º Abastecimento: $hrTk3Abast<br>
+    // Litros 3º Abastecimento: $lt3Abast<br>
+    // Valor 3º Abastecimento: $vl3Abast<br>
+    // Km 3º Percusso: $km3Perc<br>
+    // Tk 3º Percusso: $tk3Perc<br>
+    // Km/L S/TK: $kmPorLtSemtK3<br><br>
+    // Km 4º Abastecimento: $km4Abast<br>
+    // Hora Tk 4º Abastecimento: $hrTk4Abast<br>
+    // Litros 4º Abastecimento: $lt4Abast<br>
+    // Valor 4º Abastecimento: $vl4Abast<br>
+    // Km 4º Percusso: $km4Perc<br>
+    // TK 4º Percusso: $tk4Perc<br>
+    // Km/L S/TK: $kmPorLtSemtK4<br><br>
+    // Km Rodada: $kmRodado<br>
+    // Km Final: $kmFinal<br>
+    // Litros Total: $litrosTotal<br>
+    // Media Sem TK: $mediaSemTk<br>
+    // Consumo Total Tk: $consumoTotalTk<br>
+    // Media Tk: $mediaTk<br>
+    // Valor Total Abastecimento: $valorTotalAbast<br>
+    // Diaria Motorista: $diariaMotorista<br>
+    // Diaria Ajudante: $diariaAjudante<br>
+    // Gastos Ajudante: $gastosAjudante<br>
+    // Tomada: $tomada<br>
+    // Descarga: $descarga<br>
+    // Travessia: $travessia<br>
+    // Serviço: $servicos<br>
+    // Nome Ajudante: $nomeAjudante<BR><BR>";
 
     $salario = $db->prepare("SELECT salario FROM motoristas WHERE cod_interno_motorista = :codMotorista");
     $salario->bindValue('codMotorista', $codMotorista);
@@ -234,7 +247,8 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $consultaRota = $db->query("SELECT * FROM rotas WHERE cod_rota = '$codRota'");
     
    if($consultaVeiculo->rowCount()>0 && $consultaMotorista->rowCount()>0 && $consultaRota->rowCount()>0){
-        $sql = $db->query("INSERT INTO viagem (cod_interno_veiculo, tipo_veiculo, placa_veiculo, cod_interno_motorista, nome_motorista, data_carregamento, num_carregemento, data_saida, data_chegada, dias_em_rota, cod_rota, nome_rota, valor_transportado, valor_devolvido, valor_liquido, qtd_entregas, num_carga, peso_carga, km_saida, hr_tk_saida, km_abast1, hr_tk_abast1, lt_abast1, valor_abast1, km_perc1, km_pec1_tk, kmPorLtSemTk, km_abast2, hr_tk_abast2, lt_abast2, valor_abast2, km_perc2, km_pec2_tk_, kmPorLtSemTk2, km_abast3, hr_tk_abast3, lt_abast3, valor_abast3, km_perc3, km_pec3_tk, kmPorLtSemTk3, km_abast4, hr_tk_abast4, lt_abast4, valor_abast4, km_perc4, km_perc4_tk, kmPorLtSemTk4, km_rodado, km_final, litros, mediaSemTk, consumo_tk, media_comtk, valor_total_abast, diarias_motoristas, dias_motorista, diarias_ajudante, dias_ajudante, diarias_chapa, dias_chapa,  outros_gastos_ajudante,  tomada, descarga, travessia, outros_servicos, nome_ajudante, chapa01, chapa02, localAbast1, localAbast2, localAbast3, localAbast4, custo_entrega, idUsuarios) VALUES ('$codVeiculo', '$tipoVeiculo', '$placaVeiculo', '$codMotorista', '$nomeMotorista','$dataCarragemento', '$numCarregamento', '$dataSaida', '$dataChegada', '$diasEmRota', '$codRota', '$rota', '$vlTransp', '$vlDev', '$vlLiq', '$qtdEntregas', '$cargas', '$pesoCarga', '$kmSaida', '$hrTkSaida', '$km1Abast', '$hrTk1Abast', '$lt1Abast', '$vl1Abast', '$km1Perc', '$tk1Perc', '$kmPorLtSemtK', '$km2Abast', '$hrTk2Abast', '$lt2Abast', '$vl2Abast', '$km2Perc', '$tk2Perc', '$kmPorLtSemtK2', '$km3Abast', '$hrTk3Abast', '$lt3Abast', '$vl3Abast', '$km3Perc', '$tk3Perc', '$kmPorLtSemtK3', '$km4Abast', '$hrTk4Abast', '$lt4Abast', '$vl4Abast', '$km4Perc', '$percTk', '$kmPorLtSemtK4', '$kmRodado', '$kmFinal', '$litrosTotal', '$mediaSemTk', '$consumoTotalTk', '$mediaTk', '$valorTotalAbast', '$diariaMotorista', '$diasRotaMotorista', '$diariaAjudante', '$diasRotaAjudante', '$diariaChapa', '$diasRotaChapa', '$gastosAjudante', '$tomada', '$descarga', '$travessia', '$servicos', '$nomeAjudante', '$chapa01', '$chapa02', '$localAbast1', '$localAbast2', '$localAbast3', '$localAbast4', '$custoEntrega', '$idUsuario')");
+        $sql = $db->query("INSERT INTO viagem (cod_interno_veiculo, tipo_veiculo, placa_veiculo, cod_interno_motorista, nome_motorista, data_carregamento, num_carregemento, data_saida, data_chegada, dias_em_rota, cod_rota, nome_rota, valor_transportado, valor_devolvido, valor_liquido, qtd_entregas, num_carga, peso_carga, km_saida, hr_tk_saida, km_abast1, hr_tk_abast1, lt_abast1, valor_abast1, km_perc1, km_pec1_tk, kmPorLtSemTk, km_abast2, hr_tk_abast2, lt_abast2, valor_abast2, km_perc2, km_pec2_tk_, kmPorLtSemTk2, km_abast3, hr_tk_abast3, lt_abast3, valor_abast3, km_perc3, km_pec3_tk, kmPorLtSemTk3, km_abast4, hr_tk_abast4, lt_abast4, valor_abast4, km_perc4, km_perc4_tk, kmPorLtSemTk4, km_rodado, km_final, litros, mediaSemTk, consumo_tk, media_comtk, valor_total_abast, diarias_motoristas, dias_motorista, diarias_ajudante, dias_ajudante, diarias_chapa, dias_chapa,  outros_gastos_ajudante,  tomada, descarga, travessia, outros_servicos, nome_ajudante, chapa01, chapa02, localAbast1, localAbast2, localAbast3, localAbast4, custo_entrega, nota_carga, obs_carga, idusuarios) VALUES ('$codVeiculo', '$tipoVeiculo', '$placaVeiculo', '$codMotorista', '$nomeMotorista','$dataCarragemento', '$numCarregamento', '$dataSaida', '$dataChegada', '$diasEmRota', '$codRota', '$rota', '$vlTransp', '$vlDev', '$vlLiq', '$qtdEntregas', '$cargas', '$pesoCarga', '$kmSaida', '$hrTkSaida', '$km1Abast', '$hrTk1Abast', '$lt1Abast', '$vl1Abast', '$km1Perc', '$tk1Perc', '$kmPorLtSemtK', '$km2Abast', '$hrTk2Abast', '$lt2Abast', '$vl2Abast', '$km2Perc', '$tk2Perc', '$kmPorLtSemtK2', '$km3Abast', '$hrTk3Abast', '$lt3Abast', '$vl3Abast', '$km3Perc', '$tk3Perc', '$kmPorLtSemtK3', '$km4Abast', '$hrTk4Abast', '$lt4Abast', '$vl4Abast', '$km4Perc', '$percTk', '$kmPorLtSemtK4', '$kmRodado', '$kmFinal', '$litrosTotal', '$mediaSemTk', '$consumoTotalTk', '$mediaTk', '$valorTotalAbast', '$diariaMotorista', '$diasRotaMotorista', '$diariaAjudante', '$diasRotaAjudante', '$diariaChapa', '$diasRotaChapa', '$gastosAjudante', '$tomada', '$descarga', '$travessia', '$servicos', '$nomeAjudante', '$chapa01', '$chapa02', '$localAbast1', '$localAbast2', '$localAbast3', '$localAbast4', '$custoEntrega', '$classificacao', '$obs', '$idUsuario')");
+        $ultimoId = $db->lastInsertId();
 
         $kmAtual = $db->prepare("UPDATE veiculos SET km_atual = :kmFinal WHERE cod_interno_veiculo = :codVeiculo ");
         $kmAtual->bindValue(':kmFinal', $kmFinal);
@@ -249,7 +263,15 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
         calculoTk($codVeiculo);
 
         if($sql){
-            header("Location: despesas.php");
+            if(!empty($_FILES['imagem']['name'][0])){
+                $pasta = "uploads/".$ultimoId;
+                mkdir($pasta,0755);
+                $destino =$pasta."/".$imagem;
+                $mover = move_uploaded_file($_FILES['imagem']['tmp_name'],$destino);   
+            }
+            echo "<script> alert('Despesa Lançada!!')</script>";
+            echo "<script> window.location.href='despesas.php' </script>";
+            
         }else{
             print_r($db->errorInfo());
         }

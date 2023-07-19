@@ -3,7 +3,16 @@
 session_start();
 require("../../conexao.php");
 
-if($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99 || $_SESSION['tipoUsuario']==1){
+$idModudulo = 16;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT * FROM fusion_praca LEFT JOIN veiculos ON fusion_praca.veiculo = veiculos.cod_interno_veiculo LEFT JOIN auxiliares_rota ON fusion_praca.ajudante = auxiliares_rota.idauxiliares LEFT JOIN rotas ON fusion_praca.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion_praca.usuario = usuarios.idusuarios");

@@ -218,6 +218,16 @@ function menuMetas(){
     
 }
 
+function menuNfs(){
+
+    if(document.getElementById("submenuNf").style.display == "none" || document.getElementById("submenuNf").style.display == "" ){
+        document.getElementById("submenuNf").style.display = "block";
+    }else{
+        document.getElementById("submenuNf").style.display = "none";
+    }
+    
+}
+
 function abrirMenuMobile(){
     if(document.getElementById('menu-lateral').style.display=='none' || document.getElementById('menu-lateral').style.display==''){
         document.getElementById('menu-lateral').style.display='block';

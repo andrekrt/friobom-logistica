@@ -5,7 +5,16 @@ use Mpdf\Mpdf;
 require_once __DIR__.'/../vendor/autoload.php';
 require "../conexao.php";
 
-if($_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario']==99){
+$idModudulo = 13;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $id = filter_input(INPUT_GET, 'id');
     $sql = $db->prepare("SELECT * FROM combustivel_saida WHERE idcombustivel_saida =:id");

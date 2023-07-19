@@ -3,7 +3,16 @@
 session_start();
 require("../conexao.php");
 
-if($_SESSION['tipoUsuario'] != 4 ){
+$idModudulo = 1;
+$idUsuario = $_SESSION['idUsuario'];
+
+$sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
+$sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
+$sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
+$sqlPerm->execute();
+$result = $sqlPerm->fetchColumn();
+
+if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
     $sql = $db->query("SELECT placa_veiculo, tipo_veiculo, COUNT(placa_veiculo) as qtdViagem, SUM(km_rodado) as kmRodado, SUM(litros) as totalLitros, SUM(valor_total_abast) as valorLitros, COUNT(solicitacoes_new.placa) AS qtdSolicitacoes, SUM(solicitacoes_new.vl_total) as valorTotalSolicitacoes, (SUM(solicitacoes_new.vl_total)+SUM(litros)) / SUM(km_rodado) FROM `viagem` LEFT JOIN solicitacoes_new ON viagem.placa_veiculo = solicitacoes_new.placa GROUP BY placa_veiculo ORDER BY placa_veiculo");
