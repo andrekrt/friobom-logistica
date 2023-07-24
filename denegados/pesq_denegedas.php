@@ -15,29 +15,29 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (carga LIKE :carga OR pedido LIKE :pedido OR situacao LIKE :situacao OR nome_usuario OR :nome_usuario) ";
+	$searchQuery = " AND (carga LIKE :carga OR nf LIKE :nf OR situacao LIKE :situacao OR nome_usuario OR :nome_usuario) ";
     $searchArray = array( 
         'carga'=>"%$searchValue%", 
-        'pedido'=>"%$searchValue%",
+        'nf'=>"%$searchValue%",
         'situacao'=>"%$searchValue%",
         'nome_usuario'=>"%$searchValue%"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM denegadas ");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM denegadas GROUP BY token");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM denegadas WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM denegadas WHERE 1 ".$searchQuery . "GROUP BY token");
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT token, carga, COUNT(nf) as qtd, situacao, nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery."GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -53,12 +53,12 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-        "id_denegadas"=>$row['id_denegadas'],
+        "id_denegadas"=>$row['token'],
         "carga"=>$row['carga'],
-        "pedido"=>$row['pedido'],
+        "nf"=>$row['qtd'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['id_denegadas'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>'
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="confirma.php?token='.$row['token'].'" class="btn btn-secondary btn-sm">Confirmar Todas as NF\'s</a>'
     );
 }
 

@@ -65,7 +65,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="menu-principal">
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Nova NF Denegada</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalNf" data-whatever="@mdo" name="idpeca">Nova NF Denegada</button>
                     </div>
                     <a href="denegadas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
@@ -75,7 +75,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">Nº</th>
                                 <th scope="col" class="text-center text-nowrap">Carga</th>
-                                <th scope="col" class="text-center text-nowrap">Nº Pedido</th>
+                                <th scope="col" class="text-center text-nowrap">Qtd de NF's</th>
                                 <th scope="col" class="text-center text-nowrap">Status</th>
                                 <th scope="col" class="text-center text-nowrap">Registrado por:</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
@@ -106,7 +106,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 'columns': [
                     { data: 'id_denegadas' },
                     { data: 'carga' },
-                    { data: 'pedido' },
+                    { data: 'nf' },
                     { data: 'situacao' },
                     { data: 'nome_usuario' },
                     { data: 'acoes' },
@@ -117,6 +117,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[5]}
                 ],
+                "order":[[0,"desc"]]
             });
         });
 
@@ -133,11 +134,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 data:{id:id},
                 type:'post',
                 success: function(data){
-                    var json = JSON.parse(data);
-                    $('#id').val(json.id_denegadas);
-                    $('#carga').val(json.carga);
-                    $('#pedido').val(json.pedido);
-                    $('#status').val(json.situacao);              
+                    $("#registrosDoGrupo").html(data);            
                 }
             })
         });
@@ -153,33 +150,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             </div>
             <div class="modal-body">
                 <form action="atualiza-denegada.php" method="post">
-                    <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="id" class="col-form-label">ID</label>
-                            <input type="text" readonly name="id" class="form-control" id="id" value="">
-                        </div>
-                        <div class="form-group col-md-3 ">
-                            <label for="carga" class="col-form-label">Carga</label>
-                            <input type="text" name="carga" class="form-control" id="carga" value="">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="pedido"  class="col-form-label">Nº Pedido</label>
-                            <input type="text" name="pedido" class="form-control" id="pedido" value="">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="status"  class="col-form-label">Status</label>
-                            <select name="status" id="status" class="form-control">
-                                <option value=""></option>
-                                <option value="Confirmado">Confirmado</option>
-                                <option value="Aguardando Confirmação">Aguardando Confirmação</option>
-                            </select>
-                        </div>
-                    </div>  
+                    <div id="registrosDoGrupo"></div>
             </div>
             <div class="modal-footer">
                     <div class="text-center">
                             <button type="submit" class="btn btn-primary">Atualizar</button>
                         </div>
+                    
                     <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </form> 
             </div>
@@ -189,31 +166,40 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
 
 <!-- MODAL lançamento de nf -->
-<div class="modal fade" id="modalEntrada" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="modalNf" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">NF Denegada</h5>
+                <h5 class="modal-title" id="exampleModalLabel">NF's Denegadas</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                              
                 <form action="add-denegada.php" method="post">
-                    <div class="form-row">
-                        <div class="form-group col-md-6 espaco ">
-                            <label for="carga"> Carga</label>
-                            <input type="text"  name="carga" class="form-control" id="carga">
+                    <div id="formulario">
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco ">
+                                <label for="carga">Nº Carga </label>
+                                <input type="text" name="carga" id="carga" class="form-control">
+                            </div>
                         </div>
-                        <div class="form-group col-md-6 espaco ">
-                            <label for="pedido"> Nº Pedido</label>
-                            <input type="text"  name="pedido" class="form-control" id="pedido">
-                        </div>
-                    </div>    
-            </div>
-            <div class="modal-footer">
-                <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
+                        <div class="form-row">
+                            <div class="form-group col-md-8 espaco">
+                                <label for="nf">Nº NF</label>
+                                <input type="text" name="nf[]" class="form-control" id="qtd">
+                            </div>
+                            <div style="margin: auto; margin-left: 0; margin-top:24px">
+                                <button type="button" class="btn btn-danger" id="add-nf">Adicionar NF</button>
+                            </div>
+                        </div> 
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
                 </form>
+                
+                </div>
             </div>
         </div>
     </div>
@@ -222,5 +208,16 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
 <script src="../assets/js/jquery.mask.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var cont = 1;
+        $('#add-nf').click(function(){
+            cont++;
+
+            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-8 espaco"> <label for="nf">Nº NF</label> <input type="text" name="nf[]" class="form-control" id="qtd"> </div> </div> ');
+
+        });
+    });
+</script>
 </body>
 </html>

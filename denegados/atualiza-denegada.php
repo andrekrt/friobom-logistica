@@ -14,23 +14,27 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
-    $id = filter_input(INPUT_POST,'id');
-    $carga = filter_input(INPUT_POST, 'carga');
-    $pedido = filter_input(INPUT_POST, 'pedido');
-    $status = filter_input(INPUT_POST, 'status');    
+    $idUsuario = $_SESSION['idUsuario'];
+    $id = $_POST['id'];
+    $carga = $_POST['carga'];
+    $nf = $_POST['nf'];
+    $situacao = $_POST['status'];
 
-    $atualiza = $db->prepare("UPDATE denegadas SET carga = :carga, pedido = :pedido, situacao = :situacao WHERE id_denegadas = :id");
-    $atualiza->bindValue(':carga', $carga);
-    $atualiza->bindValue(':pedido', $pedido);
-    $atualiza->bindValue(':situacao', $status);
-    $atualiza->bindValue(':id', $id);
+    for($i=0;$i<count($id);$i++){
+        $atualiza = $db->prepare("UPDATE denegadas SET carga = :carga, nf = :nf, situacao = :situacao WHERE id_denegadas = :id");
+        $atualiza->bindValue(':carga', $carga[$i]);
+        $atualiza->bindValue(':nf', $nf[$i]);
+        $atualiza->bindValue(':situacao', $situacao[$i]);
+        $atualiza->bindValue(':id', $id[$i]);
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='denegadas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+        if($atualiza->execute()){
+            echo "<script> alert('Atualizado com Sucesso!')</script>";
+            echo "<script> window.location.href='denegadas.php' </script>";
+        }else{
+            print_r($db->errorInfo());
+        }
     }
+    
 
 }else{
     echo "Erro";

@@ -12,25 +12,41 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $consultaToken = $db->query("SELECT MAX(token) as token FROM denegadas");
+    $token = $consultaToken->fetch();
+    if(empty($token['token'])){
+        $newToken = 0+1;
+    }else{
+        $newToken = $token['token']+1;
+    }
     
     $idUsuario = $_SESSION['idUsuario'];
     $carga = filter_input(INPUT_POST, 'carga');
-    $pedido = filter_input(INPUT_POST,'pedido');
+    $nf = $_POST['nf'];
     $situacao = "Aguardando Confirmação";
 
-    $inserir = $db->prepare("INSERT INTO denegadas (carga, pedido, situacao, usuario) VALUES (:carga, :pedido, :situacao, :usuario)");
-    $inserir->bindValue(':carga', $carga);
-    $inserir->bindValue(':pedido', $pedido);
-    $inserir->bindValue(':situacao', $situacao);
-    $inserir->bindValue(':usuario', $idUsuario);
+    // echo "$idUsuario<br>$carga<br>$situacao<br>$newToken<br>". count($nf);
+    // print_r($nf);
 
-    if($inserir->execute()){
-        echo "<script>alert('NF Denegada Registrada!');</script>";
-        echo "<script>window.location.href='denegadas.php'</script>";    
-        
-    }else{
-        print_r($inserir->errorInfo());
+    for($i=0;$i<count($nf);$i++){
+        $inserir = $db->prepare("INSERT INTO denegadas (token, carga, nf, situacao, usuario) VALUES (:token, :carga, :nf, :situacao, :usuario)");
+        $inserir->bindValue(':token', $newToken);
+        $inserir->bindValue(':carga', $carga);
+        $inserir->bindValue(':nf', $nf[$i]);
+        $inserir->bindValue(':situacao', $situacao);
+        $inserir->bindValue(':usuario', $idUsuario);
+
+        if($inserir->execute()){
+            echo "<script>alert('NF Denegada Registrada!');</script>";
+            echo "<script>window.location.href='denegadas.php'</script>";    
+            
+        }else{
+            print_r($inserir->errorInfo());
+        }
+
     }
+
+    
 
 }
 
