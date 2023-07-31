@@ -196,7 +196,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div> 
                     </div>
                 <div class="modal-footer">
-                    <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
+                    <button type="submit" name="analisar" class="btn btn-primary">Agendar</button>
                 </form>
                 
                 </div>

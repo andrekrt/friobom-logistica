@@ -25,13 +25,13 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM denegadas GROUP BY token");
+$stmt = $db->prepare("SELECT COUNT(DISTINCT(TOKEN)) AS allcount FROM denegadas");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM denegadas WHERE 1 ".$searchQuery . "GROUP BY token");
+$stmt = $db->prepare("SELECT COUNT(DISTINCT(TOKEN)) AS allcount FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery );
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
@@ -58,7 +58,7 @@ foreach($empRecords as $row){
         "nf"=>$row['qtd'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="confirma.php?token='.$row['token'].'" class="btn btn-secondary btn-sm">Confirmar Todas as NF\'s</a>'
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="confirma.php?token='.$row['token'].'" class="btn btn-secondary btn-sm" onclick="return confirm(\'Certeza que deseja cofirmar todas as notas da carga '.$row['carga'].' ?\')" >Confirmar Todas as NF\'s</a>'
     );
 }
 
