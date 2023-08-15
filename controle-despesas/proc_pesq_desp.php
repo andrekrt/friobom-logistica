@@ -58,22 +58,29 @@ foreach($empRecords as $row){
         $fotos = "Sem Foto";
     }
     $data[] = array(
-            "iddespesas"=>$row['iddespesas'],
-            "num_carregemento"=>$row['num_carregemento'],
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "nome_motorista"=> $row['nome_motorista'],
-            "nome_rota"=>$row['nome_rota'],
-            "media"=>number_format($row['media_comtk'],2,",",".") ,
-            "data_carregamento"=>date("d/m/Y H:i", strtotime($row['data_carregamento'])),
-            "avaliacao"=>$row['nota_carga'],
-            "obs"=>$row['obs_carga'],
-            "fotos"=>$fotos,
-            "acoes"=>  '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>
-            <?php if($tipoUsuario==99):?>
-                <a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>
-            <?php endif;?>
-            <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a>'
-        );
+        "iddespesas"=>$row['iddespesas'],
+        "num_carregemento"=>$row['num_carregemento'],
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "nome_motorista"=> $row['nome_motorista'],
+        "nome_rota"=>$row['nome_rota'],
+        "mediatk"=>number_format($row['media_comtk'],2,",",".")."Km/L" ,
+        "mediastk"=>number_format($row['mediaSemTk'],2,",",".")."Km/L" ,
+        "data_carregamento"=>date("d/m/Y H:i", strtotime($row['data_carregamento'])),
+        "dias_rota"=>number_format($row['dias_em_rota'],2,",","."),
+        "diarias_mot"=>number_format($row['dias_motorista'],2,",","."),
+        "diarias_ajud"=>number_format($row['dias_ajudante'],2,",","."),
+        "diarias_chapa"=>number_format($row['dias_chapa'],2,",","."),
+        "km_rodado"=>$row['km_rodado'],
+        "litros"=>number_format($row['litros'],2,",","."),
+        "avaliacao"=>$row['nota_carga'],
+        "obs"=>$row['obs_carga'],
+        "fotos"=>$fotos,
+        "acoes"=>  '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>
+        <?php if($tipoUsuario==99):?>
+            <a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>
+        <?php endif;?>
+        <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a>'
+    );
 }
 
 ## Response

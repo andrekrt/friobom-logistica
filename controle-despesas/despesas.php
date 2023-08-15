@@ -69,8 +69,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center"> Placa Veículo </th>
                                 <th scope="col" class="text-center"> Motorista </th>
                                 <th scope="col" class="text-center"> Rota </th>
-                                <th scope="col" class="text-center"> Média Km/L </th>
+                                <th scope="col" class="text-center"> Média c/ Tk </th>
+                                <th scope="col" class="text-center"> Média s/ Tk </th>
                                 <th scope="col" class="text-center"> Data Carregamento </th>
+                                <th scope="col" class="text-center"> Dias em Rota </th>
+                                <th scope="col" class="text-center">Diárias Motorista </th>
+                                <th scope="col" class="text-center">Diárias Ajudante </th>
+                                <th scope="col" class="text-center"> Diárias Chapa </th>
+                                <th scope="col" class="text-center">Km Percorrido </th>
+                                <th scope="col" class="text-center">Litros </th>
                                 <th scope="col" class="text-center"> Avaliação da Carga </th>
                                 <th scope="col" class="text-center"> Obs </th>
                                 <th scope="col" class="text-center"> Imagens da Carga </th>
@@ -104,8 +111,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'placa_veiculo' },
                     { data: 'nome_motorista' },
                     { data: 'nome_rota' },
-                    { data: 'media'},
+                    { data: 'mediatk'},
+                    { data: 'mediastk'},
                     { data: 'data_carregamento' },
+                    { data: 'dias_rota' },
+                    { data: 'diarias_mot' },
+                    { data: 'diarias_ajud' },
+                    { data: 'diarias_chapa' },
+                    { data: 'km_rodado' },
+                    { data: 'litros' },
                     { data: 'avaliacao' },
                     { data: 'obs' },
                     { data: 'fotos' },
@@ -115,7 +129,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[9]}
+                    {'bSortable':false, 'aTargets':[17]}
                 ],
             });
         });
