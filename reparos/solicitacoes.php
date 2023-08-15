@@ -77,6 +77,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Qtd </th>
                                 <th scope="col" class="text-center text-nowrap"> Valor Total </th>
                                 <th scope="col" class="text-center text-nowrap">Frete </th>
+                                <th scope="col" class="text-center text-nowrap">Nº NF </th>
                                 <th scope="col" class="text-center text-nowrap"> Situação</th>
                                 <th scope="col" class="text-center text-nowrap"> Solicitante </th>
                                 <th scope="col" class="text-center text-nowrap"> Ações</th>
@@ -115,6 +116,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'qtd' },
                     { data: 'vlTotal' },
                     { data: 'frete' },
+                    { data: 'nf' },
                     { data: 'situacao'},
                     { data: 'nome_usuario'},
                     { data: 'acoes'},
@@ -125,6 +127,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[12]}
                 ],
+                order: [[0, 'desc']]
             });
         });
     </script>

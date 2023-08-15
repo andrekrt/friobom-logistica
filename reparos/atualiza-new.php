@@ -21,6 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $problema = filter_input(INPUT_POST, 'descricao');
     $localReparo = filter_input(INPUT_POST, 'localReparo');
     $frete = filter_input(INPUT_POST, 'frete');
+    $nf = filter_input(INPUT_POST, 'nf');
 
     $peca = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']) ;
@@ -43,7 +44,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         $valorTotal =  ($vlUnit[$i]-$desconto[$i])*$qtd[$i];
 
-        $sql = $db->prepare("UPDATE solicitacoes_new SET placa = :placa, motorista = :motorista, rota = :rota, problema = :problema, local_reparo = :localReparo, peca_servico = :peca, qtd = :qtd, vl_unit = :vlUnit, desconto = :desconto, vl_total = :vlTotal, frete = :frete, situacao = :situacao, data_aprovacao = :dataAprovacao, obs = :obs WHERE id = :id");
+        $sql = $db->prepare("UPDATE solicitacoes_new SET placa = :placa, motorista = :motorista, rota = :rota, problema = :problema, local_reparo = :localReparo, peca_servico = :peca, qtd = :qtd, vl_unit = :vlUnit, desconto = :desconto, vl_total = :vlTotal, frete = :frete, num_nf=:nf, situacao = :situacao, data_aprovacao = :dataAprovacao, obs = :obs WHERE id = :id");
         $sql->bindValue(':placa', $placa);
         $sql->bindValue(':motorista', $motorista);
         $sql->bindValue(':rota', $rota);
@@ -55,6 +56,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':desconto', $desconto[$i]);
         $sql->bindValue(':vlTotal', $valorTotal);
         $sql->bindValue(':frete', $frete);
+        $sql->bindValue(':nf', $nf);
         $sql->bindValue(':situacao', $situacao);
         $sql->bindValue(':dataAprovacao', $dataAprovacao);
         $sql->bindValue(':obs', $obs);

@@ -30,6 +30,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $problema = filter_input(INPUT_POST, 'descricao');
     $localReparo = filter_input(INPUT_POST, 'localReparo');
     $frete = str_replace(",",".", filter_input(INPUT_POST, 'frete'));
+    $nf = filter_input(INPUT_POST, 'nf');
 
     // echo $frete;
     
@@ -46,7 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
 
-        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, local_reparo, imagem, peca_servico, qtd, vl_unit, desconto,  vl_total, frete, situacao, usuario) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :localReparo, :imagem, :peca, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :situacao, :usuario)");
+        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, local_reparo, imagem, peca_servico, qtd, vl_unit, desconto,  vl_total, frete, num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :localReparo, :imagem, :peca, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :nf, :situacao, :usuario)");
         $sql->bindValue(':token', $newToken);
         $sql->bindValue(':dataAtual', $dataAtual);
         $sql->bindValue(':placa', $placa);
@@ -61,6 +62,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':desconto', $desconto[$i]);
         $sql->bindValue(':vlTotal', $valorTotal);
         $sql->bindValue(':frete', $frete);
+        $sql->bindValue(':nf', $nf);
         $sql->bindValue(':situacao', $situacao);
         $sql->bindValue(':usuario', $usuario);
         

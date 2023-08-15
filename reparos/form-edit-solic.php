@@ -140,13 +140,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-10">
+                        <div class="form-group col-md-8">
                             <label class="col-form-label" for="descricao">Descrição do Problema</label>
                             <input type="text" required value="<?=$dado['problema']?>" name="descricao" class="form-control" id="descricao">
                         </div>
                         <div class="form-group col-md-2 ">
                             <label class="col-form-label" for="frete">Valor Frete</label>
                             <input type="text" required name="frete" value="<?=$dado['frete']?>" class="form-control" id="frete">
+                        </div>
+                        <div class="form-group col-md-2 ">
+                            <label class="col-form-label" for="nf">Nº NF</label>
+                            <input type="text" required name="nf" value="<?=$dado['num_nf']?>" class="form-control" id="nf">
                         </div>
                     </div>
                     
