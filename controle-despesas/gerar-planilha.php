@@ -93,6 +93,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $html .= '<td class="text-center font-weight-bold"> Ajudante </td>';
         $html .= '<td class="text-center font-weight-bold"> Chapa 01 </td>';
         $html .= '<td class="text-center font-weight-bold"> Chapa 02 </td>';
+        $html .= '<td class="text-center font-weight-bold"> Status </td>';
         $html .= '</tr>';
         
         $sql = $db->query("SELECT *, MONTH(data_chegada) as mes, YEAR(data_chegada) as ano FROM viagem");
@@ -174,6 +175,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $html .= '<td>' .$dado['nome_ajudante'].  '</td>';
             $html .= '<td>' .$dado['chapa01'].  '</td>';
             $html .= '<td>' .$dado['chapa02'].  '</td>';
+            $html .= '<td>' .$dado['situacao'].  '</td>';
             $html .= '</tr>';
         }
         $html .= '</table>';

@@ -1,6 +1,9 @@
 <?php
+session_start();
 include '../conexao.php';
 
+$idUsuario = $_SESSION['idUsuario'];
+$tipoUsuario = $_SESSION['tipoUsuario'];
 ## Read value
 $draw = $_POST['draw'];
 $row = $_POST['start'];
@@ -52,10 +55,21 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    $assinar="";
+    $imprimir = "";
     if(is_dir('uploads/'.$row['iddespesas'])){
         $fotos='<a target="_blank" href="http://192.168.10.32/logistica/controle-despesas/uploads/'.$row['iddespesas'].'">Fotos</a>';
     }else{
         $fotos = "Sem Foto";
+    }
+    if(($idUsuario==20 || $idUsuario==33) && $row['situacao']=="Não Confirmado"){
+        $assinar = '<a class=" icon-acoes" href="confirmacao.php?id='.$row['iddespesas'].'" onclick="return confirm(\'Deseja Assinar Despesa da carga '.$row['num_carregemento'].' ?\')"> <img src="../assets/images/icones/confirma.png" alt=""> </a>';
+    }
+    if($row['situacao']=="Confirmado"){
+        $imprimir = '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>';
+    }
+    if($tipoUsuario==99){
+        $excluir = '<a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>';
     }
     $data[] = array(
         "iddespesas"=>$row['iddespesas'],
@@ -75,11 +89,8 @@ foreach($empRecords as $row){
         "avaliacao"=>$row['nota_carga'],
         "obs"=>$row['obs_carga'],
         "fotos"=>$fotos,
-        "acoes"=>  '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>
-        <?php if($tipoUsuario==99):?>
-            <a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>
-        <?php endif;?>
-        <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a>'
+        "status"=>$row['situacao'],
+        "acoes"=>$assinar. $imprimir. '<a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a>' . $excluir 
     );
 }
 

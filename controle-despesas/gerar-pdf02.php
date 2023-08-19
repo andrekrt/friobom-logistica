@@ -413,7 +413,7 @@ $mpdf->WriteHTML("
             </thead>
         </table>
         <span > __________________________________ <br>$motorista</span>
-        <p style='margin-left:700px; margin-top:-40px; text-align:center'> __________________________________ <br>SETOR TRANSPORTE</p>
+        <p style='margin-left:700px; margin-top:-40px; text-align:center'> <img src='../assets/images/wallas.png' style=' margin-top:-38px;' > <br>SETOR TRANSPORTE</p>
     </body>
 </html>
 ");

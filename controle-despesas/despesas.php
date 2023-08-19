@@ -81,6 +81,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center"> Avaliação da Carga </th>
                                 <th scope="col" class="text-center"> Obs </th>
                                 <th scope="col" class="text-center"> Imagens da Carga </th>
+                                <th scope="col" class="text-center"> Status </th>
                                 <th scope="col" class="text-center"> Ações </th>
                             </tr>
                         </thead>
@@ -123,14 +124,16 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'avaliacao' },
                     { data: 'obs' },
                     { data: 'fotos' },
+                    { data: 'status'},
                     { data: 'acoes'},
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[17]}
+                    {'bSortable':false, 'aTargets':[18]}
                 ],
+                order: [[0,'desc']]
             });
         });
         
