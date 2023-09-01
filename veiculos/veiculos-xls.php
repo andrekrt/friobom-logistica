@@ -25,6 +25,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         mb_convert_encoding('Código','ISO-8859-1', 'UTF-8'),
         "Tipo",
         "Categoria",
+        "Marca",
         "Placa",
         mb_convert_encoding('Peso Máximo','ISO-8859-1', 'UTF-8'),
         "Cubagem",
@@ -70,7 +71,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         }
 
         fwrite($arquivo, 
-            "\n$dado[cod_interno_veiculo];".mb_convert_encoding($dado['tipo_veiculo'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['categoria'],'ISO-8859-1', 'UTF-8')."; $dado[placa_veiculo]; $dado[peso_maximo]; $dado[cubagem];". date("d/m/Y", strtotime($dado['data_revisao_oleo']))."; $dado[km_ultima_revisao];".date("d/m/Y", strtotime($dado['data_revisao_diferencial']))."; $dado[km_revisao_diferencial]; $dado[km_atual]; $kmRestante;". mb_convert_encoding($situacao,'ISO-8859-1', 'UTF-8' )."; $kmRestanteAlinhamento;". mb_convert_encoding($situacaoAlinhamento,'ISO-8859-1', 'UTF-8' ).";".mb_convert_encoding($ativo,'ISO-8859-1', 'UTF-8' )
+            "$dado[cod_interno_veiculo];".mb_convert_encoding($dado['tipo_veiculo'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['categoria'],'ISO-8859-1', 'UTF-8')."; $dado[marca]; $dado[placa_veiculo]; $dado[peso_maximo]; $dado[cubagem];". date("d/m/Y", strtotime($dado['data_revisao_oleo']))."; $dado[km_ultima_revisao];".date("d/m/Y", strtotime($dado['data_revisao_diferencial']))."; $dado[km_revisao_diferencial]; $dado[km_atual]; $kmRestante;". mb_convert_encoding($situacao,'ISO-8859-1', 'UTF-8' )."; $kmRestanteAlinhamento;". mb_convert_encoding($situacaoAlinhamento,'ISO-8859-1', 'UTF-8' ).";".mb_convert_encoding($ativo,'ISO-8859-1', 'UTF-8' )."\n"
         );
 
         // fputcsv($arquivo, mb_convert_encoding($dado,'ISO-8859-1', 'UTF-8') , ';');

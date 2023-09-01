@@ -15,14 +15,13 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (cod_interno_veiculo LIKE :cod_interno_veiculo OR 
-        tipo_veiculo LIKE :tipo_veiculo OR 
-        placa_veiculo LIKE :placa_veiculo OR categoria LIKE :categoria ) ";
+	$searchQuery = " AND (cod_interno_veiculo LIKE :cod_interno_veiculo OR tipo_veiculo LIKE :tipo_veiculo OR placa_veiculo LIKE :placa_veiculo OR categoria LIKE :categoria OR marca LIKE :marca ) ";
     $searchArray = array( 
         'cod_interno_veiculo'=>"%$searchValue%", 
         'tipo_veiculo'=>"%$searchValue%",
         'placa_veiculo'=>"%$searchValue%",
-        'categoria'=>"%$searchValue%"
+        'categoria'=>"%$searchValue%",
+        'marca'=>"%$searchValue%"
     );
 }
 
@@ -80,6 +79,7 @@ foreach($empRecords as $row){
         "tipo_veiculo"=>$row['tipo_veiculo'],
         "placa_veiculo"=>$row['placa_veiculo'],
         "categoria"=>$row['categoria'],
+        "marca"=>$row['marca'],
         "peso_maximo"=>$row['peso_maximo'],
         "cubagem"=>$row['cubagem'],
         "km_ultima_revisao"=>$row['km_ultima_revisao'],

@@ -84,6 +84,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                     <option value="Toco">Toco</option>
                                     <option value="Mercedinha">Mercedinha</option>
                                     <option value="Frota Leve">Frota Leve</option>
+                                    <option value="Estoque">Estoque</option>
+                                    <option value="Oficina">Oficina</option>
+                                    <option value="Serviço">Serviço</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco">
+                                <label for="marca"> Marca </label>
+                                <select name="marca" id="marca" required class="form-control">
+                                    <option value=""></option>
+                                    <option value="VOLVO">VOLVO</option>
+                                    <option value="MERCEDS">MERCEDS</option>
+                                    <option value="VOLKSWAGEM">VOLKSWAGEM</option>
+                                    <option value="FIAT">FIAT</option>
                                 </select>
                             </div>
                         </div>

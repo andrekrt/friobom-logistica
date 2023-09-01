@@ -70,6 +70,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap" >  Código Veículo </th>
                                 <th scope="col" class="text-center text-nowrap">Tipo Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Categoria</th>
+                                <th scope="col" class="text-center text-nowrap">Marca</th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Peso Máximo</th>
                                 <th scope="col" class="text-center text-nowrap">Cubagem</th>
@@ -114,6 +115,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'cod_interno_veiculo' },
                     { data: 'tipo_veiculo' },
                     { data: 'categoria' },
+                    {data: 'marca'},
                     { data: 'placa_veiculo' },
                     { data: 'peso_maximo' },
                     { data: 'cubagem' },
@@ -165,7 +167,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#kmUltimaRevisao').val(json.km_ultima_revisao);
                     $('#dataRevisao').val(json.data_revisao);
                     $('#kmAtual').val(json.km_atual);
-                    $('#mediaCombustivel').val(json.media_combustivel);
+                    $('#marca').val(json.marca);
+                    $('#metaCombustivel').val(json.meta_combustivel);
                 }
             })
         });
@@ -202,6 +205,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Toco">Toco</option>
                                 <option value="Mercedinha">Mercedinha</option>
                                 <option value="Frota Leve">Frota Leve</option>
+                                <option value="Estoque">Estoque</option>
+                                <option value="Oficina">Oficina</option>
+                                <option value="Serviço">Serviço</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">
@@ -210,17 +216,27 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="peso" class="col-form-label">Peso Máximo</label>
                             <input type="text" class="form-control" name="peso" id="peso" >
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="cubagem" class="col-form-label">Cubagem</label>
                             <input type="text" class="form-control" name="cubagem" id="cubagem" >
                         </div>
-                        <div class="form-group col-md-4 ">
+                        <div class="form-group col-md-3 ">
                             <label for="metaCombustivel" class="col-form-label">Meta de Combustível</label>
                             <input type="text" name="metaCombustivel" id="metaCombustivel" class="form-control">
+                        </div>
+                        <div class="form-group col-md-3 ">
+                            <label for="marca" class="col-form-label">Marca</label>
+                            <select name="marca" id="marca" required class="form-control">
+                                <option value=""></option>
+                                <option value="VOLVO">VOLVO</option>
+                                <option value="MERCEDS">MERCEDS</option>
+                                <option value="VOLKSWAGEM">VOLKSWAGEM</option>
+                                <option value="FIAT">FIAT</option>
+                            </select>
                         </div>
                     </div>
             </div>
