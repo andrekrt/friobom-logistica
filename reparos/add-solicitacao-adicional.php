@@ -21,19 +21,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $localReparo = filter_input(INPUT_POST, 'localReparo');
     $frete = filter_input(INPUT_POST, 'frete');
     $situacao = "Em análise";
+    $nf = filter_input(INPUT_POST, 'nf');
     $usuario = $_SESSION['idUsuario'];
 
     $peca = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']) ;
     $valorUnit = str_replace(",", ".",$_POST['vlUnit'] ) ;
     $desconto = str_replace(",", ".", $_POST['desconto']);
+    $fornecedor = $_POST['fornecedor'];
     $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;
 
     for($i=0; $i<count($peca); $i++){
 
         $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
 
-        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, local_reparo, imagem, peca_servico, qtd, vl_unit, desconto, vl_total, frete, situacao, usuario) VALUES (:token, :dataAtual, :placa, :problema, :localReparo, :imagem, :peca, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :situacao, :usuario)");
+        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, local_reparo, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto, vl_total, frete,num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :problema, :localReparo, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete,:nf, :situacao, :usuario)");
         $sql->bindValue(':token', $newToken);
         $sql->bindValue(':dataAtual', $dataAtual);
         $sql->bindValue(':placa', $placa);
@@ -41,11 +43,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':localReparo', $localReparo);
         $sql->bindValue(':imagem', $imagem[$i]);
         $sql->bindValue(':peca', $peca[$i]);
+        $sql->bindValue(':fornecedor', $fornecedor[$i]);
         $sql->bindValue(':qtd', $qtd[$i]);
         $sql->bindValue(':vlUnit', $valorUnit[$i]);
         $sql->bindValue(':desconto', $desconto[$i]);
         $sql->bindValue(':vlTotal', $valorTotal);
         $sql->bindValue(':frete', $frete);
+        $sql->bindValue(':nf', $nf);
         $sql->bindValue(':situacao', $situacao);
         $sql->bindValue(':usuario', $usuario);
         

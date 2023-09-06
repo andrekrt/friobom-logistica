@@ -41,13 +41,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $qtd = str_replace(",",".",$_POST['qtd']) ;
     $valorUnit = str_replace(",", ".",$_POST['vlUnit'] ) ;
     $desconto = str_replace(",", ".", $_POST['desconto']);
+    $fornecedor  = $_POST['fornecedor'];
     $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;
     
     for($i=0; $i<count($peca); $i++){
 
         $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
 
-        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, local_reparo, imagem, peca_servico, qtd, vl_unit, desconto,  vl_total, frete, num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :localReparo, :imagem, :peca, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :nf, :situacao, :usuario)");
+        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, local_reparo, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto,  vl_total, frete, num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :localReparo, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :nf, :situacao, :usuario)");
         $sql->bindValue(':token', $newToken);
         $sql->bindValue(':dataAtual', $dataAtual);
         $sql->bindValue(':placa', $placa);
@@ -57,6 +58,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':localReparo', $localReparo);
         $sql->bindValue(':imagem', $imagem[$i]);
         $sql->bindValue(':peca', $peca[$i]);
+        $sql->bindValue(':fornecedor', $fornecedor[$i]);
         $sql->bindValue(':qtd', $qtd[$i]);
         $sql->bindValue(':vlUnit', $valorUnit[$i]);
         $sql->bindValue(':desconto', $desconto[$i]);
