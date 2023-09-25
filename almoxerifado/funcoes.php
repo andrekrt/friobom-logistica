@@ -37,7 +37,7 @@ function contaSaida($idPeca){
 function contaEstoque($idPeca){
     require("../conexao.php");
 
-    $totalEstoque = $db->prepare("SELECT total_estoque as estoque FROM peca_estoque WHERE idpeca = :idPeca");
+    $totalEstoque = $db->prepare("SELECT total_estoque as estoque FROM peca_reparo WHERE id_peca_reparo = :idPeca");
     $totalEstoque->bindValue(':idPeca', $idPeca);
     $totalEstoque->execute();
     $estoque = $totalEstoque->fetch();
@@ -58,14 +58,18 @@ function valorTotalPeca($idPeca){
     $totalComprado->execute();
     $totalComprado = $totalComprado->fetch();
 
-    return $totalComprado['totalComprado'];
+    if(empty($totalComprado['totalComprado'])){
+        return 0;
+    }else{
+        return $totalComprado['totalComprado'];
+    }
 
 }
 
 function precoMedio($idPeca){
     require("../conexao.php");
 
-    $preco = $db->prepare("SELECT * FROM peca_estoque WHERE idpeca = :idPeca");
+    $preco = $db->prepare("SELECT * FROM peca_reparo WHERE id_peca_reparo = :idPeca");
     $preco->bindValue(':idPeca', $idPeca);
     $preco->execute();
     $precos = $preco->fetch();
@@ -83,13 +87,19 @@ function precoMedio($idPeca){
 function estoqueMinimo($idPeca){
     require("../conexao.php");
 
-    $estoqueMinimo = $db->prepare("SELECT estoque_minimo FROM peca_estoque WHERE idpeca = :idPeca");
+    $estoqueMinimo = $db->prepare("SELECT estoque_minimo FROM peca_reparo WHERE id_peca_reparo = :idPeca");
     $estoqueMinimo->bindValue(':idPeca', $idPeca);
     $estoqueMinimo->execute();
     $estoqueMinimo = $estoqueMinimo->fetch();
     $estoqueMinimo = $estoqueMinimo['estoque_minimo'];
 
-    return $estoqueMinimo;
+    if(empty($estoqueMinimo)){
+        return 0;
+    }else{
+        return $estoqueMinimo;
+    }    
+
+   
 }
 
 function atualizaEStoque($idPeca){
@@ -107,7 +117,7 @@ function atualizaEStoque($idPeca){
         $situacao = "OK";
     }
 
-    $atualiza = $db->prepare("UPDATE peca_estoque SET total_entrada = :totalEntrada, total_saida = :totalSaida, total_estoque = :totalEstoque, situacao = :situacao, valor_total = :totalComprado WHERE idpeca = :idPeca ");
+    $atualiza = $db->prepare("UPDATE peca_reparo SET total_entrada = :totalEntrada, total_saida = :totalSaida, total_estoque = :totalEstoque, situacao = :situacao, valor_total = :totalComprado WHERE id_peca_reparo = :idPeca ");
     $atualiza->bindValue(':totalEntrada', $qtdEntradas);   
     $atualiza->bindValue(':totalSaida', $qtdSaidas);    
     $atualiza->bindValue(':totalEstoque', $qtdEstoque);  

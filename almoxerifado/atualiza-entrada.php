@@ -2,7 +2,7 @@
 
 session_start();
 require("../conexao.php");
-
+include('funcoes.php');
 $idModudulo = 11;
 $idUsuario = $_SESSION['idUsuario'];
 
@@ -21,6 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $peca = filter_input(INPUT_POST, 'peca');
     $preco = str_replace(",", ".",filter_input(INPUT_POST, 'preco')) ;
     $qtd = str_replace(",",".",filter_input(INPUT_POST, 'qtd') ) ;
+    $frete = str_replace(",",".",filter_input(INPUT_POST, 'frete') );
     $desconto = str_replace(",", ".",filter_input(INPUT_POST, 'desconto') ) ;
     $obsEntrada = filter_input(INPUT_POST, 'obs')?filter_input(INPUT_POST, 'obs'):null;
     $fornecedor = filter_input(INPUT_POST, 'fornecedor');

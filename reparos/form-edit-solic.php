@@ -156,7 +156,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     
                     <?php 
 
-                    $solicitacoes = $db->prepare("SELECT solicitacoes_new.id, peca_servico,descricao_peca, qtd, un_medida, vl_unit, desconto, vl_total, fornecedor, nome_fantasia, imagem, solicitacoes_new.situacao, obs FROM solicitacoes_new LEFT JOIN peca_estoque ON solicitacoes_new.peca_servico = peca_estoque.idpeca LEFT JOIN fornecedores ON solicitacoes_new.fornecedor=fornecedores.id WHERE token = :token ");
+                    $solicitacoes = $db->prepare("SELECT solicitacoes_new.id, peca_servico,descricao, qtd, un_medida, vl_unit, desconto, vl_total, fornecedor, nome_fantasia, imagem, solicitacoes_new.situacao, obs FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN fornecedores ON solicitacoes_new.fornecedor=fornecedores.id WHERE token = :token ");
                     $solicitacoes->bindValue(':token', $dado['token']);
                     $solicitacoes->execute();
                     $solicitacoes=$solicitacoes->fetchAll();
@@ -167,15 +167,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-3">
                             <label for="peca" class="col-form-label">Peça/Serviço</label>
                             <select name="peca[]" class="form-control" id="peca">
-                                <option value="<?=$solicitacao['peca_servico']?>"> <?=$solicitacao['peca_servico']?> - <?=$solicitacao['descricao_peca']?> </option>
+                                <option value="<?=$solicitacao['peca_servico']?>"> <?=$solicitacao['peca_servico']?> - <?=$solicitacao['descricao']?> </option>
                                 <?php
 
-                                $sql = $db->query("SELECT * FROM peca_estoque");
+                                $sql = $db->query("SELECT * FROM peca_reparo");
                                 $pecas = $sql->fetchAll();
                                 foreach ($pecas as $peca) {
 
                                 ?>
-                                    <option value="<?=$peca['idpeca'] ?>"><?=$peca['idpeca']." - ". $peca['descricao_peca'] ?></option>
+                                    <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option>
                                 <?php
 
                                 }
@@ -205,7 +205,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-grupo col-md-2 ">
                             <label for="fornecedor">Fornecedor</label>
-                            <select name="fornecedor" id="fornecedor" class="form-control">
+                            <select name="fornecedor[]" id="fornecedor" class="form-control">
                                 <option value="<?=$solicitacao['fornecedor']?>"> <?=$solicitacao['fornecedor']?> - <?=$solicitacao['nome_fantasia']?> </option>
                                 <?php
                                 $sql = $db->query("SELECT * FROM fornecedores");

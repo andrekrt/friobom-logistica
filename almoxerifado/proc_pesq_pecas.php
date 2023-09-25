@@ -16,27 +16,28 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (descricao_peca LIKE :descricao_peca OR grupo_peca LIKE :grupo_peca ) ";
+	$searchQuery = " AND (descricao LIKE :descricao OR categoria LIKE :categoria OR situacao LIKE :situacao ) ";
     $searchArray = array( 
-        'descricao_peca'=>"%$searchValue%", 
-        'grupo_peca'=>"%$searchValue%"
+        'descricao'=>"%$searchValue%", 
+        'categoria'=>"%$searchValue%",
+        'situacao'=>"%%$searchValue"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM peca_estoque ");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM peca_reparo ");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM peca_estoque WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM peca_reparo WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM peca_estoque LEFT JOIN usuarios ON peca_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM peca_reparo LEFT JOIN usuarios ON peca_reparo.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -53,10 +54,10 @@ $data = array();
 foreach($empRecords as $row){
     
     $data[] = array(
-        "idpeca"=>$row['idpeca'],
-        "descricao_peca"=>($row['descricao_peca']),
+        "id_peca_reparo"=>$row['id_peca_reparo'],
+        "descricao"=>($row['descricao']),
         "un_medida"=>($row['un_medida']),
-        "grupo_peca"=>($row['grupo_peca']),
+        "categoria"=>($row['categoria']),
         "estoque_minimo"=>str_replace(".",",",$row['estoque_minimo']),
         "total_entrada"=>str_replace(".",",",$row['total_entrada']),
         "total_saida"=> str_replace(".",",",$row['total_saida']),
@@ -64,9 +65,8 @@ foreach($empRecords as $row){
         "qtd_inv"=> str_replace(".",",",$row['qtd_inv']) ,
         "valor_total"=>"R$ " . str_replace(".",",",$row['valor_total']) ,
         "situacao"=>($row['situacao']),
-        "data_cadastro"=>date("d/m/Y", strtotime($row['data_cadastro'])) ,
         "nome_usuario"=>($row['nome_usuario']),
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idpeca'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?idPeca='.$row['idpeca'].' " data-id="'.$row['idpeca'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+       
     );
 }
 

@@ -133,7 +133,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                     </div>
                     <?php 
-                    $sqlServicos = $db->prepare("SELECT * FROM saida_estoque LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca WHERE os =:os");
+                    $sqlServicos = $db->prepare("SELECT * FROM saida_estoque LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo WHERE os =:os");
                     $sqlServicos->bindValue(':os', $idOs);
                     $sqlServicos->execute();
                     $dados = $sqlServicos->fetchAll();
@@ -157,12 +157,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-3  ">
                             <label for="peca"> Peça </label>
                             <select required name="peca[]" id="peca" class="form-control">
-                                <option value="<?=$dado['peca_idpeca']?>"><?=$dado['descricao_peca']?></option>
+                                <option value="<?=$dado['peca_idpeca']?>"><?=$dado['descricao']?></option>
                                 <?php $pecas = $db->query("SELECT * FROM peca_estoque");
                                     $pecas = $pecas->fetchAll();
                                     foreach($pecas as $peca):
                                     ?>
-                                    <option value="<?=$peca['idpeca']?>"><?=$peca['idpeca']." - ". $peca['descricao_peca']?></option>
+                                    <option value="<?=$peca['id_peca_reparo']?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao']?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

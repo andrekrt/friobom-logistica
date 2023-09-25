@@ -6,11 +6,11 @@ require("../conexao.php");
 $data = date("d/m/y");
 $token = filter_input(INPUT_GET,"token");
 
-$sql = $db->prepare("SELECT id, token, data_atual, placa, problema, local_reparo, imagem as anexo, GROUP_CONCAT('- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, GROUP_CONCAT('R$ ', desconto) as desconto, solicitacoes_new.situacao, usuario, frete, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token GROUP BY problema, placa");
+$sql = $db->prepare("SELECT id, token, data_atual, placa, problema, local_reparo, imagem as anexo, GROUP_CONCAT(id_peca_reparo, '- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, GROUP_CONCAT('R$ ', desconto) as desconto, solicitacoes_new.situacao, frete, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token GROUP BY problema, placa");
 $sql->bindValue(':token',$token);
 $sql->execute();
-
 $dados=$sql->fetchAll();
+
 foreach($dados as $dado){
     $dataSolic = date("d/m/Y", strtotime($dado['data_atual']));
     $dataAprovacao = date("d/m/Y", strtotime($dado['data_aprovacao']));

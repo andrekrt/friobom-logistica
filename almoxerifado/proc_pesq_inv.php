@@ -37,7 +37,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM inventario_almoxarifado LEFT JOIN usuarios ON inventario_almoxarifado.usuario = usuarios.idusuarios LEFT JOIN peca_estoque ON inventario_almoxarifado.peca = peca_estoque.idpeca WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM inventario_almoxarifado LEFT JOIN usuarios ON inventario_almoxarifado.usuario = usuarios.idusuarios LEFT JOIN peca_reparo ON inventario_almoxarifado.peca = peca_reparo.id_peca_reparo WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -55,9 +55,9 @@ foreach($empRecords as $row){
     $data[] = array(
             "idinventario"=>$row['idinventario'],
             "data"=>date("d/m/Y", strtotime($row['data_inv'])) ,
-            "descricao_peca"=>$row['idpeca']. " - " .$row['descricao_peca'],
+            "descricao_peca"=>$row['id_peca_reparo']. " - " .$row['descricao'],
             "un_medida"=>$row['un_medida'],
-            "grupo_peca"=>$row['grupo_peca'],
+            "grupo_peca"=>$row['categoria'],
             "qtd"=>number_format($row['qtd'],2,",","."),
             "nome_usuario"=>$row['nome_usuario'],
             "acoes"=> '<a href="javascript:void();" data-id="'.$row['idinventario'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '

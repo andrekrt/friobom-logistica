@@ -133,6 +133,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#descricao').val(json.descricao);
                     $('#categoria').val(json.categoria);
                     $('#medida').val(json.un_medida);
+                    $('#estoqueMin').val(json.estoque_minimo);
                 }
             })
         });
@@ -155,7 +156,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="descricao" >Descrição</label>
                             <input type="text" name="descricao" class="form-control" id="descricao" value="">
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="categoria" >Categoria</label>
                             <select name="categoria" id="categoria" class="form-control">
                                 <option value="Terminais da Barra de Direção">Terminais da Barra de Direção</option>
@@ -197,6 +198,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Contrato de manutenção volvo">Contrato de manutenção volvo</option>
                                 <option value="Recapagem">Recapagem</option>
                                 <option value="Parafusos">Parafusos</option>
+                                <option value="Cambio">Cambio</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
@@ -207,6 +209,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Metro">Metro</option>
                                 <option value="Kg">Kg</option>
                             </select>
+                        </div>
+                        <div class="form-group col-md-2 ">
+                            <label for="estoqueMin">Estoque Mínimo</label>
+                            <input type="text" name="estoqueMin" id="estoqueMin" class="form-control">
                         </div>
                     </div>
             </div>
@@ -239,7 +245,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="descricao"> Descrição</label>
                             <input type="text" required name="descricao" class="form-control" id="descricao">
                         </div>
-                        <div class="form-group col-md-4 espaco ">
+                        <div class="form-group col-md-3 espaco ">
                             <label for="categoria"> Categoria </label>
                             <select name="categoria" id="categoria" class="form-control">
                                 <option value=""></option>
@@ -282,9 +288,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Contrato de manutenção volvo">Contrato de manutenção volvo</option>
                                 <option value="Recapagem">Recapagem</option>
                                 <option value="Parafusos">Parafusos</option>
+                                <option value="Cambio">Cambio</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4 espaco ">
+                        <div class="form-group col-md-3 espaco ">
                             <label for="medida"> Unidade de Medida </label>
                             <select name="medida" id="medida" class="form-control">
                                 <option value=""></option>
@@ -293,6 +300,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Metro">Metro</option>
                                 <option value="Kg">Kg</option>
                             </select>
+                        </div>
+                        <div class="form-group col-md-2 espaco">
+                            <label for="estoqueMin">Estoque Mínimo</label>
+                            <input type="text" name="estoqueMin" id="estoqueMin" class="form-control">
                         </div>
                     </div>    
             </div>

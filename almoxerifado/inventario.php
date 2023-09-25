@@ -165,11 +165,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="peca"> Descrição Peça </label>
                             <select required name="peca" id="peca" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
-                                <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". ($peca['descricao_peca']) ?></option>
+                                <option value="<?=$peca['id_peca_reparo']?>"><?= $peca['id_peca_reparo']." - ". ($peca['descricao']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -210,11 +210,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="peca"> Descrição Peça </label>
                                 <select required name="peca[]" id="peca" class="form-control">
                                     <option value=""></option>
-                                    <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                    <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                     $pecas = $pecas->fetchAll();
                                     foreach($pecas as $peca):
                                     ?>
-                                    <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". ($peca['descricao_peca']) ?></option>
+                                    <option value="<?=$peca['id_peca_reparo']?>"><?= $peca['id_peca_reparo']." - ". ($peca['descricao']) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>

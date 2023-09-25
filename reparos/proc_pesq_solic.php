@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -15,15 +16,12 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (placa LIKE :placa OR 
-        motorista LIKE :motorista OR 
-        rota LIKE :rota OR local_reparo LIKE :local_reparo OR situacao LIKE :situacao) ";
+	$searchQuery = " AND (placa LIKE :placa OR motorista LIKE :motorista OR rota LIKE :rota OR local_reparo LIKE :local_reparo ) ";
     $searchArray = array( 
         'placa'=>"%$searchValue%", 
         'motorista'=>"%$searchValue%",
         'rota'=>"%$searchValue%",
-        'local_reparo'=>"%$searchValue%",
-        'situacao'=>"%$searchValue%"
+        'local_reparo'=>"%$searchValue%"
     );
 }
 
@@ -40,7 +38,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT *, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT solicitacoes_new.id, solicitacoes_new.token,solicitacoes_new.data_atual, solicitacoes_new.placa, solicitacoes_new.motorista, solicitacoes_new.rota, solicitacoes_new.problema, solicitacoes_new.local_reparo, solicitacoes_new.situacao, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal, frete, num_nf,nome_usuario FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -57,9 +55,15 @@ $data = array();
 foreach($empRecords as $row){
     $editar ="";
     $excluir="";
-    if($row['situacao']!="Aprovado"){
-       $editar= ' <a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>'; 
-       $excluir=' <a href="excluir.php?token='.$row['token'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a> ';
+    $imprimir="";
+    
+    if( $_SESSION['tipoUsuario']==4){
+        $excluir=' <a href="excluir.php?token='.$row['token'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a> ';
+    }
+    if($row['situacao']==="Aprovado"){
+        $imprimir=' <a class="btn btn-secondary  btn-sm" href="gerar-pdf.php?token='.$row['token'].'">Imprimir</a>';
+    }elseif($row['situacao'!="Aprovado"]){
+        $editar= ' <a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>'; 
     }
     $data[] = array(
         "token"=>$row['token'],
@@ -76,7 +80,7 @@ foreach($empRecords as $row){
         "nf"=> $row['num_nf'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> $editar . $excluir
+        "acoes"=>$imprimir . $editar . $excluir   
     );
 }
 

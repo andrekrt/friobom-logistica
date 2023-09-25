@@ -32,7 +32,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $fornecedor=$_POST['fornecedor'];
     
     $obs = filter_input(INPUT_POST, 'obs')?filter_input(INPUT_POST, 'obs'):null;
-    $situacao = filter_input(INPUT_POST, 'situacao')?filter_input(INPUT_POST, 'situacao'):"Em análise";
+    $situacao = filter_input(INPUT_POST, 'situacao');
     if($situacao=='Aprovado'){
         $dataAprovacao = date('Y/m/d');
     }else{
@@ -63,20 +63,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':dataAprovacao', $dataAprovacao);
         $sql->bindValue(':obs', $obs);
         $sql->bindValue(':id', $idSolicitacao[$i]);
+        $sql->execute();
 
-        if($sql->execute()){
-            if($situacao==="Aprovado" && $placa==='Estoque'){
-                addEstoque($peca[$i],$fornecedor[$i],$qtd[$i], $vlUnit[$i], $desconto[$i], $valorTotal, $nf, $obs,  $frete, $idUsuario);
-                // echo "entrou no aprovado e estoque";
-            }
-            echo "<script> alert('Solicitação Atualizada!')</script>";
-            echo "<script> window.location.href='solicitacoes.php' </script>"; 
-        }else{
-            print_r($sql->errorInfo());
-        }
+        // echo 'ID:'.$idSolicitacao[$i].' Situação:' .$situacao . "<br>";
 
     }
 
+    echo "<script> alert('Solicitação Atualizada!')</script>";
+    echo "<script> window.location.href='solicitacoes.php' </script>"; 
 }
 
 ?>

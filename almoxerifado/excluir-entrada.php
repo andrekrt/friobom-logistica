@@ -2,6 +2,7 @@
 
 session_start();
 require("../conexao.php");
+include('funcoes.php');
 
 $idModudulo = 11;
 $idUsuario = $_SESSION['idUsuario'];
@@ -16,10 +17,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'idEntrada');
 
+    //pegar a peça
+    $sqlPeca= $db->prepare("SELECT peca_idpeca FROM entrada_estoque WHERE identrada_estoque=:idEntrada");
+    $sqlPeca->bindValue(':idEntrada', $id);
+    $sqlPeca->execute();
+    $peca=$sqlPeca->fetch();
+    $peca=$peca['peca_idpeca'];
+
     $delete = $db->prepare("DELETE FROM entrada_estoque WHERE identrada_estoque = :idEntrada ");
     $delete->bindValue(':idEntrada', $id);
 
     if($delete->execute()){
+        atualizaEStoque($peca);
         echo "<script> alert('Excluído com Sucesso!')</script>";
         echo "<script> window.location.href='entradas.php' </script>";
     }else{

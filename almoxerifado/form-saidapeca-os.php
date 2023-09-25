@@ -115,11 +115,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="peca"> Peça </label>
                                 <select required name="peca[]" id="peca" class="form-control">
                                     <option value=""></option>
-                                    <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                    <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                         $pecas = $pecas->fetchAll();
                                         foreach($pecas as $peca):
                                         ?>
-                                        <option value="<?=$peca['idpeca']?>"><?=$peca['idpeca']." - ". $peca['descricao_peca']?></option>
+                                        <option value="<?=$peca['id_peca_reparo']?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao']?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -173,7 +173,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $('#add-peca').click(function(){
             cont++;
 
-            $('#formulario').append('<div class="form-row"><div class="form-group col-md-3 "> <label for="servico"> Serviço </label> <select required name="servico[]" id="servico" class="form-control"> <option value=""></option> <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado"); $servicos = $servicos->fetchAll(); foreach($servicos as $servico): ?> <option value="<?=$servico['idservicos']?>"><?=$servico['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3  "> <label for="peca"> Peça </label> <select required name="peca[]" id="peca" class="form-control"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_estoque"); $pecas = $pecas->fetchAll();foreach($pecas as $peca): ?> <option value="<?=$peca['idpeca']?>"><?=$peca['idpeca']." - ". $peca['descricao_peca']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 "> <label for="qtd"> Qtd </label> <input type="text" name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-group col-md-2 "> <label for="requisicao"> Nº Requisição de Peça </label> <input type="text" name="requisicao[]" id="requisicao" class="form-control"> </div>  </div>');
+            $('#formulario').append('<div class="form-row"><div class="form-group col-md-3 "> <label for="servico"> Serviço </label> <select required name="servico[]" id="servico" class="form-control"> <option value=""></option> <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado"); $servicos = $servicos->fetchAll(); foreach($servicos as $servico): ?> <option value="<?=$servico['idservicos']?>"><?=$servico['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3  "> <label for="peca"> Peça </label> <select required name="peca[]" id="peca" class="form-control"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_reparo"); $pecas = $pecas->fetchAll();foreach($pecas as $peca): ?> <option value="<?=$peca['id_peca_reparo']?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 "> <label for="qtd"> Qtd </label> <input type="text" name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-group col-md-2 "> <label for="requisicao"> Nº Requisição de Peça </label> <input type="text" name="requisicao[]" id="requisicao" class="form-control"> </div>  </div>');
 
         });
 

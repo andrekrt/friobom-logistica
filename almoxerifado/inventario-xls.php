@@ -15,7 +15,7 @@ $result = $sqlPerm->fetchColumn();
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idinventario, data_inv, CONCAT(idpeca,' - ', descricao_peca) as peca, grupo_peca, un_medida, qtd, nome_usuario FROM inventario_almoxarifado LEFT JOIN usuarios ON inventario_almoxarifado.usuario = usuarios.idusuarios LEFT JOIN peca_estoque ON inventario_almoxarifado.peca = peca_estoque.idpeca");
+    $sql = $db->query("SELECT idinventario, data_inv, CONCAT(id_peca_reparo,' - ', descricao) as peca, categoria, un_medida, qtd, nome_usuario FROM inventario_almoxarifado LEFT JOIN usuarios ON inventario_almoxarifado.usuario = usuarios.idusuarios LEFT JOIN peca_reparo ON inventario_almoxarifado.peca = peca_reparo.id_peca_reparo");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=inventario.csv');

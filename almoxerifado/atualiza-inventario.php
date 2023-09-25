@@ -24,7 +24,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $atualiza->bindValue(':id', $idinventario);
 
     if($atualiza->execute()){
-        $atualizaEstoque = $db->prepare("UPDATE peca_estoque SET qtd_inv = :qtd WHERE idpeca = :idpeca ");
+        $atualizaEstoque = $db->prepare("UPDATE peca_reparo SET qtd_inv = :qtd WHERE id_peca_reparo = :idpeca ");
         $atualizaEstoque->bindValue(':idpeca', $peca);
         $atualizaEstoque->bindValue(':qtd', $qtd);
         if($atualizaEstoque->execute()){

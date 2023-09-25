@@ -57,9 +57,12 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
-    $acoes= '' ;
+    $atualiza='';
+    $excluir= '' ;
+    $imprimir = ' <a class=" icon-acoes" target="_blank" href="ficha-ordemservico.php?id='.$row['idordem_servico'].' " data-id="'.$row['idordem_servico'].'"  class="btn btn-danger btn-sm deleteBtn" ><img src="../assets/images/icones/print.png" ></a>';
     if($row['situacao']!='Encerrada'):
-        $acoes = '<a class=" icon-acoes" target="_blank" href="ficha-ordemservico.php?id='.$row['idordem_servico'].' " data-id="'.$row['idordem_servico'].'"  class="btn btn-danger btn-sm deleteBtn" ><img src="../assets/images/icones/print.png" ></a>  <a class="icon-acoes" href="excluir-ordemservico.php?idordemServico='.$row['idordem_servico'].' " data-id="'.$row['idordem_servico'].'"  class="btn btn-danger btn-sm deleteBtn" ><img src="../assets/images/icones/delete.png" ></a> ';
+        $excluir = ' <a class="icon-acoes" href="excluir-ordemservico.php?idordemServico='.$row['idordem_servico'].' " data-id="'.$row['idordem_servico'].'"  class="btn btn-danger btn-sm deleteBtn" ><img src="../assets/images/icones/delete.png" ></a> ';
+        $atualiza =  ' <a  href="form-edit-os.php?idOs='.$row['idordem_servico'].'"  data-id="'.$row['idordem_servico'].'"  class="editbtn icon-acoes" ><img src="../assets/images/icones/update.png" alt=""></a> ';
     endif;
     $data[] = array(
             "idordem_servico"=>$row['idordem_servico'],
@@ -77,7 +80,7 @@ foreach($empRecords as $row){
             "num_nf"=>$row['num_nf'],
             "obs"=>$row['obs'],
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a  href="form-edit-os.php?idOs='.$row['idordem_servico'].'"  data-id="'.$row['idordem_servico'].'"  class="editbtn icon-acoes" ><img src="../assets/images/icones/update.png" alt=""></a> ' . $acoes
+            "acoes"=>$imprimir . $atualiza. $excluir
         );
 }
 

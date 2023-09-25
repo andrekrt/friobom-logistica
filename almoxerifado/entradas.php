@@ -80,6 +80,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Peça</th>
                                 <th scope="col" class="text-center text-nowrap"> Preço </th>
                                 <th scope="col" class="text-center text-nowrap"> Quantidade </th>
+                                <th scope="col" class="text-center text-nowrap"> Frete </th>
                                 <th scope="col" class="text-center text-nowrap"> Desconto </th>
                                 <th scope="col" class="text-center text-nowrap"> Observações </th>
                                 <th scope="col" class="text-center text-nowrap"> Fornecedor </th>
@@ -118,6 +119,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'descricao_peca' },
                     { data: 'preco_custo' },
                     { data: 'qtd' },
+                    { data: 'frete'},
                     { data: 'desconto' },
                     { data: 'obs' },
                     { data: 'apelido' },
@@ -129,7 +131,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[12]}
+                    {'bSortable':false, 'aTargets':[13]}
                 ],
             });
         });
@@ -158,7 +160,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#qtd').val(json.qtd);
                     $('#desconto').val(json.desconto);
                     $('#obs').val(json.obs);
-                    $('#fornecedor').val(json.fornecedor);                    
+                    $('#fornecedor').val(json.fornecedor);      
+                    $('#frete').val(json.frete);              
                 }
             })
         });
@@ -196,11 +199,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-5">
                             <label for="peca" class="col-form-label"> Peça </label>
                             <select required name="peca" id="pecaEdit" class="form-control">
-                                <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
-                                <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". $peca['descricao_peca']?></option>
+                                <option value="<?=$peca['id_peca_reparo']?>"><?= $peca['id_peca_reparo']." - ". $peca['descricao']?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -218,9 +221,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="desconto" class="col-form-label">Desconto</label>
                             <input type="text" class="form-control" name="desconto" id="desconto" value="">
                         </div>
-                        <div class="form-group col-md-3">
-                            <label for="totalComprado" class="col-form-label">Total</label>
-                            <input type="text" readonly class="form-control" name="totalComprado" id="totalComprado" value="">
+                        <div class="form-group col-md-2 ">
+                            <label for="frete"  class="col-form-label"> Frete </label>
+                            <input type="text" required name="frete" class="form-control" id="frete">
                         </div>
                     </div>
                     <div class="form-row">
@@ -284,27 +287,31 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="peca"> Peça </label>
                             <select required name="peca" id="pecaCad" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
-                                <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". $peca['descricao_peca']?></option>
+                                <option value="<?=$peca['id_peca_reparo']?>"><?= $peca['id_peca_reparo']." - ". $peca['descricao']?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4 espaco">
+                        <div class="form-group col-md-3 espaco">
                             <label for="preco"> Preço de Custo </label>
                             <input type="text" required name="preco" class="form-control" id="preco02">
                         </div>
-                        <div class="form-group col-md-4 espaco">
+                        <div class="form-group col-md-3 espaco">
                             <label for="qtd"> Quantidade </label>
                             <input type="text" required name="qtd" class="form-control" id="qtd02">
                         </div>
-                        <div class="form-group col-md-4 espaco">
+                        <div class="form-group col-md-3 espaco">
                             <label for="desconto"> Desconto </label>
                             <input type="text" required name="desconto" class="form-control" id="desconto02">
+                        </div>
+                        <div class="form-group col-md-3 espaco">
+                            <label for="frete"> Frete </label>
+                            <input type="text" required name="frete" class="form-control" id="frete02">
                         </div>
                     </div>
                     <div class="form-row">
@@ -343,9 +350,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $("#preco").mask('###0,00', {reverse: true});
         $("#desconto").mask('###0,00', {reverse: true});
         $("#qtd").mask('###0,00', {reverse: true});
+        $("#frete").mask('###0,00', {reverse: true});
         $("#preco02").mask('###0,00', {reverse: true});
         $("#desconto02").mask('###0,00', {reverse: true});
         $("#qtd02").mask('###0,00', {reverse: true});
+        $("#frete02").mask('###0,00', {reverse: true});
     })
 
     $(document).ready(function(){

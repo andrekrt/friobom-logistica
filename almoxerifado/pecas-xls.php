@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require("../conexao-on.php");
+require("../conexao.php");
 
 $idModudulo = 11;
 $idUsuario = $_SESSION['idUsuario'];
@@ -14,8 +14,9 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
-    $db->exec("set names utf8");
-    $sql = $db->query("SELECT idpeca, descricao_peca, un_medida, grupo_peca, estoque_minimo, total_entrada, total_saida, total_estoque, valor_total, situacao, data_cadastro, nome_usuario FROM `peca_estoque` LEFT JOIN usuarios ON peca_estoque.id_usuario = usuarios.idusuarios");
+    // $db->exec("set names utf8");
+    $sql = $db->prepare("SELECT id_peca_reparo, descricao, un_medida, categoria, estoque_minimo, total_entrada, total_saida, total_estoque, valor_total, situacao, nome_usuario FROM peca_reparo LEFT JOIN usuarios ON peca_reparo.usuario = usuarios.idusuarios");
+    $sql->execute();
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=estoque.csv');
@@ -33,7 +34,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         "Total Estoque",
         "Total Comprado",
         mb_convert_encoding('Situação','ISO-8859-1', 'UTF-8'),
-        "Data Cadastro",
         mb_convert_encoding('Usuário que Cadastrou','ISO-8859-1', 'UTF-8')
     ];
     

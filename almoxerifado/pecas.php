@@ -61,7 +61,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="menu-principal">
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalPeca" data-whatever="@mdo" name="idpeca">Nova Peça</button>
+                        <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalPeca" data-whatever="@mdo" name="idpeca">Nova Peça</button> -->
                     </div>
                     <a href="pecas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>    
                 </div>
@@ -80,9 +80,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap"> Estoque Inventário </th>
                                 <th scope="col" class="text-center text-nowrap"> Total Comprado </th>
                                 <th scope="col" class="text-center text-nowrap"> Situação </th>
-                                <th scope="col" class="text-center text-nowrap"> Data Cadastro </th>
                                 <th scope="col" class="text-center text-nowrap"> Lançado  </th>
-                                <th scope="col" class="text-center text-nowrap"> Ações  </th>
+                                
                             </tr>
                         </thead>
                     </table>
@@ -109,10 +108,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_pecas.php'
                 },
                 'columns': [
-                    { data: 'idpeca' },
-                    { data: 'descricao_peca' },
+                    { data: 'id_peca_reparo' },
+                    { data: 'descricao' },
                     { data: 'un_medida' },
-                    { data: 'grupo_peca' },
+                    { data: 'categoria' },
                     { data: 'estoque_minimo' },
                     { data: 'total_entrada' },
                     { data: 'total_saida' },
@@ -120,16 +119,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'qtd_inv' },
                     { data: 'valor_total' },
                     { data: 'situacao' },
-                    { data: 'data_cadastro' },
                     { data: 'nome_usuario' },
-                    { data: 'acoes' },
+                    
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
-                "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[12]}
-                ],
+                
             });
         });
 
@@ -217,6 +213,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Chaves Mecânicas">Chaves Mecânicas</option>
                                 <option value="Chaves Refrigeração"> Chaves Refrigeração</option>
                                 <option value="Parafusos">Parafusos</option>
+                                <option value="Pneus">Pneus</option>
+                                <option value="Alinhamento">Alinhamento</option>
+                                <option value="Motor">Motor</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
@@ -319,6 +318,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Chaves Mecânicas">Chaves Mecânicas</option>
                                 <option value="Chaves Refrigeração"> Chaves Refrigeração</option>
                                 <option value="Parafusos">Parafusos</option>
+                                <option value="Pneus">Pneus</option>
+                                <option value="Alinhamento">Alinhamento</option>
+                                <option value="Motor">Motor</option>
+                                <option value="Balanceamento">Balanceamento</option>
+                                <option value="Bateria">Bateria</option>
+                                <option value="Baú">Baú</option>
+                                <option value="Freios">Freios</option>
+                                <option value="Lanternagem">Lanternagem</option>
+                                <option value="Válvulas">Válvulas</option>
+                                <option value="Rolamentos">Rolamentos</option>
+                                <option value="Outros">Outros</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2 espaco ">

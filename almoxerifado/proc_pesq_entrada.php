@@ -30,13 +30,13 @@ $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM entrada_estoque LEFT JOIN peca_estoque ON entrada_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM entrada_estoque LEFT JOIN peca_reparo ON entrada_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM entrada_estoque LEFT JOIN peca_estoque ON entrada_estoque.peca_idpeca = peca_estoque.idpeca LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM entrada_estoque LEFT JOIN peca_reparo ON entrada_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -56,15 +56,16 @@ foreach($empRecords as $row){
             "data_nf"=>date("d/m/Y", strtotime($row['data_nf'])),
             "num_nf"=>$row['num_nf'],
             "num_pedido"=>$row['num_pedido'],
-            "descricao_peca"=>$row['idpeca']. " - ". $row['descricao_peca'],
+            "descricao_peca"=>$row['id_peca_reparo']. " - ". $row['descricao'],
             "preco_custo"=>"R$ " . str_replace(".",",",$row['preco_custo']),
             "qtd"=> str_replace(".",",",$row['qtd']),
+            "frete"=>str_replace(".",",",$row['frete']),
             "desconto"=>"R$ " . str_replace(".",",",$row['desconto']) ,
             "obs"=>$row['obs'] ,
             "apelido"=>$row['apelido'],
-            "vl_total_comprado"=>"R$ " . str_replace(".",",",$row['vl_total_comprado']) ,
+            "vl_total_comprado"=>"R$ " . number_format($row['vl_total_comprado'],2,",",".") ,
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['identrada_estoque'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-entrada.php?idEntrada='.$row['identrada_estoque'].' " data-id="'.$row['identrada_estoque'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['identrada_estoque'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-entrada.php?idEntrada='.$row['identrada_estoque'].' " data-id="'.$row['identrada_estoque'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm('."Tem certeza de que deseja excluir este item?".')">Deletar</a>'
         );
 }
 

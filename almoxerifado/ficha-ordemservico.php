@@ -82,7 +82,7 @@ $estilo = "
 // ");
 
 //$mpdf->Output();
-$consulta = $db->prepare("SELECT * FROM ordem_servico LEFT JOIN saida_estoque ON ordem_servico.idordem_servico = saida_estoque.os LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_estoque ON saida_estoque.peca_idpeca = peca_estoque.idpeca WHERE idordem_servico = :idOrdemServico");
+$consulta = $db->prepare("SELECT servicos_almoxarifado.descricao as servico,  servicos_almoxarifado.categoria as categoria, peca_reparo.descricao as peca, qtd FROM ordem_servico LEFT JOIN saida_estoque ON ordem_servico.idordem_servico = saida_estoque.os LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo WHERE idordem_servico = :idOrdemServico");
 $consulta->bindValue(':idOrdemServico', $idOrdemServico);
 $consulta->execute();
 $pecas = $consulta->fetchAll();
@@ -122,9 +122,9 @@ $html = "
     </tr>";
     foreach($pecas as $peca):
     $html .=  "<tr>";
-    $html .=  "<td>$peca[descricao] </td>";
+    $html .=  "<td>$peca[servico] </td>";
     $html .=  "<td>$peca[categoria] </td>";
-    $html .=  "<td>$peca[descricao_peca] </td>";
+    $html .=  "<td>$peca[peca] </td>";
     $html .=  "<td>$peca[qtd] </td>";
     $html .=  "</tr>";
     endforeach;
