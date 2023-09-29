@@ -57,6 +57,7 @@ $data = array();
 foreach($empRecords as $row){
     $assinar="";
     $imprimir = "";
+    $excluir="";
     if(is_dir('uploads/'.$row['iddespesas'])){
         $fotos='<a target="_blank" href="http://192.168.10.32/logistica/controle-despesas/uploads/'.$row['iddespesas'].'">Fotos</a>';
     }else{

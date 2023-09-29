@@ -144,13 +144,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="lt1Abast">Litros 1º Abast. Externo</label>
                                 <input type="text" required name="lt1Abast" class="form-control" id="lt1Abast">
                             </div>
-                            <div class="form-group col-md-3 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="vl1Abast">Valor 1º Abastescimento Externo</label>
                                 <input type="text" name="vl1Abast" class="form-control" id="vl1Abast">
                             </div>
-                            <div class="form-group col-md-4 espaco">
+                            <div class="form-group col-md-3 espaco">
                                 <label for="local1Abast">Posto / Cidade 1º Abastecimento Externo</label>
                                 <input type="text" name="local1Abast" class="form-control" id="local1Abast">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="nf1Abast">Nº NF 1º Abastecimento</label>
+                                <input type="text" name="nf1Abast" class="form-control" id="nf1Abast">
                             </div>
                         </div>
                         <div class="form-row">
@@ -162,13 +166,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="lt2Abast">Litros 2º Abastescimento Externo</label>
                                 <input type="text" name="lt2Abast" class="form-control" id="lt2Abast">
                             </div>
-                            <div class="form-group col-md-3 espaco">
+                            <div class="form-group col-md-32 espaco">
                                 <label for="vl2Abast">Valor 2º Abastescimento Externo</label>
                                 <input type="text" name="vl2Abast" class="form-control" id="vl2Abast">
                             </div>
-                            <div class="form-group col-md-4 espaco">
+                            <div class="form-group col-md-3 espaco">
                                 <label for="local2Abast">Posto / Cidade 2º Abastecimento Externo</label>
                                 <input type="text" name="local2Abast" class="form-control" id="local2Abast">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="nf2Abast">Nº NF 2º Abastecimento</label>
+                                <input type="text" name="nf2Abast" class="form-control" id="nf2Abast">
                             </div>
                         </div>
                         <div class="form-row">
@@ -180,13 +188,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="lt3Abast">Litros 3º Abastescimento Externo</label>
                                 <input type="text" name="lt3Abast" class="form-control" id="lt3Abast">
                             </div>
-                            <div class="form-group col-md-3 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="vl3Abast">Valor 3º Abastescimento Externo</label>
                                 <input type="text" name="vl3Abast" class="form-control" id="vl3Abast">
                             </div>
-                            <div class="form-group col-md-4 espaco">
+                            <div class="form-group col-md-3 espaco">
                                 <label for="local3Abast">Posto / Cidade 3º Abastecimento Externo</label>
                                 <input type="text" name="local3Abast" class="form-control" id="local3Abast">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="nf3Abast">Nº NF 3º Abastecimento</label>
+                                <input type="text" name="nf3Abast" class="form-control" id="nf3Abast">
                             </div>
                         </div>
                         <div class="form-row">

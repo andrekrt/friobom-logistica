@@ -56,6 +56,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $hrTk1Abast = filter_input(INPUT_POST, 'hrKm1Abast')?filter_input(INPUT_POST, 'hrKm1Abast'):0;
     $lt1Abast = floatval( str_replace(",",".", filter_input(INPUT_POST, 'lt1Abast')));
     $vl1Abast = floatval( str_replace(",",".",filter_input(INPUT_POST, 'vl1Abast')) );
+    $nf1Abast = filter_input(INPUT_POST, 'nf1Abast');
     if($km1Abast==0 || $km1Abast==" "){
         $km1Perc = 0;
     }else{
@@ -80,6 +81,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $hrTk2Abast =intval(filter_input(INPUT_POST, 'hrKm2Abast'));
     $lt2Abast = filter_input(INPUT_POST, 'lt2Abast')?floatval( str_replace(",",".", filter_input(INPUT_POST, 'lt2Abast'))):0;
     $vl2Abast = floatval( str_replace(",",".",filter_input(INPUT_POST, 'vl2Abast')) );
+    $nf2Abast = filter_input(INPUT_POST, 'nf2Abast');
     if($km2Abast==0 || $km2Abast==" "){
         $km2Perc = 0;
     }else{
@@ -104,6 +106,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $hrTk3Abast = intval(filter_input(INPUT_POST, 'hrKm3Abast'));
     $lt3Abast = filter_input(INPUT_POST, 'lt3Abast')?floatval(str_replace(",",".", filter_input(INPUT_POST, 'lt3Abast'))):0;
     $vl3Abast = floatval( str_replace(",",".",filter_input(INPUT_POST, 'vl3Abast')) );
+    $nf3Abast = filter_input(INPUT_POST, 'nf3Abast');
     if($km3Abast==0 || $km3Abast==" "){
         $km3Perc = 0;
     }else{
@@ -247,22 +250,108 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $consultaRota = $db->query("SELECT * FROM rotas WHERE cod_rota = '$codRota'");
     
    if($consultaVeiculo->rowCount()>0 && $consultaMotorista->rowCount()>0 && $consultaRota->rowCount()>0){
-        $sql = $db->query("INSERT INTO viagem (cod_interno_veiculo, tipo_veiculo, placa_veiculo, cod_interno_motorista, nome_motorista, data_carregamento, num_carregemento, data_saida, data_chegada, dias_em_rota, cod_rota, nome_rota, valor_transportado, valor_devolvido, valor_liquido, qtd_entregas, num_carga, peso_carga, km_saida, hr_tk_saida, km_abast1, hr_tk_abast1, lt_abast1, valor_abast1, km_perc1, km_pec1_tk, kmPorLtSemTk, km_abast2, hr_tk_abast2, lt_abast2, valor_abast2, km_perc2, km_pec2_tk_, kmPorLtSemTk2, km_abast3, hr_tk_abast3, lt_abast3, valor_abast3, km_perc3, km_pec3_tk, kmPorLtSemTk3, km_abast4, hr_tk_abast4, lt_abast4, valor_abast4, km_perc4, km_perc4_tk, kmPorLtSemTk4, km_rodado, km_final, litros, mediaSemTk, consumo_tk, media_comtk, valor_total_abast, diarias_motoristas, dias_motorista, diarias_ajudante, dias_ajudante, diarias_chapa, dias_chapa,  outros_gastos_ajudante,  tomada, descarga, travessia, outros_servicos, nome_ajudante, chapa01, chapa02, localAbast1, localAbast2, localAbast3, localAbast4, custo_entrega, nota_carga, obs_carga, idusuarios) VALUES ('$codVeiculo', '$tipoVeiculo', '$placaVeiculo', '$codMotorista', '$nomeMotorista','$dataCarragemento', '$numCarregamento', '$dataSaida', '$dataChegada', '$diasEmRota', '$codRota', '$rota', '$vlTransp', '$vlDev', '$vlLiq', '$qtdEntregas', '$cargas', '$pesoCarga', '$kmSaida', '$hrTkSaida', '$km1Abast', '$hrTk1Abast', '$lt1Abast', '$vl1Abast', '$km1Perc', '$tk1Perc', '$kmPorLtSemtK', '$km2Abast', '$hrTk2Abast', '$lt2Abast', '$vl2Abast', '$km2Perc', '$tk2Perc', '$kmPorLtSemtK2', '$km3Abast', '$hrTk3Abast', '$lt3Abast', '$vl3Abast', '$km3Perc', '$tk3Perc', '$kmPorLtSemtK3', '$km4Abast', '$hrTk4Abast', '$lt4Abast', '$vl4Abast', '$km4Perc', '$percTk', '$kmPorLtSemtK4', '$kmRodado', '$kmFinal', '$litrosTotal', '$mediaSemTk', '$consumoTotalTk', '$mediaTk', '$valorTotalAbast', '$diariaMotorista', '$diasRotaMotorista', '$diariaAjudante', '$diasRotaAjudante', '$diariaChapa', '$diasRotaChapa', '$gastosAjudante', '$tomada', '$descarga', '$travessia', '$servicos', '$nomeAjudante', '$chapa01', '$chapa02', '$localAbast1', '$localAbast2', '$localAbast3', '$localAbast4', '$custoEntrega', '$classificacao', '$obs', '$idUsuario')");
-        $ultimoId = $db->lastInsertId();
+        $sql = $db->prepare("INSERT INTO viagem (cod_interno_veiculo, tipo_veiculo, placa_veiculo, cod_interno_motorista, nome_motorista, data_carregamento, num_carregemento, data_saida, data_chegada, dias_em_rota, cod_rota, nome_rota, valor_transportado, valor_devolvido, valor_liquido, qtd_entregas, num_carga, peso_carga, km_saida, hr_tk_saida, km_abast1, hr_tk_abast1, lt_abast1, valor_abast1, km_perc1, km_pec1_tk, kmPorLtSemTk, km_abast2, hr_tk_abast2, lt_abast2, valor_abast2, km_perc2, km_pec2_tk_, kmPorLtSemTk2, km_abast3, hr_tk_abast3, lt_abast3, valor_abast3, km_perc3, km_pec3_tk, kmPorLtSemTk3, km_abast4, hr_tk_abast4, lt_abast4, valor_abast4, km_perc4, km_perc4_tk, kmPorLtSemTk4, km_rodado, km_final, litros, mediaSemTk, consumo_tk, media_comtk, valor_total_abast, diarias_motoristas, dias_motorista, diarias_ajudante, dias_ajudante, diarias_chapa, dias_chapa,  outros_gastos_ajudante,  tomada, descarga, travessia, outros_servicos, nome_ajudante, chapa01, chapa02, localAbast1, localAbast2, localAbast3, localAbast4, custo_entrega, nota_carga, obs_carga, idusuarios, nf1abast, nf2abast, nf3abast) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :codMotorista, :nomeMotorista,:dataCarragemento, :numCarregamento, :dataSaida, :dataChegada, :diasEmRota, :codRota, :rota, :vlTransp, :vlDev, :vlLiq, :qtdEntregas, :cargas, :pesoCarga, :kmSaida, :hrTkSaida, :km1Abast, :hrTk1Abast, :lt1Abast, :vl1Abast, :km1Perc, :tk1Perc, :kmPorLtSemtK, :km2Abast, :hrTk2Abast, :lt2Abast, :vl2Abast, :km2Perc, :tk2Perc, :kmPorLtSemtK2, :km3Abast, :hrTk3Abast, :lt3Abast, :vl3Abast, :km3Perc, :tk3Perc, :kmPorLtSemtK3, :km4Abast, :hrTk4Abast, :lt4Abast, :vl4Abast, :km4Perc, :kmPorLtSemtK4, :kmPorLtSemtK4, :kmRodado, :kmFinal, :litrosTotal, :mediaSemTk, :consumoTotalTk, :mediaTk, :valorTotalAbast, :diariaMotorista, :diasRotaMotorista, :diariaAjudante, :diasRotaAjudante, :diariaChapa, :diasRotaChapa, :gastosAjudante, :tomada, :descarga, :travessia, :servicos, :nomeAjudante, :chapa01, :chapa02, :localAbast1, :localAbast2, :localAbast3, :localAbast4, :custoEntrega, :classificacao, :obs, :idUsuario, :nf1Abast, :nf2Abast, :nf3Abast)");
+        $sql->bindValue(':codVeiculo', $codVeiculo);
+        $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
+        $sql->bindValue(':placaVeiculo', $placaVeiculo);
+        $sql->bindValue(':codMotorista', $codMotorista);
+        $sql->bindValue(':nomeMotorista', $nomeMotorista);
+        $sql->bindValue(':dataCarragemento', $dataCarragemento);
+        $sql->bindValue(':numCarregamento', $numCarregamento);
+        $sql->bindValue(':dataSaida', $dataSaida);
+        $sql->bindValue(':dataChegada', $dataChegada);
+        $sql->bindValue(':diasEmRota', $diasEmRota);
+        $sql->bindValue(':codRota', $codRota);
+        $sql->bindValue(':rota', $rota);
+        $sql->bindValue(':vlTransp', $vlTransp);
+        $sql->bindValue(':vlDev', $vlDev);
+        $sql->bindValue(':vlLiq', $vlLiq);
+        $sql->bindValue(':qtdEntregas', $qtdEntregas);
+        $sql->bindValue(':cargas', $cargas);
+        $sql->bindValue(':pesoCarga', $pesoCarga);
+        $sql->bindValue(':kmSaida', $kmSaida);
+        $sql->bindValue(':hrTkSaida', $hrTkSaida);
+        $sql->bindValue(':km1Abast', $km1Abast);
+        $sql->bindValue(':hrTk1Abast', $hrTk1Abast);
+        $sql->bindValue(':lt1Abast', $lt1Abast);
+        $sql->bindValue(':vl1Abast', $vl1Abast);
+        $sql->bindValue(':km1Perc', $km1Perc);
+        $sql->bindValue(':tk1Perc', $tk1Perc);
+        $sql->bindValue(':kmPorLtSemtK', $kmPorLtSemtK);
+        
+        $sql->bindValue(':km2Abast', $km2Abast);
+        $sql->bindValue(':hrTk2Abast', $hrTk2Abast);
+        $sql->bindValue(':lt2Abast', $lt2Abast);
+        $sql->bindValue(':vl2Abast', $vl2Abast);
+        $sql->bindValue(':km2Perc', $km2Perc);
+        $sql->bindValue(':tk2Perc', $tk2Perc);
+        $sql->bindValue(':kmPorLtSemtK2', $kmPorLtSemtK2);
 
-        $kmAtual = $db->prepare("UPDATE veiculos SET km_atual = :kmFinal WHERE cod_interno_veiculo = :codVeiculo ");
-        $kmAtual->bindValue(':kmFinal', $kmFinal);
-        $kmAtual->bindValue(':codVeiculo', $codVeiculo);
-        $kmAtual->execute();
+        $sql->bindValue(':km3Abast', $km3Abast);
+        $sql->bindValue(':hrTk3Abast', $hrTk3Abast);
+        $sql->bindValue(':lt3Abast', $lt3Abast);
+        $sql->bindValue(':vl3Abast', $vl3Abast);
+        $sql->bindValue(':km3Perc', $km3Perc);
+        $sql->bindValue(':tk3Perc', $tk3Perc);
+        $sql->bindValue(':kmPorLtSemtK3', $kmPorLtSemtK3);
 
-        $hrTkAtual = $db->prepare("UPDATE thermoking SET hora_atual = :hrTkAtual WHERE veiculo = :veiculo");
-        $hrTkAtual->bindValue(':hrTkAtual', $hrTk4Abast);
-        $hrTkAtual->bindValue(':veiculo', $codVeiculo);
-        $hrTkAtual->execute();
+        $sql->bindValue(':km4Abast', $km4Abast);
+        $sql->bindValue(':hrTk4Abast', $hrTk4Abast);
+        $sql->bindValue(':lt4Abast', $lt4Abast);
+        $sql->bindValue(':vl4Abast', $vl4Abast);
+        $sql->bindValue(':km4Perc', $km4Perc);
+        $sql->bindValue(':tk4Perc', $tk4Perc);
+        $sql->bindValue(':kmPorLtSemtK4', $kmPorLtSemtK4);
 
-        calculoTk($codVeiculo);
+       
+        $sql->bindValue(':kmRodado', $kmRodado);
+        $sql->bindValue(':kmFinal', $kmFinal);
+        $sql->bindValue(':litrosTotal', $litrosTotal);
+        $sql->bindValue(':mediaSemTk', $mediaSemTk);
+        $sql->bindValue(':consumoTotalTk', $consumoTotalTk);
+        $sql->bindValue(':mediaTk', $mediaTk);
+        $sql->bindValue(':valorTotalAbast', $valorTotalAbast);
+        $sql->bindValue(':diariaMotorista', $diariaMotorista);
+        $sql->bindValue(':diasRotaMotorista', $diasRotaMotorista);
+        $sql->bindValue(':diariaAjudante', $diariaAjudante);
+        $sql->bindValue(':diasRotaAjudante', $diasRotaAjudante);
+        $sql->bindValue(':diariaChapa', $diariaChapa);
+        $sql->bindValue(':diasRotaChapa', $diasRotaChapa);
+        $sql->bindValue(':gastosAjudante', $gastosAjudante);
+        $sql->bindValue(':tomada', $tomada);
+        $sql->bindValue(':descarga', $descarga);
+        $sql->bindValue(':travessia', $travessia);
+        $sql->bindValue(':servicos', $servicos);
+        $sql->bindValue(':nomeAjudante', $nomeAjudante);
+        $sql->bindValue(':chapa01', $chapa01);
+        $sql->bindValue(':chapa02', $chapa02);
+        $sql->bindValue(':localAbast1', $localAbast1);
+        $sql->bindValue(':localAbast2', $localAbast2);
+        $sql->bindValue(':localAbast3', $localAbast3);
+        $sql->bindValue(':localAbast4', $localAbast4);
+        $sql->bindValue(':custoEntrega', $custoEntrega);
+        $sql->bindValue(':classificacao', $classificacao);
+        $sql->bindValue(':obs', $obs);
+        $sql->bindValue(':idUsuario', $idUsuario);
+        $sql->bindValue(':nf1Abast', $nf1Abast);
+        $sql->bindValue(':nf2Abast', $nf2Abast);
+        $sql->bindValue(':nf3Abast', $nf3Abast);
 
-        if($sql){
+        if($sql->execute()){
+            $ultimoId = $db->lastInsertId();
+
+            $kmAtual = $db->prepare("UPDATE veiculos SET km_atual = :kmFinal WHERE cod_interno_veiculo = :codVeiculo ");
+            $kmAtual->bindValue(':kmFinal', $kmFinal);
+            $kmAtual->bindValue(':codVeiculo', $codVeiculo);
+            $kmAtual->execute();
+
+            $hrTkAtual = $db->prepare("UPDATE thermoking SET hora_atual = :hrTkAtual WHERE veiculo = :veiculo");
+            $hrTkAtual->bindValue(':hrTkAtual', $hrTk4Abast);
+            $hrTkAtual->bindValue(':veiculo', $codVeiculo);
+            $hrTkAtual->execute();
+
+            calculoTk($codVeiculo);
+
             if(!empty($_FILES['imagem']['name'][0])){
                 $pasta = "uploads/".$ultimoId;
                 mkdir($pasta,0755);
@@ -271,10 +360,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             }
             echo "<script> alert('Despesa Lançada!!')</script>";
             echo "<script> window.location.href='despesas.php' </script>";
-            
+
         }else{
-            print_r($db->errorInfo());
+            print_r($sql->errorInfo());
         }
+
 
     }else{
         echo "<script>alert('Veículo, Motorista ou Rota não cadastrado!');</script>";

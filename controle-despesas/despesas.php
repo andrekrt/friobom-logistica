@@ -60,6 +60,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             </div>
             <!-- dados exclusivo da página-->
             <div class="menu-principal">
+                <div class="icon-exp">
+                    <a href="javascript:void();" id="modalData"><img src="../assets/images/excel.jpg" alt=""></a>
+                </div>
                 <div class="table-responsive">
                     <table id='tableDesp' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
@@ -136,7 +139,51 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 order: [[0,'desc']]
             });
         });
+
+        //abrir modal descartar
+        $('#modalData').click(function(){
+            
+
+            $('#modalDate').modal('show');
+
+        
+        });
         
     </script>
+
+<!-- Modal escolher data -->
+<div class="modal fade" id="modalDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Escolhar a Data para Gerar o Relatório </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="gerar-planilha.php" method="post">
+                    <input type="hidden" name="id" id="id" value="">
+                    <input type="hidden" name="trid" id="trid" value="">
+                    <div class="form-row">
+                        <input type="hidden" name="idpneu" id="idpneus">
+                        <div class="form-group col-md-6">
+                            <label for="inicio">Data Inicial</label>
+                            <input type="date" name="inicio" id="inicio" required class="form-control" >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="final">Data Final</label>
+                            <input type="date" name="final" id="final" required class="form-control" >
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                    <div class="text-center">
+                            <button type="submit" class="btn btn-success">Gerar</button>
+                        </div>
+                    <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
