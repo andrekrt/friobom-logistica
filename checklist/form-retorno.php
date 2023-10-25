@@ -16,7 +16,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $idCheck = filter_input(INPUT_GET, 'id');
-    $sql = $db->prepare("SELECT * FROM checklist LEFT JOIN veiculos ON checklist.veiculo = veiculos.cod_interno_veiculo WHERE idchecklist = :id");
+    $sql = $db->prepare("SELECT * FROM checklist_apps LEFT JOIN veiculos ON checklist_apps.veiculo = veiculos.cod_interno_veiculo WHERE id = :id");
     $sql->bindValue(":id", $idCheck);
     $sql->execute();
     $chekc = $sql->fetch();
@@ -70,111 +70,300 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-row"> 
                             <div class="form-group col-md-2 espaco">
                                 <label for="veiculo">Veículo</label>
-                                <input type="text" name="veiculo" id="veiculo" class="form-control" value="<?=$chekc['placa_veiculo']?>" readonly>
+                                <input type="text" name="veiculo" id="veiculo" readonly class="form-control" value="<?=$chekc['veiculo']?>">
                             </div>
                             <div class="form-group col-md-3 espaco">
-                                <label for="saida">Data Saída</label>
-                                <input type="date" readonly value="<?=$chekc['saida']?>" name="saida" class="form-control" id="saida">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-1 espaco">
-                                <label for="qtdNf">Qtd NF's</label>
-                                <input type="text" required name="qtdNf" id="qtdNf" class="form-control" >
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="vlCarga">Valor da Carga(R$)</label>
-                                <input type="text" required name="vlCarga" class="form-control"  id="vlCarga">
-                               
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="kmSaida">Km Saída</label>
-                                <input type="text" required name="kmSaida" class="form-control"  id="kmSaida">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="hrSaida">Hora Saída</label>
-                                <input type="time" required name="hrSaida" class="form-control"  id="hrSaida">
+                                <label for="hrTk">Hora do Tk Retorno</label>
+                                <input type="text" required name="hrTk" class="form-control" id="hrTk">
                             </div>
                             <div class="form-group col-md-3 espaco">
-                                <label for="prevChegada">Previsão de Chegada</label>
-                                <input type="date" required name="prevChegada" class="form-control"  id="prevChegada">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="horimetro">Horímetro</label>
-                                <input type="text" name="horimetro" class="form-control"  id="horimetro">
+                                <label for="carregamento">Carregamento</label>
+                                <input type="text" required name="carregamento" class="form-control" id="carregamento">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="rota">Rota</label>
-                                <select name="rota" id="rota" class="form-control" required>
+                                <label for="cabine">Limpesa de Cabine</label>
+                                <select name="cabine" id="cabine" class="form-control" required>
                                     <option value=""></option>
-                                    <?php
-                                    $sql = $db->query("SELECT * FROM rotas ORDER BY nome_rota ASC");
-                                    if ($sql->rowCount() > 0) {
-                                        $rotas = $sql->fetchAll();
-                                        foreach ($rotas as $rota) {
-                                            echo "<option value='$rota[cod_rota]'>" . $rota['nome_rota'] . "</option>";
-                                        }
-                                    }
-                                    ?>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="peso">Peso da Carga</label>
-                                <input type="text" required name="peso" class="form-control"  id="peso">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="carregamento">Nº Carregamento</label>
-                                <input type="text" required name="carregamento" class="form-control"  id="carregamento">
-                            </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="motorista">Motorista</label>
-                                <select name="motorista" id="motorista" class="form-control" required>
+                                <label for="retrovisores">Retrovisores</label>
+                                <select name="retrovisores" id="retrovisores" class="form-control" required>
                                     <option value=""></option>
-                                    <?php
-                                    $sql = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista ASC");
-                                    if ($sql->rowCount() > 0) {
-                                        $motoristas = $sql->fetchAll();
-                                        foreach ($motoristas as $motorista) {
-                                            echo "<option value='$motorista[cod_interno_motorista]'>" . $motorista['nome_motorista'] . "</option>";
-                                        }
-                                    }
-                                    ?>
-                                </select>                               
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
-                            <div class="form-group col-md-4 espaco">
-                                <label for="ajudante">Ajudante</label>
-                                <input type="text" required name="ajudante" class="form-control"  id="ajudante">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="parabrisa">Limpador e Levador de Para-brisa</label>
+                                <select name="parabrisa" id="parabrisa" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="quebasol">Quebra Sol</label>
+                                <select name="quebasol" id="quebasol" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="bordo">Veloc./Tacog./Comp. de Bordo</label>
+                                <select name="bordo" id="bordo" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="dataChegada">Data Da Chegada</label>
-                                <input type="date" required name="dataChegada" class="form-control"  id="dataChegada">
+                                <label for="buzina">Buzina</label>
+                                <select name="buzina" id="buzina" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="kmRota">Km Rota</label>
-                                <input type="text" required name="kmRota" class="form-control"  id="kmRota">
+                                <label for="cinto">Cinto de Segurança</label>
+                                <select name="cinto" id="cinto" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="ltAbastecido">Litros Abastecido</label>
-                                <input type="text" required name="ltAbastecido" class="form-control"  id="ltAbastecido">
+                                <label for="extintor">Extintor de Incêndio</label>
+                                <select name="extintor" id="extintor" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="triangulo">Triângulo de Sinalização</label>
+                                <select name="triangulo" id="triangulo" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="macaco">Macaco e Chave de Roda</label>
+                                <select name="macaco" id="macaco" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="tanque">Portas e Tampas Taque de Comb.</label>
+                                <select name="tanque" id="tanque" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="vlAbastecido">Valor Abastecido (R$)</label>
-                                <input type="text" required name="vlAbastecido" class="form-control"  id="vlAbastecido">
+                                <label for="janela">Vidros e Janelas</label>
+                                <select name="janela" id="janela" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="banco">Forro do Banco</label>
+                                <select name="banco" id="banco" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="porta">Maçaneta da Porta</label>
+                                <select name="porta" id="porta" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="cambio">Alavanca do Câmbio</label>
+                                <select name="cambio" id="cambio" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="seta">Lanternas Indicadoras de Direção</label>
+                                <select name="seta" id="seta" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="luzFreio">Lanternas de Freio/Freio e Elevada</label>
+                                <select name="luzFreio" id="luzFreio" class="form-control" required >
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="luzRe">Lanternas de Marcha Ré</label>
+                                <select name="luzRe" id="luzRe" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="alerta">Pisca Alerta</label>
+                                <select name="alerta" id="alerta" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-4 espaco">
-                                <label for="fotos" class="form-label ">Fotos da Chegada do Veículo</label>
-                                <input class="form-control" required type="file" id="fotos" name="fotos[]" multiple>
+                                <label for="luzTeto">Luze de Sinalização Intermitente do Teto</label>
+                                <select name="luzTeto" id="luzTeto" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="faixas">Faixas Refletivas/Retrorefletivas</label>
+                                <select name="faixas" id="faixas" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="pneus">Estado Geral dos Pneus</label>
+                                <select name="pneus" id="pneus" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="rodas">Estado Geral das Rodas</label>
+                                <select name="rodas" id="rodas" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-2 espaco">
+                                <label for="estepe">Pneus de Estepe</label>
+                                <select name="estepe" id="estepe" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="molas">Estado Geral das Molas</label>
+                                <select name="molas" id="molas" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="cabo">Cabo de Força</label>
+                                <select name="cabo" id="cabo" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="refrigeracao">Refrigeração</label>
+                                <select name="refrigeracao" id="refrigeracao" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="ventilador">Ventiladores do Equipamento</label>
+                                <select name="ventilador" id="ventilador" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-2 espaco">
+                                <label for="farolDianteiro">Farol Dianteiro</label>
+                                <select name="farolDianteiro" id="farolDianteiro" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="farolTraseiro">Farol Traseiro</label>
+                                <select name="farolTraseiro" id="farolTraseiro" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="farolNeblina">Faróis de Neblina</label>
+                                <select name="farolNeblina" id="farolNeblina" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="farolAlto">Faróis de Longo Alcance(Alto)</label>
+                                <select name="farolAlto" id="farolAlto" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="luzPainel">Luzes do Painel</label>
+                                <select name="luzPainel" id="luzPainel" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="OK">OK</option>
+                                    <option value="NÃO">NÃO</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12 espaco">
-                                <label for="obs">Obs. da Rota</label>
-                                <textarea name="obs" id="obs" class="form-control" rows="5"></textarea>
-                            </div>
+                                <label for="obs">Observações</label>
+                                <textarea name="obs" id="obs" rows="5" class="form-control"></textarea>
+                            </div>                           
                         </div>
                         <button type="submit" class="btn btn-primary"> Registrar </button>
                     </form>

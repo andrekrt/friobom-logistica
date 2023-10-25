@@ -16,7 +16,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $usuario = $_SESSION['idUsuario'];
     $veiculo = filter_input(INPUT_POST, 'veiculo');
-    $saida = filter_input(INPUT_POST, 'saida');
+    $hrTk = filter_input(INPUT_POST, 'hrTk');
+    $saida = date('Y-m-d');
+    $tipo = "Check-In";
     $cabine = filter_input(INPUT_POST, 'cabine');
     $retrovisores = filter_input(INPUT_POST,'retrovisores');
     $parabrisa = filter_input(INPUT_POST, 'parabrisa');
@@ -50,19 +52,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $farolNeblina = filter_input(INPUT_POST, 'farolNeblina');
     $farolAlto = filter_input(INPUT_POST, 'farolAlto');
     $luzPainel = filter_input(INPUT_POST, 'luzPainel');
-    $imagem = $_FILES['fotos'];
+    $obs = filter_input(INPUT_POST, 'obs');
 
     //echo count($imagem['name']);
 
     //  echo "$veiculo<br>$saida<br>$cabine<br>$retrovisores<br>$parabrisa<br>$quebasol<br>$bordo<br>$buzina<br>$cinto<br>$extintor<br>$triangulo<br>$macaco<br>$tanque<br>$janela<br>$banco<br>$porta<br>$cambio<br>$seta<br>$luzFreio<br>$luzRe<br>$alerta<br>$luzTeto<br>$faixas<br>$pneus<br>$rodas<br>$estepe<br>$molas<br>$cabo<br>$refrigeracao<br>$ventilador<br><br>";
     // print_r($imagem);
-    
-    $sql = $db->prepare("INSERT INTO checklist (veiculo, saida, cabine, retrovisores, parabrisas, quebra_sol, bordo, buzina, cinto, extintor, triangulo, macaco, tanque, janelas, banco, porta, cambio, seta, luz_freio, luz_re, alerta, luz_teto, faixas, farol_dianteiro, farol_traseiro, farol_neblina, farol_alto, painel, pneus, rodas, estepe, molas, cabo_forca, refrigeracao, ventiladores, usuario) VALUES (:veiculo, :saida, :cabine, :retrovisores, :parabrisas, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :usuario)");
+
+    $sql = $db->prepare("INSERT INTO checklist_apps (veiculo, hr_tk, tipo_checklist, data, cabine, retrovisores, parabrisa, quebra_sol, bordo, buzina, cinto, extintor, triangulo, macaco, tanque, janelas, banco, porta, cambio, seta, luz_freio, luz_re, alerta, luz_teto, faixas, farol_dianteiro, farol_traseiro, farol_neblina, farol_alto, painel, pneus, rodas, estepe, molas, cabo_forca, refrigeracao, ventilador, obs) VALUES (:veiculo, :hrTk, :tipo, :dataSaida, :cabine, :retrovisores, :parabrisa, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :obs)");
     $sql->bindValue(':veiculo', $veiculo);
-    $sql->bindValue(':saida', $saida);
+    $sql->bindValue(':hrTk', $hrTk);
+    $sql->bindValue(':tipo', $tipo);
+    $sql->bindValue(':dataSaida', $saida);
     $sql->bindValue(':cabine', $cabine);
     $sql->bindValue(':retrovisores', $retrovisores);
-    $sql->bindValue(':parabrisas', $parabrisa);
+    $sql->bindValue(':parabrisa', $parabrisa);
     $sql->bindValue(':quebraSol', $quebasol);
     $sql->bindValue(':bordo', $bordo);
     $sql->bindValue(':buzina', $buzina);
@@ -93,18 +97,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $sql->bindValue(':cabo_forca', $cabo);
     $sql->bindValue(':refrigeracao', $refrigeracao);
     $sql->bindValue(':ventilador', $ventilador);
-    $sql->bindValue(':usuario', $usuario);
+    $sql->bindValue(':obs', $obs);
     
     if($sql->execute()){
-        $ultimoId = $db->lastInsertId();
-        $pasta = 'uploads/'.$ultimoId;
-        mkdir($pasta);
-        $pasta = $pasta."/saida";
-        mkdir($pasta);
-
-        for($i=0;$i<count($imagem['name']);$i++){
-            $mover = move_uploaded_file($imagem['tmp_name'][$i],$pasta."/".$imagem['name'][$i]);
-        }
         echo "<script> alert('Check-List Realizado!!')</script>";
         echo "<script> window.location.href='checklists.php' </script>";
     }else{

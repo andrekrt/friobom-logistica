@@ -14,66 +14,102 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
-    $idCheck = filter_input(INPUT_POST, 'id');
+    $idCheckSaida=filter_input(INPUT_POST,'id');
+    $carregamento = filter_input(INPUT_POST, 'carregamento');
     $usuario = $_SESSION['idUsuario'];
-    $qtdNf = filter_input(INPUT_POST, 'qtdNf');
-    $vlCarga = str_replace(",",".",filter_input(INPUT_POST, 'vlCarga')); 
-    $kmSaida = filter_input(INPUT_POST, 'kmSaida');
-    $hrSaida = filter_input(INPUT_POST,'hrSaida');
-    $prevChegada = filter_input(INPUT_POST, 'prevChegada');
-    $horimetro = filter_input(INPUT_POST, 'horimetro');
-    $rota = filter_input(INPUT_POST, 'rota');
-    $peso = str_replace(",",".", filter_input(INPUT_POST, 'peso'));
-    $carregamento = filter_input(INPUT_POST,'carregamento');
-    $motorista = filter_input(INPUT_POST, 'motorista');
+    $veiculo = filter_input(INPUT_POST, 'veiculo');
+    $hrTk = filter_input(INPUT_POST, 'hrTk');
+    $saida = date('Y-m-d');
+    $tipo = "Check-Out";
+    $cabine = filter_input(INPUT_POST, 'cabine');
+    $retrovisores = filter_input(INPUT_POST,'retrovisores');
+    $parabrisa = filter_input(INPUT_POST, 'parabrisa');
+    $quebasol = filter_input(INPUT_POST, 'quebasol');
+    $bordo = filter_input(INPUT_POST, 'bordo');
+    $buzina = filter_input(INPUT_POST, 'buzina');
+    $cinto = filter_input(INPUT_POST,'cinto');
+    $extintor = filter_input(INPUT_POST, 'extintor');
     $triangulo = filter_input(INPUT_POST, 'triangulo');
-    $ajudante = filter_input(INPUT_POST, 'ajudante');
-    $dataChegada = filter_input(INPUT_POST, 'dataChegada');
-    $kmRota = filter_input(INPUT_POST,'kmRota');
-    $ltAbastecido = str_replace(",",".",filter_input(INPUT_POST, 'ltAbastecido'));
-    $vlAbastecido = str_replace(",",".", filter_input(INPUT_POST, 'vlAbastecido')) ;
+    $macaco = filter_input(INPUT_POST, 'macaco');
+    $tanque = filter_input(INPUT_POST, 'tanque');
+    $janela = filter_input(INPUT_POST,'janela');
+    $banco = filter_input(INPUT_POST, 'banco');
+    $porta = filter_input(INPUT_POST, 'porta');
+    $cambio = filter_input(INPUT_POST, 'cambio');
+    $seta = filter_input(INPUT_POST, 'seta');
+    $luzFreio = filter_input(INPUT_POST,'luzFreio');
+    $luzRe = filter_input(INPUT_POST, 'luzRe');
+    $alerta = filter_input(INPUT_POST, 'alerta');
+    $luzTeto =filter_input(INPUT_POST, 'luzTeto');
+    $faixas = filter_input(INPUT_POST, 'faixas');
+    $pneus = filter_input(INPUT_POST, 'pneus');
+    $rodas = filter_input(INPUT_POST, 'rodas');
+    $estepe = filter_input(INPUT_POST,'estepe');
+    $molas = filter_input(INPUT_POST, 'molas');
+    $cabo = filter_input(INPUT_POST, 'cabo');
+    $refrigeracao = filter_input(INPUT_POST, 'refrigeracao');
+    $ventilador = filter_input(INPUT_POST, 'ventilador');
+    $farolDianteiro = filter_input(INPUT_POST,'farolDianteiro');
+    $farolTraseiro = filter_input(INPUT_POST, 'farolTraseiro');
+    $farolNeblina = filter_input(INPUT_POST, 'farolNeblina');
+    $farolAlto = filter_input(INPUT_POST, 'farolAlto');
+    $luzPainel = filter_input(INPUT_POST, 'luzPainel');
     $obs = filter_input(INPUT_POST, 'obs');
-    $media = ($kmRota-$kmSaida)/$ltAbastecido;
-    $media = number_format($media,2,".",",");
-    $imagem = $_FILES['fotos'];
 
-    // echo "$qtdNf<br>$vlCarga<br>$kmSaida<br>$hrSaida<br>$prevChegada<br>$horimetro<br>$rota<br>$peso<br>$carregamento<br>$motorista<br>$ajudante<br>$dataChegada<br>$kmRota<br>$ltAbastecido<br>$vlAbastecido<br>$obs<br>$media<br><br>";
-    // print_r($imagem['name']);
-    
-    $sql = $db->prepare("UPDATE checklist SET qtdnf = :qtdnf, vl_carga=:vlCarga, hora_saida=:hrSaida, km_saida=:kmSaida, previsao_chegada=:previsaoChegada, horimetro=:horimetro, rota=:rota, peso_carga=:peso, carregamento=:carregamento, motorista=:motorista, ajudante=:ajudante, chegada=:chegada, km_rota=:kmRota, litros_abastecido=:ltAbastecido, valor_abastecido=:vlAbastecido, media_consumo=:media, obs=:obs, usuario=:usuario WHERE idchecklist= :id");
-    $sql->bindValue(':id', $idCheck);
-    $sql->bindValue(':qtdnf', $qtdNf);
-    $sql->bindValue(':vlCarga', $vlCarga);
-    $sql->bindValue(':hrSaida', $hrSaida);
-    $sql->bindValue(':kmSaida', $kmSaida);
-    $sql->bindValue(':previsaoChegada', $prevChegada);
-    $sql->bindValue(':horimetro', $horimetro);
-    $sql->bindValue(':rota', $rota);
-    $sql->bindValue(':peso', $peso);
+    //echo count($imagem['name']);
+
+    //  echo "$veiculo<br>$saida<br>$cabine<br>$retrovisores<br>$parabrisa<br>$quebasol<br>$bordo<br>$buzina<br>$cinto<br>$extintor<br>$triangulo<br>$macaco<br>$tanque<br>$janela<br>$banco<br>$porta<br>$cambio<br>$seta<br>$luzFreio<br>$luzRe<br>$alerta<br>$luzTeto<br>$faixas<br>$pneus<br>$rodas<br>$estepe<br>$molas<br>$cabo<br>$refrigeracao<br>$ventilador<br><br>";
+    // print_r($imagem);
+
+    $sql = $db->prepare("INSERT INTO checklist_apps_retorno02 (veiculo_ret, hr_tk_ret, carregamento_ret, tipo_checklist_ret, data_ret, cabine_ret, retrovisores_ret, parabrisa_ret, quebra_sol_ret, bordo_ret, buzina_ret, cinto_ret, extintor_ret, triangulo_ret, macaco_ret, tanque_ret, janelas_ret, banco_ret, porta_ret, cambio_ret, seta_ret, luz_freio_ret, luz_re_ret, alerta_ret, luz_teto_ret, faixas_ret, farol_dianteiro_ret, farol_traseiro_ret, farol_neblina_ret, farol_alto_ret, painel_ret, pneus_ret, rodas_ret, estepe_ret, molas_ret, cabo_forca_ret, refrigeracao_ret, ventilador_ret, obs_ret, checksaida) VALUES (:veiculo, :hrTk, :carregamento, :tipo, :dataSaida, :cabine, :retrovisores, :parabrisa, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :obs, :checksaida)");
+    $sql->bindValue(':veiculo', $veiculo);
+    $sql->bindValue(':hrTk', $hrTk);
+    $sql->bindValue(':tipo', $tipo);
     $sql->bindValue(':carregamento', $carregamento);
-    $sql->bindValue(':motorista', $motorista);
-    $sql->bindValue(':ajudante', $ajudante);
-    $sql->bindValue(':chegada', $dataChegada);
-    $sql->bindValue(':kmRota', $kmRota);
-    $sql->bindValue(':ltAbastecido', $ltAbastecido);
-    $sql->bindValue(':vlAbastecido', $vlAbastecido);
-    $sql->bindValue(':media', $media);
+    $sql->bindValue(':dataSaida', $saida);
+    $sql->bindValue(':cabine', $cabine);
+    $sql->bindValue(':retrovisores', $retrovisores);
+    $sql->bindValue(':parabrisa', $parabrisa);
+    $sql->bindValue(':quebraSol', $quebasol);
+    $sql->bindValue(':bordo', $bordo);
+    $sql->bindValue(':buzina', $buzina);
+    $sql->bindValue(':cinto', $cinto);
+    $sql->bindValue(':extintor', $extintor);
+    $sql->bindValue(':triangulo', $triangulo);
+    $sql->bindValue(':macaco', $macaco);
+    $sql->bindValue(':tanque', $tanque);
+    $sql->bindValue(':janelas', $janela);
+    $sql->bindValue(':banco', $banco);
+    $sql->bindValue(':porta', $porta);
+    $sql->bindValue(':cambio', $cambio);
+    $sql->bindValue(':seta', $seta);
+    $sql->bindValue(':luzFreio', $luzFreio);
+    $sql->bindValue(':luzRe', $luzRe);
+    $sql->bindValue(':alerta', $alerta);
+    $sql->bindValue(':luz_teto', $luzTeto);
+    $sql->bindValue(':faixas', $faixas);
+    $sql->bindValue(':farolDianteiro', $farolDianteiro);
+    $sql->bindValue(':farolTraseiro', $farolTraseiro);
+    $sql->bindValue(':farolNeblina', $farolNeblina);
+    $sql->bindValue(':farolAlto', $farolAlto);
+    $sql->bindValue(':painel', $luzPainel);
+    $sql->bindValue(':pneus', $pneus);
+    $sql->bindValue(':rodas', $rodas);
+    $sql->bindValue(':estepe', $estepe);
+    $sql->bindValue(':molas', $molas);
+    $sql->bindValue(':cabo_forca', $cabo);
+    $sql->bindValue(':refrigeracao', $refrigeracao);
+    $sql->bindValue(':ventilador', $ventilador);
     $sql->bindValue(':obs', $obs);
-    $sql->bindValue(':usuario', $usuario);
+    $sql->bindValue(':checksaida',$idCheckSaida);
     
     if($sql->execute()){
-        if(!empty($imagem['name'][0])){
-            $pasta = "uploads/".$idCheck."/retorno";
-            mkdir($pasta);
-            for($i=0;$i<count($imagem['name']);$i++){
-                $mover = move_uploaded_file($imagem['tmp_name'][$i],$pasta."/".$imagem['name'][$i]);
-            }
-        }
-        echo "<script> alert('Check-List Atualizado!!')</script>";
+        echo "<script> alert('Check-List Realizado!!')</script>";
         echo "<script> window.location.href='checklists.php' </script>";
     }else{
         print_r($sql->errorInfo());
     }
+
 
 }else{
 

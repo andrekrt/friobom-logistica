@@ -56,6 +56,11 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    $retorno="";
+    if(empty($row['data_ret'])){
+        $retorno = '<a href="form-retorno.php?id='.$row['id'].'" class="btn btn-success btn-sm deleteBtn" >Retorno</a>';
+    }
+    
     $data[] = array(
         "id"=>$row['id'],
         "veiculo"=>$row['veiculo'],
@@ -64,7 +69,7 @@ foreach($empRecords as $row){
         "dataRetorno"=>$row['data_ret']==null?"":date("d/m/Y", strtotime($row['data_ret'])) ,
         "hr_tkRetorno"=>$row['hr_tk_ret'],
         "carregamento"=>$row['carregamento_ret'],
-        "acoes"=> ' <a href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>'
+        "acoes"=> ' <a href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a> ' . $retorno
     );
 }
 
