@@ -67,7 +67,8 @@ body{
 .corpo{
     display: flex;
     flex-direction: row;
-    background-color: #E6E6E6;
+    background-color: #fff;
+    padding-left: 0 !important;
 }
 
 .menu-mobile{
@@ -131,7 +132,7 @@ a .nome{
 }
 
 .tela-principal{
-    width: 85%;
+    width: calc(100% - 83px);
     
 }
 
@@ -183,8 +184,8 @@ a .nome{
 }
 
 .menu-superior{
-    height: 72px;
-    border-bottom: solid rgb(94, 93, 93) 2px;
+    height: 61px;
+    border-bottom: solid #e0e0de 2px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -259,7 +260,7 @@ a .nome{
 }
 
 .indice-ind{
-    background-color: #fff;
+    background-color: #e0e0de;
     width: 180px;
     margin: auto;
     height: 120px;

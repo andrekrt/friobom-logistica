@@ -56,265 +56,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
+        <link rel="stylesheet" href="assets/css/menu.css">
     </head>
     <body>
         <div class="container-fluid corpo">
-            <div class="menu-lateral" id="menu-lateral">
-                <div class="logo">  
-                    <img src="assets/images/logo.png" alt="">
-                </div>
-                <div class="opcoes" >
-                    <div class="item">
-                        <a href="index.php">
-                            <img src="assets/images/menu/inicio.png" alt="">
-                        </a>
-                    </div>
-                    <div class="item">
-                        <a class="" onclick="menuVeiculo()">
-                            <img src="assets/images/menu/veiculos.png" alt="">
-                        </a>
-                        <nav id="submenu">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="veiculos/veiculos.php"> Veículos </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="veiculos/form-veiculos.php"> Cadastrar Veículo </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="veiculos/revisao.php"> Revisões </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="veiculos/alinhamentos.php"> Alinhamentos </a>  </li>
-                                <li class="nav-item"> <a href="veiculos/relatorio.php" class="na-link">Despesas por Veículo</a> </li>
-                                <li class="nav-item"> <a href="veiculos/gastos.php" class="na-link">Relatório</a> </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a class="" onclick="menuTk()">
-                            <img src="assets/images/menu/thermoking.png">
-                        </a>
-                        <nav id="submenuTk">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="thermoking/thermoking.php"> Thermoking </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="thermoking/revisao.php"> Revisão de Thermoking</a> </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuRota()">
-                            <img src="assets/images/menu/rotas.png" alt="">
-                        </a>
-                        <nav id="submenuRota">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="rotas/rotas.php"> Rotas </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="rotas/form-rota.php"> Cadastrar Rota </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="rotas/relatorio.php"> Relatório</a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuMotorista()">
-                            <img src="assets/images/menu/motoristas.png" alt="">
-                        </a>
-                        <nav id="submenuMotorista">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="motoristas/motoristas.php"> Motoristas </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="motoristas/form-motorista.php"> Cadastrar Motorista </a> </li>
-                                <li class="nav-item"> <a href="motoristas/dados.php" class="nav-link"> Relatório</a> </li>
-                                <li class="nav-item"> <a href="motoristas/consumo.php" class="nav-link"> Médias de Consumo</a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuColaboradores()">
-                            <img src="assets/images/menu/colaboradores.png" >
-                        </a>
-                        <nav id="submenuColaborador">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="colaboradores/colaboradores.php"> Colaboradores </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="colaboradores/auxiliares.php"> Auxiliares de Rota </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="colaboradores/pagamentos.php"> Folha de Pagamento </a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuOcorrencias()">
-                            <img src="assets/images/menu/ocorrencias.png" alt="">
-                        </a>
-                        <nav id="submenuOcorrencias">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="ocorrencias/form-ocorrencias.php"> Registrar Nova Ocorrência </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="ocorrencias/ocorrencias.php"> Listar Ocorrências </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="ocorrencias/relatorio.php"> Ocorrências por Motorista</a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuDespesas()">
-                            <img src="assets/images/menu/despesas.png" alt="">
-                        </a>
-                        <nav id="submenuDespesa">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="controle-despesas/despesas.php"> Despesas </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="controle-despesas/complementos.php"> Complementos </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="controle-despesas/form-lancar-despesas.php"> Lançar Despesa </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="controle-despesas/gerar-planilha.php"> Planilha de Despesas </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="controle-despesas/relatorio-custos.php">Relatório de Custos </a> </li>
-                                <li class="nav-item"> <a class="subtitulo" onclick="menuEntregas()"> Entregas Capital </a>
-                                    <nav id="submenuCapital">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item"> <a href="controle-despesas/entregas-capital/form-entregas.php"> Registrar Entregas </a> </li>
-                                            <li class="nav-item"> <a href="controle-despesas/entregas-capital/entregas.php">  Entregas </a> </li>
-                                        </ul> 
-                                    </nav>
-                                </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuNfs()">
-                            <img src="assets/images/menu/menu-nf.png" alt="">
-                        </a>
-                        <nav id="submenuNf">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="denegados/denegadas.php"> NF's Denegadas </a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuReparos()">
-                            <img src="assets/images/menu/reparos.png" alt="">
-                        </a>
-                        <nav id="submenuReparos">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="reparos/solicitacoes.php"> Solicitações </a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="reparos/form-solicitacao.php"> Nova Solicitação </a> </li>
-                               
-                                <li class="nav-item"> <a class="nav-link" href="reparos/local-reparo.php">Local de Reparo</a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="reparos/pecas.php">Peças/Serviços</a> </li>
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuCheck()">
-                            <img src="assets/images/menu/menu-checklist.png" alt="">
-                        </a>
-                        <nav id="submenuCheck">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a class="nav-link" href="checklist/checklists.php"> Check-Lists </a> </li>
-                                
-                            </ul> 
-                        </nav> 
-                    </div>
-                    <div class="item">
-                        <a onclick="menuAlmoxerifado()">
-                            <img src="assets/images/menu/almoxerifado.png" alt="">
-                        </a>
-                        <nav id="submenuAlmoxerifado">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="almoxerifado/pecas.php" class="nav-link"> Estoque </a> </li>
-                                <li class="nav-item"> <a href="almoxerifado/entradas.php" class="nav-link"> Entrada </a> </li>
-                                <li class="nav-item"> <a href="almoxerifado/saidas.php" class="nav-link"> Saída </a> </li>
-                                <li class="nav-item"> <a href="almoxerifado/inventario.php" class="nav-link"> Inventário </a> </li>
-                                <li class="nav-item"> <a href="almoxerifado/ordem-servico.php" class="nav-link"> Ordem de Serviço </a> </li>
-                                <li class="nav-item"> <a href="fornecedores/fornecedores.php" class="nav-link"> Fornecedores </a> </li>
-                                <li class="nav-item"> <a href="almoxerifado/servicos.php" class="nav-link"> Serviços </a> </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuPneu()">
-                            <img src="assets/images/menu/pneu.png" alt="">
-                        </a>
-                        <nav id="submenuPneu">
-                            <ul class="nav flex-column">
-                                <li class="nav-item ">  <a class="subtitulo" onclick="menuManutencao()"> Manutenções </a> 
-                                    <nav id="submenuManutencao">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item"> <a href="pneus/manutencao/form-manutencao.php"> Registrar Manutenção </a> </li>
-                                            <li class="nav-item"> <a href="pneus/manutencao/manutencoes.php">  Manutenções Realizadas </a> </li>
-                                        </ul> 
-                                    </nav>
-                                </li>
-                                <li class="nav-item ">  <a class="subtitulo" onclick="menuRodizio()"> Rodízios </a> 
-                                    <nav id="submenuRodizio">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item"> <a href="pneus/rodizio/form-rodizio.php"> Realizar Rodízio </a> </li>
-                                            <li class="nav-item"> <a href="pneus/rodizio/rodizio.php">  Rodízios Realizadas </a> </li>
-                                        </ul> 
-                                    </nav>
-                                </li>
-                                <li class="nav-item "> <a class="subtitulo" onclick="menuSuco()"> Medição de Suco </a>   
-                                    <nav id="submenuSuco">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item"> <a href="pneus/suco/form-suco.php"> Medir Suco </a> </li>
-                                            <li class="nav-item"> <a href="pneus/suco/sucos.php"> Medidas de Suco </a> </li>
-                                        </ul> 
-                                    </nav>
-                                </li>
-                                <li class="nav-item"> <a href="pneus/form-pneus.php" class="nav-link"> Cadastrar Pneu </a> </li>
-                                <li class="nav-item"> <a href="pneus/pneus.php" class="nav-link"> Pneu Cadastrados </a> </li>
-                                <li class="nav-item"> <a href="pneus/pneus-descartados.php" class="nav-link"> Pneus Descartados </a> </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuPosto()">
-                            <img src="assets/images/menu/posto.png" alt="">
-                        </a>
-                        <nav id="submenuPosto">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="posto/estoque.php" class="nav-link"> Estoque </a> </li>
-                                <li class="nav-item"> <a href="posto/entradas.php" class="nav-link"> Entradas </a> </li>
-                                <li class="nav-item"> <a href="posto/abastecimento.php" class="nav-link"> Abastecimentos </a> </li>
-                                <li class="nav-item"> <a href="posto/inventario.php" class="nav-link"> Inventário </a> </li>
-                                <li class="nav-item"> <a href="posto/extrato.php" class="nav-link"> Extrato </a> </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuLocalizacao()">
-                            <img src="assets/images/menu/supervisores.png" alt="">
-                        </a>
-                        <nav id="submenuLocalizacao">
-                            <li class="nav-item"> <a href="supervisores/supervisores.php"> Listar Supervisores </a> </li>
-                            <li class="nav-item"> <a href="supervisores/geolocalizacao.php"> Geolocalização Supervisores </a> </li>
-                            <li class="nav-item"> <a href="supervisores/rotas-supervisores.php"> Rotas Supervisores </a> </li>
-                            <li class="nav-item"> <a href="supervisores/form-rotas-supervisores.php">Lançar Rota Supervisor </a> </li>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuMetas()">
-                            <img src="assets/images/menu/menu-metas.png" alt="">
-                        </a>
-                        <nav id="submenuMetas">
-                            <li class="nav-item"> <a href="metas/metas.php"> Listar Metas</a> </li>
-                            <li class="nav-item"> <a href="metas/form-metas.php"> Registrar Metas</a> </li>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a onclick="menuFusion()">
-                            <img src="assets/images/menu/menu-fusion.png" alt="">
-                        </a>
-                        <nav id="submenuFusion">
-                            <li class="nav-item"> <a href="fusion/form-fusion.php"> Registrar Viagem</a> </li>
-                            <li class="nav-item"> <a href="fusion/fusion.php"> Viagens Pendentes</a> </li>
-                            <li class="nav-item"> <a href="fusion/fusion-finalizadas.php"> Viagens Finalizadas</a> </li>
-                            <li class="nav-item"> <a href="fusion/dados-fusion.php"> Dados Viagens</a> </li>
-                            <li class="nav-item ">  <a class="subtitulo" onclick="menuFusionPraca()"> Fusion Praça </a> 
-                                <nav id="submenuFusionPraca">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item"> <a href="fusion/praca/form-fusion.php"> Registrar Viagem Praça</a> </li>
-                                        <li class="nav-item"> <a href="fusion/praca/fusion.php"> Viagens Pendentes Praça</a> </li>
-                                        <li class="nav-item"> <a href="fusion/praca/fusion-finalizadas.php"> Viagens Finalizadas Praça</a> </li>
-                                        <li class="nav-item"> <a href="fusion/praca/dados-fusion.php"> Dados Viagens Praça</a> </li>
-                                    </ul> 
-                                </nav>
-                            </li>
-                        </nav>
-                    </div>
-                    <div class="item">
-                        <a href="sair.php">
-                            <img src="assets/images/menu/sair.png" alt="">
-                        </a>
-                    </div>
-                </div>                
-            </div>
+        <?php require('menu-principal.php') ?>
             <!-- Tela com os dados -->
             <div class="tela-principal">
                 <div class="menu-superior">
@@ -461,5 +209,26 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         <script src="assets/js/jquery.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/menu.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
+        <script>
+            // function carregarPagina(pagina){
+            //     $(".tela-principal").load(pagina, function(){
+                    
+            //     });
+            // }
+
+            // $('a.nav-link').click(function(event){
+            //     event.preventDefault();
+
+            //     var pagina = $(this).attr("href"); 
+
+            //     carregarPagina(pagina);
+                
+            // });
+
+            
+        </script>
     </body>
 </html>

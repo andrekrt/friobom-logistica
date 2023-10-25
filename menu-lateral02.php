@@ -93,17 +93,10 @@
                 <ul class="nav flex-column">
                     <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/despesas.php"> Despesas </a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/complementos.php"> Complementos </a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/form-lancar-despesas.php"> Lançar Despesa </a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/gerar-planilha.php"> Planilha de Despesas </a> </li>
+                    <!-- <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/form-lancar-despesas.php"> Lançar Despesa </a> </li> -->
+                    <!-- <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/gerar-planilha.php"> Planilha de Despesas </a> </li> -->
                     <li class="nav-item"> <a class="nav-link" href="../../controle-despesas/relatorio-custos.php">Relatório de Custos </a> </li>
-                    <li class="nav-item"> <a onclick="menuEntregas()"> Entregas Capital </a>
-                        <nav id="submenuCapital">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"> <a href="../../controle-despesas/entregas-capital/form-entregas.php"> Registrar Entregas </a> </li>
-                                <li class="nav-item"> <a href="../../controle-despesas/entregas-capital/entregas.php">  Entregas </a> </li>
-                            </ul> 
-                        </nav>
-                    </li>
+                    
                 </ul>
             </nav>
         </div>
@@ -138,7 +131,7 @@
             <nav id="submenuCheck">
                 <ul class="nav flex-column">
                     <li class="nav-item"> <a class="nav-link" href="../../checklist/checklists.php"> Check-Lists </a> </li>
-                    <!-- <li class="nav-item"> <a class="nav-link" href="../../checklist/form-check.php">Realizar Check List </a> </li> -->
+                    <li class="nav-item"> <a class="nav-link" href="../../checklist/form-check.php">Realizar Check List </a> </li>
                 </ul> 
             </nav> 
         </div>
