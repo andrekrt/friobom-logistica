@@ -20,7 +20,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $motorista = filter_input(INPUT_POST, 'motorista');
     $rota =filter_input(INPUT_POST, 'rota');
     $problema = filter_input(INPUT_POST, 'descricao');
-    $localReparo = filter_input(INPUT_POST, 'localReparo');
     $frete = filter_input(INPUT_POST, 'frete');
     $nf = filter_input(INPUT_POST, 'nf');
 
@@ -29,7 +28,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $vlUnit = str_replace(",",".", $_POST['vlUnit']);
     $desconto = str_replace(",", ".", $_POST['desconto']);
     $idSolicitacao = $_POST['id'];
-    $fornecedor=$_POST['fornecedor'];
+    $fornecedor=filter_input(INPUT_POST, 'fornecedor');
     
     $obs = filter_input(INPUT_POST, 'obs')?filter_input(INPUT_POST, 'obs'):null;
     $situacao = filter_input(INPUT_POST, 'situacao');
@@ -45,14 +44,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         $valorTotal =  ($vlUnit[$i]-$desconto[$i])*$qtd[$i];
 
-        $sql = $db->prepare("UPDATE solicitacoes_new SET placa = :placa, motorista = :motorista, rota = :rota, problema = :problema, local_reparo = :localReparo, peca_servico = :peca, fornecedor=:fornecedor, qtd = :qtd, vl_unit = :vlUnit, desconto = :desconto, vl_total = :vlTotal, frete = :frete, num_nf=:nf, situacao = :situacao, data_aprovacao = :dataAprovacao, obs = :obs WHERE id = :id");
+        $sql = $db->prepare("UPDATE solicitacoes_new SET placa = :placa, motorista = :motorista, rota = :rota, problema = :problema, peca_servico = :peca, fornecedor=:fornecedor, qtd = :qtd, vl_unit = :vlUnit, desconto = :desconto, vl_total = :vlTotal, frete = :frete, num_nf=:nf, situacao = :situacao, data_aprovacao = :dataAprovacao, obs = :obs WHERE id = :id");
         $sql->bindValue(':placa', $placa);
         $sql->bindValue(':motorista', $motorista);
         $sql->bindValue(':rota', $rota);
         $sql->bindValue(':problema', $problema);
-        $sql->bindValue(':localReparo', $localReparo);
         $sql->bindValue(':peca', $peca[$i]);
-        $sql->bindValue(':fornecedor', $fornecedor[$i]);
+        $sql->bindValue(':fornecedor', $fornecedor);
         $sql->bindValue(':qtd', $qtd[$i]);
         $sql->bindValue(':vlUnit', $vlUnit[$i]);
         $sql->bindValue(':desconto', $desconto[$i]);
@@ -64,6 +62,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':obs', $obs);
         $sql->bindValue(':id', $idSolicitacao[$i]);
         $sql->execute();
+
+        if($placa==='Estoque' && $situacao==="Aprovado"){
+            addEstoque($peca[$i], $fornecedor[$i], $qtd[$i], $vlUnit[$i], $desconto[$i], $valorTotal, $nf, $obs, $frete, $idUsuario);
+        }
 
         // echo 'ID:'.$idSolicitacao[$i].' Situação:' .$situacao . "<br>";
 

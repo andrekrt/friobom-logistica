@@ -16,7 +16,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $tipoUsuario = $_SESSION['tipoUsuario'];
 
     $idPneu = filter_input(INPUT_GET, 'idPneu');
-    $pneu = $db->prepare("SELECT * FROM solicitacoes_new WHERE id=:id");
+    $pneu = $db->prepare("SELECT * FROM solicitacoes_new LEFT JOIN fornecedores ON solicitacoes_new.fornecedor = fornecedores.id WHERE solicitacoes_new.id=:id");
     $pneu->bindValue(':id', $idPneu);
     $pneu->execute();
     $dado = $pneu->fetch();
@@ -124,17 +124,16 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </select>
                         </div>
                         
-                        <div class="form-group col-md-2">
-                            <label class="col-form-label" for="localReparo">Local Reparo</label>
-                            <select name="localReparo" class="form-control" id="localReparo">
-                                <option value="<?=$dado['local_reparo']?>"><?=$dado['local_reparo']?></option>
+                        <div class="form-grupo col-md-2 ">
+                            <label for="fornecedor">Fornecedor</label>
+                            <select name="fornecedor[]" id="fornecedor" class="form-control">
+                                <option value="<?=$dado['fornecedor']?>"> <?=$dado['fornecedor']?> - <?=$dado['nome_fantasia']?> </option>
                                 <?php
-
-                                $sql = $db->query("SELECT * FROM local_reparo");
-                                $categorias = $sql->fetchAll();
-                                foreach ($categorias as $categoria):
+                                $sql = $db->query("SELECT * FROM fornecedores");
+                                $pecas = $sql->fetchAll();
+                                foreach ($pecas as $peca):
                                 ?>
-                                    <option value="<?=$categoria['nome_local'] ?>"><?=$categoria['nome_local'] ?></option>
+                                    <option value="<?=$peca['id'] ?>"><?=$peca['id']." - ". $peca['razao_social'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -203,19 +202,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="vlTotal" class="col-form-label">Valor Total</label>
                             <input type="text" readonly class="form-control" name="vlTotal[]" id="vlTotal" value="<?=$solicitacao['vl_total']?>">
                         </div>
-                        <div class="form-grupo col-md-2 ">
-                            <label for="fornecedor">Fornecedor</label>
-                            <select name="fornecedor[]" id="fornecedor" class="form-control">
-                                <option value="<?=$solicitacao['fornecedor']?>"> <?=$solicitacao['fornecedor']?> - <?=$solicitacao['nome_fantasia']?> </option>
-                                <?php
-                                $sql = $db->query("SELECT * FROM fornecedores");
-                                $pecas = $sql->fetchAll();
-                                foreach ($pecas as $peca):
-                                ?>
-                                    <option value="<?=$peca['id'] ?>"><?=$peca['id']." - ". $peca['razao_social'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
+                        
                         <div class="form-group col-md-1">
                             <label for="anexo" class="col-form-label">Anexos</label>
                             <?php if(empty($solicitacao['imagem'])==false): ?>

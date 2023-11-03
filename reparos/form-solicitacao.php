@@ -118,22 +118,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-3 espaco ">
-                                <label for="local">Local para Reparo</label>
-                                <select name="localReparo" required class="form-control" id="localReparo">
+                            <div class="form-grupo col-md-3 espaco">
+                                <label for="fornecedor">Fornecedor</label>
+                                <select name="fornecedor" id="fornecedor" class="form-control">
                                     <option value=""></option>
                                     <?php
-
-                                    $sql = $db->query("SELECT * FROM local_reparo");
-                                    $categorias = $sql->fetchAll();
-                                    foreach ($categorias as $categoria):
-
+                                    $sql = $db->query("SELECT * FROM fornecedores");
+                                    $pecas = $sql->fetchAll();
+                                    foreach ($pecas as $peca):
                                     ?>
-                                        <option value="<?=$categoria['nome_local'] ?>"><?=$categoria['nome_local'] ?></option>
+                                        <option value="<?=$peca['id'] ?>"><?=$peca['id']." - ". $peca['nome_fantasia'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                            </div>
-                            
+                            </div>                            
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-8 espaco">
@@ -175,19 +172,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="desconto">Desconto</label>
                                 <input type="text" required name="desconto[]" id="desconto" class="form-control">
                             </div>
-                            <div class="form-grupo col-md-3 espaco">
-                                <label for="fornecedor">Fornecedor</label>
-                                <select name="fornecedor[]" id="fornecedor" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $sql = $db->query("SELECT * FROM fornecedores");
-                                    $pecas = $sql->fetchAll();
-                                    foreach ($pecas as $peca):
-                                    ?>
-                                        <option value="<?=$peca['id'] ?>"><?=$peca['id']." - ". $peca['nome_fantasia'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                            
                             <div class="mb-3 form-grupo col-md-2 espaco">
                                 <label for="imagem" class="form-label">Imagem do problema</label>
                                 <input type="file" name="imagem[]" class="form-control" id="imagem" multiple>    
@@ -214,7 +199,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $('#add-peca').click(function(){
                 cont++;
 
-                $('#formulario').append('<div class="form-row"> <div class="form-grupo col-md-3 espaco"> <label for="peca">Peça/Serviço</label> <select name="peca[]" required class="form-control" id="peca"> <option value=""></option> <?php $sql = $db->query("SELECT * FROM peca_reparo"); $pecas = $sql->fetchAll(); foreach ($pecas as $peca):?> <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option> <?php endforeach; ?> </select> </div>    <div class="form-grupo col-md-1 espaco"> <label for="qtd">Qtd.</label> <input type="text" required name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-grupo col-md-1 espaco"> <label for="vlUnit">Valor Unit.</label> <input type="text" required name="vlUnit[]" id="vlUnit" class="form-control"> </div> <div class="form-grupo col-md-1 espaco">  <label for="desconto">Desconto</label> <input type="text" required name="desconto[]" id="desconto" class="form-control"> </div> <div class="form-grupo col-md-3 espaco"> <label for="fornecedor">Fornecedor</label> <select name="fornecedor[]" id="fornecedor" class="form-control"> <option value=""></option> <?php $sql = $db->query("SELECT * FROM fornecedores");$pecas = $sql->fetchAll(); foreach ($pecas as $peca): ?> <option value="<?=$peca['id'] ?>"><?=$peca['id']." - ". $peca['nome_fantasia'] ?></option> <?php endforeach; ?> </select> </div> <div class="mb-3 form-grupo col-md-2 espaco">     <label for="imagem" class="form-label">Imagem do problema</label> <input type="file" name="imagem[]" class="form-control" id="imagem" multiple> </div>  </div>');
+                $('#formulario').append('<div class="form-row"> <div class="form-grupo col-md-3 espaco"> <label for="peca">Peça/Serviço</label> <select name="peca[]" required class="form-control" id="peca"> <option value=""></option> <?php $sql = $db->query("SELECT * FROM peca_reparo"); $pecas = $sql->fetchAll(); foreach ($pecas as $peca):?> <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option> <?php endforeach; ?> </select> </div>    <div class="form-grupo col-md-1 espaco"> <label for="qtd">Qtd.</label> <input type="text" required name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-grupo col-md-1 espaco"> <label for="vlUnit">Valor Unit.</label> <input type="text" required name="vlUnit[]" id="vlUnit" class="form-control"> </div> <div class="form-grupo col-md-1 espaco">  <label for="desconto">Desconto</label> <input type="text" required name="desconto[]" id="desconto" class="form-control"> </div>  <div class="mb-3 form-grupo col-md-2 espaco">     <label for="imagem" class="form-label">Imagem do problema</label> <input type="file" name="imagem[]" class="form-control" id="imagem" multiple> </div>  </div>');
             });
         });
     </script>

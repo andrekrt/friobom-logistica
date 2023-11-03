@@ -72,7 +72,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Nome</th>
                                 <th scope="col" class="text-center text-nowrap">Rota</th>
                                 <th scope="col" class="text-center text-nowrap">Problema</th>
-                                <th scope="col" class="text-center text-nowrap">Local Reparo</th>
+                                <th scope="col" class="text-center text-nowrap">Fornecedor</th>
                                 <th scope="col" class="text-center text-nowrap"> Tipos Peça/Serviço </th>
                                 <th scope="col" class="text-center text-nowrap">Qtd </th>
                                 <th scope="col" class="text-center text-nowrap"> Valor Total </th>
@@ -111,7 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'motorista' },
                     { data: 'rota' },
                     { data: 'problema' },
-                    { data: 'local_reparo' },
+                    { data: 'fornecedor' },
                     { data: 'peca' },
                     { data: 'qtd' },
                     { data: 'vlTotal' },
