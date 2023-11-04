@@ -135,8 +135,8 @@
             <img src="../assets/images/icones/colaborador.png" height="40" class="mr-4"><span>Colaboradores</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
-            <li class="../list-group-item">
-              <a href="colaboradores/colaboradores.php">
+            <li class="list-group-item">
+              <a href="../colaboradores/colaboradores.php">
                 <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495405780/Users_mcyvbz.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Cadastrados</div>
               </a>

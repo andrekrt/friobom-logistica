@@ -26,7 +26,6 @@
 }
 [data-component=sidebar] .first-menu .list-group-item:not(last-child) {
   border-bottom: solid 1px #e0e0de;
-  padding: 5px;
 }
 [data-component=sidebar] .first-menu .list-group-item:hover {
   background-color: #f6f6f6;

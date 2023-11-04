@@ -4,13 +4,13 @@
       <ul class="list-group flex-column d-inline-block first-menu">
         <li class="list-group-item py-2">
           <a href="index.php">
-            <img src="assets/images/icones/home.png" height="40" class="mr-4"><span>Início</span>
+            <img src="assets/images/icones/home.png" height="40" class="mr-4" width="40"><span>Início</span>
           </a>
         </li> <!-- /.list-group-item -->
         
         <li class="list-group-item py-2">
           <a href="#">
-            <img src="assets/images/icones/veiculo.png" height="40"class="mr-4"><span>Veículos</span>
+            <img src="assets/images/icones/veiculo.png" height="40"class="mr-4" width="40"><span>Veículos</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -50,7 +50,7 @@
         
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/thermoking.png" height="40" class="mr-4"><span>Thermoking</span>
+            <img src="assets/images/icones/thermoking.png" height="40" class="mr-4" width="40"><span>Thermoking</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -71,7 +71,7 @@
         
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/rotas.png" height="40" class="mr-4"><span>Rotas</span>
+            <img src="assets/images/icones/rotas.png" height="40" class="mr-4" width="40"><span>Rotas</span>
           </a>
 
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
@@ -99,7 +99,7 @@
         
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/motorista.png" height="40" class="mr-4"><span>Motoristas</span>
+            <img src="assets/images/icones/motorista.png" height="40" class="mr-4" width="40"><span>Motoristas</span>
           </a>
            <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -131,7 +131,7 @@
         
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/colaborador.png" height="40" class="mr-4"><span>Colaboradores</span>
+            <img src="assets/images/icones/colaborador.png" height="40" class="mr-4" width="40"><span>Colaboradores</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -156,7 +156,7 @@
         </li> <!-- /.list-group-item -->
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/ocorrencia.png" height="40" class="mr-4"><span>Ocorrências</span>
+            <img src="assets/images/icones/ocorrencia.png" height="40" class="mr-4" width="40"><span>Ocorrências</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -182,7 +182,7 @@
         
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/despesas.png" height="40" class="mr-4"><span>Despesas</span>
+            <img src="assets/images/icones/despesas.png" height="40" class="mr-4" width="40"><span>Despesas</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -208,7 +208,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/icone-nf.png" height="40" class="mr-4"><span>NF's Denegadas</span>
+            <img src="assets/images/icones/icone-nf.png" height="40" class="mr-4" width="40"><span>NF's Denegadas</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -222,7 +222,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/reparos.png" height="40" class="mr-4"><span>Peças/Serviços</span>
+            <img src="assets/images/icones/reparos.png" height="40" class="mr-4" width="40"><span>Peças/Serviços</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -254,7 +254,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/icone-checklist.png" height="40" class="mr-4"><span>Check-List</span>
+            <img src="assets/images/icones/icone-checklist.png" height="40" class="mr-4" width="40"><span>Check-List</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -274,7 +274,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/almoxerifado.png" height="40" class="mr-4"><span>Almoxarifado</span>
+            <img src="assets/images/icones/almoxerifado.png" height="40" class="mr-4" width="40"><span>Almoxarifado</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -324,7 +324,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/pneu.png" height="40" class="mr-4"><span>Pneus</span>
+            <img src="assets/images/icones/pneu.png" height="40" class="mr-4" width="40"><span>Pneus</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -386,7 +386,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/combustivel.png" height="40" class="mr-4"><span>Posto</span>
+            <img src="assets/images/icones/combustivel.png" height="40" class="mr-4" width="40"><span>Posto</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -424,7 +424,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/supervisor.png" height="40" class="mr-4"><span>Supervisores</span>
+            <img src="assets/images/icones/supervisor.png" height="40" class="mr-4" width="40"><span>Supervisores</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -456,7 +456,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/icone-metas.png" height="40" class="mr-4"><span>Metas</span>
+            <img src="assets/images/icones/icone-metas.png" height="40" class="mr-4" width="40"><span>Metas</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -476,7 +476,7 @@
 
         <li class="list-group-item py-2">
           <a href="">
-            <img src="assets/images/icones/icone-fusion.png" height="40" class="mr-4"><span>Fusion</span>
+            <img src="assets/images/icones/icone-fusion.png" height="40" class="mr-4" width="40"><span>Fusion</span>
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
@@ -508,7 +508,7 @@
 
         <li class="list-group-item py-2">
           <a href="sair.php">
-            <img src="assets/images/icones/sair.png" height="40" class="mr-4"><span>Sair</span>
+            <img src="assets/images/icones/sair.png" height="40" class="mr-4" width="40"><span>Sair</span>
           </a>
           
         </li> <!-- /.list-group-item -->
