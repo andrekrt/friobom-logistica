@@ -1,5 +1,6 @@
 <?php
 include '../../conexao.php';
+session_start();
 
 ## Read value
 $draw = $_POST['draw'];
@@ -50,6 +51,10 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    $excluir = '';
+    if( $_SESSION['tipoUsuario']==99){
+        $excluir='<a href="excluir-suco.php?idsuco='.$row['idsucos'].' "data-id="'.$row['idsucos'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm('."Tem certeza de que deseja excluir este item?".')">Deletar</a>';
+    }
     $data[] = array(
         "num_fogo"=>$row['num_fogo'],
         "data_medicao"=>date("d/m/Y H:i",strtotime( $row['data_medicao'])) ,
@@ -62,7 +67,7 @@ foreach($empRecords as $row){
         "suco04"=>$row['suco04'] ,
         "calibragem"=>$row['calibragem'] ,
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsucos'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> '
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsucos'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> ' . $excluir 
     );
 }
 

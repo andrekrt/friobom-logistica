@@ -382,6 +382,12 @@
                 <div class="text d-inline-block align-middle">Listar Sucos</div>
               </a>
             </li>
+            <li class="list-group-item">
+              <a href="../pneus/extrato.php">
+                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406380/Tools_qsfsr4.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <div class="text d-inline-block align-middle">Extrato</div>
+              </a>
+            </li>
           </ul>
         </li> <!-- /.list-group-item -->
 

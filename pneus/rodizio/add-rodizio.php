@@ -2,6 +2,7 @@
 
 session_start();
 require("../../conexao.php");
+include '../funcao.php';
 
 $idModudulo = 12;
 $idUsuario = $_SESSION['idUsuario'];
@@ -54,6 +55,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $somaRodizio->execute();
         $somaRodizio=$somaRodizio->fetch();
         $valor = $somaRodizio['kmRodadoAnterior'];
+
+        addExtrato($pneu, "Rodízio", $valor, $veiculoAnterior, $kmFinalVeiculoAnterior);
 
         $atualizaPneu = $db->prepare("UPDATE pneus SET veiculo = :novoVeiculo, km_inicial = :kmInicialNovo, km_rodado = :kmRodadoTotal, localizacao = :localizacao, posicao_inicio = :posicao WHERE idpneus = :idpneu");
         $atualizaPneu->bindValue(':novoVeiculo', $novoVeiculo);

@@ -2,6 +2,7 @@
 
 session_start();
 require("../../conexao.php");
+include ('../funcao.php');
 
 $idModudulo = 12;
 $idUsuario = $_SESSION['idUsuario'];
@@ -84,7 +85,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         
             if($sql->execute()){
                 $kmRodadoTotal = $kmPneu+$kmRodado[$i];
-                
+                addExtrato($idpneu[$i], "Suco", $kmRodadoTotal, $veiculo, $kmVeiculo);
                 $atualizaPneu = $db->prepare("UPDATE pneus SET km_rodado = :kmRodadoTotal WHERE idpneus = :idpneu");
                 $atualizaPneu->bindValue(':kmRodadoTotal', $kmRodadoTotal);
                 $atualizaPneu->bindValue(':idpneu', $idpneu[$i]);
