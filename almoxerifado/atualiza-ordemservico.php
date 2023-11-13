@@ -28,6 +28,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $situacao = filter_input(INPUT_POST, 'situacao');
     if($situacao=="Encerrada"){
         $dataEncarrecamento = date("Y-m-d H:i:s");
+        alterarStatusCaminhao($placa, "Disponível");
     }else{
         $dataEncarrecamento = null;
     }

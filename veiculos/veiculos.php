@@ -35,7 +35,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <link rel="manifest" href="../assets/favicon/site.webmanifest">
     <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#ffffff"> 
 
     <!-- arquivos para datatable -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -103,7 +103,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
     
     <script>
-        $(document).ready(function(){
+        $(document).on('paginaCarregada', function(){
             $('#tableVeiculos').DataTable({
                 'processing': true,
                 'serverSide': true,
@@ -141,6 +141,51 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     {'bSortable':false, 'aTargets':[12]}
                 ],
             });
+        });
+        $(document).ready(function(){
+            $('#tableVeiculos').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':'proc_pesq_veic.php'
+                },
+                'columns': [
+                    { data: 'cod_interno_veiculo' },
+                    { data: 'tipo_veiculo' },
+                    { data: 'categoria' },
+                    {data: 'marca'},
+                    { data: 'placa_veiculo' },
+                    { data: 'peso_maximo' },
+                    { data: 'cubagem' },
+                    { data: 'data_revisao_oleo' },
+                    { data: 'km_ultima_revisao' },
+                    { data: 'data_revisao_diferencial' },
+                    { data: 'km_revisao_diferencial' },
+                    { data: 'km_atual' },
+                    { data: 'km_restante'},
+                    { data: 'situacao'},
+                    { data: 'km_alinhamento'},
+                    {data: 'km_restante_alinhamento'}, 
+                    {data: 'alinhamento'}, 
+                    {data: 'media_combustivel'}, 
+                    { data: 'acoes'},
+                ],
+                // "fnRowCallback": function(nRow, aData, iDisplayIndex){
+                    
+                //     if(aData['situacao']=="Pronto para Revisão"){
+                //         $(nRow).css('background-color', 'red');
+                //     }
+                // },
+                "language":{
+                    "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
+                },
+                "aoColumnDefs":[
+                    {'bSortable':false, 'aTargets':[10]},
+                    {'bSortable':false, 'aTargets':[11]},
+                    {'bSortable':false, 'aTargets':[12]}
+                ],
+            });
            
         });
 
@@ -153,7 +198,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $('#modalEditar').modal('show');
 
             $.ajax({
-                url:"get_single_data.php",
+                url:"veiculos/get_single_data.php",
                 data:{id:id},
                 type:'post',
                 success: function(data){

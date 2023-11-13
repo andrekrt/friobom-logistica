@@ -29,6 +29,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $atualiza->bindValue(':dataRevisao', $dataRevisao);
     $atualiza->bindValue(':idRevisao', $idRevisao);
     $atualiza->bindValue(':tipoRevisao', $tipoRevisao);
+
+    if($tipoRevisao=='Diferencial'){
+        $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_revisao_diferencial = :kmRevisao, data_revisao_diferencial = :dataRevisao WHERE placa_veiculo = :placa");
+        $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
+        $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
+        $atualizaVeiculo->bindValue(':placa', $placa);
+        $atualizaVeiculo->execute();
+    }else{
+        $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_ultima_revisao = :kmRevisao, data_revisao_oleo = :dataRevisao WHERE placa_veiculo = :placa");
+        $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
+        $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
+        $atualizaVeiculo->bindValue(':placa', $placa);
+        $atualizaVeiculo->execute();
+    }
     
     if($atualiza->execute()){
         echo "<script> alert('Atualizsado com Sucesso!')</script>";

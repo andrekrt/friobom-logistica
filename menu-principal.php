@@ -45,6 +45,12 @@
                 <div class="text d-inline-block align-middle">Relatório</div>
               </a>
             </li>
+            <li class="list-group-item">
+              <a href="veiculos/disponibilidade.php">
+                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495404872/Team_Members_ttaqh0.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block text-center"> -->
+                <div class="text d-inline-block align-middle">Disponibilidade da Frota</div>
+              </a>
+            </li>
           </ul>
         </li> <!-- /.list-group-item -->
         

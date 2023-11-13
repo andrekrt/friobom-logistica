@@ -2,6 +2,7 @@
 
 session_start();
 require("../conexao.php");
+include "../almoxerifado/funcoes.php";
 
 $idModudulo = 10;
 $idUsuario = $_SESSION['idUsuario'];
@@ -104,6 +105,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $sql->bindValue(':checksaida',$idCheckSaida);
     
     if($sql->execute()){
+        alterarStatusCaminhao($veiculo, "Disponível");
         echo "<script> alert('Check-List Realizado!!')</script>";
         echo "<script> window.location.href='checklists.php' </script>";
     }else{

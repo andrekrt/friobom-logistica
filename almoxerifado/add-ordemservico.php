@@ -72,7 +72,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     if($inserir->execute()){
         $idOs = $db->lastInsertId();
-
+        if($externa===1){
+            $status = "Manutenção Externa";
+        }else{
+            $status = "Manutenção Interna";
+        }
+        alterarStatusCaminhao($placa,$status);
         $i=0;
         for($i;$i<count($pecas); $i++){
             

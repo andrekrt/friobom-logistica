@@ -408,6 +408,33 @@ img.icone{
     
 }
 
+/* inicio menu de disponibilidade */
+
+.area-disp{
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.area-disp a{
+    color: #000;
+}
+
+.area-disp a:hover{
+    color: #fff;
+}
+
+#disponivel{
+    background-color: #00FF00;
+}
+#viagem{
+    background-color: #FFFF00;
+}
+#interna, #externa{
+    background-color: #FF0000;
+}
+
+/* fim do menu de disponibilidade */
+
 @media(max-width:768px){
     .area-indice-val{
         grid-template-columns: repeat(3, 1fr);

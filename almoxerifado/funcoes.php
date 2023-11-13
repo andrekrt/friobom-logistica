@@ -176,4 +176,17 @@ function atualisaSaida($idSaida, $servico, $peca, $qtd, $requisicao, $placa, $ob
     }
 }
 
+function alterarStatusCaminhao($veiculo, $status){
+    require ("../conexao.php");
+
+    $sqlVeic = $db->prepare("UPDATE veiculos SET situacao=:situacao WHERE placa_veiculo = :veiculo");
+    $sqlVeic->bindValue(':veiculo',$veiculo);
+    $sqlVeic->bindValue(':situacao', $status);
+    if($sqlVeic->execute()){
+        return true;
+    }else{
+        print_r($sqlVeic->errorInfo());
+    }
+}
+
 ?>
