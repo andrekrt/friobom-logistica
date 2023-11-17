@@ -429,8 +429,11 @@ img.icone{
 #viagem{
     background-color: #FFFF00;
 }
-#interna, #externa{
+#interna{
     background-color: #FF0000;
+}
+#externa{
+    background-color: #0000FF;
 }
 
 /* fim do menu de disponibilidade */
