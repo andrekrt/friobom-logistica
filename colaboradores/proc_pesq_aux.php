@@ -56,7 +56,7 @@ foreach($empRecords as $row){
         "cpf_auxiliar"=>$row['cpf_auxiliar'],
         "salario_auxiliar"=>"R$". str_replace(".",",", $row['salario_auxiliar']),
         "rota"=>$row['nome_rota'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idauxiliares'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="excluir-aux.php?id='.$row['idauxiliares'].' " data-id="'.$row['idauxiliares'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a> '
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idauxiliares'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="excluir-aux.php?id='.$row['idauxiliares'].' " data-id="'.$row['idauxiliares'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm(\'Certeza que deseja desativar o auxiliar '.$row['nome_auxiliar'].' ?\')">Desativar</a> '
     );
 }
 

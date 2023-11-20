@@ -57,7 +57,7 @@ foreach($empRecords as $row){
             "salario_colaborador"=>"R$". str_replace(".",",", $row['salario_colaborador']),
             "extra"=>"R$". str_replace(".",",", $row['salario_extra']),
             "cargo_colaborador"=>$row['cargo_colaborador'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idcolaboradores'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-colab.php?id='.$row['idcolaboradores'].' " data-id="'.$row['idcolaboradores'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idcolaboradores'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-colab.php?id='.$row['idcolaboradores'].' " data-id="'.$row['idcolaboradores'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm(\'Certeza que deseja desativar o colaborador '.$row['nome_colaborador'].' ?\')">Desativar</a>'
         );
 }
 
