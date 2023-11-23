@@ -2,7 +2,7 @@
 
 function addEstoque($peca, $fornecedor, $qtd, $valorUn, $desconto, $valorTotal, $numNf, $obs, $frete, $usuario){
     require("../conexao.php");
-    include('../almoxerifado/funcoes.php');
+    include_once('../almoxerifado/funcoes.php');
 
     $dataSaida = date("Y-m-d");
     $inserir = $db->prepare("INSERT INTO entrada_estoque (data_nf, num_nf, peca_idpeca, preco_custo, qtd, frete, desconto, obs, fornecedor, vl_total_comprado, id_usuario) VALUES (:dataNf, :nf, :peca, :preco, :qtd, :frete, :desconto, :obs, :fornecedor, :vlTotal, :usuario)");
@@ -17,6 +17,8 @@ function addEstoque($peca, $fornecedor, $qtd, $valorUn, $desconto, $valorTotal, 
     $inserir->bindValue(':fornecedor', $fornecedor);
     $inserir->bindValue(':vlTotal', $valorTotal);
     $inserir->bindValue(':usuario', $usuario);
+
+    // echo $peca . "<br>";
 
     if($inserir->execute()){  
         atualizaEStoque($peca);

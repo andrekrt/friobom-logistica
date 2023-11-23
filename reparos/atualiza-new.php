@@ -27,8 +27,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $sqlCidade = $db->prepare("SELECT cidade_base FROM veiculos WHERE placa_veiculo =:veiculo");
     $sqlCidade->bindValue(':veiculo', $placa);
     $sqlCidade->execute();
-    $cidadeBase = $sqlCidade->fetch();
-    $cidadeBase = $cidadeBase['cidade_base'];
+    if($sqlCidade->rowCount()>0){
+        $cidadeBase = $sqlCidade->fetch();
+        $cidadeBase = $cidadeBase['cidade_base'];
+    }else{
+        $cidadeBase='Bacabal';
+    }
 
     $peca = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']) ;
@@ -47,7 +51,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     
     for($i=0; $i<count($peca); $i++){
 
-        // echo "Toke: $token <br> Placa: $placa <br> Problema: $problema<br> Local: $localReparo<br> Peça: $peca[$i]<br> Qtd: $qtd[$i]<br> Valor: $vlUnit[$i]<br> ID: $idSolicitacao[$i] <br> OBS: $obs <br> Situação: $situacao<br><br>";
+        // echo "Toke: $token <br> Placa: $placa <br> Problema: $problema<br> Peça: $peca[$i]<br> Qtd: $qtd[$i]<br> Valor: $vlUnit[$i]<br> ID: $idSolicitacao[$i] <br> OBS: $obs <br> Situação: $situacao<br><br>";
 
         $valorTotal =  ($vlUnit[$i]-$desconto[$i])*$qtd[$i];
 
@@ -69,18 +73,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':obs', $obs);
         $sql->bindValue(':id', $idSolicitacao[$i]);
         $sql->bindValue(':cidadeBase', $cidadeBase);
-        $sql->execute();
+        // $sql->execute();
+
+       
+        
 
         if($placa==='Estoque' && $situacao==="Aprovado"){
-            addEstoque($peca[$i], $fornecedor[$i], $qtd[$i], $vlUnit[$i], $desconto[$i], $valorTotal, $nf, $obs, $frete, $idUsuario);
+            // echo " Peça: $peca[$i]<br> Qtd: $qtd[$i]<br> Valor: $vlUnit[$i]<br> ID: $idSolicitacao[$i] <br> OBS: $obs <br> Situação: $situacao<br><br>";
+            addEstoque($peca[$i], $fornecedor, $qtd[$i], $vlUnit[$i], $desconto[$i], $valorTotal, $nf, $obs, $frete, $idUsuario);
         }
 
         // echo 'ID:'.$idSolicitacao[$i].' Situação:' .$situacao . "<br>";
 
     }
 
-    echo "<script> alert('Solicitação Atualizada!')</script>";
-    echo "<script> window.location.href='solicitacoes.php' </script>"; 
+    // echo "<script> alert('Solicitação Atualizada!')</script>";
+    // echo "<script> window.location.href='solicitacoes.php' </script>"; 
 }
 
 ?>

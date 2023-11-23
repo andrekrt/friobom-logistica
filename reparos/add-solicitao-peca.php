@@ -35,8 +35,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $sqlCidade = $db->prepare("SELECT cidade_base FROM veiculos WHERE placa_veiculo =:veiculo");
     $sqlCidade->bindValue(':veiculo', $placa);
     $sqlCidade->execute();
-    $cidadeBase = $sqlCidade->fetch();
-    $cidadeBase = $cidadeBase['cidade_base'];
+    if($sqlCidade->rowCount()>0){
+        $cidadeBase = $sqlCidade->fetch();
+        $cidadeBase = $cidadeBase['cidade_base'];
+    }else{
+        $cidadeBase='Bacabal';
+    }
+    
 
     // echo $frete;
     
