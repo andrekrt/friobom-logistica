@@ -23,6 +23,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $frete = filter_input(INPUT_POST, 'frete');
     $nf = filter_input(INPUT_POST, 'nf');
 
+    // verificar cidade base do veiculo para registrar no bd da viagem
+    $sqlCidade = $db->prepare("SELECT cidade_base FROM veiculos WHERE placa_veiculo =:veiculo");
+    $sqlCidade->bindValue(':veiculo', $placa);
+    $sqlCidade->execute();
+    $cidadeBase = $sqlCidade->fetch();
+    $cidadeBase = $cidadeBase['cidade_base'];
+
     $peca = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']) ;
     $vlUnit = str_replace(",",".", $_POST['vlUnit']);
@@ -44,7 +51,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         $valorTotal =  ($vlUnit[$i]-$desconto[$i])*$qtd[$i];
 
-        $sql = $db->prepare("UPDATE solicitacoes_new SET placa = :placa, motorista = :motorista, rota = :rota, problema = :problema, peca_servico = :peca, fornecedor=:fornecedor, qtd = :qtd, vl_unit = :vlUnit, desconto = :desconto, vl_total = :vlTotal, frete = :frete, num_nf=:nf, situacao = :situacao, data_aprovacao = :dataAprovacao, obs = :obs WHERE id = :id");
+        $sql = $db->prepare("UPDATE solicitacoes_new SET placa = :placa, motorista = :motorista, rota = :rota, problema = :problema, peca_servico = :peca, fornecedor=:fornecedor, qtd = :qtd, vl_unit = :vlUnit, desconto = :desconto, vl_total = :vlTotal, frete = :frete, num_nf=:nf, situacao = :situacao, data_aprovacao = :dataAprovacao, obs = :obs, cidade_base=:cidadeBase WHERE id = :id");
         $sql->bindValue(':placa', $placa);
         $sql->bindValue(':motorista', $motorista);
         $sql->bindValue(':rota', $rota);
@@ -61,6 +68,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':dataAprovacao', $dataAprovacao);
         $sql->bindValue(':obs', $obs);
         $sql->bindValue(':id', $idSolicitacao[$i]);
+        $sql->bindValue(':cidadeBase', $cidadeBase);
         $sql->execute();
 
         if($placa==='Estoque' && $situacao==="Aprovado"){

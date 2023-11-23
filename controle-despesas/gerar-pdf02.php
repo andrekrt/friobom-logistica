@@ -63,7 +63,12 @@ if($sql){
         $hrTk4Abast = $dado['hr_tk_abast4'];
         $litrosComTK = ($hrTk4Abast-$hrTkInicial)*2;
         $totalLitrosSemTk = $litrosGeral-$litrosComTK;
-        $mediaComTk = number_format($kmRodado/$totalLitrosSemTk,2);
+       
+        if($totalLitrosSemTk==0){
+            $mediaComTk=0;
+        }else{
+            $mediaComTk = number_format($kmRodado/$totalLitrosSemTk,2);
+        }
         $mediaSemTk = $dado['mediaSemTk'];
         $kmPorLitro ;
         if($km1Percuso==0){
@@ -86,7 +91,7 @@ if($sql){
         }
 
         $kmPorLitro4;
-        if($km4Percuso==0){
+        if($km4Percuso==0 || $litroSemTk4==0){
             $kmPorLitro4=0;
         }else{
            $kmPorLitro4 = number_format($km4Percuso/$litroSemTk4,2);

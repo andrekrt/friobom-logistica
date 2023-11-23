@@ -72,6 +72,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Categoria</th>
                                 <th scope="col" class="text-center text-nowrap">Marca</th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
+                                <th scope="col" class="text-center text-nowrap">Cidade Base</th>
                                 <th scope="col" class="text-center text-nowrap">Peso Máximo</th>
                                 <th scope="col" class="text-center text-nowrap">Cubagem</th>
                                 <th scope="col" class="text-center text-nowrap"> Data Revisão Óleo</th>
@@ -80,7 +81,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Revisão Diferencial (KM) </th>
                                 <th scope="col" class="text-center text-nowrap"> Km Atual </th>
                                 <th scope="col" class="text-center text-nowrap"> Km Restante(Revisão)</th>
-                                <th scope="col" class="text-center text-nowrap"> Revisão </th>
+                                <th scope="col" class="text-center text-nowrap"> Situação</th>
                                 <th scope="col" class="text-center text-nowrap"> Km Alinhamento</th>
                                 <th scope="col" class="text-center text-nowrap"> Km Restante(Alinhamento)</th>
                                 <th scope="col" class="text-center text-nowrap"> Alinhamento</th>
@@ -103,45 +104,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
     
     <script>
-        $(document).on('paginaCarregada', function(){
-            $('#tableVeiculos').DataTable({
-                'processing': true,
-                'serverSide': true,
-                'serverMethod': 'post',
-                'ajax': {
-                    'url':'proc_pesq_veic.php'
-                },
-                'columns': [
-                    { data: 'cod_interno_veiculo' },
-                    { data: 'tipo_veiculo' },
-                    { data: 'categoria' },
-                    {data: 'marca'},
-                    { data: 'placa_veiculo' },
-                    { data: 'peso_maximo' },
-                    { data: 'cubagem' },
-                    { data: 'data_revisao_oleo' },
-                    { data: 'km_ultima_revisao' },
-                    { data: 'data_revisao_diferencial' },
-                    { data: 'km_revisao_diferencial' },
-                    { data: 'km_atual' },
-                    { data: 'km_restante'},
-                    { data: 'situacao'},
-                    { data: 'km_alinhamento'},
-                    {data: 'km_restante_alinhamento'}, 
-                    {data: 'alinhamento'}, 
-                    {data: 'media_combustivel'}, 
-                    { data: 'acoes'},
-                ],
-                "language":{
-                    "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                },
-                "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[10]},
-                    {'bSortable':false, 'aTargets':[11]},
-                    {'bSortable':false, 'aTargets':[12]}
-                ],
-            });
-        });
         $(document).ready(function(){
             $('#tableVeiculos').DataTable({
                 'processing': true,
@@ -154,8 +116,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'cod_interno_veiculo' },
                     { data: 'tipo_veiculo' },
                     { data: 'categoria' },
-                    {data: 'marca'},
+                    { data: 'marca'},
                     { data: 'placa_veiculo' },
+                    { data: 'cidade_base'},
                     { data: 'peso_maximo' },
                     { data: 'cubagem' },
                     { data: 'data_revisao_oleo' },
@@ -166,9 +129,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'km_restante'},
                     { data: 'situacao'},
                     { data: 'km_alinhamento'},
-                    {data: 'km_restante_alinhamento'}, 
-                    {data: 'alinhamento'}, 
-                    {data: 'media_combustivel'}, 
+                    { data: 'km_restante_alinhamento'}, 
+                    { data: 'alinhamento'}, 
+                    { data: 'media_combustivel'}, 
                     { data: 'acoes'},
                 ],
                 // "fnRowCallback": function(nRow, aData, iDisplayIndex){
@@ -198,7 +161,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $('#modalEditar').modal('show');
 
             $.ajax({
-                url:"veiculos/get_single_data.php",
+                url:"get_single_data.php",
                 data:{id:id},
                 type:'post',
                 success: function(data){
@@ -214,6 +177,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#kmAtual').val(json.km_atual);
                     $('#marca').val(json.marca);
                     $('#metaCombustivel').val(json.meta_combustivel);
+                    $('#base').val(json.cidade_base);
                 }
             })
         });
@@ -262,10 +226,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     </div>
                     <div class="row">
                         <div class="form-group col-md-3">
+                            <label for="base" class="col-form-label">Cidade Base</label>
+                            <select name="base" id="base" required class="form-control">
+                                <option value=""></option>
+                                <option value="São Luís">São Luís</option>
+                                <option value="Bacabal">Bacabal</option>
+                                <option value="Timon">Timon</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
                             <label for="peso" class="col-form-label">Peso Máximo</label>
                             <input type="text" class="form-control" name="peso" id="peso" >
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label for="cubagem" class="col-form-label">Cubagem</label>
                             <input type="text" class="form-control" name="cubagem" id="cubagem" >
                         </div>
@@ -273,7 +246,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="metaCombustivel" class="col-form-label">Meta de Combustível</label>
                             <input type="text" name="metaCombustivel" id="metaCombustivel" class="form-control">
                         </div>
-                        <div class="form-group col-md-3 ">
+                        <div class="form-group col-md-2 ">
                             <label for="marca" class="col-form-label">Marca</label>
                             <select name="marca" id="marca" required class="form-control">
                                 <option value=""></option>

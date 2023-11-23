@@ -22,8 +22,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $cubagem = str_replace(",", ".", filter_input(INPUT_POST, 'cubagem'));
     $metaCombustivel = str_replace(",", ".",filter_input(INPUT_POST, 'metaCombustivel') ) ;
     $marca = filter_input(INPUT_POST, 'marca');
+    $cidadeBase = filter_input(INPUT_POST, 'base');
 
-    $atualiza = $db->prepare("UPDATE veiculos SET tipo_veiculo = :tipoVeiculo, placa_veiculo = :placa, categoria = :categoria, marca=:marca,peso_maximo = :peso, cubagem = :cubagem, meta_combustivel = :metaCombustivel WHERE cod_interno_veiculo = :codVeiculo ");
+    $atualiza = $db->prepare("UPDATE veiculos SET tipo_veiculo = :tipoVeiculo, placa_veiculo = :placa, categoria = :categoria, marca=:marca,peso_maximo = :peso, cubagem = :cubagem, meta_combustivel = :metaCombustivel, cidade_base=:base WHERE cod_interno_veiculo = :codVeiculo ");
     $atualiza->bindValue(':tipoVeiculo', $tipoVeiculo);
     $atualiza->bindValue(':placa', $placa);
     $atualiza->bindValue(':categoria', $categoria);
@@ -32,6 +33,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $atualiza->bindValue(':cubagem', $cubagem);
     $atualiza->bindValue(':codVeiculo', $codVeiculo);
     $atualiza->bindValue(':metaCombustivel', $metaCombustivel);
+    $atualiza->bindValue(':base', $cidadeBase);
 
     //echo "$codVeiculo <br>$tipoVeiculo<br>$placa";
 

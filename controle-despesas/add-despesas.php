@@ -31,6 +31,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;;
     $obs = filter_input(INPUT_POST, 'obs');
 
+    // verificar cidade base do veiculo para registrar no bd da viagem
+    $sqlCidade = $db->prepare("SELECT cidade_base FROM veiculos WHERE placa_veiculo =:veiculo");
+    $sqlCidade->bindValue(':veiculo', $placaVeiculo);
+    $sqlCidade->execute();
+    $cidadeBase = $sqlCidade->fetch();
+    $cidadeBase = $cidadeBase['cidade_base'];
+
     //calculo de diferença de datas
     $dataFinial = new DateTime($dataChegada);
     $dataInicial = new DateTime($dataSaida);
@@ -250,7 +257,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $consultaRota = $db->query("SELECT * FROM rotas WHERE cod_rota = '$codRota'");
     
    if($consultaVeiculo->rowCount()>0 && $consultaMotorista->rowCount()>0 && $consultaRota->rowCount()>0){
-        $sql = $db->prepare("INSERT INTO viagem (cod_interno_veiculo, tipo_veiculo, placa_veiculo, cod_interno_motorista, nome_motorista, data_carregamento, num_carregemento, data_saida, data_chegada, dias_em_rota, cod_rota, nome_rota, valor_transportado, valor_devolvido, valor_liquido, qtd_entregas, num_carga, peso_carga, km_saida, hr_tk_saida, km_abast1, hr_tk_abast1, lt_abast1, valor_abast1, km_perc1, km_pec1_tk, kmPorLtSemTk, km_abast2, hr_tk_abast2, lt_abast2, valor_abast2, km_perc2, km_pec2_tk_, kmPorLtSemTk2, km_abast3, hr_tk_abast3, lt_abast3, valor_abast3, km_perc3, km_pec3_tk, kmPorLtSemTk3, km_abast4, hr_tk_abast4, lt_abast4, valor_abast4, km_perc4, km_perc4_tk, kmPorLtSemTk4, km_rodado, km_final, litros, mediaSemTk, consumo_tk, media_comtk, valor_total_abast, diarias_motoristas, dias_motorista, diarias_ajudante, dias_ajudante, diarias_chapa, dias_chapa,  outros_gastos_ajudante,  tomada, descarga, travessia, outros_servicos, nome_ajudante, chapa01, chapa02, localAbast1, localAbast2, localAbast3, localAbast4, custo_entrega, nota_carga, obs_carga, idusuarios, nf1abast, nf2abast, nf3abast) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :codMotorista, :nomeMotorista,:dataCarragemento, :numCarregamento, :dataSaida, :dataChegada, :diasEmRota, :codRota, :rota, :vlTransp, :vlDev, :vlLiq, :qtdEntregas, :cargas, :pesoCarga, :kmSaida, :hrTkSaida, :km1Abast, :hrTk1Abast, :lt1Abast, :vl1Abast, :km1Perc, :tk1Perc, :kmPorLtSemtK, :km2Abast, :hrTk2Abast, :lt2Abast, :vl2Abast, :km2Perc, :tk2Perc, :kmPorLtSemtK2, :km3Abast, :hrTk3Abast, :lt3Abast, :vl3Abast, :km3Perc, :tk3Perc, :kmPorLtSemtK3, :km4Abast, :hrTk4Abast, :lt4Abast, :vl4Abast, :km4Perc, :kmPorLtSemtK4, :kmPorLtSemtK4, :kmRodado, :kmFinal, :litrosTotal, :mediaSemTk, :consumoTotalTk, :mediaTk, :valorTotalAbast, :diariaMotorista, :diasRotaMotorista, :diariaAjudante, :diasRotaAjudante, :diariaChapa, :diasRotaChapa, :gastosAjudante, :tomada, :descarga, :travessia, :servicos, :nomeAjudante, :chapa01, :chapa02, :localAbast1, :localAbast2, :localAbast3, :localAbast4, :custoEntrega, :classificacao, :obs, :idUsuario, :nf1Abast, :nf2Abast, :nf3Abast)");
+        $sql = $db->prepare("INSERT INTO viagem (cod_interno_veiculo, tipo_veiculo, placa_veiculo, cod_interno_motorista, nome_motorista, data_carregamento, num_carregemento, data_saida, data_chegada, dias_em_rota, cod_rota, nome_rota, valor_transportado, valor_devolvido, valor_liquido, qtd_entregas, num_carga, peso_carga, km_saida, hr_tk_saida, km_abast1, hr_tk_abast1, lt_abast1, valor_abast1, km_perc1, km_pec1_tk, kmPorLtSemTk, km_abast2, hr_tk_abast2, lt_abast2, valor_abast2, km_perc2, km_pec2_tk_, kmPorLtSemTk2, km_abast3, hr_tk_abast3, lt_abast3, valor_abast3, km_perc3, km_pec3_tk, kmPorLtSemTk3, km_abast4, hr_tk_abast4, lt_abast4, valor_abast4, km_perc4, km_perc4_tk, kmPorLtSemTk4, km_rodado, km_final, litros, mediaSemTk, consumo_tk, media_comtk, valor_total_abast, diarias_motoristas, dias_motorista, diarias_ajudante, dias_ajudante, diarias_chapa, dias_chapa,  outros_gastos_ajudante,  tomada, descarga, travessia, outros_servicos, nome_ajudante, chapa01, chapa02, localAbast1, localAbast2, localAbast3, localAbast4, custo_entrega, nota_carga, obs_carga, idusuarios, nf1abast, nf2abast, nf3abast, cidade_base) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :codMotorista, :nomeMotorista,:dataCarragemento, :numCarregamento, :dataSaida, :dataChegada, :diasEmRota, :codRota, :rota, :vlTransp, :vlDev, :vlLiq, :qtdEntregas, :cargas, :pesoCarga, :kmSaida, :hrTkSaida, :km1Abast, :hrTk1Abast, :lt1Abast, :vl1Abast, :km1Perc, :tk1Perc, :kmPorLtSemtK, :km2Abast, :hrTk2Abast, :lt2Abast, :vl2Abast, :km2Perc, :tk2Perc, :kmPorLtSemtK2, :km3Abast, :hrTk3Abast, :lt3Abast, :vl3Abast, :km3Perc, :tk3Perc, :kmPorLtSemtK3, :km4Abast, :hrTk4Abast, :lt4Abast, :vl4Abast, :km4Perc, :kmPorLtSemtK4, :kmPorLtSemtK4, :kmRodado, :kmFinal, :litrosTotal, :mediaSemTk, :consumoTotalTk, :mediaTk, :valorTotalAbast, :diariaMotorista, :diasRotaMotorista, :diariaAjudante, :diasRotaAjudante, :diariaChapa, :diasRotaChapa, :gastosAjudante, :tomada, :descarga, :travessia, :servicos, :nomeAjudante, :chapa01, :chapa02, :localAbast1, :localAbast2, :localAbast3, :localAbast4, :custoEntrega, :classificacao, :obs, :idUsuario, :nf1Abast, :nf2Abast, :nf3Abast, :cidadeBase)");
         $sql->bindValue(':codVeiculo', $codVeiculo);
         $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
         $sql->bindValue(':placaVeiculo', $placaVeiculo);
@@ -336,6 +343,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':nf1Abast', $nf1Abast);
         $sql->bindValue(':nf2Abast', $nf2Abast);
         $sql->bindValue(':nf3Abast', $nf3Abast);
+        $sql->bindValue(':cidadeBase', $cidadeBase);
 
         if($sql->execute()){
             $ultimoId = $db->lastInsertId();

@@ -103,6 +103,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </div>
                         </div>
                         <div class="form-row">
+                            <div class="form-group col-md-12 espaco">
+                                <label for="base">Cidade Base</label>
+                                <select name="base" id="base" required class="form-control">
+                                    <option value=""></option>
+                                    <option value="São Luís">São Luís</option>
+                                    <option value="Bacabal">Bacabal</option>
+                                    <option value="Timon">Timon</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-4 espaco">
                                 <label for="peso">Peso Máximo(Kg)</label>
                                 <input type="text" required name="peso" id="peso" class="form-control">

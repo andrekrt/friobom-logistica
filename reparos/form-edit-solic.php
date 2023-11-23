@@ -126,7 +126,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         
                         <div class="form-grupo col-md-2 ">
                             <label for="fornecedor">Fornecedor</label>
-                            <select name="fornecedor[]" id="fornecedor" class="form-control">
+                            <select name="fornecedor" id="fornecedor" class="form-control">
                                 <option value="<?=$dado['fornecedor']?>"> <?=$dado['fornecedor']?> - <?=$dado['nome_fantasia']?> </option>
                                 <?php
                                 $sql = $db->query("SELECT * FROM fornecedores");

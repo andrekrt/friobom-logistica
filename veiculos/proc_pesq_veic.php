@@ -15,13 +15,14 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (cod_interno_veiculo LIKE :cod_interno_veiculo OR tipo_veiculo LIKE :tipo_veiculo OR placa_veiculo LIKE :placa_veiculo OR categoria LIKE :categoria OR marca LIKE :marca ) ";
+	$searchQuery = " AND (cod_interno_veiculo LIKE :cod_interno_veiculo OR tipo_veiculo LIKE :tipo_veiculo OR placa_veiculo LIKE :placa_veiculo OR categoria LIKE :categoria OR marca LIKE :marca  OR cidade_base LIKE :cidade_base) ";
     $searchArray = array( 
         'cod_interno_veiculo'=>"%$searchValue%", 
         'tipo_veiculo'=>"%$searchValue%",
         'placa_veiculo'=>"%$searchValue%",
         'categoria'=>"%$searchValue%",
-        'marca'=>"%$searchValue%"
+        'marca'=>"%$searchValue%",
+        'cidade_base'=>"%$searchValue%"
     );
 }
 
@@ -77,21 +78,22 @@ foreach($empRecords as $row){
     $data[] = array(
         "cod_interno_veiculo"=>$row['cod_interno_veiculo'],
         "tipo_veiculo"=>$row['tipo_veiculo'],
-        "placa_veiculo"=>$row['placa_veiculo'],
         "categoria"=>$row['categoria'],
         "marca"=>$row['marca'],
+        "placa_veiculo"=>$row['placa_veiculo'],       
+        "cidade_base"=>$row['cidade_base'],
         "peso_maximo"=>$row['peso_maximo'],
         "cubagem"=>$row['cubagem'],
+        "data_revisao_oleo"=>empty($row['data_revisao_oleo']) ? null : date("d/m/Y", strtotime($row['data_revisao_oleo'])),
         "km_ultima_revisao"=>$row['km_ultima_revisao'],
-        "data_revisao_oleo"=> date("d/m/Y", strtotime($row['data_revisao_oleo'])),
+        "data_revisao_diferencial"=> empty($row['data_revisao_diferencial'])?null:date("d/m/Y", strtotime($row['data_revisao_diferencial'])),
         "km_atual"=>$row['km_atual'],
-        "data_revisao_diferencial"=> date("d/m/Y", strtotime($row['data_revisao_diferencial'])),
-        "km_revisao_diferencial"=>$row['km_revisao_diferencial'],
+        "km_revisao_diferencial"=>$row['km_revisao_diferencial'],   
         "km_restante"=>$row['km_atual']-$row['km_ultima_revisao'],
+        "situacao"=>$situacao,
         "km_alinhamento"=>$row['km_alinhamento'],
         "km_restante_alinhamento"=>$kmRestanteAlinhamento,
         "alinhamento"=>$situacaoAlinhamento,
-        "situacao"=>$situacao,
         "media_combustivel"=>number_format($row['meta_combustivel'],2,",",".") ,
         "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="desativar.php?codVeiculo='.$row['cod_interno_veiculo'].' " data-id="'.$row['cod_interno_veiculo'].'"  class="btn btn-danger btn-sm deleteBtn" >Desativar</a>'
     );
