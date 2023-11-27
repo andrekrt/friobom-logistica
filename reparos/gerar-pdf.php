@@ -6,7 +6,7 @@ require("../conexao.php");
 $data = date("d/m/y");
 $token = filter_input(INPUT_GET,"token");
 
-$sql = $db->prepare("SELECT id, token, data_atual, placa, problema, local_reparo, imagem as anexo, GROUP_CONCAT(id_peca_reparo, '- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, GROUP_CONCAT('R$ ', desconto) as desconto, solicitacoes_new.situacao, frete, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo WHERE token = :token GROUP BY problema, placa");
+$sql = $db->prepare("SELECT solicitacoes_new.id, token, data_atual, placa, problema, nome_fantasia, imagem as anexo, GROUP_CONCAT(id_peca_reparo, '- ', descricao) as peca, GROUP_CONCAT(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, GROUP_CONCAT('R$ ', vl_total) as vlTotal, GROUP_CONCAT('R$ ', desconto) as desconto, solicitacoes_new.situacao, frete, SUM(vl_total) as vlFinal, data_aprovacao, obs FROM `solicitacoes_new` LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN fornecedores ON solicitacoes_new.fornecedor=fornecedores.id WHERE token = :token GROUP BY problema, placa;");
 $sql->bindValue(':token',$token);
 $sql->execute();
 $dados=$sql->fetchAll();
@@ -18,7 +18,7 @@ foreach($dados as $dado){
     $veiculo = $dado['placa'];
     $situacao = $dado['situacao'];
     $obs = $dado['obs'];
-    $local = $dado['local_reparo'];
+    $local = $dado['nome_fantasia'];
     $peca = str_replace(",","<br>", $dado['peca']);
     $qtd = str_replace(".",",",str_replace(",","<br>",$dado['qtd']))  ;
     $vlUnit = str_replace(".",",",str_replace(",","<br>",$dado['vlUnit']))  ;

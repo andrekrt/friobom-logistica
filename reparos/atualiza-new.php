@@ -73,10 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':obs', $obs);
         $sql->bindValue(':id', $idSolicitacao[$i]);
         $sql->bindValue(':cidadeBase', $cidadeBase);
-        // $sql->execute();
-
-       
-        
+        $sql->execute();        
 
         if($placa==='Estoque' && $situacao==="Aprovado"){
             // echo " Peça: $peca[$i]<br> Qtd: $qtd[$i]<br> Valor: $vlUnit[$i]<br> ID: $idSolicitacao[$i] <br> OBS: $obs <br> Situação: $situacao<br><br>";
@@ -87,8 +84,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     }
 
-    // echo "<script> alert('Solicitação Atualizada!')</script>";
-    // echo "<script> window.location.href='solicitacoes.php' </script>"; 
+    echo "<script> alert('Solicitação Atualizada!')</script>";
+    echo "<script> window.location.href='solicitacoes.php' </script>"; 
 }
 
 ?>
