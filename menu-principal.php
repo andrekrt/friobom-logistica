@@ -198,12 +198,6 @@
               </a>
             </li>
             <li class="list-group-item">
-              <a href="controle-despesas/form-lancar-despesas.php">
-                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
-                <div class="text d-inline-block align-middle">Nova Despesa</div>
-              </a>
-            </li>
-            <li class="list-group-item">
               <a href="controle-despesas/relatorio-custos.php">
                 <!-- <img src="http://res.cloudinary.com/dt9b7pad3/image/upload/v1495406336/Theme_Appearance_wld9rt.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Relatório</div>
@@ -241,12 +235,6 @@
               <a href="reparos/form-solicitacao.php">
                 <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Nova Solicitação</div>
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="reparos/local-reparo.php">
-                <!-- <img src="http://res.cloudinary.com/dt9b7pad3/image/upload/v1495406336/Theme_Appearance_wld9rt.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
-                <div class="text d-inline-block align-middle">Local Reparo</div>
               </a>
             </li>
             <li class="list-group-item">
