@@ -16,7 +16,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $db->exec("set names utf8");
     $lang = $db->query("SET lc_time_names = 'pt_PT'");
-    $sql = $db->query("SELECT token, data_atual, monthname(data_atual), YEAR(data_atual), placa, veiculos.categoria as categoriaVeiculo, motorista, rota, problema, local_reparo, peca_reparo.categoria as categoriaPeca, descricao, qtd, un_medida, vl_unit, vl_total, frete, num_nf, nome_usuario, solicitacoes_new.situacao, data_aprovacao, obs FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN veiculos ON solicitacoes_new.placa = veiculos.placa_veiculo");
+    $sql = $db->query("SELECT token, data_atual, monthname(data_atual), YEAR(data_atual), placa, veiculos.categoria as categoriaVeiculo, motorista, rota, problema, nome_fantasia, peca_reparo.categoria as categoriaPeca, descricao, qtd, un_medida, vl_unit, vl_total, frete, num_nf, nome_usuario, solicitacoes_new.situacao, data_aprovacao, obs FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN veiculos ON solicitacoes_new.placa = veiculos.placa_veiculo LEFT JOIN fornecedores ON solicitacoes_new.fornecedor = fornecedores.id");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=solicitacoes.csv');
@@ -33,7 +33,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         "Motorista",
         "Rota",
         "Problema",
-        "Local Reparo",
+        "Fornecedor",
         mb_convert_encoding('Categoria Peça','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Peça/Serviço','ISO-8859-1', 'UTF-8'),
         "Qtd",
