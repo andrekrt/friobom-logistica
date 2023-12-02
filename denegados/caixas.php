@@ -52,10 +52,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         <div class="tela-principal">
             <div class="menu-superior">
                 <div class="icone-menu-superior">
-                    <img src="../assets/images/icones/icone-nf.png" alt="">
+                    <img src="../assets/images/icones/icone-caixa.png" alt="">
                 </div>
                 <div class="title">
-                    <h2>NF's Denegadas</h2>
+                    <h2>Caixas em Rota</h2>
                 </div>
                 <div class="menu-mobile">
                     <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
@@ -65,17 +65,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="menu-principal">
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalNf" data-whatever="@mdo" name="idpeca">Nova NF Denegada</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalNf" data-whatever="@mdo" name="idpeca">Nova Saida </button>
                     </div>
-                    <a href="denegadas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
+                    <a href="caixas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
-                    <table id='tableDenegadas' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                    <table id='tableCaixas' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">Nº</th>
                                 <th scope="col" class="text-center text-nowrap">Carga</th>
-                                <th scope="col" class="text-center text-nowrap">Qtd de NF's</th>
+                                <th scope="col" class="text-center text-nowrap">Qtd de Caixas</th>
                                 <th scope="col" class="text-center text-nowrap">Status</th>
                                 <th scope="col" class="text-center text-nowrap">Registrado por:</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
@@ -96,17 +96,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     
     <script>
         $(document).ready(function(){
-            $('#tableDenegadas').DataTable({
+            $('#tableCaixas').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':'pesq_denegedas.php'
+                    'url':'pesq_caixas.php'
                 },
                 'columns': [
-                    { data: 'id_denegadas' },
-                    { data: 'carga' },
-                    { data: 'nf' },
+                    { data: 'idcaixas' },
+                    { data: 'carregamento' },
+                    { data: 'qtd_caixas' },
                     { data: 'situacao' },
                     { data: 'nome_usuario' },
                     { data: 'acoes' },
@@ -122,19 +122,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         });
 
         //abrir modal
-        $('#tableDenegadas').on('click', '.editbtn', function(event){
-            var table = $('#tableDenegadas').DataTable();
+        $('#tableCaixas').on('click', '.editbtn', function(event){
+            var table = $('#tableCaixas').DataTable();
             var trid = $(this).closest('tr').attr('id');
             var id = $(this).data('id');
 
             $('#modalEditar').modal('show');
 
             $.ajax({
-                url:"get_denegada.php",
+                url:"get_caixa.php",
                 data:{id:id},
                 type:'post',
                 success: function(data){
-                    $("#registrosDoGrupo").html(data);            
+                    var json = JSON.parse(data);
+                    $('#id').val(json.idcaixas);
+                    $('#carga').val(json.carregamento);
+                    $('#qtd').val(json.qtd_caixas);     
                 }
             })
         });
@@ -145,18 +148,29 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Entrada</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Caixas</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="atualiza-denegada.php" method="post">
-                    <div id="registrosDoGrupo"></div>
+                <form action="atualiza-caixas.php" method="post">
+                    <input type="hidden" name="id" id="id">
+                    <div class="form-row">
+                        <div class="form-group col-md-12 espaco ">
+                            <label for="carga">Nº Carga </label>
+                            <input type="text" name="carga" id="carga" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 espaco">
+                            <label for="qtd"> Qtd de Caixas </label>
+                            <input type="text" name="qtd" class="form-control" id="qtd" required>
+                        </div>
+                    </div> 
             </div>
             <div class="modal-footer">
                     <div class="text-center">
                             <button type="submit" class="btn btn-primary">Atualizar</button>
                         </div>
-                    
                     <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </form> 
             </div>
@@ -170,14 +184,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">NF's Denegadas</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Caixas p/ Rota</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                              
-                <form action="add-denegada.php" method="post">
+                <form action="add-caixas.php" method="post">
                     <div id="formulario">
                         <div class="form-row">
                             <div class="form-group col-md-12 espaco ">
@@ -186,17 +199,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-8 espaco">
-                                <label for="nf">Nº NF</label>
-                                <input type="text" name="nf[]" class="form-control" id="qtd" required>
-                            </div>
-                            <div style="margin: auto; margin-left: 0; margin-top:24px">
-                                <button type="button" class="btn btn-danger" id="add-nf">Adicionar NF</button>
+                            <div class="form-group col-md-12 espaco">
+                                <label for="qtd"> Qtd de Caixas </label>
+                                <input type="text" name="qtd" class="form-control" id="qtd" required>
                             </div>
                         </div> 
                     </div>
                 <div class="modal-footer">
-                    <button type="submit" name="analisar" class="btn btn-primary">Agendar</button>
+                    <button type="submit" name="analisar" class="btn btn-primary">Registar</button>
                 </form>
                 
                 </div>
@@ -205,19 +215,5 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     </div>
 </div>
 <!-- FIM MODAL lançamento de entrada-->
-
-<script src="../assets/js/jquery.mask.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function(){
-        var cont = 1;
-        $('#add-nf').click(function(){
-            cont++;
-
-            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-8 espaco"> <label for="nf">Nº NF</label> <input type="text" name="nf[]" required class="form-control" id="qtd"> </div> </div> ');
-
-        });
-    });
-</script>
 </body>
 </html>

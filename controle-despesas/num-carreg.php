@@ -25,6 +25,13 @@ if(!empty($nCarregamento)){
     $sqlNf->execute();
     $qtdDenegado = $sqlNf->rowCount();
 
+    // verificar se existe caixas pendentes
+    $sqlCaixas = $db->prepare("SELECT * FROM caixas WHERE carregamento=:carregamento AND situacao = :situacao");
+    $sqlCaixas->bindValue(':carregamento', $nCarregamento);
+    $sqlCaixas->bindValue(':situacao', "Saída");
+    $sqlCaixas->execute();
+    $qtdCaixa = $sqlCaixas->rowCount();
+
     $valores=array();    
 
     if($resultado->execute()){
@@ -42,6 +49,7 @@ if(!empty($nCarregamento)){
         $valores['valorTotal'] = $abastecimento['valor_total'];
         $valores['local'] = "POSTO FRIOBOM";
         $valores['denegadas']= $qtdDenegado;
+        $valores['caixas']=$qtdCaixa;
     }else{
         $valores['vlTransp']='Não Encontrado';
     }

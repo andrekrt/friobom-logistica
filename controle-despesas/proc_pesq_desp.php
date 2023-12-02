@@ -63,7 +63,7 @@ foreach($empRecords as $row){
     }else{
         $fotos = "Sem Foto";
     }
-    if(($idUsuario==20 || $idUsuario==33) && $row['situacao']=="Não Confirmado"){
+    if(($idUsuario==20 || $idUsuario==5) && $row['situacao']=="Não Confirmado"){
         $assinar = '<a class=" icon-acoes" href="confirmacao.php?id='.$row['iddespesas'].'" onclick="return confirm(\'Deseja Assinar Despesa da carga '.$row['num_carregemento'].' ?\')"> <img src="../assets/images/icones/confirma.png" alt=""> </a>';
     }
     if($row['situacao']=="Confirmado"){

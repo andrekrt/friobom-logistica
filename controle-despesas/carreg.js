@@ -19,6 +19,9 @@ $(document).ready(function(){
                if(retorno.denegadas>0){
                     alert("Notas Denegas que ainda não foram resolvidas!");
                     $botao.remove();
+               }else if(retorno.caixas>0){
+                    alert("Existe caixas que ainda não foram acertadas");
+                    $botao.remove();
                }else{
                     $vlTransp.val(retorno.vlTransp);
                     $codVeiculo.val(retorno.codVeiculo);

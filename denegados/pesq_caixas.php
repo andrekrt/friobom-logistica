@@ -15,29 +15,28 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (carga LIKE :carga OR nf LIKE :nf OR situacao LIKE :situacao OR nome_usuario OR :nome_usuario) ";
+	$searchQuery = " AND (carga LIKE :carga OR  situacao LIKE :situacao OR nome_usuario OR :nome_usuario) ";
     $searchArray = array( 
         'carga'=>"%$searchValue%", 
-        'nf'=>"%$searchValue%",
         'situacao'=>"%$searchValue%",
         'nome_usuario'=>"%$searchValue%"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(DISTINCT(TOKEN)) AS allcount FROM denegadas");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM caixas");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(DISTINCT(TOKEN)) AS allcount FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery );
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery );
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT token, carga, COUNT(nf) as qtd, situacao, usuario,nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery."GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -53,13 +52,13 @@ $data = array();
 
 foreach($empRecords as $row){
     $botao = "";
-    if($_SESSION['idUsuario']==$row['usuario']){
-        $botao= '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="confirma.php?token='.$row['token'].'" class="btn btn-secondary btn-sm" onclick="return confirm(\'Certeza que deseja cofirmar todas as notas da carga '.$row['carga'].' ?\')" >Confirmar Todas as NF\'s</a>';
+    if($_SESSION['idUsuario']==$row['usuario'] && $row['situacao']=='Saída'){
+        $botao= '<a href="javascript:void();" data-id="'.$row['idcaixas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> <a href="confirma-caixas.php?id='.$row['idcaixas'].'" class="btn btn-secondary btn-sm" onclick="return confirm(\'O carregamento '.$row['carregamento'].' retornou com '.$row['qtd_caixas'].' caixas  ?\')" >Confirmar Recebimento </a>';
     }
     $data[] = array(
-        "id_denegadas"=>$row['token'],
-        "carga"=>$row['carga'],
-        "nf"=>$row['qtd'],
+        "idcaixas"=>$row['idcaixas'],
+        "carregamento"=>$row['carregamento'],
+        "qtd_caixas"=>$row['qtd_caixas'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
         "acoes"=>$botao
