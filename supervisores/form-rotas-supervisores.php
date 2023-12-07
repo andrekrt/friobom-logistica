@@ -90,19 +90,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <input type="text" class="form-control" required name="velMax" id="velMax" >
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="cidadeSaida">Cidade Saída</label>
-                                <select name="cidadeSaida" required id="cidadeSaida" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades ORDER BY nome_cidade ASC");
-                                    $cidades=$cidades->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach($cidades as $cidade):
-                                    ?>
-                                    <option value="<?=$cidade['idcidades']?>"><?=$cidade['nome_cidade']?></option>
-                                    <?php
-                                    endforeach;
-                                    ?>
-                                </select>
+                                <label for="visitas">Nº de Visitas</label>
+                                <input type="text" id="visitas" name="visitas" class="form-control" required>
                             </div>
                             <div class="form-group col-md-2 espaco">
                                 <label for="rca1"> RCA 1 </label>
@@ -116,29 +105,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <input type="text" class="form-control"  name="rca2" id="rca2">
                             </div>
                             <div class="form-group col-md-10 espaco">
-                                <label for="obs"> Cidades/Obs. </label>
-                                <input type="text" class="form-control"  name="obs" id="obs">
+                                <label for="cidades"> Cidades Visitadas </label>
+                                <input type="text" class="form-control"  name="cidades" id="cidades">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="cidadeChegada">Cidade Chegada</label>
-                                <select name="cidadeChegada" required id="cidadeChegada" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades ORDER BY nome_cidade ASC");
-                                    $cidades=$cidades->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach($cidades as $cidade):
-                                    ?>
-                                    <option value="<?=$cidade['idcidades']?>"><?=$cidade['nome_cidade']?></option>
-                                    <?php
-                                    endforeach;
-                                    ?>
-                                </select>
+                                <label for="horaAlmoco">Horas de Almoço</label>
+                                <input type="text" name="horaAlmoco" id="horaAlmoco" class="form-control">
                             </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="diarias">Diárias</label>
-                                <input type="text" class="form-control" required name="diarias" id="diarias" >
+                            <div class="form-group col-md-10 espaco">
+                                <label for="obs">Obs.</label>
+                                <input type="text" class="form-control" required name="obs" id="obs" >
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>

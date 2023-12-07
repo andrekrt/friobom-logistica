@@ -73,14 +73,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
                                 <th scope="col" class="text-center text-nowrap">Data Chegada</th>
                                 <th scope="col" class="text-center text-nowrap">Velocidade Máxima</th>
-                                <th scope="col" class="text-center text-nowrap" > Cidade de Inicío </th>
+                                <th scope="col" class="text-center text-nowrap" > Nº de Visitas </th>
                                 <th scope="col" class="text-center text-nowrap" >RCA1</th>
                                 <th scope="col" class="text-center text-nowrap">RCA2</th>
-                                <th scope="col" class="text-center text-nowrap">Cidade/Obs</th>
-                                <th scope="col" class="text-center text-nowrap">Cidade Final</th>
-                                <th scope="col" class="text-center text-nowrap" >Diárias </th>
-                                <th scope="col" class="text-center text-nowrap" >Nº de Visitas</th>
-                                <th scope="col" class="text-center text-nowrap">Residência</th>
+                                <th scope="col" class="text-center text-nowrap">Cidades</th>
+                                <th scope="col" class="text-center text-nowrap">Horas de Alomoço</th>
+                                <th scope="col" class="text-center text-nowrap" >Obs. </th>
                                 <th scope="col" class="text-center text-nowrap">Usuário</th>
                                 <th scope="col" class="text-center text-nowrap">Ações</th>
                             </tr>
@@ -112,14 +110,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'placa_veiculo' },
                     { data: 'chegada'},
                     { data: 'velocidade_max' },
-                    { data: 'cidade_saida'},
+                    { data: 'qtd_visitas'},
                     { data: 'rca01' },
                     { data: 'rca02' },
+                    { data: 'cidades' },
+                    { data: 'hora_almoco'},
                     { data: 'obs' },
-                    { data: 'cidade_final'},
-                    { data: 'diarias' },
-                    { data: 'qtd_visitas'},
-                    { data: 'cidade_residencia' },
                     { data: 'nome_usuario' },
                     { data: 'acoes'},
                 ],
@@ -127,7 +123,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[14]}
+                    {'bSortable':false, 'aTargets':[12]}
                 ],
                 "order":[[0,"desc"]]
             });
@@ -152,13 +148,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#supervisor').val(json.supervisor);
                     $('#veiculo').val(json.veiculo);
                     $('#velMax').val(json.velocidade_max);
-                    $('#cidadeSaida').val(json.cidade_inicio);
+                    $('#visitas').val(json.qtd_visitas)
                     $('#rca1').val(json.rca01);
                     $('#rca2').val(json.rca02);
+                    $('#cidades').val(json.cidades)
                     $('#obs').val(json.obs);
-                    $('#cidadeChegada').val(json.cidade_final);
-                    $('#diarias').val(json.diarias);
-                    $('#residencia').val(json.residencia);
+                    $('#horaAlmoco').val(json.hora_almoco);
                     $('#id').val(json.idrotas);
                 }
             })
@@ -178,14 +173,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <input type="hidden" name="id" id="id" value="">
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="dataSaida">Data e Hora Saída</label>
+                                <label for="dataSaida">Data e Hora de Saída</label>
                                 <input type="datetime-local" class="form-control" required name="dataSaida" id="dataSaida">
                             </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="dataChegada">Data e Hora Chegada</label>
+                            <div class="form-group col-md-3 espaco">
+                                <label for="dataChegada">Data e Hora de Chegada</label>
                                 <input type="datetime-local" class="form-control" required name="dataChegada" id="dataChegada">
                             </div>
-                            <div class="form-group col-md-2 espaco">
+                            <div class="form-group col-md-3 espaco">
                                 <label for="supervisor">Supervisor</label>
                                 <select name="supervisor" required id="supervisor" class="form-control">
                                     <option value=""></option>
@@ -205,55 +200,33 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <input type="text" class="form-control" required name="velMax" id="velMax" >
                             </div>
                             <div class="form-group col-md-2 espaco">
-                                <label for="cidadeSaida">Cidade Saída</label>
-                                <select name="cidadeSaida" required id="cidadeSaida" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades ORDER BY nome_cidade ASC");
-                                    $cidades=$cidades->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach($cidades as $cidade):
-                                    ?>
-                                    <option value="<?=$cidade['idcidades']?>"><?=$cidade['nome_cidade']?></option>
-                                    <?php
-                                    endforeach;
-                                    ?>
-                                </select>
+                                <label for="visitas">Nº de Visitas</label>
+                                <input type="text" id="visitas" name="visitas" class="form-control" required>
                             </div>
+                           
+                        </div>
+                        <div class="form-row">
                             <div class="form-group col-md-2 espaco">
                                 <label for="rca1"> RCA 1 </label>
                                 <input type="text" class="form-control"  name="rca1" id="rca1" >
                             </div>
-                        </div>
-                        <div class="form-row">
-                            
                             <div class="form-group col-md-2 espaco">
                                 <label for="rca2"> RCA 2 </label>
                                 <input type="text" class="form-control"  name="rca2" id="rca2">
                             </div>
-                            <div class="form-group col-md-10 espaco">
-                                <label for="obs"> Cidades/Obs. </label>
-                                <input type="text" class="form-control"  name="obs" id="obs">
+                            <div class="form-group col-md-8 espaco">
+                                <label for="cidades"> Cidades Visitadas </label>
+                                <input type="text" class="form-control"  name="cidades" id="cidades">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco">
-                                <label for="cidadeChegada">Cidade Chegada</label>
-                                <select name="cidadeChegada" required id="cidadeChegada" class="form-control">
-                                    <option value=""></option>
-                                    <?php
-                                    $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades ORDER BY nome_cidade ASC");
-                                    $cidades=$cidades->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach($cidades as $cidade):
-                                    ?>
-                                    <option value="<?=$cidade['idcidades']?>"><?=$cidade['nome_cidade']?></option>
-                                    <?php
-                                    endforeach;
-                                    ?>
-                                </select>
+                                <label for="horaAlmoco">Horas de Almoço</label>
+                                <input type="text" name="horaAlmoco" id="horaAlmoco" class="form-control">
                             </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="diarias">Diárias</label>
-                                <input type="text" class="form-control" required name="diarias" id="diarias" >
+                            <div class="form-group col-md-10 espaco">
+                                <label for="obs">Obs.</label>
+                                <input type="text" class="form-control" required name="obs" id="obs" >
                             </div>
                         </div>
                 </div>

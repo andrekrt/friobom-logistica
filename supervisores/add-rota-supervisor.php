@@ -18,35 +18,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $supervisor = filter_input(INPUT_POST, 'supervisor', FILTER_VALIDATE_INT);
     $velMax = filter_input(INPUT_POST, 'velMax');
-    $cidadeSaida = filter_input(INPUT_POST, 'cidadeSaida', FILTER_VALIDATE_INT);
-    $cidadeChegada = filter_input(INPUT_POST, 'cidadeChegada', FILTER_VALIDATE_INT);
+    $visitas = filter_input(INPUT_POST, 'visitas', FILTER_VALIDATE_INT);
+    $cidades = filter_input(INPUT_POST, 'cidades');
     $rca1 = filter_input(INPUT_POST, 'rca1');
     $rca2 = filter_input(INPUT_POST, 'rca2');
     $obs = filter_input(INPUT_POST, 'obs');
-    $diarias = str_replace(",",".", filter_input(INPUT_POST, 'diarias')) ;
+    $horaAlmoco = str_replace(",",".", filter_input(INPUT_POST, 'horaAlmoco')) ;
     $usuario = $_SESSION['idUsuario'];
 
-    //qtd de visitas realizadas no dia
-    $dataFormatada = date("Y-m-d", strtotime($dataSaida));
-    $sqlCont = $db->prepare("SELECT codigo_sup, data_hora FROM localizacao WHERE codigo_sup LIKE :supervisor AND DATE(data_hora) = :dataSaida");
-    $sqlCont->bindValue(':supervisor', $supervisor."%");
-    $sqlCont->bindValue(':dataSaida', $dataFormatada);
-    $sqlCont->execute();  
-    $qtdVisitas = $sqlCont->rowCount();
+    // echo "$dataSaida<br>$dataChegada<br>$supervisor<br>$velMax<br>$visitas<br>$cidades<br>$rca1<br>$rca2<br>$obs<br>$horaAlmoco<br> $usuario";
     
-    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, cidade_inicio, rca01, rca02, obs, cidade_final, diarias, qtd_visitas, usuario) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :cidade_inicio, :rca01, :rca02, :obs, :cidade_final, :diarias, :qtd_visitas, :usuario)");
+    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, hora_almoco) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :horaAlmoco)");
     $sql->bindValue(':saida', $dataSaida);
     $sql->bindValue(':supervisor', $supervisor);
     $sql->bindValue(':chegada', $dataChegada);
     $sql->bindValue(':velocidade_max', $velMax);
-    $sql->bindValue(':cidade_inicio', $cidadeSaida);
     $sql->bindValue(':rca01', $rca1);
     $sql->bindValue(':rca02', $rca2);
     $sql->bindValue(':obs', $obs);
-    $sql->bindValue(':cidade_final', $cidadeChegada);
-    $sql->bindValue(':diarias', $diarias);
-    $sql->bindValue(':qtd_visitas', $qtdVisitas);
+    $sql->bindValue(':qtd_visitas', $visitas);
     $sql->bindValue(':usuario', $usuario);
+    $sql->bindValue(':cidades',$cidades);
+    $sql->bindValue(':horaAlmoco', $horaAlmoco);
     if($sql->execute()){
         echo "<script> alert('Rota Registrada!!')</script>";
         echo "<script> window.location.href='rotas-supervisores.php' </script>";

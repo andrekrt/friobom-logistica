@@ -18,22 +18,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $supervisor = filter_input(INPUT_POST, 'supervisor', FILTER_VALIDATE_INT);
     $velMax = filter_input(INPUT_POST, 'velMax');
-    $cidadeSaida = filter_input(INPUT_POST, 'cidadeSaida', FILTER_VALIDATE_INT);
-    $cidadeChegada = filter_input(INPUT_POST, 'cidadeChegada', FILTER_VALIDATE_INT);
+    $visitas = filter_input(INPUT_POST, 'visitas', FILTER_VALIDATE_INT);
+    $cidades = filter_input(INPUT_POST, 'cidades');
     $rca1 = filter_input(INPUT_POST, 'rca1');
     $rca2 = filter_input(INPUT_POST, 'rca2');
     $obs = filter_input(INPUT_POST, 'obs');
-    $diarias = str_replace(",",".", filter_input(INPUT_POST, 'diarias')) ;
-    $usuario = $_SESSION['idUsuario'];
+    $horaAlmoco = str_replace(",",".", filter_input(INPUT_POST, 'horaAlmoco')) ;
     $idRota = filter_input(INPUT_POST, 'id');
-
-    //qtd de visitas realizadas no dia
-    $dataFormatada = date("Y-m-d", strtotime($dataSaida));
-    $sqlCont = $db->prepare("SELECT codigo_sup, data_hora FROM localizacao WHERE codigo_sup LIKE :supervisor AND DATE(data_hora) = :dataSaida");
-    $sqlCont->bindValue(':supervisor', $supervisor."%");
-    $sqlCont->bindValue(':dataSaida', $dataFormatada);
-    $sqlCont->execute();  
-    $qtdVisitas = $sqlCont->rowCount();
+    $usuario = $_SESSION['idUsuario'];
 
     // echo "Data de Saída: $dataSaida<br>" ;
     // echo "Data de Saída: $dataChegada<br>" ;
@@ -50,18 +42,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     // echo "Usuário: $usuario<br>" ;
     // echo "ID: $idRota<br>" ;
     
-    $sql = $db->prepare("UPDATE rotas_supervisores SET saida=:saida, supervisor=:supervisor, chegada=:chegada, velocidade_max=:velocidade, cidade_inicio=:cidadeInicio, rca01=:rca01, rca02=:rca02, obs=:obs, cidade_final=:cidadeFinal, diarias=:diarias, qtd_visitas=:visitas, usuario=:usuario WHERE idrotas=:idrotas ");
+    $sql = $db->prepare("UPDATE rotas_supervisores SET saida=:saida, supervisor=:supervisor, chegada=:chegada, velocidade_max=:velocidade, rca01=:rca01, rca02=:rca02, obs=:obs, cidades=:cidades, qtd_visitas=:visitas, hora_almoco=:horaAlmoco, usuario=:usuario WHERE idrotas=:idrotas ");
     $sql->bindValue(':saida', $dataSaida);
     $sql->bindValue(':supervisor', $supervisor);
     $sql->bindValue(':chegada', $dataChegada);
     $sql->bindValue(':velocidade', $velMax);
-    $sql->bindValue(':cidadeInicio', $cidadeSaida);
     $sql->bindValue(':rca01', $rca1);
     $sql->bindValue(':rca02', $rca2);
     $sql->bindValue(':obs', $obs);
-    $sql->bindValue(':cidadeFinal', $cidadeChegada);
-    $sql->bindValue(':diarias', $diarias);
-    $sql->bindValue(':visitas', $qtdVisitas);
+    $sql->bindValue(':cidades', $cidades);
+    $sql->bindValue(':visitas', $visitas);
+    $sql->bindValue(':horaAlmoco', $horaAlmoco);
     $sql->bindValue(':usuario', $usuario);
     $sql->bindValue(':idrotas', $idRota);
     if($sql->execute()){

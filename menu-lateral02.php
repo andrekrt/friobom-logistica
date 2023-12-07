@@ -440,12 +440,12 @@
                 <div class="text d-inline-block align-middle">Listar</div>
               </a>
             </li>
-            <li class="list-group-item">
+            <!-- <li class="list-group-item">
               <a href="../../supervisores/geolocalizacao.php">
-                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block">
                 <div class="text d-inline-block align-middle">Geolocalização </div>
               </a>
-            </li>
+            </li> -->
             <li class="list-group-item">
               <a href="../../supervisores/rotas-supervisores.php">
                 <!-- <img src="http://res.cloudinary.com/dt9b7pad3/image/upload/v1495406336/Theme_Appearance_wld9rt.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->

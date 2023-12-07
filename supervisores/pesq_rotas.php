@@ -36,13 +36,13 @@ $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN cidades cidade1 ON rotas_supervisores.cidade_inicio = cidade1.idcidades LEFT JOIN cidades cidade2 ON rotas_supervisores.cidade_final = cidade2.idcidades LEFT JOIN cidades cidade3 ON supervisores.cidade_residencia = cidade3.idcidades LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT idrotas, saida, nome_supervisor, placa_veiculo, chegada, velocidade_max, cidade1.nome_cidade as cidade_saida, rca01, rca02, obs, cidade2.nome_cidade as cidade_final, diarias, qtd_visitas, nome_usuario, cidade3.nome_cidade as residencia FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN cidades cidade1 ON rotas_supervisores.cidade_inicio = cidade1.idcidades LEFT JOIN cidades cidade2 ON rotas_supervisores.cidade_final = cidade2.idcidades LEFT JOIN cidades cidade3 ON supervisores.cidade_residencia = cidade3.idcidades LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -63,14 +63,12 @@ foreach($empRecords as $row){
             "placa_veiculo"=>$row['placa_veiculo'],
             "chegada"=>date("d/m/Y H:i", strtotime($row['chegada'])),
             "velocidade_max"=>$row['velocidade_max'],
-            "cidade_saida"=>$row['cidade_saida'],
+            "qtd_visitas"=>$row['qtd_visitas'],
             "rca01"=>$row['rca01'],
             "rca02"=>$row['rca02'],
+            "cidades"=>$row['cidades'],
+            "hora_almoco"=>$row['hora_almoco'],
             "obs"=>$row['obs'],
-            "cidade_final"=>$row['cidade_final'],
-            "diarias"=>number_format($row['diarias'],1,",",".") ,
-            "qtd_visitas"=>$row['qtd_visitas'],
-            "cidade_residencia"=>$row['residencia'],
             "nome_usuario"=>$row['nome_usuario'],
             "acoes"=> '<a href="javascript:void();" data-id="'.$row['idrotas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-rota.php?idRota='.$row['idrotas'].' " data-id="'.$row['idrotas'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'return confirm("Deseja Excluir?");\'>Deletar</a>'
         );
