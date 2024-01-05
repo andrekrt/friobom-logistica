@@ -15,7 +15,7 @@ $result = $sqlPerm->fetchColumn();
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT cod_interno_motorista, nome_motorista, cnh, validade_cnh, toxicologico, validade_toxicologico, salario FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista");
+    $sql = $db->query("SELECT cod_interno_motorista, nome_motorista, cidade_base, cnh, validade_cnh, toxicologico, validade_toxicologico, salario FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=motoristas.csv');
@@ -25,6 +25,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $cabacelho = [
         mb_convert_encoding('Código Motorista','ISO-8859-1', 'UTF-8'),
         "Motorista",
+        "Cidade Base",
         mb_convert_encoding('CNH Veículo','ISO-8859-1', 'UTF-8'),
         "Validade CNH",
         mb_convert_encoding('Toxicológico','ISO-8859-1', 'UTF-8'),

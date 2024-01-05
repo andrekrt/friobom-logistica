@@ -52,6 +52,7 @@ foreach($empRecords as $row){
     $data[] = array(
             "cod_interno_motorista"=>$row['cod_interno_motorista'],
             "nome_motorista"=>$row['nome_motorista'],
+            "cidade_base"=>$row['cidade_base'],
             "cnh"=>$row['cnh'],
             "validade_cnh"=> date("d/m/Y", strtotime($row['validade_cnh'])),
             "toxicologico"=>$row['toxicologico'],

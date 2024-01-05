@@ -21,13 +21,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $validadeCnh = filter_input(INPUT_POST, 'validadeCNH')?filter_input(INPUT_POST, 'validadeCNH'):null;
     $toxicoligco = filter_input(INPUT_POST,'situacaoToxicologico');
     $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
+    $cidadeBase = filter_input(INPUT_POST, 'base');
 
     $consulta = $db->query("SELECT * FROM motoristas WHERE cod_interno_motorista = '$codMotorista' OR cnh = '$cnh' ");
     if($consulta->rowCount()>0){
         echo "<script>alert('Esse Motorista já está cadastrado!');</script>";
         echo "<script>window.location.href='form-motorista.php'</script>";
     }else{
-        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, ativo) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :ativo) ");
+        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, cidade_base, ativo) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :base, :ativo) ");
         $sql->bindValue(':codMotorista', $codMotorista);
         $sql->bindValue(':nomeMotorista', $nomeMotorista);
         $sql->bindValue(':salario', $salario);
@@ -35,6 +36,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':validadeCnh', $validadeCnh);
         $sql->bindValue(':toxicologico', $toxicoligco);
         $sql->bindValue(':validadeToxicologico', $validadeToxicologico);
+        $sql->bindValue(':base', $cidadeBase);
         $sql->bindValue(':ativo', 1);
 
         if($sql->execute()){

@@ -21,6 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $validadeCnh = filter_input(INPUT_POST, 'validadeCnh')?filter_input(INPUT_POST, 'validadeCnh'):null;
     $toxicologico = filter_input(INPUT_POST, 'toxicologico');
     $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
+    $cidadeBase = filter_input(INPUT_POST, 'base');
     $ativo = filter_input(INPUT_POST, 'ativo');
     if($ativo=='on'){
         $ativo = 0;
@@ -28,10 +29,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $ativo = 1;
     }
 
-    echo $validadeCnh;
+    // echo $validadeCnh;
    // echo "$codMotorista<br>$nomeMotorista<br>$cnh<br>$validadeCnh<br>$toxicologico<br>$validadeToxicologico<br>$ativo";
 
-    $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, salario = :salario WHERE cod_interno_motorista = :codMotorista ");
+    $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, cidade_base=:base, salario = :salario WHERE cod_interno_motorista = :codMotorista ");
     $atualiza->bindValue(':nomeMotorista', $nomeMotorista);
     $atualiza->bindValue('salario', $salario);
     $atualiza->bindValue(':cnh', $cnh);
@@ -40,6 +41,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $atualiza->bindValue(':validadeToxicologico', $validadeToxicologico);
     $atualiza->bindValue(':ativo', $ativo);
     $atualiza->bindValue(':codMotorista', $codMotorista);
+    $atualiza->bindValue(':base', $cidadeBase);
 
     if($atualiza->execute()){
         echo "<script> alert('Atualizado com Sucesso!')</script>";

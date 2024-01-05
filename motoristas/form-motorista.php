@@ -90,6 +90,16 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="validadeToxicologico"> Validade Toxicológico </label>
                             <input type="date" name="validadeToxicologico" required class="form-control" id="validadeToxicologico">
                         </div>
+                        <div class="form-group col-md-12 espaco">
+                            <label for="base">Cidade Base</label>
+                            <select name="base" id="base" required class="form-control">
+                                <option value=""></option>
+                                <option value="São Luís">São Luís</option>
+                                <option value="Bacabal">Bacabal</option>
+                                <option value="Timon">Timon</option>
+                                <option value="Teresina">Teresina</option>
+                            </select>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary"> Cadastrar </button>
                 </form>

@@ -69,6 +69,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <tr>
                                 <th scope="col" class="text-center"> Código Motorista </th>
                                 <th scope="col" class="text-center"> Nome Motorista </th>
+                                <th scope="col" class="text-center"> Cidade Base</th>
                                 <th scope="col" class="text-center"> CNH </th>
                                 <th scope="col" class="text-center"> Vencimento CNH </th>
                                 <th scope="col" class="text-center"> Toxicológico </th>
@@ -101,6 +102,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 'columns': [
                     { data: 'cod_interno_motorista' },
                     { data: 'nome_motorista'},
+                    { data: 'cidade_base'},
                     { data: 'cnh' },
                     { data: 'validade_cnh' },
                     { data: 'toxicologico' },
@@ -112,7 +114,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[7]}
+                    {'bSortable':false, 'aTargets':[8]}
                 ],
             });
         });
@@ -138,6 +140,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#toxicologico').val(json.toxicologico);
                     $('#validadeToxicologico').val(json.validade_toxicologico);
                     $('#salario').val(json.salario);
+                    $('#base').val(json.cidade_base);
                 }
             })
         });
@@ -160,9 +163,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="codMotorista"   class="col-form-label">Código Motorista</label>
                             <input type="text" readonly name="codMotorista" id="codMotorista" class="form-control"> 
                         </div>
-                        <div class="form-group col-md-7">
+                        <div class="form-group col-md-5">
                             <label for="nomeMotorista" class="col-form-label">Nome Motorista</label>
                             <input type="text" required name="nomeMotorista" class="form-control" id="nomeMotorista" value="">
+                        </div>
+                        <div class="form-group col-md-2 ">
+                            <label for="base"  class="col-form-label">Cidade Base</label>
+                            <select name="base" id="base" required class="form-control">
+                                <option value=""></option>
+                                <option value="São Luís">São Luís</option>
+                                <option value="Bacabal">Bacabal</option>
+                                <option value="Timon">Timon</option>
+                                <option value="Teresina">Teresina</option>
+                            </select>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="salario" class="col-form-label">Salário</label>
