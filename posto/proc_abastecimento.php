@@ -56,7 +56,7 @@ foreach($empRecords as $row){
     $delete="";
     $editar = "";
     $ficha = "";
-    if( $_SESSION['tipoUsuario']==4 ){
+    if( $_SESSION['tipoUsuario']==4 || $_SESSION['tipoUsuario']==99){
         $delete='  <a href="excluir-entrada.php?idSaida='.$row['idcombustivel_saida'].' " data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
         $editar = ' <a href="javascript:void();" data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>';
         

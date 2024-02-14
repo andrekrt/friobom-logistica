@@ -16,12 +16,13 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (data_entrada LIKE :data_entrada OR qualidade LIKE :qualidade OR nome_usuario LIKE :nome_usuario OR nome_fantasia LIKE :nome_fantasia ) ";
+	$searchQuery = " AND (data_entrada LIKE :data_entrada OR qualidade LIKE :qualidade OR nome_usuario LIKE :nome_usuario OR nome_fantasia LIKE :nome_fantasia OR nf LIKE :nf) ";
     $searchArray = array( 
         'data_entrada'=>"%$searchValue%", 
         'qualidade'=>"%$searchValue%",
         'nome_usuario'=>"%$searchValue%",
-        'nome_fantasia'=>"%$searchValue%"
+        'nome_fantasia'=>"%$searchValue%",
+        'nf'=>"%$searchValue%"
     );
 }
 
@@ -60,6 +61,7 @@ foreach($empRecords as $row){
     $data[] = array(
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
         "data_entrada"=>date("d/m/Y", strtotime($row['data_entrada'])),
+        "nf"=>$row['nf'],
         "valor_litro"=>"R$ ". number_format($row['valor_litro'],4,",","."),
         "frete"=>"R$ ". number_format($row['frete'],2,",","."),
         "total_litros"=>number_format($row['total_litros'],2,",",".") ,

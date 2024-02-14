@@ -183,25 +183,26 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Rota">Rota</option>
                                 <option value="Complemento">Complemento</option>
                                 <option value="Carreta">Carreta</option>
+                                <option value="Particular">Particular</option>
+                                <option value="Lava Jato">Lava Jato</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-3 espaco ">
+                        <div class="form-group col-md-3 espaco removivel">
                             <label for="placa"> Placa Veículo</label>
                             <input type="text" id="placa" name="placa" required class="form-control">
                         </div>
-                        <div class="form-group col-md-2 espaco ">
+                        <div class="form-group col-md-2 espaco removivel">
                             <label for="litro"> Litros</label>
                             <input type="text" required  name="litro" class="form-control" id="litro">
                         </div>
-                        <div class="form-group col-md-2 espaco ">
+                        <div class="form-group col-md-2 espaco removivel">
                             <label for="km"> Km</label>
                             <input type="text" required  name="km" class="form-control" id="km">
                         </div>
                     </div>
                     <div class="form-row" id="add">
                         
-                    </div>    
-                    
+                    </div>       
             </div>
             <div class="modal-footer">
                 <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
@@ -224,8 +225,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             </div>
             <div class="modal-body">
                 <form action="atualiza-abastecimento.php" method="post">
-                    <div class="form-row">
                     <input type="hidden" id="id" name="id">
+                    <div class="form-row">
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="tipo"> Tipo de Abastecimento</label>
+                            <select name="tipo" required id="tipoEdit" class="form-control">
+                                <option value=""></option>
+                                <option value="Rota">Rota</option>
+                                <option value="Complemento">Complemento</option>
+                                <option value="Carreta">Carreta</option>
+                                <option value="Particular">Particular</option>
+                                <option value="Lava Jato">Lava Jato</option>
+                            </select>
+                        </div>
                         <div class="form-group col-md-3 espaco ">
                             <label for="placa"> Placa Veículo</label>
                             <input type="text" id="placaEdit" name="placa" required class="form-control">
@@ -268,14 +280,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="km"> Km</label>
                             <input type="text" required  name="km" class="form-control" id="kmEdit">
                         </div>
-                        <div class="form-group col-md-2 espaco ">
-                            <label for="tipo"> Tipo de Abastecimento</label>
-                            <select name="tipo" required id="tipoEdit" class="form-control">
-                                <option value=""></option>
-                                <option value="Saída">Saída</option>
-                                <option value="Retorno">Retorno</option>
-                            </select>
-                        </div>
                     </div>    
             </div>
             <div class="modal-footer">
@@ -316,6 +320,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             }else if(tipo=="Rota"){
                 $("#add").empty();
                 $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento"> </div>');
+            }else if(tipo=="Lava Jato"){
+                $("#add").empty();
+                $('.removivel').remove();
+                $('#add').append(' <div class="form-group col-md-2 espaco "> <label for="litro"> Litros</label> <input type="text" required  name="litro" class="form-control" id="litroEdit"> </div>');
             }
         });
         

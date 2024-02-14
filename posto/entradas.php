@@ -75,6 +75,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Data Entrada</th>
+                                <th scope="col" class="text-center text-nowrap">NF</th>
                                 <th scope="col" class="text-center text-nowrap">Valor por Litro</th>
                                 <th scope="col" class="text-center text-nowrap">Litros</th>
                                 <th scope="col" class="text-center text-nowrap">Valor Total Comb.</th>
@@ -112,6 +113,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 'columns': [
                     { data: 'idcombustivel_entrada' },
                     { data: 'data_entrada' },
+                    { data: 'nf'},
                     { data: 'valor_litro' },
                     { data: 'total_litros' },
                     {data: 'valor_comb'},
