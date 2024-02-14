@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../conexao-on.php';
+include '../conexao.php';
 
 ## Read value
 $draw = $_POST['draw'];
