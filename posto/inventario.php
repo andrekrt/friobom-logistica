@@ -61,7 +61,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="menu-principal">
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
+                        <?php if($idUsuario===1 || $idUsuario===4 || $idUsuario===8): ?>
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Realizar Inventário</button>
+                        <?php endif; ?>
                     </div>
                     <a href="inventario-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>

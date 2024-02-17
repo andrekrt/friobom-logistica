@@ -158,8 +158,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#fornecedorEdit').val(json.fornecedor);   
                     $('#freteEdit').val(json.frete);   
                     $('#situacao').val(json.situacao);     
-                    $('#nf').val(json.nf);                 
+                    $('#nfEdit').val(json.nf);                 
                     $('#dataEntrada').val(json.data_entrada);
+                    $('#dataNf').val(json.data_nf)
                 }
             })
         });
@@ -193,7 +194,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-group col-md-2 espaco ">
                             <label for="nf">NF</label>
-                            <input type="text" required name="nf" class="form-control" id="nf">
+                            <input type="text" required name="nf" class="form-control" id="nfEdit">
+                        </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="dataNf">Data NF</label>
+                            <input type="date" required name="dataNf" class="form-control" id="dataNf">
                         </div>
                         <div class="form-group col-md-3 espaco ">
                             <label for="qualidade"> Qualidade do Combustível</label>
@@ -207,7 +212,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 $fornecedores = $fornecedores->fetchAll();
                                 foreach($fornecedores as $fornecedor):
                                 ?>
-                                <option value="<?=$fornecedor['id']?>"><?= $fornecedor['id']." - ". utf8_encode($fornecedor['nome_fantasia'])?></option>
+                                <option value="<?=$fornecedor['id']?>"><?= $fornecedor['id']." - ". mb_convert_encoding($fornecedor['nome_fantasia'], 'UTF-8','ISO-8859-1') ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -264,6 +269,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="nf">NF</label>
                             <input type="text" required name="nf" class="form-control" id="nf">
                         </div>
+                        <div class="form-group col-md-2 espaco ">
+                            <label for="dataNf">Data NF</label>
+                            <input type="date" required name="dataNf" class="form-control" id="dataNf">
+                        </div>
                         <div class="form-group col-md-3 espaco ">
                             <label for="qualidade"> Qualidade do Combustível</label>
                             <input type="text" required name="qualidade" class="form-control" id="qualidade">
@@ -276,7 +285,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 $fornecedores = $fornecedores->fetchAll();
                                 foreach($fornecedores as $fornecedor):
                                 ?>
-                                <option value="<?=$fornecedor['id']?>"><?= $fornecedor['id']." - ". utf8_encode($fornecedor['nome_fantasia'])?></option>
+                                <option value="<?=$fornecedor['id']?>"><?= $fornecedor['id']." - ". mb_convert_encoding($fornecedor['nome_fantasia'], 'UTF-8','ISO-8859-1')?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -298,9 +307,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $("#vlLitro").mask('###0,0000', {reverse: true});
         $("#totalLt").mask('###0,00', {reverse: true});
         $("#frete").mask('###0,00', {reverse: true});
+        $('#nf').mask('0000000000');
         $("#vlLitroEdit").mask('###0,0000', {reverse: true});
         $("#totalLtEdit").mask('###0,00', {reverse: true});
         $("#freteEdit").mask('###0,00', {reverse: true});
+        $('#nfEdit').mask('0000000000');
     })
 
     $(document).ready(function(){
