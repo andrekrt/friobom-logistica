@@ -70,15 +70,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center">ID Despesas </th>
                                 <th scope="col" class="text-center">Nº Carregamento </th>
                                 <th scope="col" class="text-center"> Placa Veículo </th>
-                                <th scope="col" class="text-center"> Motorista </th>
                                 <th scope="col" class="text-center"> Rota </th>
+                                <th scope="col" class="text-center"> Motorista </th>
+                                <th scope="col" class="text-center"> Peso Carga (Kg) </th>
+                                <th scope="col" class="text-center"> Nº Clientes </th>
                                 <th scope="col" class="text-center"> Média c/ Tk </th>
                                 <th scope="col" class="text-center"> Média s/ Tk </th>
                                 <th scope="col" class="text-center"> Data Carregamento </th>
+                                <th scope="col" class="text-center"> Data Saída </th>
+                                <th scope="col" class="text-center"> Data Retorno </th>
                                 <th scope="col" class="text-center"> Dias em Rota </th>
-                                <th scope="col" class="text-center">Diárias Motorista </th>
-                                <th scope="col" class="text-center">Diárias Ajudante </th>
-                                <th scope="col" class="text-center"> Diárias Chapa </th>
+                                <th scope="col" class="text-center">Diárias Motorista (QTD) </th>
+                                <th scope="col" class="text-center"> Diárias Motorista (R$)</th>
+                                <th scope="col" class="text-center">Diárias Ajudante (QTD) </th>
+                                <th scope="col" class="text-center"> Diárias Ajudante (R$)</th>
+                                <th scope="col" class="text-center"> Diárias Chapa (QTD)</th>
+                                <th scope="col" class="text-center"> Diárias Chapa (R$)</th>
                                 <th scope="col" class="text-center">Km Percorrido </th>
                                 <th scope="col" class="text-center">Litros </th>
                                 <th scope="col" class="text-center"> Avaliação da Carga </th>
@@ -94,12 +101,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         </div>
     </div>
 
-    <script src="../assets/js/menu.js"></script>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <script src="../assets/js/menu.js"></script>
     <script>
         $(document).ready(function(){
             $('#tableDesp').DataTable({
@@ -113,15 +120,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'iddespesas' },
                     { data: 'num_carregemento'},
                     { data: 'placa_veiculo' },
-                    { data: 'nome_motorista' },
                     { data: 'nome_rota' },
+                    { data: 'nome_motorista' },
+                    { data: 'peso_carga'},
+                    { data: 'qtd_entregas'},
                     { data: 'mediatk'},
                     { data: 'mediastk'},
                     { data: 'data_carregamento' },
+                    { data: 'data_saida' },
+                    { data: 'data_chegada' },
                     { data: 'dias_rota' },
                     { data: 'diarias_mot' },
+                    { data: 'valor_mot' },
                     { data: 'diarias_ajud' },
+                    { data: 'valor_ajud' },
                     { data: 'diarias_chapa' },
+                    { data: 'valor_chapa' },
                     { data: 'km_rodado' },
                     { data: 'litros' },
                     { data: 'avaliacao' },
@@ -134,7 +148,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[18]}
+                    {'bSortable':false, 'aTargets':[25]}
                 ],
                 order: [[0,'desc']]
             });

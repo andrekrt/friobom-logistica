@@ -36,8 +36,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     //calculo de diferença de datas
     $dataFinial = new DateTime($dataChegada);
     $dataInicial = new DateTime($dataSaida);
-    $diasEmRota = $dataFinial->diff($dataInicial);
-    $diasEmRota = $diasEmRota->format("%d");
+    $diferencaDias = $dataFinial->diff($dataInicial);
+    $diasEmRota= number_format($diferencaDias->days+($diferencaDias->h/24) + ($diferencaDias->i/1440),2) ;
     
     $numCarregamento = filter_input(INPUT_POST, 'nCarregamento');
     $codRota = filter_input(INPUT_POST,'codRota');
