@@ -56,12 +56,17 @@ foreach($empRecords as $row){
     $delete="";
     $editar = "";
     $ficha = "";
+    $aprovar="";
     if( $_SESSION['tipoUsuario']==4 || $_SESSION['tipoUsuario']==99){
         $delete='  <a href="excluir-entrada.php?idSaida='.$row['idcombustivel_saida'].' " data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
         $editar = ' <a href="javascript:void();" data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>';
         
     }elseif($_SESSION['tipoUsuario']==1 || $_SESSION['tipoUsuario']==99){
         $ficha = ' <a href="ficha-abastecimento.php?id='.$row['idcombustivel_saida'].' " data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-secondary btn-sm deleteBtn" >Ficha</a>';
+    }
+
+    if(($_SESSION['idUsuario']==1 || $_SESSION['idUsuario']==4 || $_SESSION['idUsuario']==8) && $row['situacao']==='Pendente'){
+        $aprovar = ' <a href="aprova-perca.php?id='.$row['idcombustivel_saida'].'" data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-success btn-sm " >Aprovar</a>';
     }
     $data[] = array(
         "idcombustivel_saida"=>$row['idcombustivel_saida'],
@@ -75,8 +80,9 @@ foreach($empRecords as $row){
         "rota"=>$row['rota'],
         "motorista"=>$row['motorista'],
         "tipo_abastecimento"=>($row['tipo_abastecimento']),
+        "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=>  $editar . $delete . $ficha
+        "acoes"=> $aprovar . $editar . $delete . $ficha  
     );
 }
 

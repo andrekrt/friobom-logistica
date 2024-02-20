@@ -27,7 +27,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     
 
     //qtd saidas
-    $saidas = $db->query("SELECT SUM(litro_abastecimento) as litroAbastecimento FROM combustivel_saida");
+    $saidas = $db->query("SELECT SUM(litro_abastecimento) as litroAbastecimento FROM combustivel_saida WHERE situacao='Aprovado'");
     $qtdSaidas = $saidas->fetch();
     $qtdSaidas = $qtdSaidas['litroAbastecimento']?$qtdSaidas['litroAbastecimento']:0;
 
@@ -35,7 +35,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $percentual = ($estoqueAtual/15000)*100;
 
     // inventario
-    $inventario = $db->query("SELECT * FROM combustivel_inventario ORDER BY data_inventario LIMIT 1");
+    $inventario = $db->query("SELECT * FROM combustivel_inventario ORDER BY data_inventario DESC LIMIT 1");
     $inventario = $inventario->fetch();
     $dataInventario = date("d/m/Y", strtotime($inventario['data_inventario']));
     $volume = $inventario['qtd_encontrada'];

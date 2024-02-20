@@ -54,7 +54,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <img src="../assets/images/icones/combustivel-saida.png" alt="">
                 </div>
                 <div class="title">
-                    <h2>Abastecimentos</h2>
+                    <h2>Saídas</h2>
                 </div>
                 <div class="menu-mobile">
                     <img src="../assets/images/icones/menu-mobile.png" onclick="abrirMenuMobile()" alt="">
@@ -64,7 +64,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div class="menu-principal">
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Novo Abastecimento</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Nova Saída</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalPerca" data-whatever="@mdo">Nova Perca</button>
                     </div>
                     <a href="abastecimento-csv.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
@@ -83,6 +84,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Rota</th>
                                 <th scope="col" class="text-center text-nowrap">Motorista</th>
                                 <th scope="col" class="text-center text-nowrap">Tipo de Abastecimento</th>
+                                <th scope="col" class="text-center text-nowrap">Situação</th>
                                 <th scope="col" class="text-center text-nowrap"> Usuário que Lançou </th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
                             </tr>
@@ -121,6 +123,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'rota'},
                     { data: 'motorista'},
                     { data: 'tipo_abastecimento'},
+                    {data: 'situacao'},
                     { data: 'nome_usuario'},
                     { data: 'acoes'},
                 ],
@@ -128,7 +131,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[12]}
+                    {'bSortable':false, 'aTargets':[13]}
                 ],
                 "order":[
                     0, 'desc'
@@ -290,6 +293,40 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     </div>
 </div>
 <!-- FIM MODAL edição de abastecimento-->
+
+<!-- MODAL perca de abastecimento -->
+<div class="modal fade" id="modalPerca" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Perca de Combustível</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="add-perca.php" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-12 espaco ">
+                            <label for="litro">Selecione o Inventário da Perca</label>
+                            <select name="litro" id="litro" class="form-control">
+                                <option value=""></option>
+                                <?php 
+                                $inventarios = $db->query("SELECT * FROM combustivel_inventario ORDER BY data_inventario DESC LIMIT 1");
+                                $inventarios=$inventarios->fetch();
+                                ?>
+                                <option value="<?=$inventarios['qtd_encontrada']?>"><?= date('d/m/Y', strtotime($inventarios['data_inventario'])). " - ". number_format($inventarios['qtd_encontrada'],2,",",".") ."l"  ?></option>
+                            </select>
+                        </div>
+                    </div>    
+            </div>
+            <div class="modal-footer">
+                    <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="../assets/js/jquery.mask.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
