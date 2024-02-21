@@ -405,7 +405,7 @@
             <li class="list-group-item">
               <a href="../../posto/entradas.php">
                 <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
-                <div class="text d-inline-block align-middle">Entradas </div>
+                <div class="text d-inline-block align-middle">Saídas </div>
               </a>
             </li>
             <li class="list-group-item">

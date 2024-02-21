@@ -24,11 +24,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $rca2 = filter_input(INPUT_POST, 'rca2');
     $obs = filter_input(INPUT_POST, 'obs');
     $horaAlmoco = str_replace(",",".", filter_input(INPUT_POST, 'horaAlmoco')) ;
+    $kmRodado = filter_input(INPUT_POST, 'kmRodado');
     $usuario = $_SESSION['idUsuario'];
 
     // echo "$dataSaida<br>$dataChegada<br>$supervisor<br>$velMax<br>$visitas<br>$cidades<br>$rca1<br>$rca2<br>$obs<br>$horaAlmoco<br> $usuario";
     
-    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, hora_almoco) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :horaAlmoco)");
+    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, km_rodado, hora_almoco) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :km, :horaAlmoco)");
     $sql->bindValue(':saida', $dataSaida);
     $sql->bindValue(':supervisor', $supervisor);
     $sql->bindValue(':chegada', $dataChegada);
@@ -39,6 +40,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $sql->bindValue(':qtd_visitas', $visitas);
     $sql->bindValue(':usuario', $usuario);
     $sql->bindValue(':cidades',$cidades);
+    $sql->bindValue(':km', $kmRodado);
     $sql->bindValue(':horaAlmoco', $horaAlmoco);
     if($sql->execute()){
         echo "<script> alert('Rota Registrada!!')</script>";

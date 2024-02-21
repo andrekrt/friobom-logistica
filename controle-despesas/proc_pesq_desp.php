@@ -58,15 +58,17 @@ foreach($empRecords as $row){
     $assinar="";
     $imprimir = "";
     $excluir="";
+    $editar = "";
     if(is_dir('uploads/'.$row['iddespesas'])){
         $fotos='<a target="_blank" href="http://192.168.10.32/logistica/controle-despesas/uploads/'.$row['iddespesas'].'">Fotos</a>';
     }else{
         $fotos = "Sem Foto";
     }
-    if(($idUsuario==20 || $idUsuario==5) && $row['situacao']=="Não Confirmado"){
-        $assinar = '<a class=" icon-acoes" href="confirmacao.php?id='.$row['iddespesas'].'" onclick="return confirm(\'Deseja Assinar Despesa da carga '.$row['num_carregemento'].' ?\')"> <img src="../assets/images/icones/confirma.png" alt=""> </a>';
+    if(($idUsuario==20 || $idUsuario==1) && $row['situacao']=="Não Confirmado"){
+        $assinar = ' <a class=" icon-acoes" href="confirmacao.php?id='.$row['iddespesas'].'" onclick="return confirm(\'Deseja Assinar Despesa da carga '.$row['num_carregemento'].' ?\')"> <img src="../assets/images/icones/confirma.png"> </a> ';
+        $editar=' <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a> ';
     }
-    if($row['situacao']=="Confirmado"){
+    if($row['situacao']=="Confirmado" || $row['situacao']=="Confirmado com Alteração"){
         $imprimir = '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>';
     }
     if($tipoUsuario==99){
@@ -85,7 +87,7 @@ foreach($empRecords as $row){
         "data_carregamento"=>date("d/m/Y H:i", strtotime($row['data_carregamento'])),
         "data_saida"=>date("d/m/Y H:i", strtotime($row['data_saida'])),
         "data_chegada"=>date("d/m/Y H:i", strtotime($row['data_chegada'])),
-        "dias_rota"=>number_format($row['dias_em_rota'],2,",","."),
+        "dias_em_rota"=>number_format($row['dias_em_rota'],2,",","."),
         "diarias_mot"=>number_format($row['dias_motorista'],2,",","."),
         "valor_mot"=>"R$ " .number_format($row['diarias_motoristas'],2,",","."),
         "diarias_ajud"=>number_format($row['dias_ajudante'],2,",","."),
@@ -98,7 +100,7 @@ foreach($empRecords as $row){
         "obs"=>$row['obs_carga'],
         "fotos"=>$fotos,
         "status"=>$row['situacao'],
-        "acoes"=>$assinar. $imprimir. '<a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a>' . $excluir 
+        "acoes"=>$assinar. $imprimir. $editar . $excluir 
     );
 }
 

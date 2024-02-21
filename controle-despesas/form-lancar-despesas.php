@@ -355,12 +355,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     
                 });
                 $('#hrKm4Abast').blur(function(){
-                    var tkSaida = $('#hrTkSaida').val();
-                    var tkRetorno = $('#hrKm4Abast').val();
+                    var tkSaida = parseInt($('#hrTkSaida').val(),10) ;
+                    var tkRetorno =parseInt($('#hrKm4Abast').val(),10) ;
                     
                     if(tkRetorno<tkSaida){
                         alert('Hora do Tk de retorno precisa ser maior ou igual ao de saída');
                         $('#hrKm4Abast').val("");
+                    }
+                });
+                $('#km4Abast').change(function(){
+                    let kmSaida = parseInt($('#kmSaida').val(),10) ;
+                    let kmRetorno =parseInt($('#km4Abast').val(),10) ;
+
+                    if(kmRetorno<kmSaida){
+                        alert("Km de Retorno precisa ser maior que o de saída.");
+                        $('#km4Abast').val("");
                     }
                 });
             });

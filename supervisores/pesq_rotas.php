@@ -63,6 +63,7 @@ foreach($empRecords as $row){
             "placa_veiculo"=>$row['placa_veiculo'],
             "chegada"=>date("d/m/Y H:i", strtotime($row['chegada'])),
             "velocidade_max"=>$row['velocidade_max'],
+            "km_rodado"=>$row['km_rodado'],
             "qtd_visitas"=>$row['qtd_visitas'],
             "rca01"=>$row['rca01'],
             "rca02"=>$row['rca02'],

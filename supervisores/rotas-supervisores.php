@@ -73,6 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
                                 <th scope="col" class="text-center text-nowrap">Data Chegada</th>
                                 <th scope="col" class="text-center text-nowrap">Velocidade Máxima</th>
+                                <th scope="col" class="text-center text-nowrap">Km Rodado</th>
                                 <th scope="col" class="text-center text-nowrap" > Nº de Visitas </th>
                                 <th scope="col" class="text-center text-nowrap" >RCA1</th>
                                 <th scope="col" class="text-center text-nowrap">RCA2</th>
@@ -110,6 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'placa_veiculo' },
                     { data: 'chegada'},
                     { data: 'velocidade_max' },
+                    { data: 'km_rodado'},
                     { data: 'qtd_visitas'},
                     { data: 'rca01' },
                     { data: 'rca02' },
@@ -155,6 +157,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#obs').val(json.obs);
                     $('#horaAlmoco').val(json.hora_almoco);
                     $('#id').val(json.idrotas);
+                    $('#kmRodado').val(json.km_rodado);
                 }
             })
         });
@@ -203,9 +206,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="visitas">Nº de Visitas</label>
                                 <input type="text" id="visitas" name="visitas" class="form-control" required>
                             </div>
-                           
+                            
                         </div>
                         <div class="form-row">
+                            <div class="form-group col-md-2 espaco">
+                                <label for="kmRodado"> Km Rodado </label>
+                                <input type="text" class="form-control"  name="kmRodado" id="kmRodado" >
+                            </div>
                             <div class="form-group col-md-2 espaco">
                                 <label for="rca1"> RCA 1 </label>
                                 <input type="text" class="form-control"  name="rca1" id="rca1" >
@@ -214,7 +221,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="rca2"> RCA 2 </label>
                                 <input type="text" class="form-control"  name="rca2" id="rca2">
                             </div>
-                            <div class="form-group col-md-8 espaco">
+                            <div class="form-group col-md-6 espaco">
                                 <label for="cidades"> Cidades Visitadas </label>
                                 <input type="text" class="form-control"  name="cidades" id="cidades">
                             </div>

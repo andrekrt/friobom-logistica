@@ -25,6 +25,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $obs = filter_input(INPUT_POST, 'obs');
     $horaAlmoco = str_replace(",",".", filter_input(INPUT_POST, 'horaAlmoco')) ;
     $idRota = filter_input(INPUT_POST, 'id');
+    $kmRodado = filter_input(INPUT_POST, 'kmRodado');
     $usuario = $_SESSION['idUsuario'];
 
     // echo "Data de Saída: $dataSaida<br>" ;
@@ -42,7 +43,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     // echo "Usuário: $usuario<br>" ;
     // echo "ID: $idRota<br>" ;
     
-    $sql = $db->prepare("UPDATE rotas_supervisores SET saida=:saida, supervisor=:supervisor, chegada=:chegada, velocidade_max=:velocidade, rca01=:rca01, rca02=:rca02, obs=:obs, cidades=:cidades, qtd_visitas=:visitas, hora_almoco=:horaAlmoco, usuario=:usuario WHERE idrotas=:idrotas ");
+    $sql = $db->prepare("UPDATE rotas_supervisores SET saida=:saida, supervisor=:supervisor, chegada=:chegada, velocidade_max=:velocidade, rca01=:rca01, rca02=:rca02, obs=:obs, cidades=:cidades, qtd_visitas=:visitas, hora_almoco=:horaAlmoco, km_rodado=:km, usuario=:usuario WHERE idrotas=:idrotas ");
     $sql->bindValue(':saida', $dataSaida);
     $sql->bindValue(':supervisor', $supervisor);
     $sql->bindValue(':chegada', $dataChegada);
@@ -54,6 +55,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $sql->bindValue(':visitas', $visitas);
     $sql->bindValue(':horaAlmoco', $horaAlmoco);
     $sql->bindValue(':usuario', $usuario);
+    $sql->bindValue(':km',$kmRodado);
     $sql->bindValue(':idrotas', $idRota);
     if($sql->execute()){
         echo "<script> alert('Rota Atualizada!!')</script>";

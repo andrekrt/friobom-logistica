@@ -64,7 +64,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <a href="javascript:void();" id="modalData"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
-                    <table id='tableDesp' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                    <table id='tableDesp' class='table  table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center">ID Despesas </th>
@@ -129,7 +129,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'data_carregamento' },
                     { data: 'data_saida' },
                     { data: 'data_chegada' },
-                    { data: 'dias_rota' },
+                    { data: 'dias_em_rota' },
                     { data: 'diarias_mot' },
                     { data: 'valor_mot' },
                     { data: 'diarias_ajud' },
@@ -150,8 +150,16 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[25]}
                 ],
-                order: [[0,'desc']]
+                order: [[0,'desc']],
+                "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+                   
+                    if(aData['status']==='Não Confirmado'){
+                        $(nRow).css('background-color', 'red');
+                    }
+                    return nRow;
+                }
             });
+            
         });
 
         //abrir modal descartar

@@ -44,6 +44,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $diferencaDias = $dataFinial->diff($dataInicial);
     $diasEmRota= number_format($diferencaDias->days+($diferencaDias->h/24),2) ;
 
+    if($diasEmRota>9){
+        echo "<script> alert('Dias em Rota acima de 8 dias!')</script>";
+        echo "<script> window.location.href='form-lancar-despesas.php' </script>";
+        exit;
+    }
+
     // data e hora atual
     $dataHoraAtual = date('Y-m-d H:i:s');
     

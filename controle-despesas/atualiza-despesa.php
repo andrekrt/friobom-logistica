@@ -25,6 +25,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataCarragemento = filter_input(INPUT_POST, 'dataCarregamento');
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $dataSaida = filter_input(INPUT_POST, 'dataSaida');
+    $status = "Confirmado com Alteração";
+    $dataAprovaca = date("Y-m-d H:i");
 
     // verificar cidade base do veiculo para registrar no bd da viagem
     $sqlCidade = $db->prepare("SELECT cidade_base FROM veiculos WHERE placa_veiculo =:veiculo");
@@ -250,7 +252,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     
     
    if($consultaVeiculo->rowCount()>0 && $consultaMotorista->rowCount()>0 && $consultaRota->rowCount()>0){
-        $sql = $db->prepare("UPDATE viagem SET cod_interno_veiculo = :codVeiculo, tipo_veiculo = :tipoVeiculo, placa_veiculo = :placaVeiculo, cod_interno_motorista = :codMotorista, nome_motorista = :nomeMotorista, data_carregamento = :dataCarregamento, num_carregemento = :numCarregamento, data_saida = :dataSaida, data_chegada = :dataChegada, dias_em_rota = :diasEmRota, cod_rota = :codRota, nome_rota = :nomeRota, valor_transportado = :valorTransportado, valor_devolvido = :valorDevolvido, valor_liquido = :valorLiquido, qtd_entregas = :qtdEntregas,  num_carga = :numCarga, peso_carga = :pesoCarga, km_saida = :kmSaida, hr_tk_saida = :hrTkSaida, km_abast1 = :kmAbast1, hr_tk_abast1 = :hrTkAbast1, lt_abast1 = :ltAbast1, valor_abast1 = :vlAbast1, km_perc1 = :kmPerc1, km_pec1_tk = :kmPerc1Tk, kmPorLtSemTk = :kmPorLtSemTK, km_abast2 = :kmAbast2, hr_tk_abast2 = :hrTkAbast2, lt_abast2 = :ltAbast2, valor_abast2 = :vlAbast2, km_perc2 = :kmPerc2, km_pec2_tk_ = :kmPerc2Tk, kmPorLtSemTk2 = :kmPorLtSemTk2, km_abast3 = :kmAbast3, hr_tk_abast3 = :hrTkAbast3, lt_abast3 = :ltAbast3, valor_abast3 = :vlAbast3, km_perc3 = :kmPerc3, km_pec3_tk = :kmPec3Tk, kmPorLtSemTk3 = :kmPorLtSemTk3, km_abast4 = :kmAbast4, hr_tk_abast4 = :hrTkAbast4, lt_abast4 = :ltAbast4, valor_abast4 = :vlAbast4, km_perc4 = :kmPerc4, km_perc4_tk = :kmPerc4Tk, kmPorLtSemTk4 = :kmPorLtSemTk4, km_rodado = :kmRodado, km_final = :kmFinal, litros = :litros, mediaSemTk = :mediaSemTk, consumo_tk = :consumoTk, media_comtk = :mediaComTk, valor_total_abast = :vlTotalAbast, diarias_motoristas = :diariasMotoristas, dias_motorista = :diasMotorista, diarias_ajudante = :diariasAjudante, dias_ajudante = :diasAjudante, diarias_chapa = :diariasChapa, dias_chapa = :diasChapa, outros_gastos_ajudante = :outrosGastosAjudante, tomada = :tomada, descarga = :descarga, travessia = :travessia, outros_servicos = :outrosServicos, nome_ajudante = :nomeAjudante, localAbast1 = :localAbast1, localAbast2 = :localAbast2, localAbast3 = :localAbast3, localAbast4 = :localAbast4, custo_entrega = :custoEntrega, idUsuarios = :idUsuario, cidade_base=:cidadeBase WHERE iddespesas = :idDespesa");
+        $sql = $db->prepare("UPDATE viagem SET cod_interno_veiculo = :codVeiculo, tipo_veiculo = :tipoVeiculo, placa_veiculo = :placaVeiculo, cod_interno_motorista = :codMotorista, nome_motorista = :nomeMotorista, data_carregamento = :dataCarregamento, num_carregemento = :numCarregamento, data_saida = :dataSaida, data_chegada = :dataChegada, dias_em_rota = :diasEmRota, cod_rota = :codRota, nome_rota = :nomeRota, valor_transportado = :valorTransportado, valor_devolvido = :valorDevolvido, valor_liquido = :valorLiquido, qtd_entregas = :qtdEntregas,  num_carga = :numCarga, peso_carga = :pesoCarga, km_saida = :kmSaida, hr_tk_saida = :hrTkSaida, km_abast1 = :kmAbast1, hr_tk_abast1 = :hrTkAbast1, lt_abast1 = :ltAbast1, valor_abast1 = :vlAbast1, km_perc1 = :kmPerc1, km_pec1_tk = :kmPerc1Tk, kmPorLtSemTk = :kmPorLtSemTK, km_abast2 = :kmAbast2, hr_tk_abast2 = :hrTkAbast2, lt_abast2 = :ltAbast2, valor_abast2 = :vlAbast2, km_perc2 = :kmPerc2, km_pec2_tk_ = :kmPerc2Tk, kmPorLtSemTk2 = :kmPorLtSemTk2, km_abast3 = :kmAbast3, hr_tk_abast3 = :hrTkAbast3, lt_abast3 = :ltAbast3, valor_abast3 = :vlAbast3, km_perc3 = :kmPerc3, km_pec3_tk = :kmPec3Tk, kmPorLtSemTk3 = :kmPorLtSemTk3, km_abast4 = :kmAbast4, hr_tk_abast4 = :hrTkAbast4, lt_abast4 = :ltAbast4, valor_abast4 = :vlAbast4, km_perc4 = :kmPerc4, km_perc4_tk = :kmPerc4Tk, kmPorLtSemTk4 = :kmPorLtSemTk4, km_rodado = :kmRodado, km_final = :kmFinal, litros = :litros, mediaSemTk = :mediaSemTk, consumo_tk = :consumoTk, media_comtk = :mediaComTk, valor_total_abast = :vlTotalAbast, diarias_motoristas = :diariasMotoristas, dias_motorista = :diasMotorista, diarias_ajudante = :diariasAjudante, dias_ajudante = :diasAjudante, diarias_chapa = :diariasChapa, dias_chapa = :diasChapa, outros_gastos_ajudante = :outrosGastosAjudante, tomada = :tomada, descarga = :descarga, travessia = :travessia, outros_servicos = :outrosServicos, nome_ajudante = :nomeAjudante, localAbast1 = :localAbast1, localAbast2 = :localAbast2, localAbast3 = :localAbast3, localAbast4 = :localAbast4, custo_entrega = :custoEntrega, idUsuarios = :idUsuario, cidade_base=:cidadeBase, situacao=:situacao, data_aprovacao=:dataAprovacao WHERE iddespesas = :idDespesa");
         $sql->bindValue(':codVeiculo', $codVeiculo);
         $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
         $sql->bindValue(':placaVeiculo', $placaVeiculo);
@@ -327,6 +329,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':idUsuario', $idUsuario );
         $sql->bindValue(':idDespesa', $idDespesa );
         $sql->bindValue(':cidadeBase', $cidadeBase);
+        $sql->bindValue(':situacao', $status);
+        $sql->bindValue(':dataAprovacao', $dataAprovaca);
         
 
         $kmAtual = $db->prepare("UPDATE veiculos SET km_atual = :kmFinal WHERE cod_interno_veiculo = :codVeiculo ");
@@ -342,7 +346,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         calculoTk($codVeiculo);
 
         if($sql->execute()){
-            header("Location: despesas.php");
+            echo "<script>alert('Despesa Atualizada e Confirmada!');</script>";
+            echo "<script>window.location.href='despesas.php'</script>";
         }else{
             print_r($db->errorInfo());
         }

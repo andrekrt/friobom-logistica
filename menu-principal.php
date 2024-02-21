@@ -410,7 +410,7 @@
             <li class="list-group-item">
               <a href="posto/abastecimento.php">
                 <!-- <img src="http://res.cloudinary.com/dt9b7pad3/image/upload/v1495406336/Theme_Appearance_wld9rt.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
-                <div class="text d-inline-block align-middle">Abastecimentos</div>
+                <div class="text d-inline-block align-middle">Saídas</div>
               </a>
             </li>
             <li class="list-group-item">

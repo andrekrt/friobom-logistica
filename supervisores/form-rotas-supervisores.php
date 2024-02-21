@@ -89,13 +89,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="velMax">Velocidade Máxima</label>
                                 <input type="text" class="form-control" required name="velMax" id="velMax" >
                             </div>
-                            <div class="form-group col-md-2 espaco">
+                            <div class="form-group col-md-1 espaco">
                                 <label for="visitas">Nº de Visitas</label>
                                 <input type="text" id="visitas" name="visitas" class="form-control" required>
                             </div>
-                            <div class="form-group col-md-2 espaco">
+                            <div class="form-group col-md-1 espaco">
                                 <label for="rca1"> RCA 1 </label>
                                 <input type="text" class="form-control"  name="rca1" id="rca1" >
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="kmRodado"> Km Rodado </label>
+                                <input type="text" class="form-control"  name="kmRodado" id="kmRodado" >
                             </div>
                         </div>
                         <div class="form-row">
