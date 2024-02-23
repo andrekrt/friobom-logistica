@@ -288,6 +288,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <input type="text" name="nomeAjud" class="form-control" id="nomeAjud" value="<?=$despesa['nome_ajudante']?>">
                             </div>
                         </div>
+                        <input type="hiddens" name="situacao" id="situacao" value="<?=$despesa['situacao']?>">
                         <button type="submit" class="btn btn-primary"> Atualizar e Confirmar </button>
                     </form>
                 </div>

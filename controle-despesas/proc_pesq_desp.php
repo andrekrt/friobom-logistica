@@ -55,6 +55,13 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+
+    //calculo de diferença de datas
+    $dataFinial = new DateTime(date('Y-m-d H:i'));
+    $dataInicial = new DateTime($row['data_registro']);
+    $diferencaDias = $dataFinial->diff($dataInicial);
+    $dias= number_format($diferencaDias->days+($diferencaDias->h/24),2);
+
     $assinar="";
     $imprimir = "";
     $excluir="";
@@ -68,12 +75,15 @@ foreach($empRecords as $row){
         $assinar = ' <a class=" icon-acoes" href="confirmacao.php?id='.$row['iddespesas'].'" onclick="return confirm(\'Deseja Assinar Despesa da carga '.$row['num_carregemento'].' ?\')"> <img src="../assets/images/icones/confirma.png"> </a> ';
         $editar=' <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a> ';
     }
-    if($row['situacao']=="Confirmado" || $row['situacao']=="Confirmado com Alteração"){
+    if($row['situacao']=="Confirmado" || $row['situacao']=="Confirmado com Alteração" || $row['situacao']=="Confirmado e 2 Alterações"){
         $imprimir = '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>';
     }
     if($tipoUsuario==99){
         $excluir = '<a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>';
     }
+    if(($idUsuario==45 || $idUsuario==1) && ($row['situacao']=="Confirmado" || $row['situacao']=='Confirmado com Alteração') && $dias<=1.5){
+        $editar=' <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a> ';
+    }   
     $data[] = array(
         "iddespesas"=>$row['iddespesas'],
         "num_carregemento"=>$row['num_carregemento'],

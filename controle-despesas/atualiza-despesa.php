@@ -25,8 +25,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataCarragemento = filter_input(INPUT_POST, 'dataCarregamento');
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $dataSaida = filter_input(INPUT_POST, 'dataSaida');
-    $status = "Confirmado com Alteração";
+    $status = filter_input(INPUT_POST, 'situacao');
     $dataAprovaca = date("Y-m-d H:i");
+
+    if($status=="Confirmado com Alteração" || $status=="Confirmado"){
+        $newStatus = "Confirmado e 2 Alterações";
+    }else{
+        $newStatus= "Confirmado com Alteração";
+    }
 
     // verificar cidade base do veiculo para registrar no bd da viagem
     $sqlCidade = $db->prepare("SELECT cidade_base FROM veiculos WHERE placa_veiculo =:veiculo");
@@ -329,7 +335,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':idUsuario', $idUsuario );
         $sql->bindValue(':idDespesa', $idDespesa );
         $sql->bindValue(':cidadeBase', $cidadeBase);
-        $sql->bindValue(':situacao', $status);
+        $sql->bindValue(':situacao', $newStatus);
         $sql->bindValue(':dataAprovacao', $dataAprovaca);
         
 
