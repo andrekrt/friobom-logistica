@@ -32,6 +32,12 @@ if(!empty($nCarregamento)){
     $sqlCaixas->execute();
     $qtdCaixa = $sqlCaixas->rowCount();
 
+    // verificar se carregamento ja existe
+    $qtdCarga = $db->prepare("SELECT * FROM viagem WHERE num_carregemento=:carregamento");
+    $qtdCarga->bindValue(':carregamento', $nCarregamento);
+    $qtdCarga->execute();
+    $qtdCarga = $qtdCarga->rowCount();
+
     $valores=array();    
 
     if($resultado->execute()){
@@ -50,6 +56,7 @@ if(!empty($nCarregamento)){
         $valores['local'] = "POSTO FRIOBOM";
         $valores['denegadas']= $qtdDenegado;
         $valores['caixas']=$qtdCaixa;
+        $valores['qtdCarregamentos']=$qtdCarga;
     }else{
         $valores['vlTransp']='Não Encontrado';
     }

@@ -22,7 +22,11 @@ $(document).ready(function(){
                }else if(retorno.caixas>0){
                     alert("Existe caixas que ainda não foram acertadas");
                     $botao.remove();
-               }else{
+               }else if(retorno.qtdCarregamentos>0){
+                alert("Já existe despesa com o carregamento "+nCarregamento);
+                $botao.remove();
+               }
+               else{
                     $vlTransp.val(retorno.vlTransp);
                     $codVeiculo.val(retorno.codVeiculo);
                     $codMotorista.val(retorno.codMotorista);
