@@ -73,7 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center"> Rota </th>
                                 <th scope="col" class="text-center"> Motorista </th>
                                 <th scope="col" class="text-center"> Peso Carga (Kg) </th>
-                                <th scope="col" class="text-center"> Nº Clientes </th>
+                             
                                 <th scope="col" class="text-center"> Média c/ Tk </th>
                                 <th scope="col" class="text-center"> Média s/ Tk </th>
                                 <th scope="col" class="text-center"> Data Carregamento </th>
@@ -88,9 +88,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center"> Diárias Chapa (R$)</th>
                                 <th scope="col" class="text-center">Km Percorrido </th>
                                 <th scope="col" class="text-center">Litros </th>
-                                <th scope="col" class="text-center"> Avaliação da Carga </th>
+                                <th scope="col" class="text-center">Outros Gastos </th>
+                                <th scope="col" class="text-center">Almoço </th>
+                                <th scope="col" class="text-center">Passagem </th>
+                                <th scope="col" class="text-center">Serviços </th>
                                 <th scope="col" class="text-center"> Obs </th>
-                                <th scope="col" class="text-center"> Imagens da Carga </th>
                                 <th scope="col" class="text-center"> Status </th>
                                 <th scope="col" class="text-center"> Ações </th>
                             </tr>
@@ -123,7 +125,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'nome_rota' },
                     { data: 'nome_motorista' },
                     { data: 'peso_carga'},
-                    { data: 'qtd_entregas'},
                     { data: 'mediatk'},
                     { data: 'mediastk'},
                     { data: 'data_carregamento' },
@@ -138,9 +139,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'valor_chapa' },
                     { data: 'km_rodado' },
                     { data: 'litros' },
-                    { data: 'avaliacao' },
+                    { data: 'outros_gastos_ajudante'},
+                    { data: 'tomada'},
+                    { data: 'descarga'},
+                    { data: 'outros_servicos'},
                     { data: 'obs' },
-                    { data: 'fotos' },
                     { data: 'status'},
                     { data: 'acoes'},
                 ],

@@ -89,7 +89,7 @@ foreach($empRecords as $row){
         "num_carregemento"=>$row['num_carregemento'],
         "placa_veiculo"=>$row['placa_veiculo'],
         "peso_carga"=>number_format($row['peso_carga'],2,",",".")."Kg" ,
-        "qtd_entregas"=>$row['qtd_entregas'],
+       
         "nome_motorista"=> $row['nome_motorista'],
         "nome_rota"=>$row['nome_rota'],
         "mediatk"=>number_format($row['media_comtk'],2,",",".")."Km/L" ,
@@ -106,9 +106,12 @@ foreach($empRecords as $row){
         "valor_chapa"=>"R$ ".number_format($row['diarias_chapa'],2,",","."),
         "km_rodado"=>$row['km_rodado'],
         "litros"=>number_format($row['litros'],2,",","."),
-        "avaliacao"=>$row['nota_carga'],
+        "outros_gastos_ajudante"=>number_format($row['outros_gastos_ajudante'],2,",","."),
+        "tomada"=>number_format($row['tomada'],2,",","."),
+        "descarga"=>number_format($row['descarga'], 2,",","."),
+        "outros_servicos"=>number_format($row['outros_servicos'],2,",","."),
         "obs"=>$row['obs_carga'],
-        "fotos"=>$fotos,
+        
         "status"=>$row['situacao'],
         "acoes"=>$assinar. $imprimir. $editar . $excluir 
     );
