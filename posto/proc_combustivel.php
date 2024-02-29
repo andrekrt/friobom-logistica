@@ -55,23 +55,32 @@ $data = array();
 
 foreach($empRecords as $row){
     $botao = "";
+    $aprovar = "";
     if($_SESSION['tipoUsuario']==4 && $row['situacao']=="Em Análise"){
-        $botao='<a href="javascript:void();" data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-entrada.php?idEntrada='.$row['idcombustivel_entrada'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+        $botao=' <a href="javascript:void();" data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-entrada.php?idEntrada='.$row['idcombustivel_entrada'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+        $aprovar = ' <a href="aprovar-entrada.php?idEntrada='.$row['idcombustivel_entrada'].'&lt='.$row['total_litros'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-success btn-sm deleteBtn" >Aprovar</a> ';
     }
+    $valorLitro = ($row['valor_litro'])?number_format($row['valor_litro'],4,",","."):null;
+    $frete = ($row['frete'])?number_format($row['frete'],4,",","."):null;
+    $total_litros = ($row['total_litros'])?number_format($row['total_litros'],4,",","."):null;
+    $valor_comb = ($row['total_litros'] || $row['valor_litro'])?number_format($row['total_litros']*$row['valor_litro'],2,",","."):null;
+    $valor_total = ($row['valor_total'])?number_format($row['valor_total'],4,",","."):null;
+    $fantasia = $row['nome_fantasia']?mb_convert_encoding($row['nome_fantasia'],'ISO-8859-1', 'UTF-8'):null;
+
     $data[] = array(
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
         "data_entrada"=>date("d/m/Y", strtotime($row['data_entrada'])),
         "nf"=>$row['nf'],
-        "valor_litro"=>"R$ ". number_format($row['valor_litro'],4,",","."),
-        "frete"=>"R$ ". number_format($row['frete'],2,",","."),
-        "total_litros"=>number_format($row['total_litros'],2,",",".") ,
-        "valor_comb"=>number_format($row['total_litros']*$row['valor_litro'],2,",","."),
-        "valor_total"=>"R$ " . number_format($row['valor_total'],2,",","."),
-        "nome_fantasia"=>mb_convert_encoding($row['nome_fantasia'],'ISO-8859-1', 'UTF-8'),
+        "valor_litro"=>"R$ ".$valorLitro,
+        "frete"=>"R$ ". $frete,
+        "total_litros"=>$total_litros ,
+        "valor_comb"=>$valor_comb,
+        "valor_total"=>"R$ " . $valor_total,
+        "nome_fantasia"=>$fantasia,
         "qualidade"=>$row['qualidade'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> $botao
+        "acoes"=>$aprovar. $botao
     );
 }
 

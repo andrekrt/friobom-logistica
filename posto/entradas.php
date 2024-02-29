@@ -66,6 +66,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 <div class="icon-exp">
                     <div class="area-opcoes-button">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalEntrada" data-whatever="@mdo" name="idpeca">Nova Entrada</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAjuste" data-whatever="@mdo" name="idpeca">Novo Ajuste </button>
                     </div>
                     <a href="entradas-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
@@ -300,6 +301,38 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 </div>
 <!-- FIM MODAL lançamento de entrada-->
 
+
+<!-- modal ajuste de combustivel -->
+<div class="modal fade" id="modalAjuste" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajuste de Combustível</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="add-ajuste_entrada.php" method="post">
+                    <div class="form-row">
+                        
+                        <div class="form-group col-md-12 espaco ">
+                            <label for="ajustLt"> Diferença de combustível em litros</label>
+                            <input type="text" required name="ajustLt" class="form-control" id="ajustLt">
+                        </div>
+                        
+                      
+                        
+                    </div>    
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="analisar" class="btn btn-primary">Lançar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../assets/js/jquery.mask.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
@@ -312,6 +345,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $("#totalLtEdit").mask('###0,00', {reverse: true});
         $("#freteEdit").mask('###0,00', {reverse: true});
         $('#nfEdit').mask('0000000000');
+        $('#ajustLt').mask('###0,00', {reverse: true});
     })
 
     $(document).ready(function(){
