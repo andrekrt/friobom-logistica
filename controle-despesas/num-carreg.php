@@ -32,6 +32,13 @@ if(!empty($nCarregamento)){
     $sqlCaixas->execute();
     $qtdCaixa = $sqlCaixas->rowCount();
 
+    // verificar se tem vale não resgatado
+    $sqlVales = $db->prepare("SELECT * FROM vales WHERE carregamento=:carregamento AND situacao = :situacao");
+    $sqlVales->bindValue(':carregamento', $nCarregamento);
+    $sqlVales->bindValue(':situacao', "Não Resgatado");
+    $sqlVales->execute();
+    $qtdVales = $sqlVales->rowCount();
+
     // verificar se carregamento ja existe
     $qtdCarga = $db->prepare("SELECT * FROM viagem WHERE num_carregemento=:carregamento");
     $qtdCarga->bindValue(':carregamento', $nCarregamento);
@@ -57,6 +64,7 @@ if(!empty($nCarregamento)){
         $valores['denegadas']= $qtdDenegado;
         $valores['caixas']=$qtdCaixa;
         $valores['qtdCarregamentos']=$qtdCarga;
+        $valores['qtdVales']=$qtdVales;
     }else{
         $valores['vlTransp']='Não Encontrado';
     }

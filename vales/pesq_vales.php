@@ -1,0 +1,87 @@
+<?php
+include '../conexao.php';
+
+## Read value
+$draw = $_POST['draw'];
+$row = $_POST['start'];
+$rowperpage = $_POST['length']; // Rows display per page
+$columnIndex = $_POST['order'][0]['column']; // Column index
+$columnName = $_POST['columns'][$columnIndex]['data']; // Column name
+$columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
+$searchValue = $_POST['search']['value']; // Search value
+
+$searchArray = array();
+
+## Search 
+$searchQuery = " ";
+if($searchValue != ''){
+	$searchQuery = " AND (motorista LIKE :motorista OR rota LIKE :rota OR carregamento LIKE :carregamento OR nome_motorista LIKE :nome_motorista OR nome_rota LIKE :nome_rota OR nome_usuario LIKE :nome_usuario ) ";
+    $searchArray = array( 
+        'motorista'=>"%$searchValue%", 
+        'rota'=>"%$searchValue%",
+        'carregamento'=>"%$searchValue%",
+        'nome_motorista'=>"%$searchValue%",
+        'nome_rota'=>"%$searchValue%",
+        'nome_usuario'=>"%$searchValue%",
+    );
+}
+
+## Total number of records without filtering
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM vales WHERE 1 ");
+$stmt->execute();
+$records = $stmt->fetch();
+$totalRecords = $records['allcount'];
+
+## Total number of records with filtering
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM vales WHERE 1 ".$searchQuery);
+$stmt->execute($searchArray);
+$records = $stmt->fetch();
+$totalRecordwithFilter = $records['allcount'];
+
+## Fetch records
+$stmt = $db->prepare("SELECT * FROM vales LEFT JOIN motoristas ON motoristas.cod_interno_motorista=vales.motorista LEFT JOIN rotas ON rotas.cod_rota=vales.rota LEFT JOIN usuarios on usuarios.idusuarios=vales.usuario  WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+
+// Bind values
+foreach($searchArray as $key=>$search){
+    $stmt->bindValue(':'.$key, $search,PDO::PARAM_STR);
+}
+
+$stmt->bindValue(':limit', (int)$row, PDO::PARAM_INT);
+$stmt->bindValue(':offset', (int)$rowperpage+(int)$row, PDO::PARAM_INT);
+$stmt->execute();
+$empRecords = $stmt->fetchAll();
+
+$data = array();
+
+foreach($empRecords as $row){
+    $editar= '';
+    $imprimir = '<a href="vale-pdf.php?idvale='.$row['idvale'].' " data-id="'.$row['idvale'].'"  class="btn btn-secondary btn-sm deleteBtn" target="_blank"  >Imprimir</a>';
+    $deletar= "";
+
+    if($row['situacao']=='Não Resgatado'){
+        $editar=' <a href="javascript:void();" data-id="'.$row['idvale'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> ';
+        $deletar = ' <a href="excluir-vale.php?idvale='.$row['idvale'].' " data-id="'.$row['idvale'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm(\'Deseja excluir o valor nº '.$row['idvale'].' ?\')" >Deletar</a>  ';
+    }
+    
+    $data[] = array(
+        "idvale"=>$row['idvale'],
+        "data_lancamento"=>date("d/m/Y", strtotime($row['data_lancamento'])),
+        "motorista"=>$row['nome_motorista'],
+        "rota"=>$row['nome_rota'],
+        "valor"=>"R$ ".number_format($row['valor'],2,",",".") ,
+        "carregamento"=>$row['carregamento'],    
+        "situacao"=>$row['situacao'],   
+        "usuario"=>$row['nome_usuario'],
+        "acoes"=>$imprimir  . $editar . $deletar
+    );
+}
+
+## Response
+$response = array(
+    "draw" => intval($draw),
+    "iTotalRecords" => $totalRecords,
+    "iTotalDisplayRecords" => $totalRecordwithFilter,
+    "aaData" => $data
+);
+
+echo json_encode($response);
