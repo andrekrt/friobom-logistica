@@ -64,7 +64,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <a href="veiculos-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
-                    <table id='tableVeiculos' class='table table-striped table-bordered nowrap' style="width: 100%;">
+                    <table id='tableVeiculos' class='table  table-bordered nowrap' style="width: 100%;">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center text-nowrap" >  Código Veículo </th>
@@ -134,12 +134,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'media_combustivel'}, 
                     { data: 'acoes'},
                 ],
-                // "fnRowCallback": function(nRow, aData, iDisplayIndex){
-                    
-                //     if(aData['situacao']=="Pronto para Revisão"){
-                //         $(nRow).css('background-color', 'red');
-                //     }
-                // },
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
@@ -148,6 +142,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     {'bSortable':false, 'aTargets':[11]},
                     {'bSortable':false, 'aTargets':[12]}
                 ],
+                "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+                   
+                   if(aData['situacao']==='Pronto para Revisão' || aData['alinhamento']==='Pronto para Alinhamento'){
+                       $(nRow).css('background-color', 'red');
+                       $(nRow).css('color', 'white')
+                   }
+                   return nRow;
+               },
+            
             });
            
         });

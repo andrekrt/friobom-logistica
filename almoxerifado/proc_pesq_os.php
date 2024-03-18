@@ -76,7 +76,7 @@ foreach($empRecords as $row){
             "higienizacao"=>$row['higienizacao']?"SIM":"NÃO",
             "causador"=>$row['causador'],
             "situacao"=>$row['situacao'],
-            "data_encerramento"=> date("d/m/Y",strtotime($row['data_encerramento'])) ,
+            "data_encerramento"=>$row['data_encerramento']?date("d/m/Y",strtotime($row['data_encerramento'])):"" ,
             "num_nf"=>$row['num_nf'],
             "obs"=>$row['obs'],
             "nome_usuario"=>$row['nome_usuario'],

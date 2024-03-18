@@ -70,7 +70,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <a href="os-xls.php" ><img src="../assets/images/excel.jpg" alt=""></a> 
                 </div>
                 <div class="table-responsive">
-                    <table id='tableOS' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                    <table id='tableOS' class='table table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
@@ -138,6 +138,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[13]}
                 ],
+                "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+                   
+                   if(aData['situacao']==='Em Aberto' ){
+                       $(nRow).css('background-color', 'red');
+                       $(nRow).css('color', 'white')
+                   }
+                   return nRow;
+               },
             });
         });
     </script>

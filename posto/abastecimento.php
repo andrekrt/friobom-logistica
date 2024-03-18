@@ -334,6 +334,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     jQuery(function($){
         $("#litro").mask('###0,00', {reverse: true});
         $("#litroEdit").mask('###0,00', {reverse: true});
+        $("#carregamento").mask('00/00/0000');
     })
 
     $(document).ready(function(){
@@ -356,7 +357,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 $("#add").empty();
             }else if(tipo=="Rota"){
                 $("#add").empty();
-                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento"> </div>');
+                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento" pattern="[0-9]"> </div>');
             }else if(tipo=="Lava Jato"){
                 $("#add").empty();
                 $('.removivel').remove();

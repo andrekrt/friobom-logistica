@@ -62,7 +62,7 @@ foreach($empRecords as $row){
         "total_entrada"=>str_replace(".",",",$row['total_entrada']),
         "total_saida"=> str_replace(".",",",$row['total_saida']),
         "total_estoque"=> str_replace(".",",",$row['total_estoque']) ,
-        "qtd_inv"=> str_replace(".",",",$row['qtd_inv']) ,
+        "qtd_inv"=>$row['qtd_inv']?str_replace(".",",",$row['qtd_inv']):"" ,
         "valor_total"=>"R$ " . str_replace(".",",",$row['valor_total']) ,
         "situacao"=>($row['situacao']),
         "nome_usuario"=>($row['nome_usuario']),

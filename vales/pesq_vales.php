@@ -1,6 +1,6 @@
 <?php
 include '../conexao.php';
-
+session_start();
 ## Read value
 $draw = $_POST['draw'];
 $row = $_POST['start'];
@@ -15,13 +15,14 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (motorista LIKE :motorista OR rota LIKE :rota OR carregamento LIKE :carregamento OR nome_motorista LIKE :nome_motorista OR nome_rota LIKE :nome_rota OR nome_usuario LIKE :nome_usuario ) ";
+	$searchQuery = " AND (motorista LIKE :motorista OR rota LIKE :rota OR carregamento LIKE :carregamento OR nome_motorista LIKE :nome_motorista OR nome_rota LIKE :nome_rota OR nome_usuario LIKE :nome_usuario OR situacao LIKE :situacao ) ";
     $searchArray = array( 
         'motorista'=>"%$searchValue%", 
         'rota'=>"%$searchValue%",
         'carregamento'=>"%$searchValue%",
         'nome_motorista'=>"%$searchValue%",
         'nome_rota'=>"%$searchValue%",
+        'situacao'=>"%$searchValue%",
         'nome_usuario'=>"%$searchValue%",
     );
 }
@@ -33,7 +34,7 @@ $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM vales WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM vales LEFT JOIN motoristas ON motoristas.cod_interno_motorista=vales.motorista LEFT JOIN rotas ON rotas.cod_rota=vales.rota LEFT JOIN usuarios ON usuarios.idusuarios=vales.usuario WHERE 1 ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
@@ -58,7 +59,7 @@ foreach($empRecords as $row){
     $imprimir = '<a href="vale-pdf.php?idvale='.$row['idvale'].' " data-id="'.$row['idvale'].'"  class="btn btn-secondary btn-sm deleteBtn" target="_blank"  >Imprimir</a>';
     $deletar= "";
 
-    if($row['situacao']=='Não Resgatado'){
+    if($row['situacao']=='Não Resgatado' && ($_SESSION['idUsuario'] == 1 || $_SESSION['idUsuario'] == 20 || $_SESSION['idUsuario'] == 45) ){
         $editar=' <a href="javascript:void();" data-id="'.$row['idvale'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> ';
         $deletar = ' <a href="excluir-vale.php?idvale='.$row['idvale'].' " data-id="'.$row['idvale'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm(\'Deseja excluir o valor nº '.$row['idvale'].' ?\')" >Deletar</a>  ';
     }

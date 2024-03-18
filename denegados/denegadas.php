@@ -117,7 +117,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[5]}
                 ],
-                "order":[[0,"desc"]]
+                "order":[[0,"desc"]],
+                "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+                   
+                   if(aData['situacao']==='Aguardando Confirmação' ){
+                       $(nRow).css('background-color', 'red');
+                       $(nRow).css('color', 'white')
+                   }
+                   return nRow;
+               },
             });
         });
 

@@ -63,7 +63,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <a href="solicitacoes-xls.php"><img src="../assets/images/excel.jpg" alt=""></a>
                 </div>
                 <div class="table-responsive">
-                    <table id='tableSolic' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
+                    <table id='tableSolic' class='table table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center text-nowrap" > ID </th>
@@ -127,7 +127,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[12]}
                 ],
-                order: [[0, 'desc']]
+                order: [[0, 'desc']],
+                "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+                   
+                   if(aData['situacao']==='Em análise' ){
+                       $(nRow).css('background-color', 'red');
+                       $(nRow).css('color', 'white')
+                   }
+                   return nRow;
+               },
             });
         });
     </script>
