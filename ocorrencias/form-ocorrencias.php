@@ -41,6 +41,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 </head>
 
 <body>
@@ -68,7 +69,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="motorista" id="motorista" required class="form-control">
                                 <option value=""></option>
                                 <?php
-                                    $motoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas ORDER BY nome_motorista ASC");
+                                    $motoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 ORDER BY nome_motorista ASC");
                                     if($motoristas->rowCount()>0){
                                         $dados = $motoristas->fetchAll();
                                         foreach($dados as $dado):
@@ -86,7 +87,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="placa" id="placa" class="form-control">
                                 <option value=""></option>
                                 <?php
-                                    $placas = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
+                                    $placas = $db->query("SELECT placa_veiculo FROM veiculos WHERE ativo =1 ORDER BY placa_veiculo ASC");
                                     if($placas->rowCount()>0){
                                         $dados = $placas->fetchAll();
                                         foreach($dados as $dado):
@@ -194,6 +195,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/menu.js"></script>
     <script src="../assets/js/jquery.mask.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         jQuery(function($){
             $("#vlTotal").mask('###0,00', {reverse: true});
@@ -201,12 +204,33 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     </script>
     <script>
         $(document).ready(function() {
-            $('#motorista').select2();
+            $('#motorista').select2({
+                theme: 'bootstrap4'
+            });
         });
         $(document).ready(function() {
-            $('#placa').select2();
+            $('#placa').select2({ theme: 'bootstrap4'});
         });
     </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                    icon: '$_SESSION[icon]',
+                    title: '$_SESSION[msg]',
+                    showConfirmButton: true,
+                });
+                </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 
 </html>

@@ -41,6 +41,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
 
+    <!-- select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 </head>
 <body>
     <div class="container-fluid corpo">
@@ -89,7 +92,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#tableAux').DataTable({
@@ -216,7 +221,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-group col-md-2">
                             <label for="rota" class="col-form-label">Rota</label>
-                            <select name="rota" id="rota" class="form-control">
+                            <select name="rota" id="rotaNew" class="form-control">
                                 <option value=""></option>
                             <?php 
                             $select = $db->query("SELECT * FROM rotas ");
@@ -247,7 +252,50 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $('#salarioEdit').mask("###0,00", {reverse: true});
         $('#cpf').mask('000.000.000-00', {reverse: true});
         $('#cpfEdit').mask('000.000.000-00', {reverse: true});
+
+        $('#rotaNew').select2({
+            width: '100%',
+            dropdownParent:"#newColaborador",
+            theme: 'bootstrap4'
+        });
     });
+
+    function confirmaDelete(id){
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você realmente deseja Desativar este Auxiliar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, desativar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário confirmar, redirecione para a página de exclusão
+                window.location.href = 'excluir-aux.php?id=' + id;
+            }
+        });
+    }
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && $_SESSION['icon']) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

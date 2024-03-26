@@ -16,17 +16,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $codigo = filter_input(INPUT_GET, 'codigo');
 
-    $delete = $db->query("DELETE FROM supervisores WHERE idsupervisor = '$codigo' ");
+    $db->beginTransaction();
 
-    if($delete){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='supervisores.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $delete = $db->prepare("DELETE FROM supervisores WHERE idsupervisor = :codigo ");
+        $delete->bindValue(':codigo', $codigo);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Supervisor Excluído com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Supervisor';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso não permitido!';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: supervisores.php");
+exit();
 ?>

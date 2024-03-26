@@ -18,24 +18,33 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $peca = filter_input(INPUT_POST, 'peca');
     $qtd = filter_input(INPUT_POST, 'qtd');
 
-    $atualiza = $db->prepare("UPDATE inventario_almoxarifado SET peca = :peca, qtd = :qtd WHERE idinventario = :id");
-    $atualiza->bindValue(':peca', $peca);
-    $atualiza->bindValue(':qtd', $qtd);
-    $atualiza->bindValue(':id', $idinventario);
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
+    try{
+        $atualiza = $db->prepare("UPDATE inventario_almoxarifado SET peca = :peca, qtd = :qtd WHERE idinventario = :id");
+        $atualiza->bindValue(':peca', $peca);
+        $atualiza->bindValue(':qtd', $qtd);
+        $atualiza->bindValue(':id', $idinventario);
+        $atualiza->execute();
+
         $atualizaEstoque = $db->prepare("UPDATE peca_reparo SET qtd_inv = :qtd WHERE id_peca_reparo = :idpeca ");
         $atualizaEstoque->bindValue(':idpeca', $peca);
         $atualizaEstoque->bindValue(':qtd', $qtd);
-        if($atualizaEstoque->execute()){
-            echo "<script> alert('Atualizado com Sucesso!')</script>";
-            echo "<script> window.location.href='inventario.php' </script>";
-        }
-        
-    }else{
-        print_r($atualiza->errorInfo());
+        $atualizaEstoque->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Inventário Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Realizar Inventário ';
+        $_SESSION['icon']='error';
     }
 
+    header("Location: inventario.php");
+    exit();
 }else{
 
 }

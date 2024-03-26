@@ -42,6 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <meta name="theme-color" content="#ffffff">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
@@ -128,8 +129,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="../../assets/js/menu.js"></script>
     <script>
         $(document).ready(function() {
-            $('#novoVeiculo').select2();
-            $('#pneu').select2();
+            $('#novoVeiculo').select2({
+                theme: 'bootstrap4'
+            });
+            $('#pneu').select2({
+                theme: 'bootstrap4'
+            });
         });
     </script>
 </body>

@@ -16,18 +16,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $idOcorrencias = filter_input(INPUT_GET, 'idOcorrencia');
 
-    $delete = $db->prepare("DELETE FROM ocorrencias WHERE idocorrencia = :idOcorrencia ");
-    $delete->bindValue(':idOcorrencia', $idOcorrencias);
+    $db->beginTransaction();
+    
+    try{
+        $delete = $db->prepare("DELETE FROM ocorrencias WHERE idocorrencia = :idOcorrencia ");
+        $delete->bindValue(':idOcorrencia', $idOcorrencias);
+        $delete->execute();
 
-    if($delete->execute()){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='ocorrencias.php' </script>";
-    }else{
-        print_r($db->errorInfo());
-    }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Ocorrência Excluída com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Ocorrência';
+        $_SESSION['icon']='error';
+    }   
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: ocorrencias.php");
+exit();
 ?>

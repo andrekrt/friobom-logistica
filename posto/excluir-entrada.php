@@ -16,19 +16,31 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'idEntrada');
 
-    $delete = $db->prepare("DELETE FROM combustivel_entrada WHERE idcombustivel_entrada = :idEntrada ");
-    $delete->bindValue(':idEntrada', $id);
+    $db->beginTransaction();
 
-    if($delete->execute()){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='entradas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $delete = $db->prepare("DELETE FROM combustivel_entrada WHERE idcombustivel_entrada = :idEntrada ");
+        $delete->bindValue(':idEntrada', $id);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Entrada Excluída com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Entrada';
+        $_SESSION['icon']='error';
     }
 
-}else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='entradas.php'</script>"; 
-}
+    
 
+}else{
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
+
+}
+header("Location: entradas.php");
+exit();
 ?>

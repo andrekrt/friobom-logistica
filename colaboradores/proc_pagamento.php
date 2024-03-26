@@ -55,7 +55,7 @@ foreach($empRecords as $row){
         "pagamento"=>"R$ ".number_format($row['pagamento'],2,",",".") ,
         "tipo_funcionarios"=>$row['tipo_funcionarios'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idpagamento'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="excluir-pagamento.php?id='.$row['idpagamento'].' " data-id="'.$row['idpagamento'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a> '
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idpagamento'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a data-id="'.$row['idpagamento'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idpagamento'] . ')\' >Deletar</a> '
     );
 }
 

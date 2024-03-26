@@ -53,8 +53,8 @@ $data = array();
 
 foreach($empRecords as $row){
     $botao = "";
-    if($_SESSION['idUsuario']==$row['usuario']){
-        $botao= '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a href="confirma.php?token='.$row['token'].'" class="btn btn-secondary btn-sm" onclick="return confirm(\'Certeza que deseja cofirmar todas as notas da carga '.$row['carga'].' ?\')" >Confirmar Todas as NF\'s</a>';
+    if($_SESSION['idUsuario']==$row['usuario'] && $row['situacao']=="Aguardando Confirmação"){
+        $botao= '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a  class="btn btn-secondary btn-sm" onclick=\'confirmaDelete(' . $row['token'] . ')\'>Confirmar Todas as NF\'s</a>';
     }
     $data[] = array(
         "id_denegadas"=>$row['token'],

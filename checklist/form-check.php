@@ -39,6 +39,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         <meta name="theme-color" content="#ffffff">
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </head>
     <body>
@@ -378,7 +379,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             $(document).ready(function() {
-                $('#veiculo').select2();
+                $('#veiculo').select2({
+                    theme: 'bootstrap4'
+                });
             });
         </script>
     </body>

@@ -16,18 +16,30 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'idSolic');
 
-    $delete = $db->prepare("DELETE FROM solicitacoes_new WHERE id = :id ");
-    $delete->bindValue(':id', $id);
+    $db->beginTransaction();
 
-    if($delete->execute()){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='solicitacoes.php' </script>";
-    }else{
-        print_r($db->errorInfo());
-    }
+    try{
+        $delete = $db->prepare("DELETE FROM solicitacoes_new WHERE id = :id ");
+        $delete->bindValue(':id', $id);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Peça Excluída com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Solicitação';
+        $_SESSION['icon']='error';
+    }    
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: solicitacoes.php");
+exit();
 
 ?>

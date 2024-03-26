@@ -21,28 +21,36 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataAlinhamento = filter_input(INPUT_POST, 'dataAlinhamento');
     $tipoAlinhamento = filter_input(INPUT_POST, 'tipo');
 
-    //echo "$idRevisao<br>$placa<br>$kmRevisao<br>$dataRevisao<br>$tipoRevisao";
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE alinhamentos_veiculo SET data_alinhamento = :dataAlinhamento, km_alinhamento = :kmAlinhamento, placa_veiculo = :placa, tipo_alinhamento = :tipo WHERE idalinhamento = :id");
-    $atualiza->bindValue(':placa', $placa);
-    $atualiza->bindValue(':kmAlinhamento', $kmAlinhamento);
-    $atualiza->bindValue(':dataAlinhamento', $dataAlinhamento);
-    $atualiza->bindValue(':id', $idAlinhamento);
-    $atualiza->bindValue(':tipo', $tipoAlinhamento);
-    
-    if($atualiza->execute()){
+    try{
+
+        $atualiza = $db->prepare("UPDATE alinhamentos_veiculo SET data_alinhamento = :dataAlinhamento, km_alinhamento = :kmAlinhamento, placa_veiculo = :placa, tipo_alinhamento = :tipo WHERE idalinhamento = :id");
+        $atualiza->bindValue(':placa', $placa);
+        $atualiza->bindValue(':kmAlinhamento', $kmAlinhamento);
+        $atualiza->bindValue(':dataAlinhamento', $dataAlinhamento);
+        $atualiza->bindValue(':id', $idAlinhamento);
+        $atualiza->bindValue(':tipo', $tipoAlinhamento);
+        $atualiza->execute();
+
         $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_alinhamento = :kmAlinhamento WHERE placa_veiculo = :placa");
         $atualizaVeiculo->bindValue(':placa', $placa);
         $atualizaVeiculo->bindValue(':kmAlinhamento', $kmAlinhamento);
-        if($atualizaVeiculo->execute()){
-            echo "<script> alert('Atualizado com Sucesso!')</script>";
-            echo "<script> window.location.href='alinhamentos.php' </script>";
-        }else{
-            print_r($atualizaVeiculo->errorInfo());
-        }
-    }else{
-        print_r($atualiza->errorInfo());
+        $atualizaVeiculo->execute();
+
+        $db->commit();
+        $_SESSION['msg'] = 'Alinhamento Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+
+        $_SESSION['msg'] = 'Erro ao Atualizar Alinhamento';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: alinhamentos.php");
+    exit(); 
 
 }else{
 

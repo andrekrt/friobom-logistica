@@ -32,31 +32,42 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $suco03 = filter_input(INPUT_POST, 'suco03');
     $suco04 = filter_input(INPUT_POST, 'suco04');
 
-    $atualiza = $db->prepare("UPDATE pneus SET num_fogo = :nFogo, medida = :medida, calibragem_maxima = :calibMax, marca = :marca, modelo =:modelo, num_serie = :nSerie, vida = :vida, posicao_inicio = :posicao, veiculo = :veiculo, km_inicial = :kmInicial, situacao = :situacao, localizacao = :localizacao, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04  WHERE idpneus = :idpneu");
-    $atualiza->bindValue(':nFogo', $nFogo);
-    $atualiza->bindValue(':medida', $medida);
-    $atualiza->bindValue(':calibMax', $calibMax);
-    $atualiza->bindValue(':marca', $marca);
-    $atualiza->bindValue(':modelo', $modelo);
-    $atualiza->bindValue(':nSerie', $serie);
-    $atualiza->bindValue(':vida', $vida);
-    $atualiza->bindValue(':posicao', $posicao);
-    $atualiza->bindValue(':veiculo', $veiculo);
-    $atualiza->bindValue(':kmInicial', $kmVeiculo);
-    $atualiza->bindValue(':situacao', $situacao);
-    $atualiza->bindValue(':localizacao', $localizacao);
-    $atualiza->bindValue(':suco01', $suco01);
-    $atualiza->bindValue(':suco02', $suco02);
-    $atualiza->bindValue(':suco03', $suco03);
-    $atualiza->bindValue(':suco04', $suco04);
-    $atualiza->bindValue(':idpneu', $idpneu);
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='pneus.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE pneus SET num_fogo = :nFogo, medida = :medida, calibragem_maxima = :calibMax, marca = :marca, modelo =:modelo, num_serie = :nSerie, vida = :vida, posicao_inicio = :posicao, veiculo = :veiculo, km_inicial = :kmInicial, situacao = :situacao, localizacao = :localizacao, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04  WHERE idpneus = :idpneu");
+        $atualiza->bindValue(':nFogo', $nFogo);
+        $atualiza->bindValue(':medida', $medida);
+        $atualiza->bindValue(':calibMax', $calibMax);
+        $atualiza->bindValue(':marca', $marca);
+        $atualiza->bindValue(':modelo', $modelo);
+        $atualiza->bindValue(':nSerie', $serie);
+        $atualiza->bindValue(':vida', $vida);
+        $atualiza->bindValue(':posicao', $posicao);
+        $atualiza->bindValue(':veiculo', $veiculo);
+        $atualiza->bindValue(':kmInicial', $kmVeiculo);
+        $atualiza->bindValue(':situacao', $situacao);
+        $atualiza->bindValue(':localizacao', $localizacao);
+        $atualiza->bindValue(':suco01', $suco01);
+        $atualiza->bindValue(':suco02', $suco02);
+        $atualiza->bindValue(':suco03', $suco03);
+        $atualiza->bindValue(':suco04', $suco04);
+        $atualiza->bindValue(':idpneu', $idpneu);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Pneu Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Pneu';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: pneus.php");
+    exit();
 
 }else{
 

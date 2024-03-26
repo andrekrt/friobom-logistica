@@ -36,20 +36,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $posicao = filter_input(INPUT_POST, 'posicao');
     $usuario = $_SESSION['idUsuario'];
 
-    //echo "$dataRodizio<br>$pneu<br>$veiculoAnterior<br>$kmInicialVeiculoAnterior<br>$kmFinalVeiculoAnterior<br>$kmRodadoAnterior<br>$novoVeiculo<br>$kmInicialNovo";
+    $db->beginTransaction();
 
-    $sql = $db->prepare("INSERT INTO rodizio_pneu (data_rodizio, pneu, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, usuario) VALUES (:dataRodizio, :pneu, :veiculoAnterior, :kmInicialAnterior, :kmFinalAnterior, :kmRodadoAnterior, :novoVeiculo, :kmInicialNovo, :usuario)");
-    $sql->bindValue(':dataRodizio', $dataRodizio);
-    $sql->bindValue(':pneu', $pneu);
-    $sql->bindValue(':veiculoAnterior', $veiculoAnterior);
-    $sql->bindValue(':kmInicialAnterior', $kmInicialVeiculoAnterior);
-    $sql->bindValue(':kmFinalAnterior', $kmFinalVeiculoAnterior);
-    $sql->bindValue(':kmRodadoAnterior', $kmRodadoAnterior);
-    $sql->bindValue(':novoVeiculo', $novoVeiculo);
-    $sql->bindValue(':kmInicialNovo', $kmInicialNovo);
-    $sql->bindValue(':usuario', $usuario);
-    
-    if($sql->execute()){
+    try{
+        $sql = $db->prepare("INSERT INTO rodizio_pneu (data_rodizio, pneu, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, usuario) VALUES (:dataRodizio, :pneu, :veiculoAnterior, :kmInicialAnterior, :kmFinalAnterior, :kmRodadoAnterior, :novoVeiculo, :kmInicialNovo, :usuario)");
+        $sql->bindValue(':dataRodizio', $dataRodizio);
+        $sql->bindValue(':pneu', $pneu);
+        $sql->bindValue(':veiculoAnterior', $veiculoAnterior);
+        $sql->bindValue(':kmInicialAnterior', $kmInicialVeiculoAnterior);
+        $sql->bindValue(':kmFinalAnterior', $kmFinalVeiculoAnterior);
+        $sql->bindValue(':kmRodadoAnterior', $kmRodadoAnterior);
+        $sql->bindValue(':novoVeiculo', $novoVeiculo);
+        $sql->bindValue(':kmInicialNovo', $kmInicialNovo);
+        $sql->bindValue(':usuario', $usuario);
+        $sql->execute();
+
         $somaRodizio = $db->prepare("SELECT SUM(km_rodado_veiculo_anterior) as kmRodadoAnterior FROM rodizio_pneu WHERE pneu=:pneu");
         $somaRodizio->bindValue(':pneu', $pneu);
         $somaRodizio->execute();
@@ -65,17 +66,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $atualizaPneu->bindValue(':idpneu', $pneu);
         $atualizaPneu->bindValue(':localizacao', $localizacao );
         $atualizaPneu->bindValue(':posicao', $posicao );
-        if($atualizaPneu->execute()){
-            echo "<script> alert('Rodízio Lançado!!')</script>";
-            echo "<script> window.location.href='rodizio.php' </script>";
-        }else{
-            print_r($atualizaPneu->errorInfo());
-        }
-        
-    }else{
-        print_r($sql->errorInfo());
+        $atualizaPneu->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rodízio Lançado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Ocorrência';
+        $_SESSION['icon']='error';
     }
-    
+
+    header("Location: rodizio.php");
+    exit();    
 
 }else{
 

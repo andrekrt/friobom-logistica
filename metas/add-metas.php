@@ -19,37 +19,40 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $valorMeta = $_POST['meta'];
     $usuario = $_SESSION['idUsuario'];
 
+    $db->beginTransaction();
 
-    //consulta token
-    $sqlToken = $db->query("SELECT MAX(TOKEN) as token FROM metas");
-    $token = $sqlToken->fetch();
-    $token=$token['token']+1;
+    try{
+        //consulta token
+        $sqlToken = $db->query("SELECT MAX(TOKEN) as token FROM metas");
+        $token = $sqlToken->fetch();
+        $token=$token['token']+1;
 
-    for($i=0; $i<count($dataMeta);$i++){
-        $data = date('Y-m-d', strtotime(str_replace("/","-", $dataMeta[$i])));
-        
-        //echo $data . " - " . "Meta=". $valorMeta[$i]  ."<br>"; 
-        
-        $sql = $db->prepare("INSERT INTO metas (token, tipo_meta, data_meta, valor_meta, usuario) VALUES (:token,:tipo, :dataMeta, :meta, :usuario)");
-        $sql->bindValue(':token', $token);
-        $sql->bindValue(':tipo', $tipoMeta);
-        $sql->bindValue(':dataMeta', $data);
-        $sql->bindValue(':meta', $valorMeta[$i]);
-        $sql->bindValue(':usuario', $usuario);
-
-        if($sql->execute()){
-            echo "<script> alert('Meta Registrada!!')</script>";
-            echo "<script> window.location.href='form-metas.php' </script>";
+        for($i=0; $i<count($dataMeta);$i++){
+            $data = date('Y-m-d', strtotime(str_replace("/","-", $dataMeta[$i])));
             
-        }else{
-            print_r($sql->errorInfo());
+            $sql = $db->prepare("INSERT INTO metas (token, tipo_meta, data_meta, valor_meta, usuario) VALUES (:token,:tipo, :dataMeta, :meta, :usuario)");
+            $sql->bindValue(':token', $token);
+            $sql->bindValue(':tipo', $tipoMeta);
+            $sql->bindValue(':dataMeta', $data);
+            $sql->bindValue(':meta', $valorMeta[$i]);
+            $sql->bindValue(':usuario', $usuario);
+            $sql->execute();
         }
 
-    }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Meta Registrada com Sucesso!';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Meta';
+        $_SESSION['icon']='error';
+    }    
 
 }else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='form-suco.php' </script>";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: metas.php");
+exit();
 ?>

@@ -57,8 +57,8 @@ foreach($empRecords as $row){
     $excluir="";
     $imprimir="";
     
-    if( $_SESSION['tipoUsuario']==4){
-        $excluir=' <a href="excluir.php?token='.$row['token'].' " data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a> ';
+    if( $_SESSION['tipoUsuario']==4 && $row['situacao']=="Em análise"){
+        $excluir=' <a data-id="'.$row['id'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'excluirSolic(' . $row['token'] . ')\'>Deletar</a> ';
     }
     if($row['situacao']==="Aprovado"){
         $imprimir=' <a class="btn btn-secondary  btn-sm" href="gerar-pdf.php?token='.$row['token'].'">Imprimir</a>';

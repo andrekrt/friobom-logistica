@@ -42,6 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <meta name="theme-color" content="#ffffff">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
@@ -157,14 +158,37 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/menu.js"></script>
     <script src="../assets/js/jquery.mask.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            $('#veiculo').select2();
+            $('#veiculo').select2({
+                theme: 'bootstrap4'
+            });
             $('#nFogo').mask('000000');
             $('#calibragem').mask('0000');
             $('#vida').mask('0');
         });
     </script>
+
+    <!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 
 </html>

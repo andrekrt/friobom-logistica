@@ -16,17 +16,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $idrota = filter_input(INPUT_GET, 'idRota');
 
-    $delete = $db->query("DELETE FROM rotas_supervisores WHERE idrotas = '$idrota' ");
+    $db->beginTransaction();
 
-    if($delete){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='rotas-supervisores.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $delete = $db->prepare("DELETE FROM rotas_supervisores WHERE idrotas = :idRota ");
+        $delete->bindValue(':idRota', $idrota);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rota Excluida com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Rota';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso não permitido!';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: rotas-supervisores.php");
+exit();
 ?>

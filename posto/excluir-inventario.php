@@ -16,19 +16,27 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'idInventario');
 
-    $delete = $db->prepare("DELETE FROM combustivel_inventario WHERE idinventario = :idinventario ");
-    $delete->bindValue(':idinventario', $id);
+    $db->beginTransaction();
 
-    if($delete->execute()){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='inventario.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $delete = $db->prepare("DELETE FROM combustivel_inventario WHERE idinventario = :idinventario ");
+        $delete->bindValue(':idinventario', $id);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Inventário Excluído com Sucesso';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Inventário';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='inventario.php'</script>"; 
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: inventario.php");
+exit();
 ?>

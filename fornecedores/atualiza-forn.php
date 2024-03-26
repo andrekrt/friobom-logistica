@@ -25,25 +25,36 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $cep = filter_input(INPUT_POST, 'cep');
     $telefone = filter_input(INPUT_POST, 'telefone');
 
-    $atualiza = $db->prepare("UPDATE fornecedores SET razao_social = :razaoSocial, endereco = :endereco, bairro = :bairro, cidade = :cidade, cep = :cep, uf = :estado, cnpj = :cnpj, nome_fantasia = :nomeFantasia, apelido = :apelido, telefone = :telefone  WHERE id = :id");
-    $atualiza->bindValue(':razaoSocial', $razaSocial);
-    $atualiza->bindValue(':endereco', $endereco);
-    $atualiza->bindValue(':bairro', $bairro);
-    $atualiza->bindValue(':cidade', $cidade);
-    $atualiza->bindValue(':cep', $cep);
-    $atualiza->bindValue(':estado', $estado);
-    $atualiza->bindValue(':cnpj', $cnpj);
-    $atualiza->bindValue(':nomeFantasia', $nomeFantasia);
-    $atualiza->bindValue(':apelido', $apelido);
-    $atualiza->bindValue(':telefone', $telefone);
-    $atualiza->bindValue(':id', $id);
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='fornecedores.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE fornecedores SET razao_social = :razaoSocial, endereco = :endereco, bairro = :bairro, cidade = :cidade, cep = :cep, uf = :estado, cnpj = :cnpj, nome_fantasia = :nomeFantasia, apelido = :apelido, telefone = :telefone  WHERE id = :id");
+        $atualiza->bindValue(':razaoSocial', $razaSocial);
+        $atualiza->bindValue(':endereco', $endereco);
+        $atualiza->bindValue(':bairro', $bairro);
+        $atualiza->bindValue(':cidade', $cidade);
+        $atualiza->bindValue(':cep', $cep);
+        $atualiza->bindValue(':estado', $estado);
+        $atualiza->bindValue(':cnpj', $cnpj);
+        $atualiza->bindValue(':nomeFantasia', $nomeFantasia);
+        $atualiza->bindValue(':apelido', $apelido);
+        $atualiza->bindValue(':telefone', $telefone);
+        $atualiza->bindValue(':id', $id);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Fornecedor Atualizado com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Fornecedor';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: fornecedores.php");
+    exit();
 
 }else{
 

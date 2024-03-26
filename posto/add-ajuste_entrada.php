@@ -20,29 +20,38 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $situacao = "Em Análise";
     $nf= "Ajuste";
 
-    // pegar valor do litro do ultimo registro
-    $sqlEntrada = $db->prepare('SELECT valor_litro FROM combustivel_entrada WHERE valor_litro IS NOT NULL ORDER BY idcombustivel_entrada DESC LIMIT 1');
-    $sqlEntrada->execute();
-    $entrada = $sqlEntrada->fetch();
-    $valorLitro = $entrada['valor_litro'];
+    $db->beginTransaction();
 
-    $inserir = $db->prepare("INSERT INTO combustivel_entrada (data_entrada, nf, valor_litro, total_litros, situacao, usuario) VALUES (:dataEntrada, :nf, :valorLitro,:totalLitros, :situacao, :usuario)");
-    $inserir->bindValue(':dataEntrada', $dataEntrada);
-    $inserir->bindValue(':nf', $nf);
-    $inserir->bindValue(':valorLitro', $valorLitro);
-    $inserir->bindValue(':totalLitros', $totalLitro);
-    $inserir->bindValue(':situacao', $situacao);
-    $inserir->bindValue(':usuario', $usuario);
+    try{
+        // pegar valor do litro do ultimo registro
+        $sqlEntrada = $db->prepare('SELECT valor_litro FROM combustivel_entrada WHERE valor_litro IS NOT NULL ORDER BY idcombustivel_entrada DESC LIMIT 1');
+        $sqlEntrada->execute();
+        $entrada = $sqlEntrada->fetch();
+        $valorLitro = $entrada['valor_litro'];
 
-    if ($inserir->execute()) {
-        echo "<script>alert('Entrada Lançada com Sucesso!');</script>";
-        echo "<script>window.location.href='entradas.php'</script>";
-    } else {
-        print_r($inserir->errorInfo());
+        $inserir = $db->prepare("INSERT INTO combustivel_entrada (data_entrada, nf, valor_litro, total_litros, situacao, usuario) VALUES (:dataEntrada, :nf, :valorLitro,:totalLitros, :situacao, :usuario)");
+        $inserir->bindValue(':dataEntrada', $dataEntrada);
+        $inserir->bindValue(':nf', $nf);
+        $inserir->bindValue(':valorLitro', $valorLitro);
+        $inserir->bindValue(':totalLitros', $totalLitro);
+        $inserir->bindValue(':situacao', $situacao);
+        $inserir->bindValue(':usuario', $usuario);
+        $inserir->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Ajuste Lançado com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Ajuste';
+        $_SESSION['icon']='error';
     }
 
-
 } else {
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='entradas.php'</script>";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
+header("Location: entradas.php");
+exit();

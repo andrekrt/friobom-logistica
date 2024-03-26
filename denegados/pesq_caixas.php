@@ -53,7 +53,7 @@ $data = array();
 foreach($empRecords as $row){
     $botao = "";
     if($_SESSION['idUsuario']==$row['usuario'] && $row['situacao']=='Saída'){
-        $botao= '<a href="javascript:void();" data-id="'.$row['idcaixas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> <a href="confirma-caixas.php?id='.$row['idcaixas'].'" class="btn btn-secondary btn-sm" onclick="return confirm(\'O carregamento '.$row['carregamento'].' retornou com '.$row['qtd_caixas'].' caixas  ?\')" >Confirmar Recebimento </a>';
+        $botao= '<a href="javascript:void();" data-id="'.$row['idcaixas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> <a class="btn btn-secondary btn-sm" onclick=\'confirmaDelete(' . $row['idcaixas'] . ')\' >Confirmar Recebimento </a>';
     }
     $data[] = array(
         "idcaixas"=>$row['idcaixas'],

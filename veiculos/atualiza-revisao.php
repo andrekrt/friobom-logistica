@@ -21,38 +21,51 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataRevisao = filter_input(INPUT_POST, 'dataRevisao');
     $tipoRevisao = filter_input(INPUT_POST, 'tipoRevisao');
 
-    //echo "$idRevisao<br>$placa<br>$kmRevisao<br>$dataRevisao<br>$tipoRevisao";
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE revisao_veiculos SET placa_veiculo = :placa, km_revisao = :kmRevisao, data_revisao = :dataRevisao, tipo_revisao = :tipoRevisao WHERE id = :idRevisao");
-    $atualiza->bindValue(':placa', $placa);
-    $atualiza->bindValue(':kmRevisao', $kmRevisao);
-    $atualiza->bindValue(':dataRevisao', $dataRevisao);
-    $atualiza->bindValue(':idRevisao', $idRevisao);
-    $atualiza->bindValue(':tipoRevisao', $tipoRevisao);
+    try{
+        $atualiza = $db->prepare("UPDATE revisao_veiculos SET placa_veiculo = :placa, km_revisao = :kmRevisao, data_revisao = :dataRevisao, tipo_revisao = :tipoRevisao WHERE id = :idRevisao");
+        $atualiza->bindValue(':placa', $placa);
+        $atualiza->bindValue(':kmRevisao', $kmRevisao);
+        $atualiza->bindValue(':dataRevisao', $dataRevisao);
+        $atualiza->bindValue(':idRevisao', $idRevisao);
+        $atualiza->bindValue(':tipoRevisao', $tipoRevisao);
 
-    if($tipoRevisao=='Diferencial'){
-        $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_revisao_diferencial = :kmRevisao, data_revisao_diferencial = :dataRevisao WHERE placa_veiculo = :placa");
-        $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
-        $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
-        $atualizaVeiculo->bindValue(':placa', $placa);
-        $atualizaVeiculo->execute();
-    }else{
-        $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_ultima_revisao = :kmRevisao, data_revisao_oleo = :dataRevisao WHERE placa_veiculo = :placa");
-        $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
-        $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
-        $atualizaVeiculo->bindValue(':placa', $placa);
-        $atualizaVeiculo->execute();
+        if($tipoRevisao=='Diferencial'){
+            $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_revisao_diferencial = :kmRevisao, data_revisao_diferencial = :dataRevisao WHERE placa_veiculo = :placa");
+            $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
+            $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
+            $atualizaVeiculo->bindValue(':placa', $placa);
+            $atualizaVeiculo->execute();
+        }else{
+            $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_ultima_revisao = :kmRevisao, data_revisao_oleo = :dataRevisao WHERE placa_veiculo = :placa");
+            $atualizaVeiculo->bindValue(':kmRevisao', $kmRevisao);
+            $atualizaVeiculo->bindValue(':dataRevisao', $dataRevisao);
+            $atualizaVeiculo->bindValue(':placa', $placa);
+            $atualizaVeiculo->execute();
+        }
+        $atualiza->execute();
+        
+        $db->commit();
+
+        $_SESSION['msg'] = 'Revisão Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+
+        $_SESSION['msg'] = 'Erro ao Atualizar Revisão';
+        $_SESSION['icon']='error';
+        
     }
+
     
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizsado com Sucesso!')</script>";
-        echo "<script> window.location.href='revisao.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
-    }
 
 }else{
-
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+header("Location: revisao.php");
+exit();
 
 ?>

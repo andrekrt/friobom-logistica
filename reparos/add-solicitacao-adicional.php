@@ -30,47 +30,51 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $fornecedor =  strstr(filter_input(INPUT_POST, 'fornecedor'), "-", true) ;
     $imagem = $_FILES['imagem']['name']?$_FILES['imagem']['name']:null;
 
-    for($i=0; $i<count($peca); $i++){
+    $db->beginTransaction();
 
-        $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
+    try{
+        for($i=0; $i<count($peca); $i++){
 
-        $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto, vl_total, frete,num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :problema, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete,:nf, :situacao, :usuario)");
-        $sql->bindValue(':token', $newToken);
-        $sql->bindValue(':dataAtual', $dataAtual);
-        $sql->bindValue(':placa', $placa);
-        $sql->bindValue(':problema', $problema);
-        $sql->bindValue(':imagem', $imagem[$i]);
-        $sql->bindValue(':peca', $peca[$i]);
-        $sql->bindValue(':fornecedor', $fornecedor);
-        $sql->bindValue(':qtd', $qtd[$i]);
-        $sql->bindValue(':vlUnit', $valorUnit[$i]);
-        $sql->bindValue(':desconto', $desconto[$i]);
-        $sql->bindValue(':vlTotal', $valorTotal);
-        $sql->bindValue(':frete', $frete);
-        $sql->bindValue(':nf', $nf);
-        $sql->bindValue(':situacao', $situacao);
-        $sql->bindValue(':usuario', $usuario);
-        
-        if($sql->execute()){
+            $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
+    
+            $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto, vl_total, frete,num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :problema, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete,:nf, :situacao, :usuario)");
+            $sql->bindValue(':token', $newToken);
+            $sql->bindValue(':dataAtual', $dataAtual);
+            $sql->bindValue(':placa', $placa);
+            $sql->bindValue(':problema', $problema);
+            $sql->bindValue(':imagem', $imagem[$i]);
+            $sql->bindValue(':peca', $peca[$i]);
+            $sql->bindValue(':fornecedor', $fornecedor);
+            $sql->bindValue(':qtd', $qtd[$i]);
+            $sql->bindValue(':vlUnit', $valorUnit[$i]);
+            $sql->bindValue(':desconto', $desconto[$i]);
+            $sql->bindValue(':vlTotal', $valorTotal);
+            $sql->bindValue(':frete', $frete);
+            $sql->bindValue(':nf', $nf);
+            $sql->bindValue(':situacao', $situacao);
+            $sql->bindValue(':usuario', $usuario);
+            $sql->execute();
+
             $atualiaza = $db->prepare("UPDATE solicitacoes_new SET situacao = :situacao WHERE token=:token");
             $atualiaza->bindValue(':token', $newToken);
             $atualiaza->bindValue(':situacao', $situacao);
-            if($atualiaza->execute()){
-                $pasta = 'uploads/';
-                $mover = move_uploaded_file($_FILES['imagem']['tmp_name'][$i],$pasta.$imagem[$i]);
+            $atualiaza->execute();
 
-                echo "<script> alert('Peça Adicionada!')</script>";
-                echo "<script> window.location.href='solicitacoes.php' </script>"; 
-            }else{
-                print_r($sql->errorInfo());
-            }
-            
-        }else{
-            print_r($sql->errorInfo());
+            $pasta = 'uploads/';
+            $mover = move_uploaded_file($_FILES['imagem']['tmp_name'][$i],$pasta.$imagem[$i]);               
         }
 
-    }
+        $db->commit();
 
+        $_SESSION['msg'] = 'Peça Adicionada com Sucesso';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Solicitação';
+        $_SESSION['icon']='error';
+    }
+    header("Location: solicitacoes.php");
+    exit();
 }else{
 
 }

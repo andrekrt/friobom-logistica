@@ -40,29 +40,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':usuario', $usuario);
         $inserir->execute();
 
-        // $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume,  usuario) VALUES (:dataOp, :tipoOp, :volume, :usuario)");
-        // $sqlExtrato->bindValue(':dataOp', $dataAbastecimento);
-        // $sqlExtrato->bindValue(':tipoOp', "Perca");
-        // $sqlExtrato->bindValue(':volume', $litro);
-        // $sqlExtrato->bindValue(':usuario', $usuario);
-        // $sqlExtrato->execute();
-
         $db->commit();
-        echo "<script>alert('Abastecimento Lançada com Sucesso!');</script>";
-        echo "<script>window.location.href='abastecimento.php'</script>";  
+        $_SESSION['msg'] = 'Perca Lançada com Sucesso!';
+        $_SESSION['icon']='success';
        
     }catch(Exception $e){
         $db->rollBack();
-        echo "Erro: " . $e->getMessage();
-    }
-
-    
-
-        
+        $_SESSION['msg'] = 'Erro ao Lançar Perca';
+        $_SESSION['icon']='error';
+    }        
 
 }else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='abastecimento.php'</script>"; 
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning'; 
 }
-
+header("Location: abastecimento.php");
+exit();
 ?>

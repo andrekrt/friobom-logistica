@@ -7,18 +7,29 @@ $id = filter_input(INPUT_GET, 'id');
 
 if(isset($id) && empty($id) == false ){ 
     
-    $sql = $db->prepare("UPDATE colaboradores SET ativo = 0 WHERE idcolaboradores=:id");
-    $sql->bindValue(':id',$id);
-    
-    if($sql->execute()){
-        echo "<script>alert('Desativado com Sucesso!');</script>";
-        echo "<script>window.location.href='colaboradores.php'</script>";
-    }else{
-        print_r($sql->errorInfo());
+    $db->beginTransaction();
+
+    try{
+        $sql = $db->prepare("UPDATE colaboradores SET ativo = 0 WHERE idcolaboradores=:id");
+        $sql->bindValue(':id',$id);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Colaborador Desativado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Desativar Colaborador';
+        $_SESSION['icon']='error';
     }
     
 }else{
-    header("Location:solicitacoes.php");
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
 
+header("Location: colaboradores.php");
+exit();
 ?>

@@ -27,31 +27,39 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $kmRodado = filter_input(INPUT_POST, 'kmRodado');
     $usuario = $_SESSION['idUsuario'];
 
-    // echo "$dataSaida<br>$dataChegada<br>$supervisor<br>$velMax<br>$visitas<br>$cidades<br>$rca1<br>$rca2<br>$obs<br>$horaAlmoco<br> $usuario";
-    
-    $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, km_rodado, hora_almoco) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :km, :horaAlmoco)");
-    $sql->bindValue(':saida', $dataSaida);
-    $sql->bindValue(':supervisor', $supervisor);
-    $sql->bindValue(':chegada', $dataChegada);
-    $sql->bindValue(':velocidade_max', $velMax);
-    $sql->bindValue(':rca01', $rca1);
-    $sql->bindValue(':rca02', $rca2);
-    $sql->bindValue(':obs', $obs);
-    $sql->bindValue(':qtd_visitas', $visitas);
-    $sql->bindValue(':usuario', $usuario);
-    $sql->bindValue(':cidades',$cidades);
-    $sql->bindValue(':km', $kmRodado);
-    $sql->bindValue(':horaAlmoco', $horaAlmoco);
-    if($sql->execute()){
-        echo "<script> alert('Rota Registrada!!')</script>";
-        echo "<script> window.location.href='rotas-supervisores.php' </script>";
-    }else{
-        print_r($sql->errorInfo());
-    }    
+    $db->beginTransaction();
+
+    try{
+        $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, km_rodado, hora_almoco) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :km, :horaAlmoco)");
+        $sql->bindValue(':saida', $dataSaida);
+        $sql->bindValue(':supervisor', $supervisor);
+        $sql->bindValue(':chegada', $dataChegada);
+        $sql->bindValue(':velocidade_max', $velMax);
+        $sql->bindValue(':rca01', $rca1);
+        $sql->bindValue(':rca02', $rca2);
+        $sql->bindValue(':obs', $obs);
+        $sql->bindValue(':qtd_visitas', $visitas);
+        $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':cidades',$cidades);
+        $sql->bindValue(':km', $kmRodado);
+        $sql->bindValue(':horaAlmoco', $horaAlmoco);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rota Registrada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Rota';
+        $_SESSION['icon']='error';
+    }
 
 }else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='../index.php' </script>";
+    $_SESSION['msg'] = 'Acesso não permitido!';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: rotas-supervisores.php");
+exit();
 ?>

@@ -32,22 +32,23 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $kmPneu = $kmVeiculo-$pneu['km_inicial'];
     $veiculo = filter_input(INPUT_POST, 'veiculo');
 
-   
-
-    $sql = $db->prepare("UPDATE sucos SET km_veiculo = :kmVeiculo, km_pneu = :kmPneu, carcaca = :carcaca, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04, calibragem = :calibragem, pneus_idpneus = :pneu, veiculo=:veiculo WHERE idsucos = :idSuco");
-    $sql->bindValue(':kmVeiculo', $kmVeiculo);
-    $sql->bindValue(':kmPneu', $kmPneu);
-    $sql->bindValue(':carcaca', $carcaca);
-    $sql->bindValue(':suco01', $suco01);
-    $sql->bindValue(':suco02', $suco02);
-    $sql->bindValue(':suco03', $suco03);
-    $sql->bindValue(':suco04', $suco04);
-    $sql->bindValue(':calibragem', $calibragem);
-    $sql->bindValue(':pneu', $idpneu);
-    $sql->bindValue(':idSuco', $idSuco);
-    $sql->bindValue(':veiculo', $veiculo);
+    $db->beginTransaction();
     
-    if($sql->execute()){
+    try{
+        $sql = $db->prepare("UPDATE sucos SET km_veiculo = :kmVeiculo, km_pneu = :kmPneu, carcaca = :carcaca, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04, calibragem = :calibragem, pneus_idpneus = :pneu, veiculo=:veiculo WHERE idsucos = :idSuco");
+        $sql->bindValue(':kmVeiculo', $kmVeiculo);
+        $sql->bindValue(':kmPneu', $kmPneu);
+        $sql->bindValue(':carcaca', $carcaca);
+        $sql->bindValue(':suco01', $suco01);
+        $sql->bindValue(':suco02', $suco02);
+        $sql->bindValue(':suco03', $suco03);
+        $sql->bindValue(':suco04', $suco04);
+        $sql->bindValue(':calibragem', $calibragem);
+        $sql->bindValue(':pneu', $idpneu);
+        $sql->bindValue(':idSuco', $idSuco);
+        $sql->bindValue(':veiculo', $veiculo);
+        $sql->execute();
+
         //km rodado no rodizio
         $rodizios = $db->prepare("SELECT SUM(km_rodado_veiculo_anterior) as kmRodado FROM rodizio_pneu WHERE pneu = :pneu");
         $rodizios->bindValue(':pneu', $idpneu);
@@ -70,23 +71,27 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $kmRodadoSuco = $sucos['kmPneu'];
 
         $kmGeral = $kmRodadoSuco+$totalKmRodado;
-            
+        
         $atualizaPneu = $db->prepare("UPDATE pneus SET km_rodado = :kmRodadoTotal WHERE idpneus = :idpneu");
         $atualizaPneu->bindValue(':kmRodadoTotal', $kmGeral);
         $atualizaPneu->bindValue(':idpneu', $idpneu);
-        if($atualizaPneu->execute()){
-            echo "<script> alert('Suco Registrado!!')</script>";
-            echo "<script> window.location.href='sucos.php' </script>";
-        }else{
-            print_r($atualizaPneu->errorInfo());
-        }
-    }else{
-        print_r($sql->errorInfo());
+        $atualizaPneu->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Suco Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Suco';
+        $_SESSION['icon']='error';
     }
-    
 
 }else{
-
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: sucos.php");
+exit();
 ?>

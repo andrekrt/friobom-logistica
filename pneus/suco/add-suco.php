@@ -31,26 +31,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $kmRodado = $_POST['kmRodado'];
     $veiculo = $_POST['veiculo'];
 
-    //verificar se existe registro desse veiculo no dia atual
-    $sqlCont=$db->prepare("SELECT * FROM sucos WHERE veiculo=:veiculo AND DATE(data_medicao)=:dataMedida");
-    $sqlCont->bindValue(':veiculo', $veiculo);
-    $sqlCont->bindValue(':dataMedida', date('Y-m-d', strtotime($dataMedicao)) );
-    $sqlCont->execute();
-    $qtdMedidas = $sqlCont->rowCount();
+    $db->beginTransaction();
 
-    // echo $qtdMedidas;
+    try{
+        //verificar se existe registro desse veiculo no dia atual
+        $sqlCont=$db->prepare("SELECT * FROM sucos WHERE veiculo=:veiculo AND DATE(data_medicao)=:dataMedida");
+        $sqlCont->bindValue(':veiculo', $veiculo);
+        $sqlCont->bindValue(':dataMedida', date('Y-m-d', strtotime($dataMedicao)) );
+        $sqlCont->execute();
+        $qtdMedidas = $sqlCont->rowCount();
 
-    if($qtdMedidas>0){
-        echo "<script> alert('Já existe registro desse veículo hoje!')</script>";
-        echo "<script> window.location.href='sucos.php' </script>";
-        exit();
-    }else{
+        if($qtdMedidas>0){
+            $_SESSION['msg'] = 'Já existe registro desse veículo hoje!';
+            $_SESSION['icon']='warning';
+            header("Location: form-suco.php");
+            exit();
+        }
+
         // verificar se é a primeira medida de suco desse veículo no mês
         $registros = $db->prepare("SELECT * FROM sucos WHERE veiculo=:veiculo AND MONTH(data_medicao)=MONTH(CURRENT_DATE())");
         $registros->bindValue(':veiculo', $veiculo);
         $registros->execute();
         $contRegistros = $registros->rowCount();
-
 
         for($i=0; $i<count($idpneu);$i++){       
             //pegar o km do veículo da ultima medidade de suco
@@ -65,8 +67,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             }else{
                 $kmPneu = ($kmVeiculo-$kmVeiculoUltimaMedida);
             }
-
-            //echo $suco01[$i]."<br>".$suco02[$i]."<br>".$suco03[$i]."<br>".$suco04[$i]."<br><br>";
             
             $sql = $db->prepare("INSERT INTO sucos (data_medicao, km_veiculo, km_pneu, carcaca, vida, suco01, suco02, suco03, suco04, calibragem, pneus_idpneus, veiculo, usuario) VALUES (:dataMedida, :kmVeiculo, :kmPneu, :carcaca, :vida, :suco01, :suco02, :suco03, :suco04, :calibragem, :pneu, :veiculo, :usuario)");
             $sql->bindValue(':dataMedida', $dataMedicao);
@@ -82,33 +82,32 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $sql->bindValue(':pneu', $idpneu[$i]);
             $sql->bindValue(':veiculo',$veiculo);
             $sql->bindValue(':usuario', $usuario);
-        
-            if($sql->execute()){
-                $kmRodadoTotal = $kmPneu+$kmRodado[$i];
-                addExtrato($idpneu[$i], "Suco", $kmRodadoTotal, $veiculo, $kmVeiculo);
-                $atualizaPneu = $db->prepare("UPDATE pneus SET km_rodado = :kmRodadoTotal WHERE idpneus = :idpneu");
-                $atualizaPneu->bindValue(':kmRodadoTotal', $kmRodadoTotal);
-                $atualizaPneu->bindValue(':idpneu', $idpneu[$i]);
-                if($atualizaPneu->execute()){
-                    echo "<script> alert('Suco Registrado!!')</script>";
-                    echo "<script> window.location.href='sucos.php' </script>";
-                }else{
-                    print_r($atualizaPneu->errorInfo());
-                }
-                
-            }else{
-                print_r($sql->errorInfo());
-            }
+            $sql->execute();
 
+            $kmRodadoTotal = $kmPneu+$kmRodado[$i];
+            addExtrato($idpneu[$i], "Suco", $kmRodadoTotal, $veiculo, $kmVeiculo);
+            $atualizaPneu = $db->prepare("UPDATE pneus SET km_rodado = :kmRodadoTotal WHERE idpneus = :idpneu");
+            $atualizaPneu->bindValue(':kmRodadoTotal', $kmRodadoTotal);
+            $atualizaPneu->bindValue(':idpneu', $idpneu[$i]);
+            $atualizaPneu->execute();
         }
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Suco Registrado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Suco';
+        $_SESSION['icon']='error';
     }
-
-
     
 
 }else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='form-suco.php' </script>";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: sucos.php");
+exit();
 ?>

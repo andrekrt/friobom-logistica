@@ -25,29 +25,31 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $nf = $_POST['nf'];
     $situacao = "Aguardando Confirmação";
 
-    // echo "$idUsuario<br>$carga<br>$situacao<br>$newToken<br>". count($nf);
-    // print_r($nf);
+    $db->beginTransaction();
 
-    for($i=0;$i<count($nf);$i++){
-        $inserir = $db->prepare("INSERT INTO denegadas (token, carga, nf, situacao, usuario) VALUES (:token, :carga, :nf, :situacao, :usuario)");
-        $inserir->bindValue(':token', $newToken);
-        $inserir->bindValue(':carga', $carga);
-        $inserir->bindValue(':nf', $nf[$i]);
-        $inserir->bindValue(':situacao', $situacao);
-        $inserir->bindValue(':usuario', $idUsuario);
-
-        if($inserir->execute()){
-            echo "<script>alert('NF Denegada Registrada!');</script>";
-            echo "<script>window.location.href='denegadas.php'</script>";    
-            
-        }else{
-            print_r($inserir->errorInfo());
+    try{
+        for($i=0;$i<count($nf);$i++){
+            $inserir = $db->prepare("INSERT INTO denegadas (token, carga, nf, situacao, usuario) VALUES (:token, :carga, :nf, :situacao, :usuario)");
+            $inserir->bindValue(':token', $newToken);
+            $inserir->bindValue(':carga', $carga);
+            $inserir->bindValue(':nf', $nf[$i]);
+            $inserir->bindValue(':situacao', $situacao);
+            $inserir->bindValue(':usuario', $idUsuario);
+            $inserir->execute();
+    
         }
 
+        $db->commit();
+
+        $_SESSION['msg'] = 'NF Denegada Registrada com Sucesso';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registar NF';
+        $_SESSION['icon']='error';
     }
-
-    
-
+    header("Location: denegadas.php");
+    exit();
 }
 
 ?>

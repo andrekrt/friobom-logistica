@@ -23,11 +23,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
     $cidadeBase = filter_input(INPUT_POST, 'base');
 
-    $consulta = $db->query("SELECT * FROM motoristas WHERE cod_interno_motorista = '$codMotorista' OR cnh = '$cnh' ");
-    if($consulta->rowCount()>0){
-        echo "<script>alert('Esse Motorista já está cadastrado!');</script>";
-        echo "<script>window.location.href='form-motorista.php'</script>";
-    }else{
+    $db->beginTransaction();
+
+    try{
+        $consulta = $db->prepare("SELECT * FROM motoristas WHERE cod_interno_motorista = :codMot OR cnh = :cnh ");
+        $consulta->bindValue(':codMot', $codMotorista);
+        $consulta->bindValue(':cnh', $cnh);
+        $consulta->execute();       
+
+        if($consulta->rowCount()>0){
+            
+            $_SESSION['msg'] = 'Esse Motorista já está cadastrado!';
+            $_SESSION['icon']='warning';
+            header("Location: form-motorista.php");
+            exit();
+        }
+
         $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, cidade_base, ativo) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :base, :ativo) ");
         $sql->bindValue(':codMotorista', $codMotorista);
         $sql->bindValue(':nomeMotorista', $nomeMotorista);
@@ -38,18 +49,25 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':validadeToxicologico', $validadeToxicologico);
         $sql->bindValue(':base', $cidadeBase);
         $sql->bindValue(':ativo', 1);
+        $sql->execute();
 
-        if($sql->execute()){
-            echo "<script>alert('Motorista Cadastrado!');</script>";
-            echo "<script>window.location.href='motoristas.php'</script>";
-        }else{
-            print_r($sql->errorInfo());
-        }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Motorista Cadastrada com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Motorista';
+        $_SESSION['icon']='error';
     }
-    //echo "$codMotorista<br> $nomeMotorista<br> $cnh <br> $validadeCnh";
 
 }else{
-    echo "erro no cadastro contator o administrador!";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: motoristas.php");
+exit();
 
 ?>

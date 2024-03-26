@@ -15,18 +15,33 @@ $result = $sqlPerm->fetchColumn();
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
     $codVeiculo = filter_input(INPUT_GET, 'codVeiculo');
 
-    $delete = $db->prepare("DELETE FROM veiculos WHERE cod_interno_veiculo = :codVeiculo ");
-    $delete->bindValue(':codVeiculo', $codVeiculo);
+    $db->beginTransaction();
 
-    if($delete->execute()){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='veiculos.php' </script>";
-    }else{
-        print_r($delete->errorInfo());
+    try{
+
+        $delete = $db->prepare("DELETE FROM veiculos WHERE cod_interno_veiculo = :codVeiculo ");
+        $delete->bindValue(':codVeiculo', $codVeiculo);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Veículo Desativado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Desativar Veículo';
+        $_SESSION['icon']='error';
+
     }
 
 }else{
-    echo "Erro, contatar o adminstrador!";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: veiculos.php");
+exit();
 
 ?>

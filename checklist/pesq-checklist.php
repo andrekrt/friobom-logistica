@@ -69,7 +69,7 @@ foreach($empRecords as $row){
         "dataRetorno"=>$row['data_ret']==null?"":date("d/m/Y", strtotime($row['data_ret'])) ,
         "hr_tkRetorno"=>$row['hr_tk_ret'],
         "carregamento"=>$row['carregamento_ret'],
-        "acoes"=> ' <a href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a> ' . $retorno
+        "acoes"=> ' <a target="_blank" href="ficha.php?id='.$row['id'].'" class="btn btn-secondary btn-sm deleteBtn" >Ficha</a> ' . $retorno
     );
 }
 

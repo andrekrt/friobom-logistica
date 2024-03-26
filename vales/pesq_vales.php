@@ -61,7 +61,7 @@ foreach($empRecords as $row){
 
     if($row['situacao']=='Não Resgatado' && ($_SESSION['idUsuario'] == 1 || $_SESSION['idUsuario'] == 20 || $_SESSION['idUsuario'] == 45) ){
         $editar=' <a href="javascript:void();" data-id="'.$row['idvale'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> ';
-        $deletar = ' <a href="excluir-vale.php?idvale='.$row['idvale'].' " data-id="'.$row['idvale'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm(\'Deseja excluir o valor nº '.$row['idvale'].' ?\')" >Deletar</a>  ';
+        $deletar = ' <a  data-id="'.$row['idvale'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idvale'] . ')\' >Deletar</a>  ';
     }
     
     $data[] = array(

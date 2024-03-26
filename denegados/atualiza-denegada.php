@@ -19,25 +19,34 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $carga = $_POST['carga'];
     $nf = $_POST['nf'];
     $situacao = $_POST['status'];
-
-    for($i=0;$i<count($id);$i++){
-        $atualiza = $db->prepare("UPDATE denegadas SET carga = :carga, nf = :nf, situacao = :situacao WHERE id_denegadas = :id");
-        $atualiza->bindValue(':carga', $carga[$i]);
-        $atualiza->bindValue(':nf', $nf[$i]);
-        $atualiza->bindValue(':situacao', $situacao[$i]);
-        $atualiza->bindValue(':id', $id[$i]);
-
-        if($atualiza->execute()){
-            echo "<script> alert('Atualizado com Sucesso!')</script>";
-            echo "<script> window.location.href='denegadas.php' </script>";
-        }else{
-            print_r($db->errorInfo());
-        }
-    }
     
+    $db->beginTransaction();
+
+    try{
+        for($i=0;$i<count($id);$i++){
+            $atualiza = $db->prepare("UPDATE denegadas SET carga = :carga, nf = :nf, situacao = :situacao WHERE id_denegadas = :id");
+            $atualiza->bindValue(':carga', $carga[$i]);
+            $atualiza->bindValue(':nf', $nf[$i]);
+            $atualiza->bindValue(':situacao', $situacao[$i]);
+            $atualiza->bindValue(':id', $id[$i]);
+            $atualiza->execute();
+        }
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+
+        $_SESSION['msg'] = 'Erro ao Atualizar NF';
+        $_SESSION['icon']='error';
+    }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: denegadas.php");
+exit();
 ?>

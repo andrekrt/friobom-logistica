@@ -20,29 +20,34 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataAlinhamento = filter_input(INPUT_POST, 'dataAlinhamento');
     $tipoAlinhamento = filter_input(INPUT_POST, 'tipo');
 
-    //echo "$placa<br>$kmAlinhamento<br>$dataAlinhamento<br>$tipoAlinhamento";
+    $db->beginTransaction();
 
-   $inserir = $db->prepare("INSERT INTO alinhamentos_veiculo (data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento) VALUES (:dataAlinhamento, :placa, :kmAlinhamento, :tipo)");
-    $inserir->bindValue(':placa', $placa);
-    $inserir->bindValue(':kmAlinhamento', $kmAlinhamento);
-    $inserir->bindValue(':dataAlinhamento', $dataAlinhamento);
-    $inserir->bindValue(':tipo', $tipoAlinhamento);    
+    try{
+        $inserir = $db->prepare("INSERT INTO alinhamentos_veiculo (data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento) VALUES (:dataAlinhamento, :placa, :kmAlinhamento, :tipo)");
+        $inserir->bindValue(':placa', $placa);
+        $inserir->bindValue(':kmAlinhamento', $kmAlinhamento);
+        $inserir->bindValue(':dataAlinhamento', $dataAlinhamento);
+        $inserir->bindValue(':tipo', $tipoAlinhamento);    
+        $inserir->execute();
 
-    if($inserir->execute()){
         $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_alinhamento = :kmAlinhamento WHERE placa_veiculo = :placa");
         $atualizaVeiculo->bindValue(':kmAlinhamento', $kmAlinhamento);
         $atualizaVeiculo->bindValue(':placa',$placa);
-        if($atualizaVeiculo->execute()){
-            echo "<script>alert('Alinhamento Lançada!');</script>";
-            echo "<script>window.location.href='alinhamentos.php'</script>";
-        }else{
-            print_r($atualizaVeiculo->errorInfo());
-        }
-        
-        
-    }else{
-        print_r($inserir->errorInfo());
+        $atualizaVeiculo->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Alinhamento Lançado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Alinhamento';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: alinhamentos.php");
+    exit();
 
 }
 

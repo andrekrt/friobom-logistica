@@ -56,7 +56,7 @@ $data = array();
 
 foreach($empRecords as $row){
     if($tipoUsuario==4){
-        $botao = '<a href="javascript:void();" data-id="'.$row['idocorrencia'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir.php?idOcorrencia='.$row['idocorrencia'].' " data-id="'.$row['idocorrencia'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+        $botao = '<a href="javascript:void();" data-id="'.$row['idocorrencia'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['idocorrencia'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idocorrencia'] . ')\'>Deletar</a>';
     }else{
         $botao = null;
     }

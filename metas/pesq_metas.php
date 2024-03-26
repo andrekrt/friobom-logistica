@@ -54,7 +54,7 @@ foreach($empRecords as $row){
         "data_meta"=>date("m/Y", strtotime($row['data_meta'])) ,
         "tipo_meta"=>$row['tipo_meta'],
         "nome_usuario"=>$row['nome_usuario'],
-        "acoes"=> '<a href="edit-metas.php?token='.$row['token'].'" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-meta.php?token='.$row['token'].' " data-id="'.$row['token'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'return confirm("Deseja Excluir?");\'>Deletar</a>'
+        "acoes"=> '<a href="edit-metas.php?token='.$row['token'].'" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a data-id="'.$row['token'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['token'] . ')\'>Deletar</a>'
     );
 }
 

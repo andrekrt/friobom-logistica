@@ -28,29 +28,38 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $fornecedor = filter_input(INPUT_POST, 'fornecedor');
     $totalComprado = (($preco*$qtd)+$frete)-$desconto;
 
-    $inserir = $db->prepare("INSERT INTO entrada_estoque (data_nf, num_nf, num_pedido, peca_idpeca, preco_custo, qtd,frete, desconto, obs, fornecedor, vl_total_comprado, id_usuario) VALUES (:dataNF, :numNF, :numPedido, :idPeca, :precoCusto, :qtd, :frete, :desconto, :obs, :fornecedor, :totalComprado, :idUsuario)");
-    $inserir->bindValue(':dataNF', $dataNota);
-    $inserir->bindValue(':numNF', $numNf);
-    $inserir->bindValue(':idPeca', $peca);
-    $inserir->bindValue(':precoCusto', $preco);
-    $inserir->bindValue(':qtd', $qtd);
-    $inserir->bindValue(':frete',$frete);
-    $inserir->bindValue(':desconto', $desconto);
-    $inserir->bindValue(':obs', $obsEntrada);
-    $inserir->bindValue(':fornecedor', $fornecedor);
-    $inserir->bindValue(':totalComprado', $totalComprado);
-    $inserir->bindValue(':idUsuario', $idUsuario);
-    $inserir->bindValue(':numPedido', $numPedido);
+    $db->beginTransaction();
 
-    if($inserir->execute()){
+    try{
+        $inserir = $db->prepare("INSERT INTO entrada_estoque (data_nf, num_nf, num_pedido, peca_idpeca, preco_custo, qtd,frete, desconto, obs, fornecedor, vl_total_comprado, id_usuario) VALUES (:dataNF, :numNF, :numPedido, :idPeca, :precoCusto, :qtd, :frete, :desconto, :obs, :fornecedor, :totalComprado, :idUsuario)");
+        $inserir->bindValue(':dataNF', $dataNota);
+        $inserir->bindValue(':numNF', $numNf);
+        $inserir->bindValue(':idPeca', $peca);
+        $inserir->bindValue(':precoCusto', $preco);
+        $inserir->bindValue(':qtd', $qtd);
+        $inserir->bindValue(':frete',$frete);
+        $inserir->bindValue(':desconto', $desconto);
+        $inserir->bindValue(':obs', $obsEntrada);
+        $inserir->bindValue(':fornecedor', $fornecedor);
+        $inserir->bindValue(':totalComprado', $totalComprado);
+        $inserir->bindValue(':idUsuario', $idUsuario);
+        $inserir->bindValue(':numPedido', $numPedido);
+        $inserir->execute();
+
         atualizaEStoque($peca);
-        echo "<script>alert('Entrada Lançada com Sucesso!');</script>";
-        echo "<script>window.location.href='entradas.php'</script>";    
-        
-    }else{
-        print_r($inserir->errorInfo());
-    }
 
+        $db->commit();
+
+        $_SESSION['msg'] = 'Entrada Lançada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Vale';
+        $_SESSION['icon']='error';
+    }
+    header("Location: entradas.php");
+    exit();
 }
 
 ?>

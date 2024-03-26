@@ -27,15 +27,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $cep = filter_input(INPUT_POST, 'cep');
     $telefone = filter_input(INPUT_POST, 'telefone');
 
-    $verificaFornecedor = $db->prepare("SELECT * FROM fornecedores WHERE cnpj = :cnpj");
-    $verificaFornecedor->bindValue(':cnpj', $cnpj);
-    $verificaFornecedor->execute();
-    if($verificaFornecedor->rowCount()>0){
+    $db->beginTransaction();
 
-        echo "<script>alert('Esse fornecedor já está cadastrado!');</script>";
-        echo "<script>window.location.href='fornecedores.php'</script>";
+    try{
+        $verificaFornecedor = $db->prepare("SELECT * FROM fornecedores WHERE cnpj = :cnpj");
+        $verificaFornecedor->bindValue(':cnpj', $cnpj);
+        $verificaFornecedor->execute();
+        if($verificaFornecedor->rowCount()>0){
+            $_SESSION['msg'] = 'Esse fornecedor já está cadastrado!';
+            $_SESSION['icon']='warning';
+            header("Location: fornecedores.php");
+            exit();
 
-    }else{
+        }
 
         $inserir = $db->prepare("INSERT INTO fornecedores (razao_social, endereco, bairro, cidade, cep, uf, cnpj, nome_fantasia, apelido, telefone) VALUES (:razaoSocial, :endereco, :bairro, :cidade, :cep, :uf, :cnpj, :nomeFantasia, :apelido, :telefone)");
         $inserir->bindValue(':razaoSocial', $razaSocial);
@@ -48,17 +52,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':nomeFantasia', $nomeFantasia);
         $inserir->bindValue(':apelido', $apelido);
         $inserir->bindValue(':telefone', $telefone);
+        $inserir->execute();
 
-        if($inserir->execute()){
-            echo "<script>alert('Fornecedor Cadastrado com Sucesso!');</script>";
-            echo "<script>window.location.href='fornecedores.php'</script>";
-        }else{
-            print_r($inserir->errorInfo());
-        }
+        $db->commit();
 
+        $_SESSION['msg'] = 'Fornecedor Cadastrado com Sucesso!';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Fornecedor';
+        $_SESSION['icon']='error';
     }
-
     
+    header("Location: fornecedores.php");
+    exit();
 
 }
 

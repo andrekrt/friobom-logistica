@@ -40,7 +40,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         <!-- cdns para SELECT2 -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-       
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     </head>
     <body>
         <div class="container-fluid corpo">
@@ -136,11 +136,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         <script src="../assets/js/jquery.mask.js"></script>
         <script>
             $(document).ready(function(){
-                $('#residencia').select2();
-                $('#cidadeChegada').select2();
-                $('#cidadeSaida').select2();
-                $('#supervisor').select2();
-                $('#veiculo').select2();
+                $('#residencia').select2({
+                    theme: 'bootstrap4'
+                });
+                $('#cidadeChegada').select2({
+                    theme: 'bootstrap4'
+                });
+                $('#cidadeSaida').select2({
+                    theme: 'bootstrap4'
+                });
+                $('#supervisor').select2({
+                    theme: 'bootstrap4'
+                });
+                $('#veiculo').select2({
+                    theme: 'bootstrap4'
+                });
                 $('#diarias').mask("#.##0,0", {reverse: true});
                 $('#rca1').mask("#", {reverse: true});
                 $('#velMax').mask("#", {reverse: true});

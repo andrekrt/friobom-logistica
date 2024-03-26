@@ -16,19 +16,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $token = filter_input(INPUT_GET, 'token');
 
-    echo $token;
+    $db->beginTransaction();
 
-    $delete = $db->query("DELETE FROM metas WHERE token = '$token' ");
+    try{
+        $delete = $db->prepare("DELETE FROM metas WHERE token = :token ");
+        $delete->bindValue(':token', $token);
+        $delete->execute();
 
-    if($delete){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='metas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+        $db->commit();
+
+        $_SESSION['msg'] = 'Meta Excluída com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Exlcuir Meta';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: metas.php");
+exit();
 ?>

@@ -124,7 +124,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                }
+                },
+                "order":[0,'desc']
             });
         });
 

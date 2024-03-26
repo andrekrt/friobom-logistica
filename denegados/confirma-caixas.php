@@ -16,19 +16,29 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'id');
 
-    $atualiza = $db->prepare("UPDATE caixas SET situacao = :situacao WHERE idcaixas = :id");
-    $atualiza->bindValue(':situacao', "Recebido");
-    $atualiza->bindValue(':id', $id);
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='caixas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE caixas SET situacao = :situacao WHERE idcaixas = :id");
+        $atualiza->bindValue(':situacao', "Recebido");
+        $atualiza->bindValue(':id', $id);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Confirmado Retornado das Caixas';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Confirmar Retorno de Caixa';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: caixas.php");
+exit();
 ?>

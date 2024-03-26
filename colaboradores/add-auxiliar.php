@@ -19,32 +19,42 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $salario = str_replace(",",".",filter_input(INPUT_POST, 'salario'));
     $rota = filter_input(INPUT_POST, 'rota');
 
-    $consulta = $db->prepare("SELECT * FROM auxiliares_rota WHERE cpf_auxiliar = :cpf ");
-    $consulta->bindValue(':cpf', $cpf);
-    $consulta->execute();
+    $db->beginTransaction();
 
-    if($consulta->rowCount()>0){
-        echo "<script>alert('Esse Auxiliar já está cadastrado!');</script>";
-        echo "<script>window.location.href='auxiliares.php'</script>";
-    }else{
+    try{
+        $consulta = $db->prepare("SELECT * FROM auxiliares_rota WHERE cpf_auxiliar = :cpf ");
+        $consulta->bindValue(':cpf', $cpf);
+        $consulta->execute();
+
+        if($consulta->rowCount()>0){
+            $_SESSION['msg'] = 'Esse Auxiliar já está cadastrado!';
+            $_SESSION['icon']='warning';
+            header("Location: auxiliares.php");
+            exit();
+        }
         $sql = $db->prepare("INSERT INTO auxiliares_rota (nome_auxiliar, cpf_auxiliar, salario_auxiliar, rota) VALUES (:nome, :cpf, :salario, :rota) ");
         $sql->bindValue(':nome', $nome);
         $sql->bindValue(':cpf', $cpf);
         $sql->bindValue(':salario', $salario);
         $sql->bindValue(':rota', $rota);
+        $sql->execute();
 
-        if($sql->execute()){
-            echo "<script>alert('Auxiliar Cadastrado!');</script>";
-            echo "<script>window.location.href='auxiliares.php'</script>";
-        }else{
-            print_r($sql->errorInfo());
-        }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Auxiliar Cadastrado com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrado Auxiliar';
+        $_SESSION['icon']='error';
     }
-    //echo "$codMotorista<br> $nomeMotorista<br> $cnh <br> $validadeCnh";
 
 }else{
-    echo "<script>alert('Acesso negado!');</script>";
-        echo "<script>window.location.href='colaboradores.php'</script>";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
 
+header("Location: auxiliares.php");
+exit();
 ?>

@@ -56,7 +56,7 @@ foreach($empRecords as $row){
         "tipo_veiculo"=>$row['tipo_veiculo'],
         "tipo_tk"=>$row['tipo_tk'],
         "horimetro_revisao"=>$row['horimetro_revisao'],
-        "data_revisao"=>date("d/m/Y", strtotime($row['data_revisao_tk'])),
+        "data_revisao_tk"=>date("d/m/Y", strtotime($row['data_revisao_tk'])),
         "acoes"=> '<a href="javascript:void();" data-id="'.$row['idrevisao'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
     );
 }

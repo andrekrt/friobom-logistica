@@ -65,7 +65,7 @@ foreach($empRecords as $row){
             "suco03"=>$row['suco03'] ,
             "suco04"=>$row['suco04'] ,
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idmanutencao_pneu'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-manutencao.php?idmanutencao='.$row['idmanutencao_pneu'].' " data-id="'.$row['idmanutencao_pneu'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idmanutencao_pneu'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['idmanutencao_pneu'].'" onclick=\'confirmaDelete(' . $row['idmanutencao_pneu'] . ')\' class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
         );
 }
 

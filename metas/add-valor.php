@@ -17,27 +17,31 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $id = $_POST['id'];
     $valorMeta = $_POST['valor'];
 
-    for($i=0; $i<count($valorMeta);$i++){
-        
-        // echo "ID: $id[$i] - Valor Meta: $valorMeta[$i]<br>"; 
-        
-        $sql = $db->prepare("UPDATE metas SET valor_alcancado=:valor WHERE idmetas = :id");
-        $sql->bindValue(':id', $id[$i]);
-        $sql->bindValue(':valor', $valorMeta[$i]);
+    $db->beginTransaction();
 
-        if($sql->execute()){
-            echo "<script> alert('Meta Registrada!!')</script>";
-            echo "<script> window.location.href='metas.php' </script>";
+    try{
+        for($i=0; $i<count($valorMeta);$i++){
             
-        }else{
-            print_r($sql->errorInfo());
+            $sql = $db->prepare("UPDATE metas SET valor_alcancado=:valor WHERE idmetas = :id");
+            $sql->bindValue(':id', $id[$i]);
+            $sql->bindValue(':valor', $valorMeta[$i]);
+            $sql->execute();    
         }
 
+        $db->commit();
+
+        $_SESSION['msg'] = 'Meta Registrada com Sucesso!';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Meta';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='form-suco.php' </script>";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: metas.php");
+exit();
 ?>

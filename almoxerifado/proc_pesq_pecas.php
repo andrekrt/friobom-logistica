@@ -52,6 +52,7 @@ $empRecords = $stmt->fetchAll();
 $data = array();
 
 foreach($empRecords as $row){
+    atualizaEStoque($row['id_peca_reparo']);
     
     $data[] = array(
         "id_peca_reparo"=>$row['id_peca_reparo'],

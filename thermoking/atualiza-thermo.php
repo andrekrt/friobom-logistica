@@ -20,20 +20,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $tipoTk = filter_input(INPUT_POST, 'tipotk');
     $horimetro = filter_input(INPUT_POST, 'horaAtual');
 
-    //echo "$idRevisao<br>$placa<br>$kmRevisao<br>$dataRevisao<br>$tipoRevisao";
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE thermoking SET veiculo = :placa, tipo_tk = :tipotk, hora_atual = :horimetro WHERE idthermoking = :id");
-    $atualiza->bindValue(':placa', $placa);
-    $atualiza->bindValue(':tipotk', $tipoTk);
-    $atualiza->bindValue(':horimetro', $horimetro);
-    $atualiza->bindValue(':id', $idTk);
-    
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='thermoking.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE thermoking SET veiculo = :placa, tipo_tk = :tipotk, hora_atual = :horimetro WHERE idthermoking = :id");
+        $atualiza->bindValue(':placa', $placa);
+        $atualiza->bindValue(':tipotk', $tipoTk);
+        $atualiza->bindValue(':horimetro', $horimetro);
+        $atualiza->bindValue(':id', $idTk);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Thermoking Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $_SESSION['msg'] = 'Erro ao Atualizar Thermoking';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: thermoking.php");
+    exit();
 
 }else{
 

@@ -41,48 +41,75 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $qtd = str_replace(",",".",$_POST['qtd']);
     $requisicao = $_POST['requisicao'];
 
-    // $i=0;
-    // for($i; $i<count($qtd);$i++){
-    //     if(contaEstoque($pecas[$i])<$qtd[$i]){
-    //         echo "<script>alert('estoque insuficiente')</script>";
-    //         echo "<script>window.location.href='ordem-servico.php'</script>"; 
-    //         exit;
-    //     }
-    // }
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE ordem_servico SET placa = :placa, descricao_problema = :problema, corretiva = :corretiva, preventiva =:preventiva, externa = :externa, higienizacao = :higienizacao, causador = :causador, situacao = :situacao, data_encerramento = :dataEncerramento, num_nf = :nf, obs = :obs WHERE idordem_servico = :idordemServico");
-    $atualiza->bindValue(':placa', $placa);
-    $atualiza->bindValue(':problema', $problema);
-    $atualiza->bindValue(':corretiva', $corretiva);
-    $atualiza->bindValue(':preventiva', $preventiva);
-    $atualiza->bindValue(':externa', $externa);
-    $atualiza->bindValue(':higienizacao', $higienizacao);
-    $atualiza->bindValue(':causador', $causador);
-    $atualiza->bindValue(':situacao', $situacao);
-    $atualiza->bindValue(':dataEncerramento', $dataEncarrecamento);
-    $atualiza->bindValue(':nf', $nf);
-    $atualiza->bindValue(':obs', $obs);
-    $atualiza->bindValue(':idordemServico', $idordemServico);
+    try{
+        $i=0;
+        for($i; $i<count($qtd);$i++){
+            if(contaEstoque($pecas[$i])<$qtd[$i]){
+                $_SESSION['msg'] = 'Estoque Insuficiente!';
+                $_SESSION['icon']='warning';
+                header("Location: ordem-servico.php");
+                exit();
+            }
+        }
 
-    if($atualiza->execute()){
+        $atualiza = $db->prepare("UPDATE ordem_servico SET placa = :placa, descricao_problema = :problema, corretiva = :corretiva, preventiva =:preventiva, externa = :externa, higienizacao = :higienizacao, causador = :causador, situacao = :situacao, data_encerramento = :dataEncerramento, num_nf = :nf, obs = :obs WHERE idordem_servico = :idordemServico");
+        $atualiza->bindValue(':placa', $placa);
+        $atualiza->bindValue(':problema', $problema);
+        $atualiza->bindValue(':corretiva', $corretiva);
+        $atualiza->bindValue(':preventiva', $preventiva);
+        $atualiza->bindValue(':externa', $externa);
+        $atualiza->bindValue(':higienizacao', $higienizacao);
+        $atualiza->bindValue(':causador', $causador);
+        $atualiza->bindValue(':situacao', $situacao);
+        $atualiza->bindValue(':dataEncerramento', $dataEncarrecamento);
+        $atualiza->bindValue(':nf', $nf);
+        $atualiza->bindValue(':obs', $obs);
+        $atualiza->bindValue(':idordemServico', $idordemServico);
+        $atualiza->execute();
+
+        if($externa===1){
+            $status = "Manutenção Externa";
+        }else{
+            $status = "Manutenção Interna";
+        }
+
+        alterarStatusCaminhao($placa,$status);
+
         $i=0;
         for($i;$i<count($pecas); $i++){
-            
-            $atualizaSaida = atualisaSaida($idSaida[$i], $servicos[$i], $pecas[$i], $qtd[$i], $requisicao[$i], $placa, $obs);
 
-            if($atualizaSaida){
-                //echo "ok";
-                echo "<script>alert('Saída Lançada e OS Registrada!!!');</script>";
-                echo "<script>window.location.href='ordem-servico.php'</script>";
-            }else{
-                echo "erro na saída de peças";
-            }
-           
+            $dataSaida = date("Y-m-d");
+            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao_saida, :idUsuario)");
+            $inserir->bindValue(':dataSaida', $dataSaida);
+            $inserir->bindValue(':qtd', $qtd[$i]);
+            $inserir->bindValue(':peca', $pecas[$i]);
+            $inserir->bindValue(':placa', $placa);
+            $inserir->bindValue(':obs', $obs);
+            $inserir->bindValue(':servico', $servicos[$i]);
+            $inserir->bindValue(':os', $idordemServico);
+            $inserir->bindValue(':requisicao_saida', $requisicao[$i]);
+            $inserir->bindValue(':idUsuario', $idUsuario);
+            $inserir->execute();
+
+            atualizaEStoque($pecas[$i]);
+
         }
-        
-    }else{
-        print_r($atualiza->errorInfo());
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Saída e OS Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar OS';
+        $_SESSION['icon']='error';
+
+        echo "Erro $e";
     }
+    header("Location: ordem-servico.php");
+    exit();   
 
 }else{
 

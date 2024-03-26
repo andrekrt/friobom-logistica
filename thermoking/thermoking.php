@@ -35,7 +35,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <!-- arquivos para datatable -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
@@ -98,6 +99,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function(){
             $('#tableThermo').DataTable({
@@ -141,7 +144,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 success: function(data){
                     var json = JSON.parse(data);
                     $('#id').val(json.idthermoking);
-                    $('#placa').val(json.veiculo);
+                    $('#placaEdit').val(json.veiculo);
                     $('#tipotk').val(json.tipo_tk);
                     $('#horaAtual').val(json.hora_atual);
                 }
@@ -242,13 +245,48 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $(document).ready(function(){
         $('#placa').select2({
             width: '100%',
-            dropdownParent:"#newTk"
+            dropdownParent:"#newTk",
+            theme: 'bootstrap4'
         });
-        $('#placaEdit').select2({
-            width: '100%',
-            dropdownParent:"#modalEditar"
-        });
+      
     });
+
+    function confirmaDelete(id){
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você realmente deseja desativar o Thermoking '+id+ '?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, Desativar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário confirmar, redirecione para a página de exclusão
+                window.location.href = 'desativar-thermo.php?idTk=' + id;
+            }
+        });
+    }
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && $_SESSION['icon']) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

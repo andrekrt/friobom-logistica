@@ -61,7 +61,7 @@ foreach($empRecords as $row){
         "data_revisao"=>date("d/m/Y", strtotime($row['ultima_revisao_tk'])),
         "hora_restante"=> $row['hora_restante'],
         "situacao"=> $row['situacao'],
-        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idthermoking'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="desativar-thermo.php?idTk='.$row['idthermoking'].' " data-id="'.$row['idthermoking'].'"  class="btn btn-danger btn-sm deleteBtn" >Desativar</a>'
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idthermoking'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a data-id="'.$row['idthermoking'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idthermoking'] . ')\'>Desativar</a>'
     );
 }
 

@@ -21,24 +21,32 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $volumeDivergente = $volumeAnterior-$litros;
     $usuario = $_SESSION['idUsuario'];
 
-    $atualizar = $db->prepare("UPDATE combustivel_inventario SET qtd_encontrada = :volume, volume_anterior=:volumeAnterior, volume_divergente=:volumeDivergente, usuario=:usuario WHERE idinventario = :id");
-    $atualizar->bindValue(':volume', $litros);
-    $atualizar->bindValue(':volumeAnterior', $volumeAnterior);
-    $atualizar->bindValue(':volumeDivergente', $volumeDivergente);
-    $atualizar->bindValue(':usuario', $usuario);
-    $atualizar->bindValue(':id', $idinventario);
+    $db->beginTransaction();
 
-    if($atualizar->execute()){
-        echo "<script>alert('Inventario Atualizada com Sucesso!');</script>";
-        echo "<script>window.location.href='inventario.php'</script>";    
-        
-    }else{
-        print_r($atualizar->errorInfo());
+    try{
+        $atualizar = $db->prepare("UPDATE combustivel_inventario SET qtd_encontrada = :volume,  usuario=:usuario WHERE idinventario = :id");
+        $atualizar->bindValue(':volume', $litros);
+        $atualizar->bindValue(':usuario', $usuario);
+        $atualizar->bindValue(':id', $idinventario);
+        $atualizar->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Inventário Atualizar com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Inventário';
+        $_SESSION['icon']='error';
     }
 
-}else{
-    echo "<script>alert('Sem permissão');</script>";
-    echo "<script>window.location.href='inventario.php'</script>";   
-}
+    
 
+}else{
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
+}
+header("Location: inventario.php");
+exit();
 ?>

@@ -19,21 +19,30 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $status = "Confirmado";    
     $dataAprovaca = date("Y-m-d H:i");
 
-    $sql = $db->prepare("UPDATE viagem SET situacao=:situacao, data_aprovacao=:dataAprovacao WHERE iddespesas = :idDespesa");
-    $sql->bindValue(':situacao', $status);
-    $sql->bindValue(':dataAprovacao', $dataAprovaca);
-    $sql->bindValue(':idDespesa', $idDespesa );
+    $db->beginTransaction();
 
-    if($sql->execute()){
-        echo "<script>alert('Confirmado!!!');</script>";
-        echo "<script>window.location.href='despesas.php'</script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $sql = $db->prepare("UPDATE viagem SET situacao=:situacao, data_aprovacao=:dataAprovacao WHERE iddespesas = :idDespesa");
+        $sql->bindValue(':situacao', $status);
+        $sql->bindValue(':dataAprovacao', $dataAprovaca);
+        $sql->bindValue(':idDespesa', $idDespesa );
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Despesa Confirmada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Confirmar Despesa';
+        $_SESSION['icon']='error';
     }
-    
 
 }else{
-    header("Location: despesas.php");
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: despesas.php");
+exit();
 ?>

@@ -41,6 +41,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+
 </head>
 <body>
     <div class="container-fluid corpo">
@@ -93,6 +95,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function(){
             $('#tableRevisao').DataTable({
@@ -135,13 +140,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#id').val(json.id);
                     $('#kmRevisao').val(json.km_revisao);
                     $('#tipoRevisao').val(json.tipo_revisao);
-                    $('#placa').val(json.placa_veiculo);
+                    $('#placaEdit').val(json.placa_veiculo);
                     $('#dataRevisao').val(json.data_revisao);
                     $('#kmAtual').val(json.km_atual);
                 }
             })
 
         });
+
+
     </script>
 
 <!-- modal visualisar e editar -->
@@ -216,7 +223,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="descricao">Placa </label>
                             <select required name="placa" id="placa" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM veiculos");
+                                <?php $pecas = $db->query("SELECT * FROM veiculos WHERE ativo=1");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -252,13 +259,30 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $(document).ready(function(){
         $('#placa').select2({
             width: '100%',
-            dropdownParent:"#modalRevisao"
+            dropdownParent:"#modalRevisao",
+            theme: 'bootstrap4'
         });
-        $('#placaEdit').select2({
-            width: '100%',
-            dropdownParent:"#modalEditar"
-        });
+       
     });
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

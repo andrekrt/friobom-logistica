@@ -23,25 +23,39 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $fechamento2 = filter_input(INPUT_POST, 'fechamento2');
     $metaDias = str_replace(",",".", filter_input(INPUT_POST, 'metaDias'));
 
-    $atualiza = $db->prepare("UPDATE rotas SET nome_rota = :rota, fechamento1 = :fechamento1, fechamento2 = :fechamento2, hora_fechamento1 = :horaFechamento1, hora_fechamento2 = :horaFechamento2, ceps = :ceps, meta_dias = :metaDias WHERE cod_rota = :codRota");
-    $atualiza->bindValue(':codRota',$codRota);
-    $atualiza->bindValue(':rota', $rota);
-    $atualiza->bindValue(':ceps', $ceps);
-    $atualiza->bindValue(':horaFechamento1', $horaFechamento1);
-    $atualiza->bindValue(':horaFechamento2', $horaFechamento2);
-    $atualiza->bindValue(':fechamento1', $fechamento1);
-    $atualiza->bindValue(':fechamento2', $fechamento2);
-    $atualiza->bindValue(':metaDias', $metaDias);
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='rotas.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE rotas SET nome_rota = :rota, fechamento1 = :fechamento1, fechamento2 = :fechamento2, hora_fechamento1 = :horaFechamento1, hora_fechamento2 = :horaFechamento2, ceps = :ceps, meta_dias = :metaDias WHERE cod_rota = :codRota");
+        $atualiza->bindValue(':codRota',$codRota);
+        $atualiza->bindValue(':rota', $rota);
+        $atualiza->bindValue(':ceps', $ceps);
+        $atualiza->bindValue(':horaFechamento1', $horaFechamento1);
+        $atualiza->bindValue(':horaFechamento2', $horaFechamento2);
+        $atualiza->bindValue(':fechamento1', $fechamento1);
+        $atualiza->bindValue(':fechamento2', $fechamento2);
+        $atualiza->bindValue(':metaDias', $metaDias);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rota Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+
+        $_SESSION['msg'] = 'Erro ao Atualizar Rota';
+        $_SESSION['icon']='error';
     }
 
+    
+
 }else{
-    header("Location:rotas.php");
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
 
+header("Location: rotas.php");
+exit();
 ?>

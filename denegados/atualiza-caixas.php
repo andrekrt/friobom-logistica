@@ -19,22 +19,30 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $carga = filter_input(INPUT_POST,'carga');
     $qtd = filter_input(INPUT_POST,'qtd');
   
-    // echo "$idUsuario<br>$id<br>$carga<br>$qtd";
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE caixas SET carregamento = :carregamento, qtd_caixas = :qtd WHERE idcaixas = :id");
-    $atualiza->bindValue(':carregamento', $carga);
-    $atualiza->bindValue(':qtd', $qtd);
-    $atualiza->bindValue(':id', $id);
+    try{
+        $atualiza = $db->prepare("UPDATE caixas SET carregamento = :carregamento, qtd_caixas = :qtd WHERE idcaixas = :id");
+        $atualiza->bindValue(':carregamento', $carga);
+        $atualiza->bindValue(':qtd', $qtd);
+        $atualiza->bindValue(':id', $id);
+        $atualiza->execute();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='caixas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
-    }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Saída de Caixa Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Saída de Caixa';
+        $_SESSION['icon']='error';
+    }    
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: caixas.php");
+exit();
 ?>

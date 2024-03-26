@@ -21,34 +21,40 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $volumeAnterior = contaEstoque();
     $volumeDivergente = $volumeAnterior-$litros;
 
-    //echo "$dataEntrada<br>$valorlitro<br>$totalLitro<br>$valorTotal<br>$fornecedor<br>$qualidade<br>$usuario";
+    $db->beginTransaction();
 
-    $inserir = $db->prepare("INSERT INTO combustivel_inventario (data_inventario , qtd_encontrada, usuario) VALUES (:dataInventario, :litros, :usuario)");
-    $inserir->bindValue(':dataInventario', $dataInventario);
-    $inserir->bindValue(':litros', $litros);
-    $inserir->bindValue(':usuario', $usuario);
+    try{
+        $inserir = $db->prepare("INSERT INTO combustivel_inventario (data_inventario , qtd_encontrada, usuario) VALUES (:dataInventario, :litros, :usuario)");
+        $inserir->bindValue(':dataInventario', $dataInventario);
+        $inserir->bindValue(':litros', $litros);
+        $inserir->bindValue(':usuario', $usuario);
+        $inserir->execute();
 
-    if($inserir->execute()){
         $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, usuario) VALUES (:dataOp, :tipoOp, :volume, :usuario)");
         $sqlExtrato->bindValue(':dataOp', $dataInventario);
         $sqlExtrato->bindValue(':tipoOp', "Inventário");
         $sqlExtrato->bindValue(':volume', $litros);
         $sqlExtrato->bindValue(':usuario', $usuario);
-        if($sqlExtrato->execute()){
-            echo "<script>alert('Inventário Registrado!');</script>";
-            echo "<script>window.location.href='inventario.php'</script>"; 
-        }else{
-            print_r($sqlExtrato->errorInfo());
-        }
-           
-        
-    }else{
-        print_r($inserir->errorInfo());
+        $sqlExtrato->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Inventário Registrado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Inventário';
+        $_SESSION['icon']='error';
     }
 
+    
+
 }else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='inventario.php'</script>"; 
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
 
+header("Location: inventario.php");
+exit();
 ?>

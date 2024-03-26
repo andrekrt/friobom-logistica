@@ -18,30 +18,41 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $placa = filter_input(INPUT_POST,'placa');
     $tipoTk = filter_input(INPUT_POST, 'tipotk');
     $horimetro = filter_input(INPUT_POST, 'horaAtual');
-    
-    //verificar se o veiculo já tem tk vinculado
-    $sqlConsulta = $db->prepare("SELECT veiculo FROM thermoking WHERE veiculo = :veiculo");
-    $sqlConsulta->bindValue(':veiculo', $placa);
-    $sqlConsulta->execute();
-    if($sqlConsulta->rowCount()>0){
-        echo "<script>alert('Esse veículo já tem Thermoking vinculado!');</script>";
-        echo "<script>window.location.href='thermoking.php'</script>";
-    }else{
+
+    $db->beginTransaction();
+
+    try{
+        //verificar se o veiculo já tem tk vinculado
+        $sqlConsulta = $db->prepare("SELECT veiculo FROM thermoking WHERE veiculo = :veiculo");
+        $sqlConsulta->bindValue(':veiculo', $placa);
+        $sqlConsulta->execute();
+        if($sqlConsulta->rowCount()>0){
+            $_SESSION['msg'] = 'Esse veículo já tem Thermoking vinculado!';
+            $_SESSION['icon']='warning';
+
+            header("Location: thermoking.php");
+            exit();
+            
+        }
         $inserir = $db->prepare("INSERT INTO thermoking (veiculo, tipo_tk, hora_atual) VALUES (:veiculo, :tipoTk, :horimetro)");
         $inserir->bindValue(':veiculo', $placa);
         $inserir->bindValue(':tipoTk', $tipoTk);
-        $inserir->bindValue(':horimetro', $horimetro);   
-    
-        if($inserir->execute()){
-           echo "<script>alert('Thermoking Cadastrado!');</script>";
-            echo "<script>window.location.href='thermoking.php'</script>";
-            
-        }else{
-             print_r($inserir->errorInfo());
-        }
-    }
+        $inserir->bindValue(':horimetro', $horimetro);  
+        $inserir->execute();
+        
+        $db->commit();
 
-   
+        $_SESSION['msg'] = 'Thermoking Cadastrado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Thermoking';
+        $_SESSION['icon']='error';
+    } 
+
+    header("Location: thermoking.php");
+    exit();
 
 }
 

@@ -18,22 +18,33 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $nome = filter_input(INPUT_POST, 'nome');
     $cidade = filter_input(INPUT_POST, 'residencia');
     $veiculo = filter_input(INPUT_POST, 'veiculo');
+
+    $db->beginTransaction();
+
+    try{
+        $sql = $db->prepare("UPDATE supervisores SET nome_supervisor=:supervisor, cidade_residencia = :cidade, veiculo=:veiculo WHERE idsupervisor=:codigo ");
+        $sql->bindValue(':supervisor', $nome);
+        $sql->bindValue(':codigo', $codigo);
+        $sql->bindValue(':cidade', $cidade);
+        $sql->bindValue(':veiculo', $veiculo);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Supervisor Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Supervisor';
+        $_SESSION['icon']='error';
+    }
     
-    $sql = $db->prepare("UPDATE supervisores SET nome_supervisor=:supervisor, cidade_residencia = :cidade, veiculo=:veiculo WHERE idsupervisor=:codigo ");
-    $sql->bindValue(':supervisor', $nome);
-    $sql->bindValue(':codigo', $codigo);
-    $sql->bindValue(':cidade', $cidade);
-    $sql->bindValue(':veiculo', $veiculo);
-    if($sql->execute()){
-        echo "<script> alert('Supervisor Atualizado!!')</script>";
-        echo "<script> window.location.href='supervisores.php' </script>";
-    }else{
-        print_r($sql->errorInfo());
-    }    
 
 }else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='../index.php' </script>";
+    $_SESSION['msg'] = 'Acesso não permitido!';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: supervisores.php");
+exit();
 ?>

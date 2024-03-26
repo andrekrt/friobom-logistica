@@ -87,7 +87,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/menu.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function(){
             $('#tablePag').DataTable({
@@ -226,6 +227,44 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $('#pagamento').mask("###0,00", {reverse: true});
         $('#pagamentoEdit').mask("###0,00", {reverse: true});
     });
+
+    function confirmaDelete(id){
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você realmente deseja excluir este Pagamento?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário confirmar, redirecione para a página de exclusão
+                window.location.href = 'excluir-pagamento.php?id=' + id;
+            }
+        });
+    }
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
+
 </body>
 </html>

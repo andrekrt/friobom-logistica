@@ -265,8 +265,47 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 <script src="../../assets/js/menu.js"></script>
 <script src="../../assets/js/jquery.mask.js"></script>
+<!-- sweert alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $('#valor').mask('#.##0,00', {reverse: true});
+
+    function confirmaDelete(id){
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você realmente deseja excluir esta Manutenção?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, Excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário confirmar, redirecione para a página de exclusão
+                window.location.href = 'excluir-manutencao.php?idmanutencao=' + id;
+            }
+        });
+    }
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

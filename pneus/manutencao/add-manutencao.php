@@ -35,41 +35,46 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $suco04 = filter_input(INPUT_POST, 'suco04');
     $usuario = $_SESSION['idUsuario'];
 
-    //echo "$pneu<br>$dataManutencao<br>$tipoReparo<br>$kmManutencao<br>$valor<br>$nf<br>$fornecedor<br>$suco01<br>$suco02<br>$suco03<br>$suco04<br>$kmPneu";
+    $db->beginTransaction();
 
-    $sql = $db->prepare("INSERT INTO manutencao_pneu (data_manutencao, tipo_manutencao, km_veiculo, km_pneu, valor, num_nf, fornecedor, suco01, suco02, suco03, suco04, pneus_idpneus, usuario) VALUES (:dataManutencao, :tipoManutencao, :kmVeiculo, :kmPneu, :valor, :nf, :fornecedor, :suco01, :suco02, :suco03, :suco04, :pneu, :usuario)");
-    $sql->bindValue(':dataManutencao', $dataManutencao);
-    $sql->bindValue(':tipoManutencao', $tipoReparo);
-    $sql->bindValue(':kmVeiculo', $kmVeiculo);
-    $sql->bindValue(':kmPneu', $kmPneu);
-    $sql->bindValue(':valor', $valor);
-    $sql->bindValue(':nf', $nf);
-    $sql->bindValue(':fornecedor', $fornecedor);
-    $sql->bindValue(':suco01', $suco01);
-    $sql->bindValue(':suco02', $suco02);
-    $sql->bindValue(':suco03', $suco03);
-    $sql->bindValue(':suco04', $suco04);
-    $sql->bindValue(':pneu', $pneu);
-    $sql->bindValue(':usuario', $usuario);
-    
-    if($sql->execute()){
+    try{
+        $sql = $db->prepare("INSERT INTO manutencao_pneu (data_manutencao, tipo_manutencao, km_veiculo, km_pneu, valor, num_nf, fornecedor, suco01, suco02, suco03, suco04, pneus_idpneus, usuario) VALUES (:dataManutencao, :tipoManutencao, :kmVeiculo, :kmPneu, :valor, :nf, :fornecedor, :suco01, :suco02, :suco03, :suco04, :pneu, :usuario)");
+        $sql->bindValue(':dataManutencao', $dataManutencao);
+        $sql->bindValue(':tipoManutencao', $tipoReparo);
+        $sql->bindValue(':kmVeiculo', $kmVeiculo);
+        $sql->bindValue(':kmPneu', $kmPneu);
+        $sql->bindValue(':valor', $valor);
+        $sql->bindValue(':nf', $nf);
+        $sql->bindValue(':fornecedor', $fornecedor);
+        $sql->bindValue(':suco01', $suco01);
+        $sql->bindValue(':suco02', $suco02);
+        $sql->bindValue(':suco03', $suco03);
+        $sql->bindValue(':suco04', $suco04);
+        $sql->bindValue(':pneu', $pneu);
+        $sql->bindValue(':usuario', $usuario);
+        $sql->execute();
+
         $atualizaPneu = $db->prepare("UPDATE pneus SET suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04 WHERE idpneus = :idpneu");
         $atualizaPneu->bindValue(':suco01', $suco01);
         $atualizaPneu->bindValue(':suco02', $suco02);
         $atualizaPneu->bindValue(':suco03', $suco03);
         $atualizaPneu->bindValue(':suco04', $suco04);
         $atualizaPneu->bindValue(':idpneu', $pneu);
-
-        if($atualizaPneu->execute()){
-            echo "<script> alert('Manutenção Registrada!!!')</script>";
-            echo "<script> window.location.href='manutencoes.php' </script>";
-        }else{
-            print_r($atualizaPneu->errorInfo());
-        }
+        $atualizaPneu->execute();
         
-    }else{
-        print_r($sql->errorInfo());
+        $db->commit();
+
+        $_SESSION['msg'] = 'Manutenção Registrada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Manutenção';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: manutencoes.php");
+    exit();
     
 }else{
 

@@ -16,21 +16,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $idSuco = filter_input(INPUT_GET, 'idsuco');
 
+    $db->beginTransaction();
 
-    $sql = $db->prepare("DELETE FROM sucos WHERE idsucos = :idSuco");
-    $sql->bindValue(':idSuco', $idSuco);
-   
-    
-    if($sql->execute()){
-        echo "<script> alert('Suco Excluído!!')</script>";
-        echo "<script> window.location.href='sucos.php' </script>";
-    }else{
-        print_r($sql->errorInfo());
-    }
-    
+    try{
+        $sql = $db->prepare("DELETE FROM sucos WHERE idsucos = :idSuco");
+        $sql->bindValue(':idSuco', $idSuco);
+        $sql->execute();
+        
+        $db->commit();
+
+        $_SESSION['msg'] = 'Suco Excluído com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Suco';
+        $_SESSION['icon']='error';
+    }    
 
 }else{
-
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: sucos.php");
+exit();
 ?>

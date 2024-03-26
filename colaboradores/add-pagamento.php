@@ -19,34 +19,42 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $pagamento = str_replace(",",".",filter_input(INPUT_POST, 'pagamento'));
     $usuario = $_SESSION['idUsuario'];
 
-    $consulta = $db->prepare("SELECT * FROM folha_pagamento WHERE mes_ano = :mesAno AND tipo_funcionarios = :funcionarios");
-    $consulta->bindValue(':mesAno', $mesAno);
-    $consulta->bindValue(':funcionarios', $funcionarios);
-    $consulta->execute();
+    $db->beginTransaction();
 
-    // echo "$mesAno<br>$funcionarios<br>$pagamento<br>$usuario";
+    try{
+        $consulta = $db->prepare("SELECT * FROM folha_pagamento WHERE mes_ano = :mesAno AND tipo_funcionarios = :funcionarios");
+        $consulta->bindValue(':mesAno', $mesAno);
+        $consulta->bindValue(':funcionarios', $funcionarios);
+        $consulta->execute();
 
-    if($consulta->rowCount()>0){
-        echo "<script>alert('Esse mês já foi lançado!');</script>";
-        echo "<script>window.location.href='pagamentos.php'</script>";
-    }else{
+        if($consulta->rowCount()>0){
+            $_SESSION['msg'] = 'Esse mês já foi lançado!';
+            $_SESSION['icon']='warning';
+            header("Location: pagamentos.php");
+            exit();
+        }
         $sql = $db->prepare("INSERT INTO folha_pagamento (mes_ano, pagamento, tipo_funcionarios, usuario) VALUES (:mesAno, :pagamento, :funcionarios, :usuario) ");
         $sql->bindValue(':mesAno', $mesAno);
         $sql->bindValue(':pagamento', $pagamento);
         $sql->bindValue(':funcionarios', $funcionarios);
         $sql->bindValue(':usuario', $usuario);
+        $sql->execute();
 
-        if($sql->execute()){
-            echo "<script>alert('Pagamento Lançado!');</script>";
-            echo "<script>window.location.href='pagamentos.php'</script>";
-        }else{
-            print_r($sql->errorInfo());
-        }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Pagamento Lançado com Sucesso';
+        $_SESSION['icon']='success';        
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Pagamento';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "<script>alert('Acesso negado!');</script>";
-        echo "<script>window.location.href='colaboradores.php'</script>";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: pagamentos.php");
+exit();
 ?>

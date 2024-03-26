@@ -17,26 +17,36 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'idEntrada');
 
-    //pegar a peça
-    $sqlPeca= $db->prepare("SELECT peca_idpeca FROM entrada_estoque WHERE identrada_estoque=:idEntrada");
-    $sqlPeca->bindValue(':idEntrada', $id);
-    $sqlPeca->execute();
-    $peca=$sqlPeca->fetch();
-    $peca=$peca['peca_idpeca'];
+    $db->beginTransaction();
 
-    $delete = $db->prepare("DELETE FROM entrada_estoque WHERE identrada_estoque = :idEntrada ");
-    $delete->bindValue(':idEntrada', $id);
+    try{
+        $sqlPeca= $db->prepare("SELECT peca_idpeca FROM entrada_estoque WHERE identrada_estoque=:idEntrada");
+        $sqlPeca->bindValue(':idEntrada', $id);
+        $sqlPeca->execute();
+        $peca=$sqlPeca->fetch();
+        $peca=$peca['peca_idpeca'];
 
-    if($delete->execute()){
+        $delete = $db->prepare("DELETE FROM entrada_estoque WHERE identrada_estoque = :idEntrada ");
+        $delete->bindValue(':idEntrada', $id);
+        $delete->execute();
+
         atualizaEStoque($peca);
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='entradas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Entrada Excluída com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Entrada';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: entradas.php");
+exit();
 ?>

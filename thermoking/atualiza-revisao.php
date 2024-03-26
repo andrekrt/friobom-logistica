@@ -21,33 +21,38 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataRevisao = filter_input(INPUT_POST, 'dataRevisao');
     $horimetro = filter_input(INPUT_POST, 'horimetro');
     
-    // echo "$idRevisao<br> $tk<br>$dataRevisao<br>$horimetro";
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE revisao_tk SET  thermoking = :tk, data_revisao_tk = :dataRevisao, horimetro_revisao = :horaRevisao WHERE idrevisao = :id");
-    $atualiza->bindValue(':tk', $tk);
-    $atualiza->bindValue(':dataRevisao', $dataRevisao);
-    $atualiza->bindValue(':horaRevisao', $horimetro);
-    $atualiza->bindValue(':id', $idRevisao);   
+    try{
+        $atualiza = $db->prepare("UPDATE revisao_tk SET  thermoking = :tk, data_revisao_tk = :dataRevisao, horimetro_revisao = :horaRevisao WHERE idrevisao = :id");
+        $atualiza->bindValue(':tk', $tk);
+        $atualiza->bindValue(':dataRevisao', $dataRevisao);
+        $atualiza->bindValue(':horaRevisao', $horimetro);
+        $atualiza->bindValue(':id', $idRevisao);   
+        $atualiza->execute();
 
-    if($atualiza->execute()){
         $atualizarTk = $db->prepare("UPDATE thermoking SET hora_atual = :horaAtual, hora_ultima_revisao = :horimetroRevisao, ultima_revisao_tk = :dataRevisao WHERE idthermoking = :idtk ");
         $atualizarTk->bindValue(':horaAtual', $horimetro);
         $atualizarTk->bindValue(':horimetroRevisao', $horimetro);
         $atualizarTk->bindValue(':dataRevisao', $dataRevisao);
         $atualizarTk->bindValue(':idtk', $tk);
-        if($atualizarTk->execute()){
-            atualizaTK($tk);
-            echo "<script>alert('Revisão Atualizada!');</script>";
-            echo "<script>window.location.href='revisao.php'</script>";
-        }else{
-            print_r($atualizarTk->errorInfo());
-            
-        }
-        
-    }else{
-        print_r($inserir->errorInfo());
-        echo "erro aqui";
+        $atualizarTk->execute();
+
+        // atualizaTK($tk);
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Revisão Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Revisão';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: revisao.php");
+    exit();
 
 }
 

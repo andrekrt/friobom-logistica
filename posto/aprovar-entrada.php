@@ -18,34 +18,35 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $situacao = "Aprovado";
     $litros = filter_input(INPUT_GET, 'lt');
 
-    // echo "ID: $idEntrada Situação: $situacao Litros: $litros";
+    $db->beginTransaction();
 
-    $inserir = $db->prepare("UPDATE combustivel_entrada SET situacao = :situacao WHERE idcombustivel_entrada = :id");
-    $inserir->bindValue(':situacao', $situacao);
-    $inserir->bindValue(':id', $idEntrada);
-    
-
-    if($inserir->execute()){
+    try{
+        $inserir = $db->prepare("UPDATE combustivel_entrada SET situacao = :situacao WHERE idcombustivel_entrada = :id");
+        $inserir->bindValue(':situacao', $situacao);
+        $inserir->bindValue(':id', $idEntrada);
+        $inserir->execute();     
+        
         $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, usuario) VALUES (:dataOp, :tipoOp, :volume, :usuario)");
         $sqlExtrato->bindValue(':dataOp', date('Y-m-d'));
         $sqlExtrato->bindValue(':tipoOp', "Ajuste de Entrada");
         $sqlExtrato->bindValue(':volume', $litros);
         $sqlExtrato->bindValue(':usuario', $_SESSION['idUsuario']);
-        if($sqlExtrato->execute()){
-            echo "<script>alert('Entrada Aprovada com Sucesso!');</script>";
-            echo "<script>window.location.href='entradas.php'</script>";
-        }else{
-            print_r($sqlExtrato->errorInfo());
-        }
-            
-        
-    }else{
-        print_r($inserir->errorInfo());
+        $sqlExtrato->execute();
+
+        $db->commit();
+        $_SESSION['msg'] = 'Entrada Aprovada com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Aprovar Entrada';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='entradas.php'</script>"; 
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: entradas.php");
+exit();
 ?>

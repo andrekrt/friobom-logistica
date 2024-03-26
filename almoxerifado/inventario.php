@@ -39,7 +39,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <!-- arquivos para datatable -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.css"/>
-
+    <!-- select02 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 </head>
 <body>
     <div class="container-fluid corpo">
@@ -92,7 +94,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function(){
             $('#tableInv').DataTable({
@@ -118,6 +123,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[7]}
                 ],
+                "order":[0,'desc']
             });
         });
 
@@ -163,7 +169,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-group col-md-6 espaco ">
                             <label for="peca"> Descrição Peça </label>
-                            <select required name="peca" id="peca" class="form-control">
+                            <select required name="peca" id="peca" class="form-control ">
                                 <option value=""></option>
                                 <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                 $pecas = $pecas->fetchAll();
@@ -208,7 +214,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-row">
                             <div class="form-group col-md-6 espaco ">
                                 <label for="peca"> Descrição Peça </label>
-                                <select required name="peca[]" id="peca" class="form-control">
+                                <select required name="peca[]" id="peca" class="form-control select2">
                                     <option value=""></option>
                                     <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                     $pecas = $pecas->fetchAll();
@@ -240,14 +246,44 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 </body>
 <script>
     $(document).ready(function(){
-
+        $('.select2').select2({
+            width: '100%',
+            dropdownParent:"#modalPeca",
+            theme: 'bootstrap4'
+        });       
+    
         var cont = 1;
         $('#add-peca').click(function(){
             cont++;
 
-            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-6 espaco"> <label for="peca"> Descrição Peça </label> <select required name="peca[]" id="peca" class="form-control"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_estoque"); $pecas = $pecas->fetchAll(); foreach($pecas as $peca): ?> <option value="<?=$peca['idpeca']?>"><?= $peca['idpeca']." - ". utf8_decode($peca['descricao_peca'])?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3 espaco"> <label for="qtd">Qtd Encontrada</label> <input type="text" name="qtd[]" class="form-control" id="qtd"> </div> </div>');
+            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-6 espaco"> <label for="peca"> Descrição Peça </label> <select required name="peca[]" id="peca" class="form-control select2"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_reparo"); $pecas = $pecas->fetchAll(); foreach($pecas as $peca): ?> <option value="<?=$peca['id_peca_reparo']?>"><?= $peca['id_peca_reparo']." - ". $peca['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3 espaco"> <label for="qtd">Qtd Encontrada</label> <input type="text" name="qtd[]" class="form-control" id="qtd"> </div> </div>');
+
+            $('.select2').select2({
+                width: '100%',
+                dropdownParent:"#modalPeca",
+                theme: 'bootstrap4'
+            }); 
 
         });
     });
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </html>

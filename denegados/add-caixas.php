@@ -18,35 +18,41 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $qtd =filter_input(INPUT_POST, 'qtd');
     $situacao = "Saída";
 
-    // verificar se já existe registro para essa carga
-    $consulta = $db->prepare("SELECT * FROM caixas WHERE carregamento=:carregamento");
-    $consulta->bindValue(':carregamento', $carga);
-    $consulta->execute();
-    $qtdCarga = $consulta->rowCount();
-    if($qtdCarga>0){
-        echo "<script>alert('Já existe registro nesse carregamento');</script>";
-        echo "<script>window.location.href='caixas.php'</script>";  
-    }else{
-        // echo "$idUsuario<br>$carga<br>$qtd<br>$situacao";
+    $db->beginTransaction();
+
+    try{
+        // verificar se já existe registro para essa carga
+        $consulta = $db->prepare("SELECT * FROM caixas WHERE carregamento=:carregamento");
+        $consulta->bindValue(':carregamento', $carga);
+        $consulta->execute();
+        $qtdCarga = $consulta->rowCount();
+        if($qtdCarga>0){
+            $_SESSION['msg'] = 'Já existe registro nesse carregamento!';
+            $_SESSION['icon']='warning';
+            header("Location: caixas.php");
+            exit();
+
+        }
 
         $inserir = $db->prepare("INSERT INTO caixas (carregamento, qtd_caixas, situacao, usuario) VALUES (:carregamento, :qtd, :situacao, :usuario)");
         $inserir->bindValue(':carregamento', $carga);
         $inserir->bindValue(':qtd', $qtd);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $idUsuario);
+        $inserir->execute();
 
-        if($inserir->execute()){
-            echo "<script>alert('Saída de Caixa Registrada');</script>";
-            echo "<script>window.location.href='caixas.php'</script>";    
-            
-        }else{
-            print_r($inserir->errorInfo());
-        }
-    }
+        $db->commit();
 
-    
-    
-
-}
+        $_SESSION['msg'] = 'Saída de Caixa Registrada com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Saída de Caixa';
+        $_SESSION['icon']='error';
+    } 
+    header("Location: caixas.php");
+    exit();
+}   
 
 ?>

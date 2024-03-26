@@ -42,6 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     <!-- select02 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 </head>
@@ -104,7 +105,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function(){
             $('#tableOS').DataTable({
@@ -146,6 +148,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                    }
                    return nRow;
                },
+               "order":[0,'desc']
             });
         });
     </script>
@@ -166,7 +169,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-row">
                             <div class="form-group col-md-2 espaco ">
                                 <label for="descricao">Placa </label>
-                                <select required name="placa" id="placa" class="form-control">
+                                <select required name="placa" id="placa" class="form-control select2">
                                     <option value=""></option>
                                     <?php $pecas = $db->query("SELECT * FROM veiculos");
                                     $pecas = $pecas->fetchAll();
@@ -191,7 +194,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label class="form-check-label" for="preventiva">Preventiva</label>
                             </div>
                             <div class="form-group  espaco form-check check-os">
-                                <input type="checkbox" class="form-check-input" id="externa" name="externa">
+                                <input type="checkbox" class="form-check-input" id="ManuExterna" name="externa">
                                 <label class="form-check-label" for="externa">Manutenção Externa</label>
                             </div>
                             <div class="form-group  espaco form-check check-os">
@@ -216,7 +219,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-row">
                             <div class="form-group col-md-3 espaco ">
                                 <label for="servico"> Serviço </label>
-                                <select required name="servico[]" id="servico" class="form-control">
+                                <select required name="servico[]" id="servico" class="form-control select2">
                                     <option value=""></option>
                                     <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado");
                                     $servicos = $servicos->fetchAll();
@@ -228,7 +231,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </div>
                             <div class="form-group col-md-3 espaco ">
                                 <label for="peca"> Peça </label>
-                                <select name="peca[]" id="peca" class="form-control">
+                                <select name="peca[]" id="peca" class="form-control select2">
                                     <option value=""></option>
                                     <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                     $pecas = $pecas->fetchAll();
@@ -271,20 +274,41 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             
             cont++;
 
-            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-3 espaco "> <label for="servico"> Serviço </label> <select required name="servico[]" id="servico" class="form-control"> <option value=""></option> <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado"); $servicos = $servicos->fetchAll(); foreach($servicos as $servico): ?> <option value="<?=$servico['idservicos']?>"><?=$servico['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3 espaco "> <label for="peca"> Peça </label> <select required name="peca[]" id="peca" class="form-control"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_reparo"); $pecas = $pecas->fetchAll(); foreach($pecas as $peca):?> <option value="<?=$peca['id_peca_reparo']?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="qtd"> Qtd </label> <input type="text" name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-group col-md-2 espaco "> <label for="requisicao"> Nº Requisição de Peça </label> <input type="text" name="requisicao[]" id="requisicao" class="form-control"> </div>  </div>');
+            $('#formulario').append('<div class="form-row"> <div class="form-group col-md-3 espaco "> <label for="servico"> Serviço </label> <select required name="servico[]" id="servico" class="form-control select2"> <option value=""></option> <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado"); $servicos = $servicos->fetchAll(); foreach($servicos as $servico): ?> <option value="<?=$servico['idservicos']?>"><?=$servico['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-3 espaco "> <label for="peca"> Peça </label> <select required name="peca[]" id="peca" class="form-control select2"> <option value=""></option> <?php $pecas = $db->query("SELECT * FROM peca_reparo"); $pecas = $pecas->fetchAll(); foreach($pecas as $peca):?> <option value="<?=$peca['id_peca_reparo']?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="qtd"> Qtd </label> <input type="text" name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-group col-md-2 espaco "> <label for="requisicao"> Nº Requisição de Peça </label> <input type="text" name="requisicao[]" id="requisicao" class="form-control"> </div>  </div>');
+
+            $('.select2').select2({
+                width: '100%',
+                dropdownParent:"#modalOrdemServico",
+                theme: 'bootstrap4'
+            });
 
         });
 
-        $('#placa').select2({
+        $('.select2').select2({
             width: '100%',
-            dropdownParent:"#modalOrdemServico"
+            dropdownParent:"#modalOrdemServico",
+            theme: 'bootstrap4'
         });
-        // $('#placaEdit').select2({
-        //     width: '100%',
-        //     dropdownParent:"#modalEditar"
-        // });
         
     });
 </script>
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

@@ -28,45 +28,40 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $kmRodado = filter_input(INPUT_POST, 'kmRodado');
     $usuario = $_SESSION['idUsuario'];
 
-    // echo "Data de Saída: $dataSaida<br>" ;
-    // echo "Data de Saída: $dataChegada<br>" ;
-    // echo "Supervisor: $supervisor<br>" ;
-    // echo "Veiculo: $veiculo<br>" ;
-    // echo "Velocidade Máxima: $velMax<br>" ;
-    // echo "Cidade Saída: $cidadeSaida<br>" ;
-    // echo "Cidade chegada: $cidadeChegada<br>" ;
-    // echo "RCA1: $rca1<br>" ;
-    // echo "RCA2: $rca2<br>" ;
-    // echo "OBS: $obs<br>" ;
-    // echo "Residencia: $residencia<br>" ;
-    // echo "Diarias: $diarias<br>" ;
-    // echo "Usuário: $usuario<br>" ;
-    // echo "ID: $idRota<br>" ;
-    
-    $sql = $db->prepare("UPDATE rotas_supervisores SET saida=:saida, supervisor=:supervisor, chegada=:chegada, velocidade_max=:velocidade, rca01=:rca01, rca02=:rca02, obs=:obs, cidades=:cidades, qtd_visitas=:visitas, hora_almoco=:horaAlmoco, km_rodado=:km, usuario=:usuario WHERE idrotas=:idrotas ");
-    $sql->bindValue(':saida', $dataSaida);
-    $sql->bindValue(':supervisor', $supervisor);
-    $sql->bindValue(':chegada', $dataChegada);
-    $sql->bindValue(':velocidade', $velMax);
-    $sql->bindValue(':rca01', $rca1);
-    $sql->bindValue(':rca02', $rca2);
-    $sql->bindValue(':obs', $obs);
-    $sql->bindValue(':cidades', $cidades);
-    $sql->bindValue(':visitas', $visitas);
-    $sql->bindValue(':horaAlmoco', $horaAlmoco);
-    $sql->bindValue(':usuario', $usuario);
-    $sql->bindValue(':km',$kmRodado);
-    $sql->bindValue(':idrotas', $idRota);
-    if($sql->execute()){
-        echo "<script> alert('Rota Atualizada!!')</script>";
-        echo "<script> window.location.href='rotas-supervisores.php' </script>";
-    }else{
-        print_r($sql->errorInfo());
-    }    
+    $db->beginTransaction();
 
-}else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='../index.php' </script>";
+    try{
+        $sql = $db->prepare("UPDATE rotas_supervisores SET saida=:saida, supervisor=:supervisor, chegada=:chegada, velocidade_max=:velocidade, rca01=:rca01, rca02=:rca02, obs=:obs, cidades=:cidades, qtd_visitas=:visitas, hora_almoco=:horaAlmoco, km_rodado=:km, usuario=:usuario WHERE idrotas=:idrotas ");
+        $sql->bindValue(':saida', $dataSaida);
+        $sql->bindValue(':supervisor', $supervisor);
+        $sql->bindValue(':chegada', $dataChegada);
+        $sql->bindValue(':velocidade', $velMax);
+        $sql->bindValue(':rca01', $rca1);
+        $sql->bindValue(':rca02', $rca2);
+        $sql->bindValue(':obs', $obs);
+        $sql->bindValue(':cidades', $cidades);
+        $sql->bindValue(':visitas', $visitas);
+        $sql->bindValue(':horaAlmoco', $horaAlmoco);
+        $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':km',$kmRodado);
+        $sql->bindValue(':idrotas', $idRota);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rota Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Rota';
+        $_SESSION['icon']='error';
+    }
+
+}else{;
+    $_SESSION['msg'] = 'Acesso não permitido!';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: rotas-supervisores.php");
+exit();
 ?>

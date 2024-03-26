@@ -37,18 +37,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         $db->commit();
 
-        echo "<script>alert('Vale Atualizado!');</script>";
-        echo "<script>window.location.href='vales.php'</script>";  
+        $_SESSION['msg'] = 'Vale Atualizado com Sucesso';
+        $_SESSION['icon']='success';
 
     }catch(Exception $e){
         $db->rollBack();
 
-        echo "Erro: ". $e->getMessage();
+        $_SESSION['msg'] = 'Erro ao Atualizar Vale';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='abastecimento.php'</script>"; 
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: vales.php");
+exit();
 
 ?>

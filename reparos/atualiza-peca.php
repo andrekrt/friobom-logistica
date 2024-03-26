@@ -20,24 +20,34 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $medida = filter_input(INPUT_POST, 'medida');
     $estoqueMinimo = trim(str_replace(",", ".", filter_input(INPUT_POST, 'estoqueMin')));
 
-    $atualiza = $db->prepare("UPDATE peca_reparo SET descricao = :descricao, categoria = :categoria, un_medida = :medida, estoque_minimo=:estoqueMin WHERE id_peca_reparo = :id" );
-    $atualiza->bindValue('id', $id);
-    $atualiza->bindValue(':descricao', $descricao);
-    $atualiza->bindValue(':categoria', $categoria);
-    $atualiza->bindValue(':medida', $medida);
-    $atualiza->bindValue(':estoqueMin', $estoqueMinimo);
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='pecas.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+    $db->beginTransaction();
+
+    try{
+        $atualiza = $db->prepare("UPDATE peca_reparo SET descricao = :descricao, categoria = :categoria, un_medida = :medida, estoque_minimo=:estoqueMin WHERE id_peca_reparo = :id" );
+        $atualiza->bindValue('id', $id);
+        $atualiza->bindValue(':descricao', $descricao);
+        $atualiza->bindValue(':categoria', $categoria);
+        $atualiza->bindValue(':medida', $medida);
+        $atualiza->bindValue(':estoqueMin', $estoqueMinimo);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Peça Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Peç';
+        $_SESSION['icon']='error';
     }
-   
+
 }else{
 
-    echo "<script> alert('Acesso não permitido!')</script>";
-    echo "<script> window.location.href='pecas.php' </script>";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 
 }
-
+header("Location: pecas.php");
+exit();
 ?>

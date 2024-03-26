@@ -28,40 +28,46 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $qtd = $_POST['qtd'];
     $requisicao = $_POST['requisicao'];
 
-    // print_r($peca)."<br>";
-    // print_r($servico)."<br>";
-    // print_r($qtd)."<br>";
-    // print_r($requisicao)."<br>";
+    $db->beginTransaction();
 
-    for($i=0; $i<count($qtd);$i++){
-        if(contaEstoque($peca[$i])<$qtd[$i]){
-            echo "<script>alert('estoque insuficiente')</script>";
-            echo "<script>window.location.href='form-saidapeca-os.php?idOs=$os'</script>"; 
-            exit;
+    try{
+        for($i=0; $i<count($qtd);$i++){
+            if(contaEstoque($peca[$i])<$qtd[$i]){
+                $_SESSION['msg'] = 'Estoque Insuficiente!';
+                $_SESSION['icon']='warning';
+                header("Location: form-saidapeca-os.php?idOs=$os");
+                exit();
+            }
         }
-    }
+    
+        for($i=0;$i<count($peca);$i++){
+            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao, :idUsuario)");
+            $inserir->bindValue(':dataSaida', $dataSaida);
+            $inserir->bindValue(':qtd', $qtd[$i]);
+            $inserir->bindValue(':peca', $peca[$i]);
+            $inserir->bindValue(':placa', $placa);
+            $inserir->bindValue(':obs', $obs);
+            $inserir->bindValue(':servico', $servico[$i]);
+            $inserir->bindValue(':os', $os);
+            $inserir->bindValue(':requisicao', $requisicao[$i]);
+            $inserir->bindValue(':idUsuario', $idUsuario);
+            $inserir->execute();
 
-    for($i=0;$i<count($peca);$i++){
-        $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao, :idUsuario)");
-        $inserir->bindValue(':dataSaida', $dataSaida);
-        $inserir->bindValue(':qtd', $qtd[$i]);
-        $inserir->bindValue(':peca', $peca[$i]);
-        $inserir->bindValue(':placa', $placa);
-        $inserir->bindValue(':obs', $obs);
-        $inserir->bindValue(':servico', $servico[$i]);
-        $inserir->bindValue(':os', $os);
-        $inserir->bindValue(':requisicao', $requisicao[$i]);
-        $inserir->bindValue(':idUsuario', $idUsuario);
-
-        if($inserir->execute()){
             atualizaEStoque($peca[$i]);
-            echo "<script>alert('Saída Lançada com Sucesso!');</script>";
-            echo "<script>window.location.href='ordem-servico.php'</script>";      
-            
-        }else{
-            print_r($inserir->errorInfo());
+
+            $db->commit();
+
+            $_SESSION['msg'] = 'Saída Lançada com Sucesso';
+            $_SESSION['icon']='success';
+
         }
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Saída';
+        $_SESSION['icon']='error';
     }
+    header("Location: ordem-servico.php");
+    exit();
     
 }
 

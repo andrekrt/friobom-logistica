@@ -19,32 +19,41 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $cidade = filter_input(INPUT_POST, 'residencia');
     $veiculo = filter_input(INPUT_POST, 'veiculo');
 
-    //verificar se já existe cadastro
-    $sqlConsulta = $db->prepare("SELECT idsupervisor FROM supervisores WHERE idsupervisor=:codigo");
-    $sqlConsulta->bindValue(':codigo', $codigo);
-    $sqlConsulta->execute();
-    if($sqlConsulta->rowCount()>0){
-        echo "<script> alert('Esse supervisor já está cadastrado!')</script>";
-        echo "<script> window.location.href='supervisores.php' </script>";
-    }else{
+    $db->beginTransaction();
+
+    try{
+        //verificar se já existe cadastro
+        $sqlConsulta = $db->prepare("SELECT idsupervisor FROM supervisores WHERE idsupervisor=:codigo");
+        $sqlConsulta->bindValue(':codigo', $codigo);
+        $sqlConsulta->execute();
+        if($sqlConsulta->rowCount()>0){
+            $_SESSION['msg'] = 'Esse supervisor já está cadastrado!';
+            $_SESSION['icon']='warning';
+            header("Location: supervisores.php");
+            exit();
+        }
         $sql = $db->prepare("INSERT INTO supervisores (idsupervisor, nome_supervisor, cidade_residencia, veiculo) VALUES (:codigo, :supervisor, :cidade, :veiculo)");
         $sql->bindValue(':codigo', $codigo);
         $sql->bindValue(':supervisor', $nome);
         $sql->bindValue(':cidade', $cidade);
         $sql->bindValue(':veiculo', $veiculo);
-        if($sql->execute()){
-            echo "<script> alert('Supervisor Cadastrado!')</script>";
-            echo "<script> window.location.href='supervisores.php' </script>";
-        }else{
-            print_r($sql->errorInfo());
-        }    
-    }
-    
-    
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Supervisor Cadastrado com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Supervisor';
+        $_SESSION['icon']='error';
+    } 
 
 }else{
-    echo "<script> alert('Acesso não permitido!!!')</script>";
-    echo "<script> window.location.href='../index.php' </script>";
+    $_SESSION['msg'] = 'Acesso não permitido!';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: supervisores.php");
+exit();
 ?>

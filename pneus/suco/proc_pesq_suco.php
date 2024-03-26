@@ -53,7 +53,7 @@ $data = array();
 foreach($empRecords as $row){
     $excluir = '';
     if( $_SESSION['tipoUsuario']==99){
-        $excluir='<a href="excluir-suco.php?idsuco='.$row['idsucos'].' "data-id="'.$row['idsucos'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm('."Tem certeza de que deseja excluir este item?".')">Deletar</a>';
+        $excluir='<a  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idsucos'] . ')\'>Deletar</a>';
     }
     $data[] = array(
         "num_fogo"=>$row['num_fogo'],

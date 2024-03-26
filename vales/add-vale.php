@@ -38,14 +38,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         $db->commit();
 
-        echo "<script>alert('Vale Lançado!!!');</script>";
-        echo "<script>window.location.href='vales.php'</script>";
-
+        $_SESSION['msg'] = 'Vale Lançado com Sucesso';
+        $_SESSION['icon']='success';
 
     }catch(Exception $e){
         $db->rollBack();
-        echo "Erro: " .$e->getMessage();
+        $_SESSION['msg'] = 'Erro ao Lançar Vale';
+        $_SESSION['icon']='error';
+
     }  
+
+    header("Location: vales.php");
+    exit();
+
 
 }
 

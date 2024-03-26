@@ -6,19 +6,30 @@ require("../conexao.php");
 $id = filter_input(INPUT_GET, 'id');
 
 if(isset($id) && empty($id) == false ){ 
-    
-    $sql = $db->prepare("DELETE FROM folha_pagamento WHERE idpagamento = :id");
-    $sql->bindValue(':id',$id);
-    
-    if($sql->execute()){
-        echo "<script>alert('Excluído com Sucesso!');</script>";
-        echo "<script>window.location.href='pagamentos.php'</script>";
-    }else{
-        print_r($sql->errorInfo());
-    }
+
+    $db->beginTransaction();
+
+    try{
+        $sql = $db->prepare("DELETE FROM folha_pagamento WHERE idpagamento = :id");
+        $sql->bindValue(':id',$id);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Pagamento Excluído com Sucesso';
+        $_SESSION['icon']='success';
+        
+    } catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Pagamento';
+        $_SESSION['icon']='error';
+    }    
     
 }else{
-    header("Location:solicitacoes.php");
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
 
+header("Location: colaboradores.php");
+exit();
 ?>

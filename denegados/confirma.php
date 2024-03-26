@@ -16,21 +16,29 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $token = filter_input(INPUT_GET, 'token');
 
-    $atualiza = $db->prepare("UPDATE denegadas SET situacao = :situacao WHERE token = :token");
-    $atualiza->bindValue(':situacao', "Confirmado");
-    $atualiza->bindValue(':token', $token);
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='denegadas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE denegadas SET situacao = :situacao WHERE token = :token");
+        $atualiza->bindValue(':situacao', "Confirmado");
+        $atualiza->bindValue(':token', $token);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'NFs  Confirmadas com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Confirma NF\'s';
+        $_SESSION['icon']='error';
     }
-   
-    
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: denegadas.php");
+exit();
 ?>

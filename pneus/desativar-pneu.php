@@ -25,24 +25,33 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $motivo = filter_input(INPUT_POST, 'motivo');
     $uso = 0;
 
-    //echo "$kmInicial<br>$kmFinal<br>$kmRodado";
+    $db->beginTransaction();
 
-    $sql = $db->prepare("UPDATE pneus SET km_final = :kmFinal, km_rodado = :kmRodado, uso = :uso, motivo_descarte = :motivo, veiculo=:veiculo, localizacao=:localizacao WHERE idpneus = :idPneu");
-    $sql->bindValue(':kmFinal', $kmFinal);
-    $sql->bindValue(':kmRodado', $kmRodado);
-    $sql->bindValue(':uso', $uso);
-    $sql->bindValue(':motivo', $motivo);
-    $sql->bindValue(':idPneu', $idPneu);
-    $sql->bindValue(':veiculo', '00000');
-    $sql->bindValue(':localizacao', 'Descartado');
-    
-    if($sql->execute()){
-        echo "<script> alert('Pneu Desativado!!!')</script>";
-        echo "<script> window.location.href='pneus.php' </script>";
-    }else{
-        print_r($sql->errorInfo());
+    try{
+        $sql = $db->prepare("UPDATE pneus SET km_final = :kmFinal, km_rodado = :kmRodado, uso = :uso, motivo_descarte = :motivo, veiculo=:veiculo, localizacao=:localizacao WHERE idpneus = :idPneu");
+        $sql->bindValue(':kmFinal', $kmFinal);
+        $sql->bindValue(':kmRodado', $kmRodado);
+        $sql->bindValue(':uso', $uso);
+        $sql->bindValue(':motivo', $motivo);
+        $sql->bindValue(':idPneu', $idPneu);
+        $sql->bindValue(':veiculo', '00000');
+        $sql->bindValue(':localizacao', 'Descartado');
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Pneu Descartado com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Descartar Pneu';
+        $_SESSION['icon']='error';
     }
+
     
+    header("Location: pneus.php");
+    exit();   
 
 }else{
 

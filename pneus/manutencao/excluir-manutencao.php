@@ -16,18 +16,27 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $idManutencao = filter_input(INPUT_GET, 'idmanutencao');
 
+    $db->beginTransaction();
 
-    $sql = $db->prepare("DELETE FROM manutencao_pneu WHERE idmanutencao_pneu = :idManutencao");
-    $sql->bindValue(':idManutencao', $idManutencao);
-   
-    
-    if($sql->execute()){
-        echo "<script> alert('Manutenção Excluída!!')</script>";
-        echo "<script> window.location.href='manutencoes.php' </script>";
-    }else{
-        print_r($sql->errorInfo());
+    try{
+        $sql = $db->prepare("DELETE FROM manutencao_pneu WHERE idmanutencao_pneu = :idManutencao");
+        $sql->bindValue(':idManutencao', $idManutencao);
+        $sql->execute();
+
+        
+        $db->commit();
+
+        $_SESSION['msg'] = 'Manutenção Excluída com Sucesso';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Manutenção';
+        $_SESSION['icon']='error';
     }
-    
+
+    header("Location: manutencoes.php");
+    exit();    
 
 }else{
 

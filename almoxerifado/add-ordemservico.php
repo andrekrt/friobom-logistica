@@ -33,72 +33,76 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $qtd = str_replace(",",".",$_POST['qtd']);
     $numRequisicao = $_POST['requisicao'];
 
-    // echo "Corretiva:$corretiva<br>";
-    // echo "Preventiva:$preventiva<br>";
-    // echo "Manutenção Externa: $externa<br>";
-    // echo "Higienização: $higienizacao<br>";
-    // echo "$idUsuario<br>$dataAbertura<br>$placa<br>$descricaoProblema<br>$causador<br>$numNf<br>$obs<br>$situacao<br>";
-    // print_r($servicos)."<br>";
-    // print_r($pecas)."<br>";
-    // print_r($qtd)."<br>";
-    // print_r($numRequisicao);
-    $i=0;
-    //echo count($qtd);
-    for($i; $i<count($qtd);$i++){
-        if(contaEstoque($pecas[$i])<$qtd[$i]){
+    $db->beginTransaction();
 
-            // echo "EStoque = ". contaEstoque($pecas[$i]);
-            // echo "QTd = " . $qtd[$i];
-            echo "<script>alert('estoque insuficiente')</script>";
-            echo "<script>window.location.href='ordem-servico.php'</script>"; 
-            exit;
+    try{
+        $i=0;
+        for($i; $i<count($qtd);$i++){
+            if(contaEstoque($pecas[$i])<$qtd[$i]){
+                $_SESSION['msg'] = 'Estoque Insuficiente!';
+                $_SESSION['icon']='warning';
+                header("Location: ordem-servico.php");
+                exit();
+            }
         }
-    }
 
-    $inserir = $db->prepare("INSERT INTO ordem_servico (data_abertura, placa, descricao_problema, corretiva, preventiva, externa, higienizacao, causador, situacao, requisicao_saida, num_nf, obs, idusuario) VALUES (:dataAbertura, :placa, :descricaoProblema, :corretiva, :preventiva, :externa, :higienizacao, :causador, :situacao, :requisicao, :numNf, :obs, :idusuario)");
-    $inserir->bindValue(':dataAbertura', $dataAbertura);
-    $inserir->bindValue(':placa', $placa);
-    $inserir->bindValue(':descricaoProblema', $descricaoProblema);
-    $inserir->bindValue(':corretiva', $corretiva);
-    $inserir->bindValue(':preventiva', $preventiva);
-    $inserir->bindValue(':externa', $externa);
-    $inserir->bindValue(':higienizacao', $higienizacao);
-    $inserir->bindValue(':causador', $causador);
-    $inserir->bindValue(':situacao', $situacao);
-    $inserir->bindValue(':requisicao', $numRequisicao[0]);
-    $inserir->bindValue(':numNf', $numNf);
-    $inserir->bindValue(':obs', $obs);
-    $inserir->bindValue(':idusuario', $idUsuario);
+        $inserir = $db->prepare("INSERT INTO ordem_servico (data_abertura, placa, descricao_problema, corretiva, preventiva, externa, higienizacao, causador, situacao, requisicao_saida, num_nf, obs, idusuario) VALUES (:dataAbertura, :placa, :descricaoProblema, :corretiva, :preventiva, :externa, :higienizacao, :causador, :situacao, :requisicao, :numNf, :obs, :idusuario)");
+        $inserir->bindValue(':dataAbertura', $dataAbertura);
+        $inserir->bindValue(':placa', $placa);
+        $inserir->bindValue(':descricaoProblema', $descricaoProblema);
+        $inserir->bindValue(':corretiva', $corretiva);
+        $inserir->bindValue(':preventiva', $preventiva);
+        $inserir->bindValue(':externa', $externa);
+        $inserir->bindValue(':higienizacao', $higienizacao);
+        $inserir->bindValue(':causador', $causador);
+        $inserir->bindValue(':situacao', $situacao);
+        $inserir->bindValue(':requisicao', $numRequisicao[0]);
+        $inserir->bindValue(':numNf', $numNf);
+        $inserir->bindValue(':obs', $obs);
+        $inserir->bindValue(':idusuario', $idUsuario);
+        $inserir->execute();
 
-    if($inserir->execute()){
         $idOs = $db->lastInsertId();
         if($externa===1){
             $status = "Manutenção Externa";
         }else{
             $status = "Manutenção Interna";
         }
+
         alterarStatusCaminhao($placa,$status);
         $i=0;
         for($i;$i<count($pecas); $i++){
-            
-            $saidaPecas = addSaida($qtd[$i], $pecas[$i], $placa, $obs, $servicos[$i], $idOs, $idUsuario, $numRequisicao[$i]);
 
-            if($saidaPecas){
-                //echo "ok";
-                echo "<script>alert('Saída Lançada e OS Registrada!!!');</script>";
-                
-            }else{
-                echo "erro na saida de peça";
-            }
-           
+            $dataSaida = date("Y-m-d");
+            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao_saida, :idUsuario)");
+            $inserir->bindValue(':dataSaida', $dataSaida);
+            $inserir->bindValue(':qtd', $qtd[$i]);
+            $inserir->bindValue(':peca', $pecas[$i]);
+            $inserir->bindValue(':placa', $placa);
+            $inserir->bindValue(':obs', $obs);
+            $inserir->bindValue(':servico', $servicos[$i]);
+            $inserir->bindValue(':os', $idOs);
+            $inserir->bindValue(':requisicao_saida', $numRequisicao[$i]);
+            $inserir->bindValue(':idUsuario', $idUsuario);
+            $inserir->execute();
+
+            atualizaEStoque($pecas[$i]);
+
+            // $saidaPecas = addSaida($qtd[$i], $pecas[$i], $placa, $obs, $servicos[$i], $idOs, $idUsuario, $numRequisicao[$i]);
         }
 
-        echo "<script>window.location.href='ordem-servico.php'</script>";
+        $db->commit();
 
-    }else{
-        print_r($inserir->errorInfo());
-    }
+        $_SESSION['msg'] = 'Saída Lançada e OS Registrada com Sucesso';
+        $_SESSION['icon']='success';
 
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Vale';
+        $_SESSION['icon']='error';
+    }    
+    header("Location: ordem-servico.php");
+    exit();
 }
 
 ?>

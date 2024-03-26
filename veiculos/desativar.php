@@ -16,20 +16,32 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $codVeiculo = filter_input(INPUT_GET, 'codVeiculo');
     $ativo = 0;
 
-    $atualiza = $db->prepare("UPDATE veiculos SET ativo = :ativo WHERE cod_interno_veiculo = :codigo");
-    $atualiza->bindValue(':codigo', $codVeiculo);
-    $atualiza->bindValue(':ativo', $ativo);
-    $atualiza->execute();
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Desativado com Sucesso!')</script>";
-        echo "<script> window.location.href='veiculos.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+    try{
+        $atualiza = $db->prepare("UPDATE veiculos SET ativo = :ativo WHERE cod_interno_veiculo = :codigo");
+        $atualiza->bindValue(':codigo', $codVeiculo);
+        $atualiza->bindValue(':ativo', $ativo);
+        $atualiza->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Veículo Desativado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Desativar Veículo';
+        $_SESSION['icon']='error';
     }
+   
 
 }else{
-    echo "Erro, contatar o adminstrador!";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: veiculos.php");
+exit();
 
 ?>

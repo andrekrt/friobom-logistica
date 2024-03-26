@@ -54,7 +54,7 @@ $data = array();
 foreach($empRecords as $row){
     $botao = "";
     if($_SESSION['tipoUsuario']==4){
-        $botao = '<a href="javascript:void();" data-id="'.$row['idinventario'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-inventario.php?idInventario='.$row['idinventario'].' " data-id="'.$row['idinventario'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+        $botao = '<a href="javascript:void();" data-id="'.$row['idinventario'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a onclick=\'confirmaDelete(' . $row['idinventario'] . ')\' data-id="'.$row['idinventario'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
     }
     $data[] = array(
         "idinventario"=>$row['idinventario'],

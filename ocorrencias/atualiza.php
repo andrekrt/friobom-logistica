@@ -40,56 +40,62 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $anexoLaudo = $_FILES['anexoLaudo'];
     $anexoLaudo_nome = $anexoLaudo['name'][0]?$anexoLaudo['name'][0]:$laudoaPadrao;
 
-    $atualiza = $db->prepare("UPDATE ocorrencias SET cod_interno_motorista = :motorista, data_ocorrencia = :dataOcorrencia, tipo_ocorrencia = :tipo, advertencia = :advertencia, laudo = :laudo, descricao_custos = :descricaoCusto, vl_total_custos = :vlTotal, situacao = :situacao, img_ocorrencia = :anexoOcorrencia, img_advertencia = :anexoAdvertencia, img_laudo = :anexoLaudo,  placa = :placa, num_carregamento = :carregamento, descricao_problema = :descricaoProblema  WHERE idocorrencia = :idOcorrencia");
-    $atualiza->bindValue(':motorista', $motorista);
-    $atualiza->bindValue(':dataOcorrencia', $data);
-    $atualiza->bindValue(':tipo', $tipoOcorrencia);
-    $atualiza->bindValue(':advertencia', $advertencia);
-    $atualiza->bindValue(':laudo', $laudo);
-    $atualiza->bindValue(':descricaoCusto', $descricaoCusto);
-    $atualiza->bindValue(':vlTotal', $vlTotal);
-    $atualiza->bindValue(':situacao', $situacao);
-    $atualiza->bindValue(':idOcorrencia', $idOcorrencia);
-    $atualiza->bindValue(':anexoOcorrencia', $anexoOcorrencia_nome);
-    $atualiza->bindValue(':anexoAdvertencia', $anexoAdvertencia_nome);
-    $atualiza->bindValue(':anexoLaudo', $anexoLaudo_nome);
-    $atualiza->bindValue(':placa', $placa);
-    $atualiza->bindValue(':carregamento', $carregamento);
-    $atualiza->bindValue(':descricaoProblema', $descricaoProblema);
-    
-    /*echo "$idOcorrencia<br>$motorista<br>$data<br>$tipoOcorrencia<br>$advertencia<br>$laudo<br>$descricao<br>$vlTotal<br>$situacao<br>$anexoOcorrencia_nome<br>$anexoAdvertencia_nome<br>$anexoLaudo_nome";*/
+    $db->beginTransaction();
 
-    if($atualiza->execute()){
+    try{
+        $atualiza = $db->prepare("UPDATE ocorrencias SET cod_interno_motorista = :motorista, data_ocorrencia = :dataOcorrencia, tipo_ocorrencia = :tipo, advertencia = :advertencia, laudo = :laudo, descricao_custos = :descricaoCusto, vl_total_custos = :vlTotal, situacao = :situacao, img_ocorrencia = :anexoOcorrencia, img_advertencia = :anexoAdvertencia, img_laudo = :anexoLaudo,  placa = :placa, num_carregamento = :carregamento, descricao_problema = :descricaoProblema  WHERE idocorrencia = :idOcorrencia");
+        $atualiza->bindValue(':motorista', $motorista);
+        $atualiza->bindValue(':dataOcorrencia', $data);
+        $atualiza->bindValue(':tipo', $tipoOcorrencia);
+        $atualiza->bindValue(':advertencia', $advertencia);
+        $atualiza->bindValue(':laudo', $laudo);
+        $atualiza->bindValue(':descricaoCusto', $descricaoCusto);
+        $atualiza->bindValue(':vlTotal', $vlTotal);
+        $atualiza->bindValue(':situacao', $situacao);
+        $atualiza->bindValue(':idOcorrencia', $idOcorrencia);
+        $atualiza->bindValue(':anexoOcorrencia', $anexoOcorrencia_nome);
+        $atualiza->bindValue(':anexoAdvertencia', $anexoAdvertencia_nome);
+        $atualiza->bindValue(':anexoLaudo', $anexoLaudo_nome);
+        $atualiza->bindValue(':placa', $placa);
+        $atualiza->bindValue(':carregamento', $carregamento);
+        $atualiza->bindValue(':descricaoProblema', $descricaoProblema);
+        $atualiza->execute();
 
         //uploads de ocorrencias
         for($i=0;$i<count($anexoOcorrencia['name']);$i++){
             $destinoOcorrencia = "uploads/". $idOcorrencia . "/ocorrencias". "/".  $anexoOcorrencia['name'][$i];
             move_uploaded_file($anexoOcorrencia['tmp_name'][$i], $destinoOcorrencia);
-           
         }
 
         //uploads de advertencias
         for($i=0;$i<count($anexoAdvertencia['name']);$i++){
             $destinoAdvertencia = "uploads/". $idOcorrencia . "/advertencias". "/".  $anexoAdvertencia['name'][$i];
             move_uploaded_file($anexoAdvertencia['tmp_name'][$i], $destinoAdvertencia);
-           
         }
 
         //uploads de laudos
         for($i=0;$i<count($anexoLaudo['name']);$i++){
             $destinoLaudo = "uploads/". $idOcorrencia . "/laudos". "/".  $anexoLaudo['name'][$i];
             move_uploaded_file($anexoLaudo['tmp_name'][$i], $destinoLaudo);
-           
         }
-       
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='ocorrencias.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Ocorrência Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+
+        $_SESSION['msg'] = 'Erro ao Atualizar Ocorrência';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
 
+header("Location: ocorrencias.php");
+exit();
 ?>

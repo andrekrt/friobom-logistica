@@ -23,12 +23,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $ceps = filter_input(INPUT_POST, 'ceps');
     $metaDias = str_replace(",",".", filter_input(INPUT_POST, 'metaDias'));
 
-    $consulta = $db->query("SELECT * FROM rotas WHERE cod_rota = $codRota ");
+    $db->beginTransaction();
 
-    if($consulta->rowCount()>0){
-        echo "<script>alert('Essa Rota já está cadastrada!');</script>";
-        echo "<script>window.location.href='form-rota.php'</script>";
-    }else{
+    try{
+        $consulta = $db->prepare("SELECT * FROM rotas WHERE cod_rota = :codRota ");
+        $consulta->bindValue(':codRota', $codRota);
+        $consulta->execute();
+
+        if($consulta->rowCount()>0){
+            $_SESSION['msg'] = 'Essa Rota já está cadastrada!';
+            $_SESSION['icon']='warning';
+            header("Location: form-rota.php");
+            exit(); 
+        }
+
         $sql = $db->prepare("INSERT INTO rotas (cod_rota, nome_rota, fechamento1, fechamento2, hora_fechamento1, hora_fechamento2, ceps, meta_dias) VALUES (:codRota, :rota, :fechamento1, :fechamento2, :horaFechamento1, :horaFechamento2, :ceps, :metaDias) ");
         $sql->bindValue(':codRota', $codRota);
         $sql->bindValue(':rota', $rota);
@@ -38,21 +46,26 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':horaFechamento2', $horaFechamento2);
         $sql->bindValue(':ceps', $ceps);
         $sql->bindValue(':metaDias', $metaDias);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rota Cadastrada com Sucesso!';
+        $_SESSION['icon']='success';
         
-        if($sql->execute()){
 
-            echo "<script>alert('Rota Cadastrada!');</script>";
-            echo "<script>window.location.href='rotas.php'</script>";
-
-        }else{
-
-           print_r($sql->errorInfo());
-
-        }
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Rota!';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "erro no cadastro contator o administrador!";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: rotas.php");
+exit();
 
 ?>

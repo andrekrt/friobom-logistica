@@ -20,32 +20,35 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dataRevisao = filter_input(INPUT_POST, 'dataRevisao');
     $horimetro = filter_input(INPUT_POST, 'horimetro');
     
-    //echo "$tk<br>$dataRevisao<br>$horimetro";
+    $db->beginTransaction();
 
-    $inserir = $db->prepare("INSERT INTO revisao_tk (thermoking, data_revisao_tk, horimetro_revisao) VALUES (:thermoking, :dataRevisao, :horimetro)");
-    $inserir->bindValue(':thermoking', $tk);
-    $inserir->bindValue(':dataRevisao', $dataRevisao);
-    $inserir->bindValue(':horimetro', $horimetro);   
+    try{
+        $inserir = $db->prepare("INSERT INTO revisao_tk (thermoking, data_revisao_tk, horimetro_revisao) VALUES (:thermoking, :dataRevisao, :horimetro)");
+        $inserir->bindValue(':thermoking', $tk);
+        $inserir->bindValue(':dataRevisao', $dataRevisao);
+        $inserir->bindValue(':horimetro', $horimetro);
+        $inserir->execute();   
 
-    if($inserir->execute()){
         $atualizarTk = $db->prepare("UPDATE thermoking SET hora_atual = :horaAtual, hora_ultima_revisao = :horimetroRevisao, ultima_revisao_tk = :dataRevisao WHERE idthermoking = :idtk ");
         $atualizarTk->bindValue(':horaAtual', $horimetro);
         $atualizarTk->bindValue(':horimetroRevisao', $horimetro);
         $atualizarTk->bindValue(':dataRevisao', $dataRevisao);
         $atualizarTk->bindValue(':idtk', $tk);
-        if($atualizarTk->execute()){
-            atualizaTK($tk);
-            echo "<script>alert('Revisão de Lançada!');</script>";
-            echo "<script>window.location.href='revisao.php'</script>";
-        }else{
-            print_r($atualizarTk->errorInfo());
-            
-        }
-        
-    }else{
-        print_r($inserir->errorInfo());
-        echo "erro aqui";
+        $atualizarTk->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Revisão Lançada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Revisão';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: revisao.php");
+    exit();
 
 }
 

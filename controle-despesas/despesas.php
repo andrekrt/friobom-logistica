@@ -109,6 +109,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
     <script src="../assets/js/menu.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function(){
             $('#tableDesp').DataTable({
@@ -167,12 +169,46 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         //abrir modal descartar
         $('#modalData').click(function(){
-            
-
             $('#modalDate').modal('show');
-
-        
         });
+
+        // função confirmação sweert de assinatura
+        function confirmaAssina(id){
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você realmente deseja Confirmar esta Despesa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, Confirmar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Se o usuário confirmar, redirecione para a página de exclusão
+                    window.location.href = 'confirmacao.php?id=' + id;
+                }
+            });
+        }
+
+        // função confirmação sweert de exclusao
+        function confirmaDelete(id){
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você realmente deseja Excluir esta Despesa?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, Excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Se o usuário confirmar, redirecione para a página de exclusão
+                    window.location.href = 'excluir.php?id=' + id;
+                }
+            });
+        }
         
     </script>
 
@@ -210,5 +246,23 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         </div>
     </div>
 </div>
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && $_SESSION['icon']) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

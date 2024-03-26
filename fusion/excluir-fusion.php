@@ -16,17 +16,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $id = filter_input(INPUT_GET, 'id');
 
-    $delete = $db->query("DELETE FROM fusion WHERE idfusion = '$id' ");
+    $db->beginTransaction();
 
-    if($delete){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='fusion.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $delete = $db->prepare("DELETE FROM fusion WHERE idfusion = :id ");
+        $delete->bindValue(':id',$id);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Viagem Excluída com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Viagem';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
-
+header("Location: fusion.php");
+exit();
 ?>

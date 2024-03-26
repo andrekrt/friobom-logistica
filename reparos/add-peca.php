@@ -20,13 +20,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $estoqueMinimo = trim(str_replace(",", ".", filter_input(INPUT_POST, 'estoqueMin')));
     $situacao = 'Solicitar';
 
-    $verificaPeca = $db->prepare("SELECT * FROM peca_reparo WHERE descricao = :descricao");
-    $verificaPeca->bindValue(':descricao', $descricao);
-    $verificaPeca->execute();
-    if($verificaPeca->rowCount()>0){
-        echo "<script>alert('Essa Peça já está cadastrada no Estoque!');</script>";
-        echo "<script>window.location.href='pecas.php'</script>";
-    }else{
+    $db->beginTransaction();
+
+    try{
+        $verificaPeca = $db->prepare("SELECT * FROM peca_reparo WHERE descricao = :descricao");
+        $verificaPeca->bindValue(':descricao', $descricao);
+        $verificaPeca->execute();
+        if($verificaPeca->rowCount()>0){
+            $_SESSION['msg'] = 'Essa Peça já está cadastrada no Estoque!';
+            $_SESSION['icon']='warning';
+            header("Location: pecas.php");
+            exit();
+        }
         $inserir = $db->prepare("INSERT INTO peca_reparo (descricao, categoria, un_medida, estoque_minimo, situacao, usuario) VALUES (:descricao, :categoria, :medida, :estoque, :situacao, :usuario)" );
         $inserir->bindValue(':descricao', $descricao);
         $inserir->bindValue(':categoria', $categoria);
@@ -34,21 +39,25 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':estoque', $estoqueMinimo);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $idUsuario);
-        if($inserir->execute()){
-            echo "<script> alert('Cadastrado com Sucesso!')</script>";
-            echo "<script> window.location.href='pecas.php' </script>";
-        }else{
-            print_r($inserir->errorInfo());
-        }
-    }
+        $inserir->execute();
 
-    
+        $db->commit();
+
+        $_SESSION['msg'] = 'Peça Cadastrada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Peça';
+        $_SESSION['icon']='error';
+    }    
    
 }else{
 
-    echo "<script> alert('Acesso não permitido!')</script>";
-    echo "<script> window.location.href='pecas.php' </script>";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 
 }
-
+header("Location: pecas.php");
+exit();
 ?>

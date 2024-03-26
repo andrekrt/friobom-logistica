@@ -41,13 +41,17 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sqlExtrato->execute();
 
         $db->commit();
-        echo "<script>alert('Perca Aprovada com Sucesso!');</script>";
-        echo "<script>window.location.href='abastecimento.php'</script>";
+        $_SESSION['msg'] = 'Perca Aprovada com Sucesso!';
+        $_SESSION['icon']='success';
+        
     } catch (Exception $e) {
-        echo "Erro " . $e->getMessage();
         $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Aprovar Perca';
+        $_SESSION['icon']='error';
     }
 } else {
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='abastecimento.php'</script>";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning'; 
 }
+header("Location: abastecimento.php");
+exit();

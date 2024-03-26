@@ -133,7 +133,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                     </div>
                     <?php 
-                    $sqlServicos = $db->prepare("SELECT * FROM saida_estoque LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo WHERE os =:os");
+                    $sqlServicos = $db->prepare("SELECT idsaida_estoque, servicos_almoxarifado.descricao as nomeServico, servico, peca_idpeca,peca_reparo.descricao as nomePeca, qtd, requisicao_saida, os  FROM saida_estoque LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo WHERE os =:os");
                     $sqlServicos->bindValue(':os', $idOs);
                     $sqlServicos->execute();
                     $dados = $sqlServicos->fetchAll();
@@ -145,7 +145,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-3  ">
                             <label for="servico"> Serviço </label>
                             <select required name="servico[]" id="servico" class="form-control">
-                                <option value="<?=$dado['servico']?>"><?=$dado['descricao']?></option>
+                                <option value="<?=$dado['servico']?>"><?=$dado['nomeServico']?></option>
                                 <?php $servicos = $db->query("SELECT * FROM servicos_almoxarifado");
                                 $servicos = $servicos->fetchAll();
                                 foreach($servicos as $servico):
@@ -157,8 +157,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-3  ">
                             <label for="peca"> Peça </label>
                             <select required name="peca[]" id="peca" class="form-control">
-                                <option value="<?=$dado['peca_idpeca']?>"><?=$dado['descricao']?></option>
-                                <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                <option value="<?=$dado['peca_idpeca']?>"><?=$dado['nomePeca']?></option>
+                                <?php $pecas = $db->query("SELECT * FROM peca_reparo");
                                     $pecas = $pecas->fetchAll();
                                     foreach($pecas as $peca):
                                     ?>
@@ -175,7 +175,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <input type="text" name="requisicao[]" id="requisicao" class="form-control" value="<?=$dado['requisicao_saida']?>">
                         </div>
                         <div class="form-group col-md-2"  style="margin-top: auto; margin-left: 0;">
-                            <a class="btn btn-danger" href="excluir-saida.php?idSaida=<?=$dado['idsaida_estoque']?>">Excluir</a>
+                            <a class="btn btn-danger" onclick="excluirPeca(<?=$dado['idsaida_estoque']?>)">Excluir</a>
                         </div>
                     </div>
                     <?php }?>
@@ -189,6 +189,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/menu.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         
         $(document).ready(function(){
@@ -203,6 +205,24 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             (higienizacao==1)?$('#higienizacao').attr("checked", "") :$('#higienizacao').removeAttr("checked");
             
         });
+
+        function excluirPeca(id){
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você realmente deseja excluir este Serviço e Peça?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, Excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Se o usuário confirmar, redirecione para a página de exclusão
+                    window.location.href = 'excluir-saida.php?idSaida=' + id;
+                }
+            });
+        }
 
     </script>
 

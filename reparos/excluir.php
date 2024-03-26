@@ -7,19 +7,29 @@ $token = filter_input(INPUT_GET, 'token');
 
 if(isset($token) && empty($token) == false ){
     $id=$_SESSION['idUsuario'];  
-    
-    $sql = $db->prepare("DELETE FROM solicitacoes_new WHERE token = :token");
-    $sql->bindValue(':token',$token);
-    
-    if($sql->execute()){
-        echo "<script>alert('Excluído com Sucesso!');</script>";
-        echo "<script>window.location.href='solicitacoes.php'</script>";
-    }else{
-        echo "erro";
+
+    $db->beginTransaction();
+
+    try{
+        $sql = $db->prepare("DELETE FROM solicitacoes_new WHERE token = :token");
+        $sql->bindValue(':token',$token);
+        $sql->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Solicitação Excluída com Sucesso!';
+        $_SESSION['icon']='success';
+        
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Lançar Solicitação';
+        $_SESSION['icon']='error';
     }
     
 }else{
-    header("Location:solicitacoes.php");
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
-
+header("Location: solicitacoes.php");
+exit();
 ?>

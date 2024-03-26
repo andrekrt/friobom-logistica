@@ -27,49 +27,55 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $usuario=$_SESSION['idUsuario'];
     $dataSituacao = date('Y-m-d');
 
-    //echo "$dataEntrada<br>$valorlitro<br>$totalLitro<br>$valorTotal<br>$fornecedor<br>$qualidade<br>$usuario";
+    $db->beginTransaction();
 
-    $inserir = $db->prepare("UPDATE combustivel_entrada SET total_litros = :totalLitros, valor_litro = :valorLitro, frete=:frete, valor_total = :valorTotal, nf=:nf, fornecedor = :fornecedor, qualidade = :qualidade, situacao=:situacao, data_aprovacao=:dataAprovacao WHERE idcombustivel_entrada = :id");
-    $inserir->bindValue(':totalLitros', $totalLitro);
-    $inserir->bindValue(':valorLitro', $valorlitro);
-    $inserir->bindValue(':frete', $frete);
-    $inserir->bindValue(':valorTotal', $valorTotal);
-    $inserir->bindValue(':nf', $nf);
-    $inserir->bindValue(':fornecedor', $fornecedor);
-    $inserir->bindValue(':qualidade', $qualidade);
-    $inserir->bindValue(':situacao', $situacao);
-    $inserir->bindValue(':dataAprovacao', $dataSituacao);
-    $inserir->bindValue(':id', $idEntrada);
+    try{
+        $inserir = $db->prepare("UPDATE combustivel_entrada SET total_litros = :totalLitros, valor_litro = :valorLitro, frete=:frete, valor_total = :valorTotal, nf=:nf, fornecedor = :fornecedor, qualidade = :qualidade, situacao=:situacao, data_aprovacao=:dataAprovacao WHERE idcombustivel_entrada = :id");
+        $inserir->bindValue(':totalLitros', $totalLitro);
+        $inserir->bindValue(':valorLitro', $valorlitro);
+        $inserir->bindValue(':frete', $frete);
+        $inserir->bindValue(':valorTotal', $valorTotal);
+        $inserir->bindValue(':nf', $nf);
+        $inserir->bindValue(':fornecedor', $fornecedor);
+        $inserir->bindValue(':qualidade', $qualidade);
+        $inserir->bindValue(':situacao', $situacao);
+        $inserir->bindValue(':dataAprovacao', $dataSituacao);
+        $inserir->bindValue(':id', $idEntrada);
+        $inserir->execute();
 
-    //CONSULTAR FORNECEDOR
-    $sqlFornecedor = $db->prepare("SELECT * FROM fornecedores WHERE id=:id");
-    $sqlFornecedor->bindValue(':id', $fornecedor);
-    $sqlFornecedor->execute();
-    $nomeFornecedor = $sqlFornecedor->fetch();
-    $nomeFornecedor=$nomeFornecedor['nome_fantasia'];
+        //CONSULTAR FORNECEDOR
+        $sqlFornecedor = $db->prepare("SELECT * FROM fornecedores WHERE id=:id");
+        $sqlFornecedor->bindValue(':id', $fornecedor);
+        $sqlFornecedor->execute();
+        $nomeFornecedor = $sqlFornecedor->fetch();
+        $nomeFornecedor=$nomeFornecedor['nome_fantasia'];
 
-    if($inserir->execute()){
         $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, placa, usuario) VALUES (:dataOp, :tipoOp, :volume, :placa, :usuario)");
         $sqlExtrato->bindValue(':dataOp', $dataEntrada);
         $sqlExtrato->bindValue(':tipoOp', "Entrada");
         $sqlExtrato->bindValue(':volume', $totalLitro);
         $sqlExtrato->bindValue(':placa', $nomeFornecedor);
         $sqlExtrato->bindValue(':usuario', $usuario);
-        if($sqlExtrato->execute()){
-            echo "<script>alert('Entrada Atualizada com Sucesso!');</script>";
-            echo "<script>window.location.href='entradas.php'</script>";
-        }else{
-            print_r($sqlExtrato->errorInfo());
-        }
-            
-        
-    }else{
-        print_r($inserir->errorInfo());
+        $sqlExtrato->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Entrada Atualizada com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Entrada';
+        $_SESSION['icon']='error';
     }
 
+    
+
 }else{
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='entradas.php'</script>"; 
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
 
+header("Location: entradas.php");
+exit();
 ?>

@@ -26,14 +26,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $nf = filter_input(INPUT_POST, 'nf');
     $dataNf = filter_input(INPUT_POST, 'dataNf');
 
-    // verificar se essa nota ja existe
-    $verificaNf = $db->prepare("SELECT * FROM combustivel_entrada WHERE nf=:nf");
-    $verificaNf->bindValue(':nf', $nf);
-    $verificaNf->execute();
-    if ($verificaNf->rowCount() > 0) {
-        echo "<script>alert('NF: $nf já registrada!');</script>";
-        echo "<script>window.location.href='entradas.php'</script>";
-    } else {
+    $db->beginTransaction();
+
+    try{
+        // verificar se essa nota ja existe
+        $verificaNf = $db->prepare("SELECT * FROM combustivel_entrada WHERE nf=:nf");
+        $verificaNf->bindValue(':nf', $nf);
+        $verificaNf->execute();
+        if ($verificaNf->rowCount() > 0) {
+            $_SESSION['msg'] = 'NF:' .$nf .'já registrada!';
+            $_SESSION['icon']='warning';
+            header("Location: entradas.php");
+            exit();
+
+        } 
         $inserir = $db->prepare("INSERT INTO combustivel_entrada (data_entrada, total_litros, valor_litro, frete, valor_total, nf, data_nf, fornecedor, qualidade, situacao, usuario) VALUES (:dataEntrada, :totalLitros, :valorLitros, :frete, :valorTotal, :nf, :dataNf,:fornecedor, :qualidade, :situacao, :usuario)");
         $inserir->bindValue(':dataEntrada', $dataEntrada);
         $inserir->bindValue(':totalLitros', $totalLitro);
@@ -46,20 +52,23 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':qualidade', $qualidade);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $usuario);
+        $inserir->execute();
 
-        if ($inserir->execute()) {
-            echo "<script>alert('Entrada Lançada com Sucesso!');</script>";
-            echo "<script>window.location.href='entradas.php'</script>";
-        } else {
-            print_r($inserir->errorInfo());
-        }
+        $db->commit();
+
+        $_SESSION['msg'] = 'Entrada Lançada com Sucesso!';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Ocorrência';
+        $_SESSION['icon']='error';
     }
 
-    //echo "$dataEntrada<br>$valorlitro<br>$totalLitro<br>$valorTotal<br>$fornecedor<br>$qualidade<br>$usuario";
-
-
-
 } else {
-    echo "<script>alert('Acesso não permitido');</script>";
-    echo "<script>window.location.href='entradas.php'</script>";
+    $_SESSION['msg'] = 'Acesso não permitido';
+    $_SESSION['icon']='warning';
 }
+
+header("Location: entradas.php");
+exit();

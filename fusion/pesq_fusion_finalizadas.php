@@ -32,13 +32,13 @@ $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND situacao = 'Finalizada' ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND fusion.situacao = 'Finalizada' ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND situacao = 'Finalizada' ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND fusion.situacao = 'Finalizada' ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){

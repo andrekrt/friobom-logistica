@@ -72,14 +72,14 @@ foreach($empRecords as $row){
         $fotos = "Sem Foto";
     }
     if(($idUsuario==20 || $idUsuario==1) && $row['situacao']=="Não Confirmado"){
-        $assinar = ' <a class=" icon-acoes" href="confirmacao.php?id='.$row['iddespesas'].'" onclick="return confirm(\'Deseja Assinar Despesa da carga '.$row['num_carregemento'].' ?\')"> <img src="../assets/images/icones/confirma.png"> </a> ';
+        $assinar = ' <a class=" icon-acoes"  onclick=\'confirmaAssina(' . $row['iddespesas'] . ')\'> <img src="../assets/images/icones/confirma.png"> </a> ';
         $editar=' <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a> ';
     }
     if($row['situacao']=="Confirmado" || $row['situacao']=="Confirmado com Alteração" || $row['situacao']=="Confirmado e 2 Alterações"){
         $imprimir = '<a class=" icon-acoes" target="_blank" href="gerar-pdf02.php?id='.$row['iddespesas'].'"> <img src="../assets/images/icones/print.png" alt=""> </a>';
     }
-    if($tipoUsuario==99){
-        $excluir = '<a class="icon-acoes" href="excluir.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/delete.png" alt=""></a>';
+    if($tipoUsuario==99 && $row['situacao']=="Não Confirmado"){
+        $excluir = '<a class="icon-acoes"  onclick=\'confirmaDelete(' . $row['iddespesas'] . ')\'><img src="../assets/images/icones/delete.png" alt=""></a>';
     }
     if(($idUsuario==45 || $idUsuario==1) && ($row['situacao']=="Confirmado" || $row['situacao']=='Confirmado com Alteração') && $dias<=1.5){
         $editar=' <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a> ';

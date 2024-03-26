@@ -16,17 +16,30 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $codRota = filter_input(INPUT_GET, 'codRotas');
 
-    $delete = $db->query("DELETE FROM rotas WHERE cod_rota = '$codRota' ");
+    $db->beginTransaction();
 
-    if($delete){
-        echo "<script> alert('Excluído com Sucesso!')</script>";
-        echo "<script> window.location.href='rotas.php' </script>";
-    }else{
-        print_r($db->errorInfo());
+    try{
+        $delete = $db->prepare("DELETE FROM rotas WHERE cod_rota = :codRota ");
+        $delete->bindValue(':codRota', $codRota);
+        $delete->execute();
+
+        $db->commit();
+
+        $_SESSION['msg'] = 'Rota Excluída com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Excluir Rota';
+        $_SESSION['icon']='error';
     }
 
 }else{
-    echo "Erro";
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
+
+header("Location: rotas.php");
+exit();
 
 ?>

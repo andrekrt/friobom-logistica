@@ -65,7 +65,7 @@ foreach($empRecords as $row){
             "apelido"=>$row['apelido'],
             "vl_total_comprado"=>"R$ " . number_format($row['vl_total_comprado'],2,",",".") ,
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['identrada_estoque'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a href="excluir-entrada.php?idEntrada='.$row['identrada_estoque'].' " data-id="'.$row['identrada_estoque'].'"  class="btn btn-danger btn-sm deleteBtn" onclick="return confirm('."Tem certeza de que deseja excluir este item?".')">Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['identrada_estoque'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['identrada_estoque'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['identrada_estoque'] . ')\'>Deletar</a>'
         );
 }
 

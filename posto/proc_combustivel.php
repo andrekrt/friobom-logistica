@@ -57,8 +57,8 @@ foreach($empRecords as $row){
     $botao = "";
     $aprovar = "";
     if($_SESSION['tipoUsuario']==4 && $row['situacao']=="Em Análise"){
-        $botao=' <a href="javascript:void();" data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-entrada.php?idEntrada='.$row['idcombustivel_entrada'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
-        $aprovar = ' <a href="aprovar-entrada.php?idEntrada='.$row['idcombustivel_entrada'].'&lt='.$row['total_litros'].' " data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-success btn-sm deleteBtn" >Aprovar</a> ';
+        $botao=' <a href="javascript:void();" data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a onclick=\'confirmaDelete('.$row['idcombustivel_entrada'].')\' data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>';
+        $aprovar = ' <a onclick=\'confirmaAprovacao('.$row['idcombustivel_entrada'].', '.$row['total_litros'].')\' data-id="'.$row['idcombustivel_entrada'].'"  class="btn btn-success btn-sm deleteBtn" >Aprovar</a> ';
     }
     $valorLitro = ($row['valor_litro'])?number_format($row['valor_litro'],4,",","."):null;
     $frete = ($row['frete'])?number_format($row['frete'],4,",","."):null;
@@ -66,6 +66,8 @@ foreach($empRecords as $row){
     $valor_comb = ($row['total_litros'] || $row['valor_litro'])?number_format($row['total_litros']*$row['valor_litro'],2,",","."):null;
     $valor_total = ($row['valor_total'])?number_format($row['valor_total'],4,",","."):null;
     $fantasia = $row['nome_fantasia']?mb_convert_encoding($row['nome_fantasia'],'ISO-8859-1', 'UTF-8'):null;
+    $situacao = $row['situacao']?mb_convert_encoding($row['situacao'],'ISO-8859-1', 'UTF-8'):null;
+    $qualidade = $row['qualidade']?mb_convert_encoding($row['qualidade'],'ISO-8859-1', 'UTF-8'):null;
 
     $data[] = array(
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
@@ -76,8 +78,8 @@ foreach($empRecords as $row){
         "total_litros"=>$total_litros ,
         "valor_comb"=>$valor_comb,
         "valor_total"=>"R$ " . $valor_total,
-        "nome_fantasia"=>$fantasia,
-        "qualidade"=>$row['qualidade'],
+        "nome_fantasia"=>$row['nome_fantasia'],
+        "qualidade"=>$qualidade,
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
         "acoes"=>$aprovar. $botao

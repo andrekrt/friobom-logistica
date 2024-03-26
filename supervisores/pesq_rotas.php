@@ -71,7 +71,7 @@ foreach($empRecords as $row){
             "hora_almoco"=>$row['hora_almoco'],
             "obs"=>$row['obs'],
             "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idrotas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a href="excluir-rota.php?idRota='.$row['idrotas'].' " data-id="'.$row['idrotas'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'return confirm("Deseja Excluir?");\'>Deletar</a>'
+            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idrotas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a data-id="'.$row['idrotas'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idrotas'] . ')\'>Deletar</a>'
         );
 }
 

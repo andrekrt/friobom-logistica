@@ -91,7 +91,7 @@ if($sql->execute()){
         $farolNeblinaRet = $dado['farol_neblina_ret'];
         $farolAltoRet = $dado['farol_alto_ret'];
         $luzPainelRet = $dado['painel_ret'];
-        $obsRet = nl2br($dado['obs_ret']);
+        $obsRet = $dado['obs_ret']?nl2br($dado['obs_ret']):"";
         
     }
 }else{

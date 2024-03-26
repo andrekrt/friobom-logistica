@@ -42,6 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <meta name="theme-color" content="#ffffff">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
@@ -70,7 +71,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-row">
                             <div class="form-grupo col-md-3 espaco">
                                 <label for="veiculo">Placa do Veículo</label>
-                                <select name="veiculo" required id="veiculo" class="form-control">
+                                <select name="veiculo" required id="veiculo" class="form-control select2">
                                     <option></option>
                                     <option value="Estoque">Estoque</option>
                                     <option value="Serviços">Serviços</option>
@@ -90,7 +91,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </div>
                             <div class="form-group col-md-3 espaco">
                                 <label for="motorista">Motorista</label>
-                                <select name="motorista" id="motorista" class="form-control">
+                                <select name="motorista" id="motorista" class="form-control select2">
                                     <option value=""></option>
                                     <?php
 
@@ -105,7 +106,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </div>
                             <div class="form-group col-md-3 espaco">
                                 <label for="rota">Rota</label>
-                                <select name="rota" id="rota" class="form-control">
+                                <select name="rota" id="rota" class="form-control select2">
                                     <option value=""></option>
                                     <?php
 
@@ -120,7 +121,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </div>
                             <div class="form-grupo col-md-3 espaco">
                                 <label for="fornecedor">Fornecedor</label>
-                                <select name="fornecedor" id="fornecedor" class="form-control">
+                                <select name="fornecedor" id="fornecedor" class="form-control select2">
                                     <option value=""></option>
                                     <?php
                                     $sql = $db->query("SELECT * FROM fornecedores");
@@ -149,7 +150,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-row">
                             <div class="form-grupo col-md-3 espaco">
                                 <label for="peca">Peça/Serviço</label>
-                                <select name="peca[]" required class="form-control" id="peca">
+                                <select name="peca[]" required class="form-control select2" id="peca">
                                     <option value=""></option>
                                     <?php
                                     $sql = $db->query("SELECT * FROM peca_reparo");
@@ -199,18 +200,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $('#add-peca').click(function(){
                 cont++;
 
-                $('#formulario').append('<div class="form-row"> <div class="form-grupo col-md-3 espaco"> <label for="peca">Peça/Serviço</label> <select name="peca[]" required class="form-control" id="peca"> <option value=""></option> <?php $sql = $db->query("SELECT * FROM peca_reparo"); $pecas = $sql->fetchAll(); foreach ($pecas as $peca):?> <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option> <?php endforeach; ?> </select> </div>    <div class="form-grupo col-md-1 espaco"> <label for="qtd">Qtd.</label> <input type="text" required name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-grupo col-md-1 espaco"> <label for="vlUnit">Valor Unit.</label> <input type="text" required name="vlUnit[]" id="vlUnit" class="form-control"> </div> <div class="form-grupo col-md-1 espaco">  <label for="desconto">Desconto</label> <input type="text" required name="desconto[]" id="desconto" class="form-control"> </div>  <div class="mb-3 form-grupo col-md-2 espaco">     <label for="imagem" class="form-label">Imagem do problema</label> <input type="file" name="imagem[]" class="form-control" id="imagem" multiple> </div>  </div>');
+                $('#formulario').append('<div class="form-row"> <div class="form-grupo col-md-3 espaco"> <label for="peca">Peça/Serviço</label> <select name="peca[]" required class="form-control select2" id="peca"> <option value=""></option> <?php $sql = $db->query("SELECT * FROM peca_reparo"); $pecas = $sql->fetchAll(); foreach ($pecas as $peca):?> <option value="<?=$peca['id_peca_reparo'] ?>"><?=$peca['id_peca_reparo']." - ". $peca['descricao'] ?></option> <?php endforeach; ?> </select> </div>    <div class="form-grupo col-md-1 espaco"> <label for="qtd">Qtd.</label> <input type="text" required name="qtd[]" id="qtd" class="form-control"> </div> <div class="form-grupo col-md-1 espaco"> <label for="vlUnit">Valor Unit.</label> <input type="text" required name="vlUnit[]" id="vlUnit" class="form-control"> </div> <div class="form-grupo col-md-1 espaco">  <label for="desconto">Desconto</label> <input type="text" required name="desconto[]" id="desconto" class="form-control"> </div>  <div class="mb-3 form-grupo col-md-2 espaco">     <label for="imagem" class="form-label">Imagem do problema</label> <input type="file" name="imagem[]" class="form-control" id="imagem" multiple> </div>  </div>');
+
+                $(document).ready(function() {
+                    $('.select2').select2({
+                        theme: 'bootstrap4'
+                    });
+                });
             });
         });
     </script>
     <script>
         $(document).ready(function() {
-            $('#veiculo').select2();
-            $('#localReparo').select2();
-            $('#peca').select2();
-            $('#motorista').select2();
-            $('#rota').select2();
-            $('#fornecedor').select2();
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            });
         });
     </script>
     

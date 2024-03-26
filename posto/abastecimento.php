@@ -41,6 +41,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     <!-- select02 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 </head>
@@ -101,7 +102,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.10.25/af-2.3.7/date-1.1.0/r-2.2.9/rg-1.1.3/sc-2.0.4/sp-1.3.0/datatables.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function(){
             $('#tableAbast').DataTable({
@@ -334,39 +337,91 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     jQuery(function($){
         $("#litro").mask('###0,00', {reverse: true});
         $("#litroEdit").mask('###0,00', {reverse: true});
-        $("#carregamento").mask('00/00/0000');
     })
 
     $(document).ready(function(){
-       
-        $('#motorista').select2({
-            width: '100%',
-            dropdownParent:"#modalEntrada"
-        });
-        $('#rota').select2({
-            width: '100%',
-            dropdownParent:"#modalEntrada"
-        });
 
         $("#tipo").change(function(){
             let tipo= $(this).val();
             if(tipo=='Complemento'){
                 $("#add").empty();
-                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control">       <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota"); $rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista):?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div>');
+                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control select2">       <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota"); $rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control select2"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista):?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div>');
             }else if(tipo=="Carreta"){
                 $("#add").empty();
             }else if(tipo=="Rota"){
                 $("#add").empty();
-                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento" pattern="[0-9]"> </div>');
+                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control select2">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control select2"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento" > </div>');
+
+                
             }else if(tipo=="Lava Jato"){
                 $("#add").empty();
                 $('.removivel').remove();
                 $('#add').append(' <div class="form-group col-md-2 espaco "> <label for="litro"> Litros</label> <input type="text" required  name="litro" class="form-control" id="litroEdit"> </div>');
             }
+
+            $('.select2').select2({
+                width: '100%',
+                dropdownParent:"#modalEntrada",
+                theme: 'bootstrap4'
+            });
         });
         
     });
   
+    function confirmaDelete(id){
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você realmente deseja excluir este Abastecimento?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, Excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário confirmar, redirecione para a página de exclusão
+                window.location.href = 'excluir-saida.php?idSaida=' + id;
+            }
+        });
+    }
+
+    function confirmaAprovacao(id){
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: 'Você realmente deseja Aprovar esta Perca?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, Excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário confirmar, redirecione para a página de exclusão
+                window.location.href = 'aprova-perca.php?id=' + id;
+            }
+        });
+    }
 </script>
+
+<!-- msg de sucesso ou erro -->
+<?php
+    // Verifique se há uma mensagem de confirmação na sessão
+    if (isset($_SESSION['msg']) && isset($_SESSION['icon'])) {
+        // Exiba um alerta SweetAlert
+        echo "<script>
+                Swal.fire({
+                  icon: '$_SESSION[icon]',
+                  title: '$_SESSION[msg]',
+                  showConfirmButton: true,
+                });
+              </script>";
+
+        // Limpe a mensagem de confirmação da sessão
+        unset($_SESSION['msg']);
+        unset($_SESSION['status']);
+    }
+?>
 </body>
 </html>

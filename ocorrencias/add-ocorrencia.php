@@ -33,25 +33,28 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $situacao = filter_input(INPUT_POST, 'situacao');
     $usuario = $_SESSION['idUsuario'];
 
-    //echo "$motorista<br>$data<br>$tipoOcorrencia<br>$anexoOcorrencia_nome<br>$advertencia<br>$anexoAdvertencia_nome<br>$laudo<br>$anexoLaudo_nome<br>$descricao<br>$vlTotal<br>$situacao<br>";
+    $db->beginTransaction();
 
-    $inserir = $db->prepare("INSERT INTO ocorrencias (cod_interno_motorista, data_ocorrencia, placa, num_carregamento , tipo_ocorrencia, img_ocorrencia, advertencia, img_advertencia, laudo, img_laudo, descricao_custos, descricao_problema, vl_total_custos, situacao, usuario_lancou) VALUES (:motorista, :dataOcorrencia, :placa, :carregamento, :tipo, :imgOcorrencia, :advertencia, :imgAdvertencia, :laudo, :imgLaudo, :descricaoCusto, :descricaoProblema, :vlTotal, :situacao, :usuario)");
-    $inserir->bindValue(':motorista', $motorista);
-    $inserir->bindValue(':dataOcorrencia', $data);
-    $inserir->bindValue(':tipo', $tipoOcorrencia);
-    $inserir->bindValue(':imgOcorrencia', $anexoOcorrencia_nome);
-    $inserir->bindValue(':advertencia', $advertencia);
-    $inserir->bindValue(':imgAdvertencia', $anexoAdvertencia_nome);
-    $inserir->bindValue(':laudo', $laudo);
-    $inserir->bindValue(':imgLaudo', $anexoLaudo_nome);
-    $inserir->bindValue(':descricaoCusto', $descricaoCusto);
-    $inserir->bindValue(':vlTotal', $vlTotal);
-    $inserir->bindValue(':situacao', $situacao);
-    $inserir->bindValue(':usuario', $usuario);
-    $inserir->bindValue(':placa', $placa);
-    $inserir->bindValue(':carregamento', $carregamento);
-    $inserir->bindValue(':descricaoProblema', $descricaoProblema);
-    if($inserir->execute()){
+    try{
+
+        $inserir = $db->prepare("INSERT INTO ocorrencias (cod_interno_motorista, data_ocorrencia, placa, num_carregamento , tipo_ocorrencia, img_ocorrencia, advertencia, img_advertencia, laudo, img_laudo, descricao_custos, descricao_problema, vl_total_custos, situacao, usuario_lancou) VALUES (:motorista, :dataOcorrencia, :placa, :carregamento, :tipo, :imgOcorrencia, :advertencia, :imgAdvertencia, :laudo, :imgLaudo, :descricaoCusto, :descricaoProblema, :vlTotal, :situacao, :usuario)");
+        $inserir->bindValue(':motorista', $motorista);
+        $inserir->bindValue(':dataOcorrencia', $data);
+        $inserir->bindValue(':tipo', $tipoOcorrencia);
+        $inserir->bindValue(':imgOcorrencia', $anexoOcorrencia_nome);
+        $inserir->bindValue(':advertencia', $advertencia);
+        $inserir->bindValue(':imgAdvertencia', $anexoAdvertencia_nome);
+        $inserir->bindValue(':laudo', $laudo);
+        $inserir->bindValue(':imgLaudo', $anexoLaudo_nome);
+        $inserir->bindValue(':descricaoCusto', $descricaoCusto);
+        $inserir->bindValue(':vlTotal', $vlTotal);
+        $inserir->bindValue(':situacao', $situacao);
+        $inserir->bindValue(':usuario', $usuario);
+        $inserir->bindValue(':placa', $placa);
+        $inserir->bindValue(':carregamento', $carregamento);
+        $inserir->bindValue(':descricaoProblema', $descricaoProblema);
+        $inserir->execute();
+
         $ultimoId = $db->lastInsertId();
         //criando pasta principal
         $diretorioPrincipal = "uploads/".$ultimoId;
@@ -81,11 +84,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             move_uploaded_file($anexoLaudo['tmp_name'][$i], $destinoLaudo);
         }
 
-        echo "<script> alert('Ocorrência Lançada com Sucesso!')</script>";
-        echo "<script> window.location.href='form-ocorrencias.php' </script>";
-    }else{
-        print_r($inserir->errorInfo());
+        $db->commit();
+
+        $_SESSION['msg'] = 'Ocorrência Registrada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Registrar Ocorrência';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: form-ocorrencias.php");
+    exit();
+
     
 }
 

@@ -15,12 +15,12 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (descricao_peca LIKE :descricao_peca OR solicitante LIKE :solicitante OR placa OR :placa OR idpeca LIKE :idpeca) ";
+	$searchQuery = " AND (peca_reparo.descricao LIKE :descricao OR solicitante LIKE :solicitante OR placa OR :placa OR id_peca_reparo LIKE :id_peca_reparo) ";
     $searchArray = array( 
-        'descricao_peca'=>"%$searchValue%", 
+        'descricao'=>"%$searchValue%", 
         'solicitante'=>"%$searchValue%",
         'placa'=>"%$searchValue%",
-        'idpeca'=>"%$searchValue%"
+        'id_peca_reparo'=>"%$searchValue%"
     );
 }
 
@@ -37,7 +37,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM saida_estoque LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT idsaida_estoque, data_saida, qtd,id_peca_reparo, peca_reparo.descricao as nomePeca, solicitante, placa, obs,  servicos_almoxarifado.descricao as nomeServico, requisicao_saida, os, nome_usuario  FROM saida_estoque LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -56,11 +56,11 @@ foreach($empRecords as $row){
             "idsaida_estoque"=>$row['idsaida_estoque'],
             "data_saida"=>date("d/m/Y", strtotime($row['data_saida'])),
             "qtd"=>$row['qtd'],
-            "descricao_peca"=>$row['id_peca_reparo']. " - ". $row['descricao'],
+            "descricao_peca"=>$row['id_peca_reparo']. " - ". $row['nomePeca'],
             "solicitante"=>$row['solicitante'],
             "placa"=> $row['placa'],
             "obs"=>$row['obs'] ,
-            "servico"=>$row['descricao'],
+            "servico"=>$row['nomeServico'],
             "requisicao"=>$row['requisicao_saida'] ,
             "os"=>$row['os'] ,
             "nome_usuario"=>$row['nome_usuario']

@@ -26,14 +26,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $marca = filter_input(INPUT_POST, 'marca');
     $base = filter_input(INPUT_POST, 'base');
 
-    $consulta = $db->query("SELECT * FROM veiculos WHERE cod_interno_veiculo = '$codVeiculo' OR placa_veiculo = '$placaVeiculo'");
+    $db->beginTransaction();
 
-    // echo "$codVeiculo<br>$tipoVeiculo<br>$placaVeiculo<br>$categoria<br>$peso<br>$cubagem<br>$metaCombustivel<br>$marca<br>";
+    try{
+        // verificar se veiculo ja esta cadastrado
+        $consulta = $db->prepare("SELECT * FROM veiculos WHERE cod_interno_veiculo = :codVeiculo OR placa_veiculo = :placa");
+        $consulta->bindValue(':codVeiculo', $codVeiculo);
+        $consulta->bindValue(':placa', $placaVeiculo);
+        $consulta->execute();
 
-    if($consulta->rowCount()>0){
-        echo "<script>alert('Esse Veículo já está cadastrado!');</script>";
-        echo "<script>window.location.href='form-veiculos.php'</script>";
-    }else{
+        if($consulta->rowCount()>0){
+            $_SESSION['msg'] = 'Esse Veículo já está cadastrado!';
+            $_SESSION['icon']='warning';
+            header("Location: form-veiculos.php");
+            exit(); 
+        }
+        
         $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, marca, peso_maximo, cubagem, meta_combustivel, cidade_base) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :marca, :peso, :cubagem, :metaCombustivel, :base) ");
         $sql->bindValue(':codVeiculo', $codVeiculo);
         $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
@@ -44,16 +52,22 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':cubagem', $cubagem);
         $sql->bindValue(':metaCombustivel', $metaCombustivel);
         $sql->bindValue(':base', $base);
-        if($sql->execute()){
+        $sql->execute();
 
-            echo "<script>alert('Veículo Cadastrado!');</script>";
-            echo "<script>window.location.href='veiculos.php'</script>";
+        $db->commit();
 
-        }else{
-            print_r($sql->errorInfo());
-        }
-    }
+        $_SESSION['msg'] = 'Veículo Cadastrado';
+        $_SESSION['icon']='success';
+        
 
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Cadastrar Veículo!';
+        $_SESSION['icon']='error';
+    } 
+
+    header("Location: form-veiculos.php");
+    exit(); 
 }
 
 ?>

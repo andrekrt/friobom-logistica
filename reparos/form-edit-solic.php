@@ -47,6 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 </head>
 
 <body>
@@ -77,7 +78,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-group col-md-2">
                             <label for="placa" class="col-form-label">Placa</label>
-                            <select name="veiculo" required id="veiculo" class="form-control">
+                            <select name="veiculo" required id="veiculo" class="form-control select2">
                                 <option value="<?=$dado['placa']?>"><?=$dado['placa']?></option>
                                 <option value="Estoque" >Estoque</option>
                                 <?php
@@ -95,7 +96,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-group col-md-4">
                             <label for="motorista" class="col-form-label">Motorista</label>
-                            <select name="motorista" id="motorista" class="form-control">
+                            <select name="motorista" id="motorista" class="form-control select2">
                                 <option value="<?=$dado['motorista']?>"><?=$dado['motorista']?></option>
                                 <?php
 
@@ -110,7 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                         <div class="form-group col-md-2">
                             <label for="rota" class="col-form-label">Rota</label>
-                            <select name="rota" id="rota" class="form-control">
+                            <select name="rota" id="rota" class="form-control select2">
                                 <option value="<?=$dado['rota']?>"><?=$dado['rota']?></option>
                                 <?php
 
@@ -124,9 +125,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             </select>
                         </div>
                         
-                        <div class="form-grupo col-md-2 ">
-                            <label for="fornecedor">Fornecedor</label>
-                            <select name="fornecedor" id="fornecedor" class="form-control">
+                        <div class="form-grupo col-md-3 ">
+                            <label for="fornecedor" class="col-form-label">Fornecedor</label>
+                            <select name="fornecedor" id="fornecedor" class="form-control select2">
                                 <option value="<?=$dado['fornecedor']?>"> <?=$dado['fornecedor']?> - <?=$dado['nome_fantasia']?> </option>
                                 <?php
                                 $sql = $db->query("SELECT * FROM fornecedores");
@@ -165,7 +166,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <input type="hidden" name="id[]" value="<?=$solicitacao['id']?>">
                         <div class="form-group col-md-3">
                             <label for="peca" class="col-form-label">Peça/Serviço</label>
-                            <select name="peca[]" class="form-control" id="peca">
+                            <select name="peca[]" class="form-control select2" id="peca">
                                 <option value="<?=$solicitacao['peca_servico']?>"> <?=$solicitacao['peca_servico']?> - <?=$solicitacao['descricao']?> </option>
                                 <?php
 
@@ -212,7 +213,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <?php endif; ?>
                         </div>
                         <div style="margin-left: 0; margin-top: 37px;">
-                            <a href="excluir-peca-solicitacao.php?idSolic=<?=$solicitacao['id']?>"  class="btn btn-danger"> Excluir </a>
+                            <a onclick="excluirPeca(`<?=$solicitacao['id']?>`)"  class="btn btn-danger"> Excluir </a>
                         </div>  
                     </div>
                     <?php 
@@ -238,7 +239,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <div  class="form-row">
                     <?php if($dado['situacao']!="Aprovado"): ?>
                         <div class="form-group col-md-2">
-                            <a href="excluir.php?token=<?=$dado['token']; ?>" class="btn btn-danger" onclick="return confirm('Confirmar Exclusão?');"> Excluir </a>
+                            <a class="btn btn-danger" onclick="excluirSolic(<?=$dado['token']; ?>)"> Excluir </a>
                         </div>
                         <div class="form-group col-md-2">
                             <button type="submit" name="analisar" class="btn btn-primary">Atualizar</button>
@@ -263,16 +264,53 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/menu.js"></script>
+    <!-- sweert alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            $('#veiculo').select2();
-            $('#localReparo').select2();
-            $('#peca').select2();
-            $('#motorista').select2();
-            $('#rota').select2();
-            $('#fornecedor').select2();
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            });
         });
+
+        function excluirPeca(id){
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você realmente deseja excluir somente esta Peça?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Se o usuário confirmar, redirecione para a página de exclusão
+                    window.location.href = 'excluir-peca-solicitacao.php?idSolic=' + id;
+                }
+            });
+        }
+
+        function excluirSolic(id){
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Você realmente deseja excluir toda a Solicitação?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Se o usuário confirmar, redirecione para a página de exclusão
+                    window.location.href = 'excluir.php?token=' + id;
+                }
+            });
+        }
     </script>
+
+    
 </body>
 
 </html>

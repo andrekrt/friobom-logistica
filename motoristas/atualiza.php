@@ -29,28 +29,39 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $ativo = 1;
     }
 
-    // echo $validadeCnh;
-   // echo "$codMotorista<br>$nomeMotorista<br>$cnh<br>$validadeCnh<br>$toxicologico<br>$validadeToxicologico<br>$ativo";
+    $db->beginTransaction();
 
-    $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, cidade_base=:base, salario = :salario WHERE cod_interno_motorista = :codMotorista ");
-    $atualiza->bindValue(':nomeMotorista', $nomeMotorista);
-    $atualiza->bindValue('salario', $salario);
-    $atualiza->bindValue(':cnh', $cnh);
-    $atualiza->bindValue(':validadeCnh', $validadeCnh);
-    $atualiza->bindValue(':toxicologico', $toxicologico);
-    $atualiza->bindValue(':validadeToxicologico', $validadeToxicologico);
-    $atualiza->bindValue(':ativo', $ativo);
-    $atualiza->bindValue(':codMotorista', $codMotorista);
-    $atualiza->bindValue(':base', $cidadeBase);
+    try{
+        $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, cidade_base=:base, salario = :salario WHERE cod_interno_motorista = :codMotorista ");
+        $atualiza->bindValue(':nomeMotorista', $nomeMotorista);
+        $atualiza->bindValue('salario', $salario);
+        $atualiza->bindValue(':cnh', $cnh);
+        $atualiza->bindValue(':validadeCnh', $validadeCnh);
+        $atualiza->bindValue(':toxicologico', $toxicologico);
+        $atualiza->bindValue(':validadeToxicologico', $validadeToxicologico);
+        $atualiza->bindValue(':ativo', $ativo);
+        $atualiza->bindValue(':codMotorista', $codMotorista);
+        $atualiza->bindValue(':base', $cidadeBase);
+        $atualiza->execute();
 
-    if($atualiza->execute()){
-        echo "<script> alert('Atualizado com Sucesso!')</script>";
-        echo "<script> window.location.href='motoristas.php' </script>";
-    }else{
-        print_r($atualiza->errorInfo());
+        $db->commit();
+
+        $_SESSION['msg'] = 'Motorista Atualizado com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+
+        $_SESSION['msg'] = 'Erro ao Atualizar Motorista';
+        $_SESSION['icon']='error';
     }
+
+    
 }else{
-    header("Location:motoristas.php");
+    $_SESSION['msg'] = 'Acesso Não Permitido';
+    $_SESSION['icon']='error';
 }
 
+header("Location: motoristas.php");
+exit();
 ?>

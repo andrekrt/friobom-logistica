@@ -35,40 +35,45 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $suco03 = filter_input(INPUT_POST,'suco03');
     $suco04 = filter_input(INPUT_POST, 'suco04');
 
-    //echo "$idManutencao<br>$pneu<br>$dataManutencao<br>$tipoReparo<br>$kmManutencao<br>$valor<br>$nf<br>$fornecedor<br>$suco01<br>$suco02<br>$suco03<br>$suco04<br>$kmPneu";
+    $db->beginTransaction();
 
-    $sql = $db->prepare("UPDATE manutencao_pneu SET tipo_manutencao = :tipoManutencao, pneus_idpneus = :pneu, km_veiculo = :kmVeiculo, km_pneu = :kmPneu, valor = :valor, num_nf = :nf, fornecedor = :fornecedor, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04 WHERE idmanutencao_pneu = :idmanutencao");
-    $sql->bindValue(':tipoManutencao', $tipoReparo);
-    $sql->bindValue(':pneu', $pneu);
-    $sql->bindValue(':kmVeiculo', $kmVeiculo);
-    $sql->bindValue(':kmPneu', $kmPneu);
-    $sql->bindValue(':valor', $valor);
-    $sql->bindValue(':nf', $nf);
-    $sql->bindValue(':fornecedor', $fornecedor);
-    $sql->bindValue(':suco01', $suco01);
-    $sql->bindValue(':suco02', $suco02);
-    $sql->bindValue(':suco03', $suco03);
-    $sql->bindValue(':suco04', $suco04);
-    $sql->bindValue(':idmanutencao', $idManutencao);
-    
-    if($sql->execute()){
+    try{
+        $sql = $db->prepare("UPDATE manutencao_pneu SET tipo_manutencao = :tipoManutencao, pneus_idpneus = :pneu, km_veiculo = :kmVeiculo, km_pneu = :kmPneu, valor = :valor, num_nf = :nf, fornecedor = :fornecedor, suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04 WHERE idmanutencao_pneu = :idmanutencao");
+        $sql->bindValue(':tipoManutencao', $tipoReparo);
+        $sql->bindValue(':pneu', $pneu);
+        $sql->bindValue(':kmVeiculo', $kmVeiculo);
+        $sql->bindValue(':kmPneu', $kmPneu);
+        $sql->bindValue(':valor', $valor);
+        $sql->bindValue(':nf', $nf);
+        $sql->bindValue(':fornecedor', $fornecedor);
+        $sql->bindValue(':suco01', $suco01);
+        $sql->bindValue(':suco02', $suco02);
+        $sql->bindValue(':suco03', $suco03);
+        $sql->bindValue(':suco04', $suco04);
+        $sql->bindValue(':idmanutencao', $idManutencao);
+        $sql->execute();
+
         $atualizaPneu = $db->prepare("UPDATE pneus SET suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04 WHERE idpneus = :idpneu");
         $atualizaPneu->bindValue(':suco01', $suco01);
         $atualizaPneu->bindValue(':suco02', $suco02);
         $atualizaPneu->bindValue(':suco03', $suco03);
         $atualizaPneu->bindValue(':suco04', $suco04);
         $atualizaPneu->bindValue(':idpneu', $pneu);
+        $atualizaPneu->execute();
 
-        if($atualizaPneu->execute()){
-            echo "<script> alert('Manutenção Atualizada!!!')</script>";
-            echo "<script> window.location.href='manutencoes.php' </script>";
-        }else{
-            print_r($atualizaPneu->errorInfo());
-        }
-        
-    }else{
-        print_r($sql->errorInfo());
+        $db->commit();
+
+        $_SESSION['msg'] = 'Manutenção Atualizada com Sucesso';
+        $_SESSION['icon']='success';
+
+    }catch(Exception $e){
+        $db->rollBack();
+        $_SESSION['msg'] = 'Erro ao Atualizar Manutenção';
+        $_SESSION['icon']='error';
     }
+
+    header("Location: manutencoes.php");
+    exit();
     
 }else{
 
