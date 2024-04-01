@@ -53,6 +53,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <tr>
                 <td > VALE  Nº: $id</td>               
                 <td>VALOR: R$ $valor</td>
+                <td>DATA: $dataAbastecimento </td>
             </tr>
             
         </table>
