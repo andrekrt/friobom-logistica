@@ -193,6 +193,12 @@
           </a>
           <ul class="list-group flex-column d-inline-block submenu svg-submenu">
             <li class="list-group-item">
+              <a href="../controle-despesas/form-lancar-despesas.php">
+                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <div class="text d-inline-block align-middle">Lançar Despesa</div>
+              </a>
+            </li>
+            <li class="list-group-item">
               <a href="../controle-despesas/despesas.php">
                 <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Listar</div>
@@ -202,6 +208,12 @@
               <a href="../controle-despesas/relatorio-custos.php">
                 <!-- <img src="http://res.cloudinary.com/dt9b7pad3/image/upload/v1495406336/Theme_Appearance_wld9rt.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Relatório</div>
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="../faturados/faturados.php">
+                <!-- <img src="http://res.cloudinary.com/dt9b7pad3/image/upload/v1495406336/Theme_Appearance_wld9rt.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <div class="text d-inline-block align-middle">Cargas Faturadas</div>
               </a>
             </li>
           </ul>
@@ -236,6 +248,12 @@
               <a href="../denegados/caixas.php">
               <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406247/Manage_Plugins_tjd7p9.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Registro de Caixas</div>
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="../trocas/trocas.php">
+              <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406247/Manage_Plugins_tjd7p9.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <div class="text d-inline-block align-middle">Trocas</div>
               </a>
             </li>
           </ul>
@@ -522,6 +540,26 @@
               <a href="../fusion/dados-fusion.php">
                 <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406380/Tools_qsfsr4.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
                 <div class="text d-inline-block align-middle">Relatório</div>
+              </a>
+            </li>
+          </ul>
+        </li> <!-- /.list-group-item -->
+
+        <li class="list-group-item py-2">
+          <a href="">
+            <img src="../assets/images/icones/icone-nf.png" height="40" class="mr-4" width="40"><span>NF's de Entrada</span>
+          </a>
+          <ul class="list-group flex-column d-inline-block submenu svg-submenu">
+            <li class="list-group-item">
+              <a href="../nfs/listar.php">
+                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406247/Manage_Plugins_tjd7p9.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <div class="text d-inline-block align-middle">Listar NF's</div>
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="../nfs/tags.php">
+                <!-- <img src="https://res.cloudinary.com/dt9b7pad3/image/upload/v1495406288/AgentFire_Settings_y8dhzm.svg" height="32" width="40" class="ml-2 mr-4 d-inline-block"> -->
+                <div class="text d-inline-block align-middle">Tags</div>
               </a>
             </li>
           </ul>
