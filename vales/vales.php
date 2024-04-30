@@ -201,7 +201,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="add-vale.php" method="post" id="formCad">
+                    <form action="assinatura.php" method="post" id="formCad">
                         <div class="form-row">
                             <div class="form-group col-md-4 espaco ">
                                 <label for="motorista"> Motorista</label>

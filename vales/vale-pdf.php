@@ -70,17 +70,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             </tr>
         </table>
 
-        <div style='margin-top:30px; width:100%; text-align:center; '>
+        <div style='margin-top:0px; width:100%; text-align:center; '>
+            <img src='../assets/images/assinatura-makson.png' style='height:50px' >
             <div style=' width: 100%; float:left; border-top: 1px solid #000; '>RESPONSÁVEL </div>
         </div>
-
-        <div style='margin-top:20px; width:100%; text-align:center '>
-            <div style=' width: 100%; float:left; border-top: 1px solid #000;'>$motorista </div>
-        </div>
-
-       
-        
-       
+        <div style='margin-top:10px; width:100%; text-align:center '>
+            <img src='assinaturas/$id.png' style='' >
+            <div style=' width: 100%; float:left; border-top: 1px solid #000;  margin-top:-30px'>$motorista </div>
+        </div>      
     </body>
     </html>
     ");

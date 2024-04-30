@@ -21,8 +21,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $valor = filter_input(INPUT_POST, 'valor');
     $valor = str_replace(".","",$valor);
     $valorFormat=str_replace(",",".",$valor);
-    $data = date('Y-m-d');
+    $dataAtual = date('Y-m-d');
     $usuario = $_SESSION['idUsuario'];
+
+    // Recupere a assinatura e decodifique-a
+    $signature = $_POST['assinatura'];
+    $signature = str_replace('data:image/png;base64,', '', $signature);
+    $signature = str_replace(' ', '+', $signature);
+    $data = base64_decode($signature);
 
     $db->beginTransaction();
 
@@ -33,8 +39,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':rota', $rota);
         $inserir->bindValue(':valor', $valorFormat);   
         $inserir->bindValue(':usuario', $usuario);   
-        $inserir->bindValue(':data',$data);
+        $inserir->bindValue(':data',$dataAtual);
         $inserir->execute();
+
+        $ultimoId = $db->lastInsertId();
+
+        // Salve a imagem no servidor (ou faça o que desejar com ela)
+        $file = 'assinaturas/'.$ultimoId.'.png';
+        file_put_contents($file, $data);
 
         $db->commit();
 
