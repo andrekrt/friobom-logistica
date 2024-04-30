@@ -15,7 +15,7 @@ $searchArray = array();
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (carregamento LIKE :carregamento OR placa_veiculo LIKE :placa_veiculo OR nome_motorista LIKE :nome_motorista OR nome_rota LIKE :nome_rota OR situacao LIKE :situacao) ";
+	$searchQuery = " AND (carregamento LIKE :carregamento OR placa_veiculo LIKE :placa_veiculo OR nome_motorista LIKE :nome_motorista OR nome_rota LIKE :nome_rota OR fusion.situacao LIKE :situacao) ";
     $searchArray = array( 
         'carregamento'=>"%$searchValue%",
         'placa_veiculo'=>"%$searchValue%",
