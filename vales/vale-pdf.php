@@ -34,7 +34,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $usuario = $dados['nome_usuario'];
     $extenso = ucwords(extenso($dados['valor']));
   
-    $mpdf = new \Mpdf\Mpdf(['mode'=>'utf-8', 'format'=>[148, 105], 'margin_top'=>5]);
+    $mpdf = new \Mpdf\Mpdf(['mode'=>'utf-8', 'format'=>[210, 148], 'margin_top'=>5]);
     $mpdf->AddPage();
     $mpdf->WriteHTML("
     !DOCTYPE html>
@@ -75,7 +75,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             <div style=' width: 100%; float:left; border-top: 1px solid #000; '>RESPONSÁVEL </div>
         </div>
         <div style='margin-top:10px; width:100%; text-align:center '>
-            <img src='assinaturas/$id.png' style='' >
+            <img src='assinaturas/$id.png' style='height:50px' >
             <div style=' width: 100%; float:left; border-top: 1px solid #000;  margin-top:-30px'>$motorista </div>
         </div>      
     </body>

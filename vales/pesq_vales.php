@@ -58,11 +58,18 @@ foreach($empRecords as $row){
     $editar= '';
     $imprimir = '<a href="vale-pdf.php?idvale='.$row['idvale'].' " data-id="'.$row['idvale'].'"  class="btn btn-secondary btn-sm deleteBtn" target="_blank"  >Imprimir</a>';
     $deletar= "";
+    $btnPagar = '';
 
     if($row['situacao']=='Não Resgatado' && ($_SESSION['idUsuario'] == 1 || $_SESSION['idUsuario'] == 20 || $_SESSION['idUsuario'] == 45) ){
         $editar=' <a href="javascript:void();" data-id="'.$row['idvale'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> ';
         $deletar = ' <a  data-id="'.$row['idvale'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idvale'] . ')\' >Deletar</a>  ';
     }
+
+    if($row['pago']==0 && ($_SESSION['idUsuario']==47)){
+        $btnPagar= ' <a data-id="'.$row['idvale'].'"  class="btn btn-success btn-sm " onclick=\'confirmaPaga(' . $row['idvale'] . ')\'>Pagar</a> ';
+    }
+
+    $pago = $row['pago']==0?"NÃO":"SIM";
     
     $data[] = array(
         "idvale"=>$row['idvale'],
@@ -72,8 +79,9 @@ foreach($empRecords as $row){
         "valor"=>"R$ ".number_format($row['valor'],2,",",".") ,
         "carregamento"=>$row['carregamento'],    
         "situacao"=>$row['situacao'],   
+        "pago"=>$pago,
         "usuario"=>$row['nome_usuario'],
-        "acoes"=>$imprimir  . $editar . $deletar
+        "acoes"=>$imprimir . $btnPagar. $editar . $deletar
     );
 }
 

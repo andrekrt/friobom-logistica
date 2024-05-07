@@ -84,6 +84,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th> Valor </th>
                                 <th>Carregamento</th>
                                 <th>Status</th>
+                                <th>Pago?</th>
                                 <th>Usuário</th>
                                 <th>Ações</th>
                             </tr>
@@ -97,7 +98,6 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     <script src="../assets/js/jquery.js"></script>
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
@@ -139,6 +139,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     },
                     {
                         data: 'situacao'
+                    },
+                    {
+                        data: 'pago'
                     },
                     {
                         data: 'usuario'
@@ -360,6 +363,24 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 if (result.isConfirmed) {
                     // Se o usuário confirmar, redirecione para a página de exclusão
                     window.location.href = 'excluir-vale.php?idvale=' + id;
+                }
+            });
+        }
+
+        function confirmaPaga(id){
+            Swal.fire({
+                title: 'Confirmar Pagamento',
+                text: 'Deseja Efetuar o Pagamento do Vale Nº '+id+'?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, Pagar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Se o usuário confirmar, redirecione para a página de exclusão
+                    window.location.href = 'pagar-vale.php?idvale=' + id;
                 }
             });
         }
