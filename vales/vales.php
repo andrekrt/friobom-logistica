@@ -82,6 +82,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th>Motorista</th>
                                 <th> Rota </th>
                                 <th> Valor </th>
+                                <th>Tipo</th>
                                 <th>Carregamento</th>
                                 <th>Status</th>
                                 <th>Pago?</th>
@@ -133,6 +134,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     },
                     {
                         data: 'valor'
+                    },
+                    {
+                        data: 'tipo_vale'
                     },
                     {
                         data: 'carregamento'
@@ -188,6 +192,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#valorEdit').val(json.valor);
                     $('#status').val(json.situacao);
                     $('#carregamento').val(json.carregamento);
+                    $('#tipoEdit').val(json.tipo_vale);
                 }
             })
         });
@@ -206,6 +211,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 <div class="modal-body">
                     <form action="assinatura.php" method="post" id="formCad">
                         <div class="form-row">
+                            <div class="form-group col-md-2 espaco"> 
+                                <label for="tipo">Tipo de Vale</label>
+                                <select required name="tipo" id="tipo" class="form-control">
+                                    <option value=""></option>
+                                    <option value="Rota">Rota</option>
+                                    <option value="Interno">Interno</option>
+                                </select>
+                            </div>
                             <div class="form-group col-md-4 espaco ">
                                 <label for="motorista"> Motorista</label>
                                 <select name="motorista" required id="motorista" class="form-control">
@@ -234,7 +247,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="form-group col-md-4 espaco removivel">
+                            <div class="form-group col-md-2 espaco removivel">
                                 <label for="valor"> Valor (R$)</label>
                                 <input type="text" required name="valor" class="form-control" id="valor">
                             </div>
@@ -266,6 +279,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <form action="atualiza-vale.php" method="post">
                         <div class="form-row">
                             <input type="hidden" name="idvale" value="" id="idvale">
+                            
                             <div class="form-group col-md-4 espaco ">
                                 <label for="motorista"> Motorista</label>
                                 <select name="motorista" required id="motoristaEdit" class="form-control">
@@ -308,6 +322,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                     <option value=""></option>
                                     <option value="Não Resgatado">Não Resgatado</option>
                                     <option value="Resgatado">Resgatado</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2 espaco"> 
+                                <label for="tipo">Tipo de Vale</label>
+                                <select required name="tipo" id="tipoEdit" class="form-control">
+                                    <option value=""></option>
+                                    <option value="Rota">Rota</option>
+                                    <option value="Interno">Interno</option>
                                 </select>
                             </div>
                         </div>

@@ -22,7 +22,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $valor = str_replace(".","",$valor);
     $valorFormat=str_replace(",",".",$valor);
     $dataAtual = date('Y-m-d');
+    $tipoVale = filter_input(INPUT_POST,'tipo');
     $usuario = $_SESSION['idUsuario'];
+
+    echo $tipoVale;
 
     // Recupere a assinatura e decodifique-a
     $signature = $_POST['assinatura'];
@@ -34,12 +37,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     try{
 
-        $inserir = $db->prepare("INSERT INTO vales (data_lancamento, motorista, rota, valor, usuario) VALUES (:data, :motorista, :rota, :valor,:usuario)");
+        $inserir = $db->prepare("INSERT INTO vales (data_lancamento, motorista, rota, valor, usuario,tipo_vale) VALUES (:data, :motorista, :rota, :valor,:usuario,:tipo)");
         $inserir->bindValue(':motorista', $motorista);
         $inserir->bindValue(':rota', $rota);
         $inserir->bindValue(':valor', $valorFormat);   
         $inserir->bindValue(':usuario', $usuario);   
         $inserir->bindValue(':data',$dataAtual);
+        $inserir->bindValue(':tipo', $tipoVale);
         $inserir->execute();
 
         $ultimoId = $db->lastInsertId();

@@ -21,18 +21,20 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $idVale = filter_input(INPUT_POST, 'idvale');
     $valor = str_replace(".",",",filter_input(INPUT_POST, 'valor')) ;
     $situacao = filter_input(INPUT_POST,'status');
+    $tipoVale = filter_input(INPUT_POST, 'tipo');
 
     $db->beginTransaction();
 
     try{
 
-        $atualiza = $db->prepare("UPDATE vales SET motorista=:motorista, rota=:rota, valor=:valor, carregamento=:carregamento, situacao=:situacao WHERE idvale=:id");
+        $atualiza = $db->prepare("UPDATE vales SET motorista=:motorista, rota=:rota, valor=:valor, carregamento=:carregamento, situacao=:situacao, tipo_vale=:tipo WHERE idvale=:id");
         $atualiza->bindValue(':motorista', $motorista);
         $atualiza->bindValue(':rota', $rota);
         $atualiza->bindValue(':valor', $valor);
         $atualiza->bindValue(':carregamento', $carregamento);  
         $atualiza->bindValue(':situacao',$situacao);
         $atualiza->bindValue(':id', $idVale);
+        $atualiza->bindValue(':tipo', $tipoVale);
         $atualiza->execute();
 
         $db->commit();

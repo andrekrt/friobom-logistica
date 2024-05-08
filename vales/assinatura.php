@@ -3,7 +3,7 @@
 $motorista =filter_input(INPUT_POST,'motorista');
 $valor = filter_input(INPUT_POST, 'valor');
 $rota = filter_input(INPUT_POST, 'rota');
-
+$tipoVale = filter_input(INPUT_POST,'tipo');
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +35,7 @@ $rota = filter_input(INPUT_POST, 'rota');
             <input type="hidden" name="motorista" value="<?= $motorista ?>">
             <input type="hidden" name="rota" value="<?=$rota?>">
             <input type="hidden" name="valor" value="<?=$valor?>">
+            <input type="hidden" name="tipo" value="<?=$tipoVale?>">
         </div>
 
         <input type="hidden" name="assinatura" id="assinatura">

@@ -77,6 +77,7 @@ foreach($empRecords as $row){
         "motorista"=>$row['nome_motorista'],
         "rota"=>$row['nome_rota'],
         "valor"=>"R$ ".number_format($row['valor'],2,",",".") ,
+        "tipo_vale"=>$row['tipo_vale'],
         "carregamento"=>$row['carregamento'],    
         "situacao"=>$row['situacao'],   
         "pago"=>$pago,
