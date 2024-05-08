@@ -83,6 +83,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Valor Total Comb.</th>
                                 <th scope="col" class="text-center text-nowrap">Frete</th>
                                 <th scope="col" class="text-center text-nowrap">Comb. + Frete</th>
+                                <th scope="col" class="text-center text-nowrap">Frete/Litro</th>
+                                <th scope="col" class="text-center text-nowrap">(R$) Litro Final</th>
                                 <th scope="col" class="text-center text-nowrap">Fornecedor</th>
                                 <th scope="col" class="text-center text-nowrap">Qualidade</th>
                                 <th scope="col" class="text-center text-nowrap">Situação</th>
@@ -122,6 +124,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     {data: 'valor_comb'},
                     { data: 'frete'},
                     { data: 'valor_total' },
+                    { data: 'frete_litro'},
+                    { data: 'vl_litro_final'},
                     { data: 'nome_fantasia' },
                     { data: 'qualidade' },
                     { data: 'situacao' },

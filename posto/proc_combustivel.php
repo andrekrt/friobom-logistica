@@ -69,6 +69,21 @@ foreach($empRecords as $row){
     $situacao = $row['situacao']?mb_convert_encoding($row['situacao'],'ISO-8859-1', 'UTF-8'):null;
     $qualidade = $row['qualidade']?mb_convert_encoding($row['qualidade'],'ISO-8859-1', 'UTF-8'):null;
 
+    if($valor_total==null || $total_litros==null){
+        $vlLitroFinal=null;
+    }else{
+        $vlLitroFinal = $row['valor_total']/$row['total_litros'];
+        $vlLitroFinal ="R$ ". number_format($vlLitroFinal,4,",",".");
+    }
+
+    if($frete==null || $total_litros == null){
+        $freteLitro = null;
+    }else{
+        $freteLitro = $row['frete']/$row['total_litros'];
+        $freteLitro ="R$" . number_format($freteLitro,4,",",".");
+    }
+    
+
     $data[] = array(
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
         "data_entrada"=>date("d/m/Y", strtotime($row['data_entrada'])),
@@ -78,6 +93,8 @@ foreach($empRecords as $row){
         "total_litros"=>$total_litros ,
         "valor_comb"=>$valor_comb,
         "valor_total"=>"R$ " . $valor_total,
+        "frete_litro"=>$freteLitro,
+        "vl_litro_final"=>$vlLitroFinal,
         "nome_fantasia"=>$row['nome_fantasia'],
         "qualidade"=>$qualidade,
         "situacao"=>$row['situacao'],
