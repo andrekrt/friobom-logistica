@@ -18,6 +18,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $peca = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']) ;;
     $usuario = $_SESSION['idUsuario'];
+    $filial = $_SESSION['filial'];
 
     $db->beginTransaction();
 
@@ -32,12 +33,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         for($i=0; $i<count($peca); $i++){
 
-            $sql = $db->prepare("INSERT INTO inventario_almoxarifado (token, data_inv, peca, qtd, usuario) VALUES (:token, :dataAtual, :peca, :qtd, :usuario)");
+            $sql = $db->prepare("INSERT INTO inventario_almoxarifado (token, data_inv, peca, qtd, usuario, filial) VALUES (:token, :dataAtual, :peca, :qtd, :usuario, :filial)");
             $sql->bindValue(':token', $newToken);
             $sql->bindValue(':dataAtual', $dataAtual);
             $sql->bindValue(':peca', $peca[$i]);
             $sql->bindValue(':qtd', $qtd[$i]);
             $sql->bindValue(':usuario', $usuario);
+            $sql->bindValue(':filial', $filial);
             $sql->execute();
 
             $atualiza = $db->prepare("UPDATE peca_reparo SET qtd_inv = :qtd WHERE id_peca_reparo = :idpeca ");

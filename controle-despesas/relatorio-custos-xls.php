@@ -4,20 +4,27 @@ date_default_timezone_set('America/Sao_Paulo');
 session_start();
 require("../conexao.php");
 
+$filial=$_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = " AND (viagem.filial=$filial)";
+}
+
 //pegando dados
-$sqlCustos = $db->query("SELECT month(data_chegada) as mes, year(data_chegada) as ano,SUM(dias_motorista*diarias_motoristas) as diariasMotorista, SUM(dias_ajudante*diarias_ajudante) as diariasAjudante, SUM(dias_chapa*diarias_chapa) as diariasChapa, (SUM(outros_gastos_ajudante)+SUM(outros_servicos)+SUM(tomada)+SUM(descarga)+SUM(travessia)) as outrosGastos, SUM(valor_total_abast) as abastecimento, SUM(valor_transportado) as faturado FROM `viagem` GROUP BY month(data_chegada), year(data_chegada) ORDER BY year(data_chegada) DESC, month(data_chegada) DESC LIMIT 1,12");
+$sqlCustos = $db->query("SELECT month(data_chegada) as mes, year(data_chegada) as ano,SUM(dias_motorista*diarias_motoristas) as diariasMotorista, SUM(dias_ajudante*diarias_ajudante) as diariasAjudante, SUM(dias_chapa*diarias_chapa) as diariasChapa, (SUM(outros_gastos_ajudante)+SUM(outros_servicos)+SUM(tomada)+SUM(descarga)+SUM(travessia)) as outrosGastos, SUM(valor_total_abast) as abastecimento, SUM(valor_transportado) as faturado FROM `viagem` WHERE 1 $condicao GROUP BY month(data_chegada), year(data_chegada) ORDER BY year(data_chegada) DESC, month(data_chegada) DESC LIMIT 1,12");
 $custos = $sqlCustos->fetchAll();
 
-$sqlManutecoes = $db->query("SELECT month(data_aprovacao) as mes, year(data_aprovacao) as ano, SUM(vl_total+frete) as valorTotal FROM `solicitacoes_new` GROUP BY month(data_aprovacao), year(data_aprovacao) ORDER BY year(data_aprovacao) DESC, month(data_aprovacao) DESC LIMIT 1,12");
+$sqlManutecoes = $db->query("SELECT month(data_aprovacao) as mes, year(data_aprovacao) as ano, SUM(vl_total+frete) as valorTotal FROM `solicitacoes_new` WHERE 1 $condicao GROUP BY month(data_aprovacao), year(data_aprovacao) ORDER BY year(data_aprovacao) DESC, month(data_aprovacao) DESC LIMIT 1,12");
 $manutecoes = $sqlManutecoes->fetchAll();
 
-$SalarioMot = $db->query("SELECT SUM(salario) as salarioMot FROM motoristas WHERE ativo =1");
+$SalarioMot = $db->query("SELECT SUM(salario) as salarioMot FROM motoristas WHERE ativo =1 $condicao");
 $SalarioMot = $SalarioMot->fetch();
 
-$SalarioAjud = $db->query("SELECT SUM(salario_auxiliar) as salarioAjud FROM auxiliares_rota WHERE ativo =1");
+$SalarioAjud = $db->query("SELECT SUM(salario_auxiliar) as salarioAjud FROM auxiliares_rota WHERE ativo =1 $condicao");
 $SalarioAjud=$SalarioAjud->fetch();
 
-$salarioInt = $db->query("SELECT SUM(salario_colaborador+salario_extra) as salarioInt FROM colaboradores WHERE ativo =1");
+$salarioInt = $db->query("SELECT SUM(salario_colaborador+salario_extra) as salarioInt FROM colaboradores WHERE ativo =1 $condicao");
 $salarioInt = $salarioInt->fetch(); 
 
     $arquivo = 'relatorio-custo.xls';

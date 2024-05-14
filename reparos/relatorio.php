@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $tipoUsuario = $_SESSION['tipoUsuario'];
     
@@ -85,7 +85,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                     $dataInicial = filter_input(INPUT_POST, 'dataInicial')?filter_input(INPUT_POST, 'dataInicial'):"2020-01-01";
                                     $dataFinal = filter_input(INPUT_POST, 'dataFinal')?filter_input(INPUT_POST, 'dataFinal'):"2050-12-31";
                                     
-                                    $sql =$db->query("SELECT SUM(solicitacoes.valor) + SUM(solicitacoes02.valor) AS total FROM solicitacoes INNER JOIN solicitacoes02 ON solicitacoes.id = solicitacoes02.idSocPrinc WHERE dataAtual BETWEEN '$dataInicial' AND '$dataFinal'");
+                                    $sql =$db->query("SELECT SUM(solicitacoes.valor) + SUM(solicitacoes02.valor) AS total FROM solicitacoes INNER JOIN solicitacoes02 ON solicitacoes.id = solicitacoes02.idSocPrinc WHERE dataAtual BETWEEN '$dataInicial' AND '$dataFinal' AND filial = $filial");
 
                                     if($sql){
                                         $dados = $sql->fetchAll();

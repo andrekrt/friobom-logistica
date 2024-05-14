@@ -22,6 +22,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $placa = filter_input(INPUT_POST, 'placa');
     $obs = filter_input(INPUT_POST, 'obs');  
     $os = filter_input(INPUT_POST, 'idOrdemServico');
+    $filial = $_SESSION['filial'];
 
     $peca = $_POST['peca'];
     $servico = $_POST['servico'];
@@ -41,7 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         }
     
         for($i=0;$i<count($peca);$i++){
-            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao, :idUsuario)");
+            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario, filial) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao, :idUsuario, :filial)");
             $inserir->bindValue(':dataSaida', $dataSaida);
             $inserir->bindValue(':qtd', $qtd[$i]);
             $inserir->bindValue(':peca', $peca[$i]);
@@ -51,6 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $inserir->bindValue(':os', $os);
             $inserir->bindValue(':requisicao', $requisicao[$i]);
             $inserir->bindValue(':idUsuario', $idUsuario);
+            $inserir->bindValue(':filia',$filial);
             $inserir->execute();
 
             atualizaEStoque($peca[$i]);

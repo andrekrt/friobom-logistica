@@ -13,7 +13,13 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND ocorrencias.filial=$filial";
+    }
+    
     $arquivo = 'ocorrencias-por-motorista.xls';
 
     $html = '';
@@ -28,18 +34,18 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     
     $html .= '</tr>';
 
-    $sql = $db->query("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista GROUP BY ocorrencias.cod_interno_motorista");
+    $sql = $db->query("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE 1 $condicao GROUP BY ocorrencias.cod_interno_motorista");
     $dados = $sql->fetchAll();
     foreach($dados as $dado):
             //qtd de má condução
-            $qtdConduta = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia");
+            $qtdConduta = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia $condicao");
             $qtdConduta->bindValue(':motorista', $dado['cod_interno_motorista']);
             $qtdConduta->bindValue(':ocorrencia', 'Má Condução');
             $qtdConduta->execute();
             $qtdConduta = $qtdConduta->rowCount();
 
             //qtd de mau comportamento
-            $qtdComportamneto = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia");
+            $qtdComportamneto = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia $condicao");
             $qtdComportamneto->bindValue(':motorista', $dado['cod_interno_motorista']);
             $qtdComportamneto->bindValue(':ocorrencia', 'Mau Comportamento');
             $qtdComportamneto->execute();

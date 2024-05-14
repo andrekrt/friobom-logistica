@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $placa = filter_input(INPUT_POST,'placa');
     $tipoTk = filter_input(INPUT_POST, 'tipotk');
     $horimetro = filter_input(INPUT_POST, 'horaAtual');
@@ -34,10 +34,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit();
             
         }
-        $inserir = $db->prepare("INSERT INTO thermoking (veiculo, tipo_tk, hora_atual) VALUES (:veiculo, :tipoTk, :horimetro)");
+        $inserir = $db->prepare("INSERT INTO thermoking (veiculo, tipo_tk, hora_atual, filial ) VALUES (:veiculo, :tipoTk, :horimetro, :filial)");
         $inserir->bindValue(':veiculo', $placa);
         $inserir->bindValue(':tipoTk', $tipoTk);
         $inserir->bindValue(':horimetro', $horimetro);  
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
         
         $db->commit();

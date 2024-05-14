@@ -15,7 +15,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-   
+    $filial = $_SESSION['filial'];
     $usuario = $_SESSION['idUsuario'];
     $mdfe = filter_input(INPUT_POST, 'mdfe');
     $motorista = filter_input(INPUT_POST, 'motorista');
@@ -65,7 +65,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             header("Location: mdfe.php");
             exit();
         }
-        $sql = $db->prepare("INSERT INTO motoristas_ponto (mdfe, motorista, data_ponto, hora_inicio, hora_final, tempo_parado, hrs_trabalhada, hrs_parada, hrs_trabalhada_liq, usuario) VALUES (:mdfe, :motorista, :dataPonto, :hrInicio, :hrFinal, :tempoParado, :hrTrabalhada, :hrParada, :hrLiquido, :usuario)");
+        $sql = $db->prepare("INSERT INTO motoristas_ponto (mdfe, motorista, data_ponto, hora_inicio, hora_final, tempo_parado, hrs_trabalhada, hrs_parada, hrs_trabalhada_liq, usuario, filial) VALUES (:mdfe, :motorista, :dataPonto, :hrInicio, :hrFinal, :tempoParado, :hrTrabalhada, :hrParada, :hrLiquido, :usuario, :filial)");
         $sql->bindValue(':mdfe', $mdfe);
         $sql->bindValue(':motorista', $motorista);
         $sql->bindValue(':dataPonto', $data);
@@ -76,6 +76,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':hrParada', $tempoParado);
         $sql->bindValue(':hrLiquido', $tempoLiq);
         $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

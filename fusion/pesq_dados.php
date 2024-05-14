@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -9,6 +10,13 @@ $columnIndex = $_POST['order'][0]['column']; // Column index
 $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
+
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND fusion.filial=$filial";
+}
 
 $searchArray = array();
 
@@ -22,19 +30,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(distinct(date_format(termino_rota, '%m/%Y'))) AS allcount FROM fusion WHERE situacao = 'Finalizada' GROUP BY date_format(saida, '%m/%Y')");
+$stmt = $db->prepare("SELECT COUNT(distinct(date_format(termino_rota, '%m/%Y'))) AS allcount FROM fusion WHERE situacao = 'Finalizada' $condicao GROUP BY date_format(saida, '%m/%Y')");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(distinct(date_format(termino_rota, '%m/%Y'))) AS allcount FROM fusion  WHERE 1 AND situacao = 'Finalizada' ".$searchQuery . "GROUP BY date_format(saida, '%m/%Y')");
+$stmt = $db->prepare("SELECT COUNT(distinct(date_format(termino_rota, '%m/%Y'))) AS allcount FROM fusion  WHERE 1 $condicao AND situacao = 'Finalizada' ".$searchQuery . "GROUP BY date_format(saida, '%m/%Y')");
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT termino_rota, COUNT(*) as qtd, SUM(num_entregas) as totalEntregas, SUM(num_dev) as totalDevolucao, SUM(premio_possivel) as totalPremiacaoPossivel, SUM(premio_real) as totalPago, AVG(premio_alcancado) as percPremio FROM fusion WHERE 1 AND situacao = 'Finalizada' ".$searchQuery."GROUP BY date_format(saida, '%m/%Y') ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT termino_rota, COUNT(*) as qtd, SUM(num_entregas) as totalEntregas, SUM(num_dev) as totalDevolucao, SUM(premio_possivel) as totalPremiacaoPossivel, SUM(premio_real) as totalPago, AVG(premio_alcancado) as percPremio FROM fusion WHERE 1 AND situacao = 'Finalizada' $condicao".$searchQuery."GROUP BY date_format(saida, '%m/%Y') ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){

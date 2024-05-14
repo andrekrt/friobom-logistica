@@ -10,33 +10,40 @@ $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
 
+$filial=$_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = " AND (caixas.filial=$filial)";
+}
+
 $searchArray = array();
 
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (carga LIKE :carga OR  situacao LIKE :situacao OR nome_usuario OR :nome_usuario) ";
+	$searchQuery = " AND (carregamento LIKE :carregamento OR  situacao LIKE :situacao OR nome_usuario OR :nome_usuario) ";
     $searchArray = array( 
-        'carga'=>"%$searchValue%", 
+        'carregamento'=>"%$searchValue%", 
         'situacao'=>"%$searchValue%",
         'nome_usuario'=>"%$searchValue%"
     );
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM caixas");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM caixas WHERE 1 $condicao");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery );
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 $condicao ".$searchQuery );
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 $condicao ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){

@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND extrato_pneu.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT * FROM  extrato_pneu LEFT JOIN pneus ON extrato_pneu.pneu = pneus.idpneus");
+    $sql = $db->query("SELECT * FROM  extrato_pneu LEFT JOIN pneus ON extrato_pneu.pneu = pneus.idpneus WHERE 1 $condicao");
     $dados = $sql->fetchAll();
 
     $fp = fopen("extrato.csv", "w");

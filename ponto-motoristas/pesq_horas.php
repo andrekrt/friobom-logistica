@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -9,6 +10,13 @@ $columnIndex = $_POST['order'][0]['column']; // Column index
 $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
+
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND motoristas_ponto.filial=$filial";
+}
 
 // datas para filtro
 $dataInicial = !empty($_POST['dataInicial'])?$_POST['dataInicial']:"2024-01-01";
@@ -29,19 +37,19 @@ if($searchValue != '' || $dataInicial != '' || $dataFinal != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(DISTINCT(motorista)) AS allcount FROM motoristas_ponto");
+$stmt = $db->prepare("SELECT COUNT(DISTINCT(motorista)) AS allcount FROM motoristas_ponto WHERE 1 $condicao");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(DISTINCT(motorista)) AS allcount FROM motoristas_ponto WHERE 1 ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(DISTINCT(motorista)) AS allcount FROM motoristas_ponto WHERE 1 $condicao ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT motorista, SEC_TO_TIME(SUM(TIME_TO_SEC(hrs_trabalhada))) AS hrs_trabalhada, SEC_TO_TIME(SUM(TIME_TO_SEC(hrs_parada))) AS hrs_parada, SEC_TO_TIME(SUM(TIME_TO_SEC(hrs_trabalhada_liq))) AS hrs_trabalhada_liq FROM motoristas_ponto  WHERE 1 ".$searchQuery." GROUP BY motorista ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT motorista, SEC_TO_TIME(SUM(TIME_TO_SEC(hrs_trabalhada))) AS hrs_trabalhada, SEC_TO_TIME(SUM(TIME_TO_SEC(hrs_parada))) AS hrs_parada, SEC_TO_TIME(SUM(TIME_TO_SEC(hrs_trabalhada_liq))) AS hrs_trabalhada_liq FROM motoristas_ponto  WHERE 1 $condicao ".$searchQuery." GROUP BY motorista ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Vincular valores
 foreach($searchArray as $chave=>$valor){

@@ -12,10 +12,17 @@ $sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
 $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND revisao_tk.filial=$filial";
+}
+
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idrevisao, placa_veiculo, tipo_veiculo, tipo_tk, data_revisao_tk, horimetro_revisao FROM revisao_tk LEFT JOIN thermoking ON revisao_tk.thermoking = thermoking.idthermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
+    $sql = $db->query("SELECT idrevisao, placa_veiculo, tipo_veiculo, tipo_tk, data_revisao_tk, horimetro_revisao FROM revisao_tk LEFT JOIN thermoking ON revisao_tk.thermoking = thermoking.idthermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE 1 $filial ");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=revisao-tk.csv');

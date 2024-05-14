@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $mesAno = filter_input(INPUT_POST, 'mesAno');
     $funcionarios = filter_input(INPUT_POST, 'funcionarios');
     $pagamento = str_replace(",",".",filter_input(INPUT_POST, 'pagamento'));
@@ -33,11 +33,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             header("Location: pagamentos.php");
             exit();
         }
-        $sql = $db->prepare("INSERT INTO folha_pagamento (mes_ano, pagamento, tipo_funcionarios, usuario) VALUES (:mesAno, :pagamento, :funcionarios, :usuario) ");
+        $sql = $db->prepare("INSERT INTO folha_pagamento (mes_ano, pagamento, tipo_funcionarios, usuario, filial) VALUES (:mesAno, :pagamento, :funcionarios, :usuario, :filial) ");
         $sql->bindValue(':mesAno', $mesAno);
         $sql->bindValue(':pagamento', $pagamento);
         $sql->bindValue(':funcionarios', $funcionarios);
         $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

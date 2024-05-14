@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND rotas_supervisores.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idrotas, saida, nome_supervisor, placa_veiculo, chegada, velocidade_max, qtd_visitas , rca01, rca02, cidades, hora_almoco, km_rodado, obs, nome_usuario FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios");
+    $sql = $db->query("SELECT idrotas, saida, nome_supervisor, placa_veiculo, chegada, velocidade_max, qtd_visitas , rca01, rca02, cidades, hora_almoco, km_rodado, obs, nome_usuario FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=rotas-supervisores.csv');

@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 require("../conexao.php");
 include_once "funcao.php";
 

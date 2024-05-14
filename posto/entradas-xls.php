@@ -2,9 +2,14 @@
 
 session_start();
 require("../conexao.php");
-
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND combustivel_entrada.filial=$filial";
+}
 $db->exec("set names utf8");
-$sql = $db->query("SELECT * FROM combustivel_entrada LEFT JOIN usuarios ON combustivel_entrada.usuario = usuarios.idusuarios LEFT JOIN fornecedores ON combustivel_entrada.fornecedor = fornecedores.id");
+$sql = $db->query("SELECT * FROM combustivel_entrada LEFT JOIN usuarios ON combustivel_entrada.usuario = usuarios.idusuarios LEFT JOIN fornecedores ON combustivel_entrada.fornecedor = fornecedores.id WHERE $condicao");
 $dados = $sql->fetchAll();
 
 $fp = fopen("entradas.csv", "w");

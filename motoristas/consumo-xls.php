@@ -13,6 +13,12 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND viagem.filial=$filial";
+    }
 
         $primeiroDia = date("Y-m-01", strtotime('-1 months', strtotime(date('Y-m-d'))));
         $ultimodia = date("Y-m-t",strtotime('-1 months', strtotime(date('Y-m-d'))));
@@ -41,7 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $html .= '<td class="text-center font-weight-bold">Valor Ganho</td>';
         $html .= '</tr>';
 
-        $sql=$db->prepare("SELECT nome_motorista, viagem.placa_veiculo, veiculos.categoria,nome_rota, data_saida, data_chegada, media_comtk FROM `viagem` LEFT JOIN veiculos ON viagem.cod_interno_veiculo = veiculos.cod_interno_veiculo WHERE data_chegada BETWEEN :dtInicial AND :dtFinal AND nome_motorista LIKE :motorista ORDER BY nome_motorista ASC");
+        $sql=$db->prepare("SELECT nome_motorista, viagem.placa_veiculo, veiculos.categoria,nome_rota, data_saida, data_chegada, media_comtk FROM `viagem` LEFT JOIN veiculos ON viagem.cod_interno_veiculo = veiculos.cod_interno_veiculo WHERE data_chegada BETWEEN :dtInicial AND :dtFinal AND nome_motorista $condicao LIKE :motorista ORDER BY nome_motorista ASC");
         $sql->bindValue(':motorista', $motorista);
         $sql->bindValue(':dtInicial', $minimo);
         $sql->bindValue(':dtFinal', $maximo);
@@ -68,7 +74,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     break;
             } 
             
-            $qtdViagem = $db->prepare("SELECT COUNT(*) as qtd FROM viagem WHERE nome_motorista = :motorista AND data_chegada BETWEEN :dtInicio AND :dtFinal");
+            $qtdViagem = $db->prepare("SELECT COUNT(*) as qtd FROM viagem WHERE nome_motorista = :motorista AND data_chegada BETWEEN :dtInicio AND :dtFinal $condicao");
             $qtdViagem->bindValue(':motorista', $dado['nome_motorista']);
             $qtdViagem->bindValue(':dtInicio', $primeiroDia);
             $qtdViagem->bindValue(':dtFinal', $ultimodia);

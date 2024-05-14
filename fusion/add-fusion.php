@@ -15,7 +15,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $saida = filter_input(INPUT_POST, 'saida');
     $carregamento = filter_input(INPUT_POST, 'carregamento');
     $veiculo = filter_input(INPUT_POST, 'veiculo');
@@ -38,7 +38,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             header("Location: form-fusion.php");
             exit();
         }
-        $sql = $db->prepare("INSERT INTO fusion (saida, carregamento, veiculo, rota, motorista, num_entregas, situacao, usuario) VALUES (:saida, :carregamento, :veiculo, :rota, :motorista, :entregas, :situacao, :usuario)");
+        $sql = $db->prepare("INSERT INTO fusion (saida, carregamento, veiculo, rota, motorista, num_entregas, situacao, usuario, filial) VALUES (:saida, :carregamento, :veiculo, :rota, :motorista, :entregas, :situacao, :usuario, :filial)");
         $sql->bindValue(':saida', $saida);
         $sql->bindValue(':carregamento', $carregamento);
         $sql->bindValue(':veiculo', $veiculo);
@@ -47,6 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':entregas', $entregas);
         $sql->bindValue(':situacao', $situacao);
         $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

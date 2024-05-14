@@ -17,6 +17,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $idUsuario = $_SESSION['idUsuario'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $tipoUsuario = $_SESSION['tipoUsuario'];
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
@@ -108,7 +109,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select class="form-control" name="veiculo" required id="veiculo">
                                     <option value=""></option>
                                     <?php
-                                    $sql = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
+                                    $sql = $db->query("SELECT placa_veiculo FROM veiculos WHERE filial = $filial ORDER BY placa_veiculo ASC");
                                     $dados = $sql->fetchAll();
                                     foreach ($dados as $dado):
                                     ?>

@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND folha_pagamento.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT mes_ano, pagamento, tipo_funcionarios, nome_usuario  FROM `folha_pagamento` LEFT JOIN usuarios ON folha_pagamento.usuario=usuarios.idusuarios;");
+    $sql = $db->query("SELECT mes_ano, pagamento, tipo_funcionarios, nome_usuario  FROM `folha_pagamento` LEFT JOIN usuarios ON folha_pagamento.usuario=usuarios.idusuarios $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=folha-pagamento.csv');

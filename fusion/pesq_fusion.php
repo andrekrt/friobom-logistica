@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -9,6 +10,14 @@ $columnIndex = $_POST['order'][0]['column']; // Column index
 $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
+
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND fusion.filial=$filial";
+}
+
 
 $searchArray = array();
 
@@ -26,19 +35,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion WHERE situacao = 'Pendente'");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion WHERE situacao = 'Pendente' $condicao");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND fusion.situacao = 'Pendente' ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND fusion.situacao = 'Pendente' $condicao ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND fusion.situacao = 'Pendente' ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM fusion LEFT JOIN veiculos ON fusion.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON fusion.motorista = motoristas.cod_interno_motorista LEFT JOIN rotas ON fusion.rota = rotas.cod_rota LEFT JOIN usuarios ON fusion.usuario = usuarios.idusuarios WHERE 1 AND fusion.situacao = 'Pendente' $condicao ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){

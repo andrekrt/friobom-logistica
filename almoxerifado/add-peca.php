@@ -22,6 +22,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $estoqueMinimo = str_replace(",", ".", filter_input(INPUT_POST, 'estoqueMinimo'));
     $dataCadastro = date('Y-m-d');
     $situacao = 'Solicitar';
+    $filial = $_SESSION['filial'];
 
     $verificaPeca = $db->prepare("SELECT * FROM peca_estoque WHERE descricao_peca = :descricao");
     $verificaPeca->bindValue(':descricao', $descricao);
@@ -33,7 +34,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     }else{
 
-        $inserir = $db->prepare("INSERT INTO peca_estoque (descricao_peca, un_medida, grupo_peca, estoque_minimo, situacao, data_cadastro, id_usuario) VALUES (:descricao, :medida, :grupo, :estoqueMinimo, :situacao, :dataCadastro, :idUsuario)");
+        $inserir = $db->prepare("INSERT INTO peca_estoque (descricao_peca, un_medida, grupo_peca, estoque_minimo, situacao, data_cadastro, id_usuario, filial) VALUES (:descricao, :medida, :grupo, :estoqueMinimo, :situacao, :dataCadastro, :idUsuario, :filial)");
         $inserir->bindValue(':descricao', $descricao);
         $inserir->bindValue(':medida', $medida);
         $inserir->bindValue(':grupo', $grupo);
@@ -41,6 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':dataCadastro', $dataCadastro);
         $inserir->bindValue(':idUsuario', $idUsuario);
+        $inserir->bindValue(':filial', $filial);
 
         if($inserir->execute()){
             echo "<script>alert('Peça Cadastrada com Sucesso!');</script>";

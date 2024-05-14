@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = " WHERE peca_reparo.filial=$filial";
+    }
 
     // $db->exec("set names utf8");
-    $sql = $db->prepare("SELECT id_peca_reparo, descricao, un_medida, categoria, estoque_minimo, total_entrada, total_saida, total_estoque, valor_total, situacao, nome_usuario FROM peca_reparo LEFT JOIN usuarios ON peca_reparo.usuario = usuarios.idusuarios");
+    $sql = $db->prepare("SELECT id_peca_reparo, descricao, un_medida, categoria, estoque_minimo, total_entrada, total_saida, total_estoque, valor_total, situacao, nome_usuario FROM peca_reparo LEFT JOIN usuarios ON peca_reparo.usuario = usuarios.idusuarios $condicao");
     $sql->execute();
 
     header('Content-Type:text/csv; charset=UTF-8');

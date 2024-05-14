@@ -18,6 +18,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $tipoUsuario = $dado['idtipo_usuario'];
         $_SESSION['tipoUsuario'] = $tipoUsuario;
         $_SESSION['nomeUsuario'] = $nomeUsuario;
+        $_SESSION['filial']= $dado['filial'];
 
         $qtdeVeiculos = $db->query("SELECT * FROM veiculos WHERE ativo = 1")->rowCount();
         $qtdRotas = $db->query("SELECT * FROM rotas")->rowCount();

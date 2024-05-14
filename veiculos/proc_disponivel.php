@@ -11,6 +11,13 @@ $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
 $status = $_GET['status'];
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND veiculos.filial=$filial";
+}
+
 $searchArray = array();
 
 ## Search 
@@ -27,19 +34,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE ativo = 1 AND situacao ='$status' ");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE ativo = 1 AND situacao ='$status' $condicao ");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE 1 AND situacao ='$status' AND ativo = 1".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM veiculos WHERE 1 $condicao AND situacao ='$status' AND ativo = 1".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT * FROM veiculos WHERE 1 AND situacao ='$status' AND ativo = 1 ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT * FROM veiculos WHERE 1 AND situacao ='$status' AND ativo = 1 $condicao".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){

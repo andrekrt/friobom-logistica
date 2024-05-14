@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $nomeColaborador = filter_input(INPUT_POST, 'nome');
     $cpf = filter_input(INPUT_POST, 'cpf');
     $salario = str_replace(",",".",filter_input(INPUT_POST, 'salario'));
@@ -34,12 +34,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit();
         }
 
-        $sql = $db->prepare("INSERT INTO colaboradores (nome_colaborador, cpf_colaborador, salario_colaborador, salario_extra, cargo_colaborador) VALUES (:nome, :cpf, :salario, :salarioExtra, :cargo) ");
+        $sql = $db->prepare("INSERT INTO colaboradores (nome_colaborador, cpf_colaborador, salario_colaborador, salario_extra, cargo_colaborador, filial) VALUES (:nome, :cpf, :salario, :salarioExtra, :cargo, :filial) ");
         $sql->bindValue(':nome', $nomeColaborador);
         $sql->bindValue(':cpf', $cpf);
         $sql->bindValue(':salario', $salario);
         $sql->bindValue(':salarioExtra', $extra);
         $sql->bindValue(':cargo', $funcao);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

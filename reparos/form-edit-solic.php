@@ -14,6 +14,7 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
     $tipoUsuario = $_SESSION['tipoUsuario'];
+    $filial = $_SESSION['filial'];
 
     $idPneu = filter_input(INPUT_GET, 'idPneu');
     $pneu = $db->prepare("SELECT * FROM solicitacoes_new LEFT JOIN fornecedores ON solicitacoes_new.fornecedor = fornecedores.id WHERE solicitacoes_new.id=:id");
@@ -83,7 +84,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Estoque" >Estoque</option>
                                 <?php
 
-                                $veiculos = $db->query("SELECT placa_veiculo FROM veiculos ORDER BY placa_veiculo ASC");
+                                $veiculos = $db->query("SELECT placa_veiculo FROM veiculos WHERE filial = $filial ORDER BY placa_veiculo ASC");
                                 if ($veiculos->rowCount() > 0) {
                                     $veiculos = $veiculos->fetchAll();
                                     foreach ($veiculos as $veiculo) {
@@ -100,7 +101,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="<?=$dado['motorista']?>"><?=$dado['motorista']?></option>
                                 <?php
 
-                                $sql = $db->query("SELECT * FROM motoristas");
+                                $sql = $db->query("SELECT * FROM motoristas WHERE filial = $filial");
                                 $motoristas = $sql->fetchAll();
                                 foreach ($motoristas as $motorista):
 
@@ -115,7 +116,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="<?=$dado['rota']?>"><?=$dado['rota']?></option>
                                 <?php
 
-                                $sql = $db->query("SELECT * FROM rotas");
+                                $sql = $db->query("SELECT * FROM rotas WHERE filial = $filial");
                                 $rotas = $sql->fetchAll();
                                 foreach ($rotas as $rota):
 
@@ -130,7 +131,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="fornecedor" id="fornecedor" class="form-control select2">
                                 <option value="<?=$dado['fornecedor']?>"> <?=$dado['fornecedor']?> - <?=$dado['nome_fantasia']?> </option>
                                 <?php
-                                $sql = $db->query("SELECT * FROM fornecedores");
+                                $sql = $db->query("SELECT * FROM fornecedores WHERE filial = $filial");
                                 $pecas = $sql->fetchAll();
                                 foreach ($pecas as $peca):
                                 ?>
@@ -170,7 +171,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="<?=$solicitacao['peca_servico']?>"> <?=$solicitacao['peca_servico']?> - <?=$solicitacao['descricao']?> </option>
                                 <?php
 
-                                $sql = $db->query("SELECT * FROM peca_reparo");
+                                $sql = $db->query("SELECT * FROM peca_reparo WHERE filial = $filial");
                                 $pecas = $sql->fetchAll();
                                 foreach ($pecas as $peca) {
 

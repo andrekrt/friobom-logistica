@@ -6,7 +6,7 @@ session_start();
 require("../conexao.php");
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($_SESSION['tipoUsuario'] == 4 || $_SESSION['tipoUsuario']==99) ) {
-
+    $filial = $_SESSION['filial'];
    
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -74,7 +74,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <tr>
                             <td scope="col" class="text-center text-nowrap font-weight-bold" > Diarias Motoristas</td>
                         <?php 
-                            $sqlCustos = $db->query("SELECT month(data_chegada) as mes, year(data_chegada) as ano,SUM(dias_motorista*diarias_motoristas) as diariasMotorista, SUM(dias_ajudante*diarias_ajudante) as diariasAjudante, SUM(dias_chapa*diarias_chapa) as diariasChapa, (SUM(outros_gastos_ajudante)+SUM(outros_servicos)+SUM(tomada)+SUM(descarga)+SUM(travessia)) as outrosGastos, SUM(valor_total_abast) as abastecimento, SUM(valor_transportado) as faturado FROM `viagem` GROUP BY month(data_chegada), year(data_chegada) ORDER BY year(data_chegada) DESC, month(data_chegada) DESC LIMIT 0,12");
+                            $sqlCustos = $db->query("SELECT month(data_chegada) as mes, year(data_chegada) as ano,SUM(dias_motorista*diarias_motoristas) as diariasMotorista, SUM(dias_ajudante*diarias_ajudante) as diariasAjudante, SUM(dias_chapa*diarias_chapa) as diariasChapa, (SUM(outros_gastos_ajudante)+SUM(outros_servicos)+SUM(tomada)+SUM(descarga)+SUM(travessia)) as outrosGastos, SUM(valor_total_abast) as abastecimento, SUM(valor_transportado) as faturado FROM `viagem` WHERE filial=$filial GROUP BY month(data_chegada), year(data_chegada) ORDER BY year(data_chegada) DESC, month(data_chegada) DESC LIMIT 0,12");
                             $custos = $sqlCustos->fetchAll();
                             foreach($custos as $custo):
                         ?>
@@ -111,7 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <tr>
                             <td scope="col" class="text-center text-nowrap font-weight-bold" > Manutenção</td>
                         <?php 
-                        $sqlManutecoes = $db->query("SELECT month(data_aprovacao) as mes, year(data_aprovacao) as ano, SUM(vl_total+frete) as valorTotal FROM `solicitacoes_new` GROUP BY month(data_aprovacao), year(data_aprovacao) ORDER BY year(data_aprovacao) DESC, month(data_aprovacao) DESC LIMIT 0,12");
+                        $sqlManutecoes = $db->query("SELECT month(data_aprovacao) as mes, year(data_aprovacao) as ano, SUM(vl_total+frete) as valorTotal FROM `solicitacoes_new` WHERE filial=$filial GROUP BY month(data_aprovacao), year(data_aprovacao) ORDER BY year(data_aprovacao) DESC, month(data_aprovacao) DESC LIMIT 0,12");
                         $manutecoes = $sqlManutecoes->fetchAll();
                         foreach($manutecoes as $manutecao):
                         ?>
@@ -124,7 +124,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         $mes = date('Y-m');
                         for($i=0;$i<12;$i++):                            
                             $mes = date("Y-m", strtotime('-1 months', strtotime(date($mes))));
-                            $SalarioMot = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Motoristas' AND mes_ano = '$mes'");
+                            $SalarioMot = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Motoristas' AND mes_ano = '$mes' AND filial=$filial");
                             $SalarioMot = $SalarioMot->fetch();
                             echo "<td>". number_format($SalarioMot['pagamento'],2,",",".")  ."</td>";
                             $salariosMotoristas[] = $SalarioMot['pagamento'];
@@ -136,7 +136,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         $mes = date('Y-m');
                         for($i=0;$i<12;$i++):
                             $mes = date("Y-m", strtotime('-1 months', strtotime(date($mes))));
-                            $SalarioAjud = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Auxiliares' AND mes_ano = '$mes'");
+                            $SalarioAjud = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Auxiliares' AND mes_ano = '$mes' AND filial=$filial");
                             $SalarioAjud=$SalarioAjud->fetch();
                             echo "<td>". number_format($SalarioAjud['pagamento'],2,",",".")  ."</td>";
                             $salariosAuxiliares[]=$SalarioAjud['pagamento'];
@@ -148,7 +148,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         $mes = date('Y-m');
                         for($i=0;$i<12;$i++):
                             $mes = date("Y-m", strtotime('-1 months', strtotime(date($mes))));
-                            $salarioInt = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Interno' AND mes_ano = '$mes'");
+                            $salarioInt = $db->query("SELECT * FROM folha_pagamento WHERE tipo_funcionarios='Interno' AND mes_ano = '$mes' AND filial = $filial");
                             $salarioInt = $salarioInt->fetch(); 
                             echo "<td>". number_format($salarioInt['pagamento'],2,",",".")  ."</td>";
                             $salariosInternos[] = $salarioInt['pagamento'];

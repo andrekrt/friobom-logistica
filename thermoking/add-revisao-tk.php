@@ -15,7 +15,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $tk = filter_input(INPUT_POST,'tk');
     $dataRevisao = filter_input(INPUT_POST, 'dataRevisao');
     $horimetro = filter_input(INPUT_POST, 'horimetro');
@@ -23,10 +23,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $inserir = $db->prepare("INSERT INTO revisao_tk (thermoking, data_revisao_tk, horimetro_revisao) VALUES (:thermoking, :dataRevisao, :horimetro)");
+        $inserir = $db->prepare("INSERT INTO revisao_tk (thermoking, data_revisao_tk, horimetro_revisao, :filial) VALUES (:thermoking, :dataRevisao, :horimetro, :filial)");
         $inserir->bindValue(':thermoking', $tk);
         $inserir->bindValue(':dataRevisao', $dataRevisao);
         $inserir->bindValue(':horimetro', $horimetro);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();   
 
         $atualizarTk = $db->prepare("UPDATE thermoking SET hora_atual = :horaAtual, hora_ultima_revisao = :horimetroRevisao, ultima_revisao_tk = :dataRevisao WHERE idthermoking = :idtk ");

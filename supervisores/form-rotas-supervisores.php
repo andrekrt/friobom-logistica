@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
     
 }else{
@@ -75,7 +75,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="supervisor" required id="supervisor" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $supervisores = $db->query("SELECT * FROM supervisores ORDER BY nome_supervisor ASC");
+                                    $supervisores = $db->query("SELECT * FROM supervisores WHERE filial = $filial ORDER BY nome_supervisor  ASC");
                                     $supervisores=$supervisores->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($supervisores as $supervisor):
                                     ?>

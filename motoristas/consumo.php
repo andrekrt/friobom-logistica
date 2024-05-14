@@ -13,7 +13,12 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND motoristas.filial=$filial";
+    }
    
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -63,7 +68,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <select style="margin-left: 10px;" name="motorista" id="motorista" class="form-control">
                             <option value=""></option>
                             <?php
-                            $motoristas = $db->query("SELECT * FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista");
+                            $motoristas = $db->query("SELECT * FROM motoristas WHERE ativo = 1 $condicao ORDER BY nome_motorista");
                             $motoristas = $motoristas->fetchAll();
                             foreach($motoristas as $motorista):
                             ?>
@@ -141,7 +146,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                     $percAting = $dado['media_comtk']==0?0:($dado['media_comtk']/$meta);
                                     break;
                             } 
-                        $qtdViagem = $db->prepare("SELECT COUNT(*) as qtd FROM viagem WHERE nome_motorista = :motorista AND data_chegada BETWEEN :dtInicio AND :dtFinal");
+                        $qtdViagem = $db->prepare("SELECT COUNT(*) as qtd FROM viagem WHERE nome_motorista = :motorista AND data_chegada BETWEEN :dtInicio AND :dtFinal $condicao");
                         $qtdViagem->bindValue(':motorista', $dado['nome_motorista']);
                         $qtdViagem->bindValue(':dtInicio', $primeiroDia);
                         $qtdViagem->bindValue(':dtFinal', $ultimodia);
@@ -176,7 +181,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     </table>
                     <ul class="pagination justify-content-center">
                     <?php
-                    $sqlTotal = $db->prepare("SELECT nome_motorista, viagem.placa_veiculo, veiculos.categoria,nome_rota, data_saida, data_chegada, media_comtk FROM `viagem` LEFT JOIN veiculos ON viagem.cod_interno_veiculo = veiculos.cod_interno_veiculo WHERE data_chegada BETWEEN :dtInicial AND :dtFinal AND nome_motorista LIKE :motorista");
+                    $sqlTotal = $db->prepare("SELECT nome_motorista, viagem.placa_veiculo, veiculos.categoria,nome_rota, data_saida, data_chegada, media_comtk FROM `viagem` LEFT JOIN veiculos ON viagem.cod_interno_veiculo = veiculos.cod_interno_veiculo WHERE data_chegada BETWEEN :dtInicial AND :dtFinal AND nome_motorista LIKE :motorista ");
                     $sqlTotal->bindValue(':dtInicial', $primeiroDia);
                     $sqlTotal->bindValue(':dtFinal', $ultimodia);
                     $sqlTotal->bindValue(':motorista', $nomeMotorista);

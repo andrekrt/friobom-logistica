@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $placa = filter_input(INPUT_POST,'placa');
     $kmRevisao = filter_input(INPUT_POST, 'kmRevisao');
     $dataRevisao = filter_input(INPUT_POST, 'dataRevisao');
@@ -23,11 +23,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $inserir = $db->prepare("INSERT INTO revisao_veiculos (placa_veiculo, km_revisao, data_revisao, tipo_revisao) VALUES (:placa, :kmRevisao, :dataRevisao, :tipoRevisao)");
+        $inserir = $db->prepare("INSERT INTO revisao_veiculos (placa_veiculo, km_revisao, data_revisao, tipo_revisao, filial) VALUES (:placa, :kmRevisao, :dataRevisao, :tipoRevisao, :filial)");
         $inserir->bindValue(':placa', $placa);
         $inserir->bindValue(':kmRevisao', $kmRevisao);
         $inserir->bindValue(':dataRevisao', $dataRevisao);
         $inserir->bindValue(':tipoRevisao', $tipoRevisao);
+        $inserir->bindValue(':filial', $filial);
 
         if($tipoRevisao=='Diferencial'){
             $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_revisao_diferencial = :kmRevisao, data_revisao_diferencial = :dataRevisao WHERE placa_veiculo = :placa");

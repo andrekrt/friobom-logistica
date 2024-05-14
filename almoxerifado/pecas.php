@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";

@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $codRota = filter_input(INPUT_POST, 'codRota');
     $rota = filter_input(INPUT_POST, 'rota');
     $horaFechamento1 = filter_input(INPUT_POST, 'horaFechamento1');
@@ -37,7 +37,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit(); 
         }
 
-        $sql = $db->prepare("INSERT INTO rotas (cod_rota, nome_rota, fechamento1, fechamento2, hora_fechamento1, hora_fechamento2, ceps, meta_dias) VALUES (:codRota, :rota, :fechamento1, :fechamento2, :horaFechamento1, :horaFechamento2, :ceps, :metaDias) ");
+        $sql = $db->prepare("INSERT INTO rotas (cod_rota, nome_rota, fechamento1, fechamento2, hora_fechamento1, hora_fechamento2, ceps, meta_dias, filial) VALUES (:codRota, :rota, :fechamento1, :fechamento2, :horaFechamento1, :horaFechamento2, :ceps, :metaDias, :filial) ");
         $sql->bindValue(':codRota', $codRota);
         $sql->bindValue(':rota', $rota);
         $sql->bindValue(':fechamento1', $diaFechamento1);
@@ -46,6 +46,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':horaFechamento2', $horaFechamento2);
         $sql->bindValue(':ceps', $ceps);
         $sql->bindValue(':metaDias', $metaDias);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

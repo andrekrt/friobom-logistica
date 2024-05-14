@@ -27,11 +27,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $obsEntrada = filter_input(INPUT_POST, 'obsEntrada')?filter_input(INPUT_POST, 'obsEntrada'):null;
     $fornecedor = filter_input(INPUT_POST, 'fornecedor');
     $totalComprado = (($preco*$qtd)+$frete)-$desconto;
+    $filial = $_SESSION['filial'];
 
     $db->beginTransaction();
 
     try{
-        $inserir = $db->prepare("INSERT INTO entrada_estoque (data_nf, num_nf, num_pedido, peca_idpeca, preco_custo, qtd,frete, desconto, obs, fornecedor, vl_total_comprado, id_usuario) VALUES (:dataNF, :numNF, :numPedido, :idPeca, :precoCusto, :qtd, :frete, :desconto, :obs, :fornecedor, :totalComprado, :idUsuario)");
+        $inserir = $db->prepare("INSERT INTO entrada_estoque (data_nf, num_nf, num_pedido, peca_idpeca, preco_custo, qtd,frete, desconto, obs, fornecedor, vl_total_comprado, id_usuario, filial) VALUES (:dataNF, :numNF, :numPedido, :idPeca, :precoCusto, :qtd, :frete, :desconto, :obs, :fornecedor, :totalComprado, :idUsuario, :filial)");
         $inserir->bindValue(':dataNF', $dataNota);
         $inserir->bindValue(':numNF', $numNf);
         $inserir->bindValue(':idPeca', $peca);
@@ -44,6 +45,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':totalComprado', $totalComprado);
         $inserir->bindValue(':idUsuario', $idUsuario);
         $inserir->bindValue(':numPedido', $numPedido);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         atualizaEStoque($peca);

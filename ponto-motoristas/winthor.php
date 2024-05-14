@@ -1,8 +1,9 @@
 <?php 
-function registraMdfe(){
+function registraMdfe($filial){
+ 
     require_once "../conexao-oracle.php";
     include_once "../conexao.php";
-
+   
     try{
         $sqlPrepare = "SELECT 
         md.datahorageracao,nummdfe, md.obs, codmotorista, nome AS motorista , md.codveiculo, placa, situacaomdfe, (SELECT DESCRICAO
@@ -25,14 +26,23 @@ function registraMdfe(){
             $cargasText = implode(", ", $numCargas);   
             $msg = empty($mdfe['MENSAGEMSITUACAO'])?"Encerrado":$mdfe['MENSAGEMSITUACAO'];
 
-            // pegar data de saida
-            $sqlCarga = $dbora->prepare("SELECT TO_CHAR(TO_DATE(dtsaida, 'DD/MM/YY'), 'YYYY-MM-DD') as dataSaida,numcar, dtsaida, dtfecha, dtretorno as dataRetorno, TO_CHAR(TO_DATE(dtretorno, 'DD/MM/YY'), 'YYYY-MM-DD') as dataRetorno  FROM friobom.pccarreg WHERE numcar=:carga");
-            $sqlCarga->bindValue(':carga', $numCargas[0]);
-            $sqlCarga->execute();
-         
-            $carreg = $sqlCarga->fetch(PDO::FETCH_ASSOC);
-            $dtSaida = $carreg['DATASAIDA'];
-            $dtRetorno = $carreg['DATARETORNO'];
+            // echo "MDFE: " .$mdfe['NUMMDFE'] . "CArga: ". $numCargas[0] . "<hr>";
+
+            if(isset($numCargas[0])){
+                // pegar data de saida
+                $sqlCarga = $dbora->prepare("SELECT TO_CHAR(TO_DATE(dtsaida, 'DD/MM/YY'), 'YYYY-MM-DD') as dataSaida,numcar, dtsaida, dtfecha, dtretorno as dataRetorno, TO_CHAR(TO_DATE(dtretorno, 'DD/MM/YY'), 'YYYY-MM-DD') as dataRetorno  FROM friobom.pccarreg WHERE numcar=:carga");
+                $sqlCarga->bindValue(':carga', $numCargas[0]);
+                $sqlCarga->execute();
+            
+                $carreg = $sqlCarga->fetch(PDO::FETCH_ASSOC);
+                $dtSaida = $carreg['DATASAIDA'];
+                $dtRetorno = $carreg['DATARETORNO'];
+            }else{
+                $dtSaida="";
+                $dtRetorno="";
+            }
+
+            
 
             // verificar se ja esta cadastrada
             $sqlConsulta = $db->prepare("SELECT * FROM mdfes WHERE num_mdfe=:mdfe");
@@ -40,13 +50,14 @@ function registraMdfe(){
             $sqlConsulta->execute();
 
             if($sqlConsulta->rowCount()<1){
-                $sqlInsert = $db->prepare("INSERT INTO mdfes (num_mdfe, cargas, veiculo, motorista, situacao, data_saida) VALUES(:mdfe, :cargas,:veiculo, :motorista, :situacao, :dataSaida)");
+                $sqlInsert = $db->prepare("INSERT INTO mdfes (num_mdfe, cargas, veiculo, motorista, situacao, data_saida, filial) VALUES(:mdfe, :cargas,:veiculo, :motorista, :situacao, :dataSaida, :filial)");
                 $sqlInsert->bindValue(':mdfe', $mdfe['NUMMDFE']);
                 $sqlInsert->bindValue(':cargas', $cargasText);
                 $sqlInsert->bindValue(':veiculo',$mdfe['PLACA']);
                 $sqlInsert->bindValue(':motorista', $mdfe['MOTORISTA'] );
                 $sqlInsert->bindValue(':situacao', $msg);
                 $sqlInsert->bindValue(':dataSaida', $dtSaida);
+                $sqlInsert->bindValue(':filial', $filial);
                 $sqlInsert->execute();
             }else{
                 $sqlUpdate = $db->prepare("UPDATE mdfes SET situacao=:situacao, data_retorno=:dtRetorno WHERE num_mdfe=:mdfe");

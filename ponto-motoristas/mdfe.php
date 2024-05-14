@@ -16,9 +16,10 @@ $result = $sqlPerm->fetchColumn();
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
+    $filial = $_SESSION['filial'];
 
     // função para pegar os mdfe no winthor e registrar no bd online
-    registraMdfe();
+    registraMdfe($filial);
     
 
 } else {

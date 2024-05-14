@@ -18,6 +18,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     $descricao = filter_input(INPUT_POST, 'descricao');
     $categoria = filter_input(INPUT_POST, 'categoria');
+    $filial = $_SESSION['filial'];
     
     $db->beginTransaction();
 
@@ -33,10 +34,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         }
 
-        $inserir = $db->prepare("INSERT INTO servicos_almoxarifado (descricao, categoria, usuario) VALUES (:descricao, :categoria, :usuario)");
+        $inserir = $db->prepare("INSERT INTO servicos_almoxarifado (descricao, categoria, usuario, filial) VALUES (:descricao, :categoria, :usuario, :filial)");
         $inserir->bindValue(':descricao', $descricao);
         $inserir->bindValue(':categoria', $categoria);
         $inserir->bindValue(':usuario', $idUsuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $db->commit();

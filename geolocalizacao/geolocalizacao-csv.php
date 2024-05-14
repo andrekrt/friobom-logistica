@@ -4,9 +4,15 @@ session_start();
 require("../conexao.php");
 
 if($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99){
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND localizacao.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT * FROM localizacao");
+    $sql = $db->query("SELECT * FROM localizacao WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=geolocalizacao.csv');

@@ -3,9 +3,16 @@
 session_start();
 require("../conexao.php");
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND complementos_combustivel.filial=$filial";
+}
 $tipoUsuario = $_SESSION['tipoUsuario'];
         
     if($_SESSION['tipoUsuario'] != 4){
+        
 
         $arquivo = 'complementos.xls';
 
@@ -22,7 +29,7 @@ $tipoUsuario = $_SESSION['tipoUsuario'];
         $html .= '<td class="text-center font-weight-bold">'. utf8_decode('Usuário').'  </td>';               
         $html .= '</tr>';
 
-        $sql = $db->query("SELECT * FROM complementos_combustivel LEFT JOIN veiculos ON complementos_combustivel.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON complementos_combustivel.motorista = motoristas.cod_interno_motorista LEFT JOIN usuarios ON complementos_combustivel.id_usuario = usuarios.idusuarios");
+        $sql = $db->query("SELECT * FROM complementos_combustivel LEFT JOIN veiculos ON complementos_combustivel.veiculo = veiculos.cod_interno_veiculo LEFT JOIN motoristas ON complementos_combustivel.motorista = motoristas.cod_interno_motorista LEFT JOIN usuarios ON complementos_combustivel.id_usuario = usuarios.idusuarios WHERE 1 $condicao");
         $dados = $sql->fetchAll();
         foreach($dados as $dado){
 

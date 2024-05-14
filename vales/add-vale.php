@@ -15,7 +15,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $motorista = filter_input(INPUT_POST,'motorista');
     $rota = filter_input(INPUT_POST, 'rota');
     $valor = filter_input(INPUT_POST, 'valor');
@@ -37,13 +37,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     try{
 
-        $inserir = $db->prepare("INSERT INTO vales (data_lancamento, motorista, rota, valor, usuario,tipo_vale) VALUES (:data, :motorista, :rota, :valor,:usuario,:tipo)");
+        $inserir = $db->prepare("INSERT INTO vales (data_lancamento, motorista, rota, valor, usuario,tipo_vale, filial) VALUES (:data, :motorista, :rota, :valor,:usuario,:tipo, :filial)");
         $inserir->bindValue(':motorista', $motorista);
         $inserir->bindValue(':rota', $rota);
         $inserir->bindValue(':valor', $valorFormat);   
         $inserir->bindValue(':usuario', $usuario);   
         $inserir->bindValue(':data',$dataAtual);
         $inserir->bindValue(':tipo', $tipoVale);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $ultimoId = $db->lastInsertId();

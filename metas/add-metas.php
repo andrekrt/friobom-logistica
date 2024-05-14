@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $tipoMeta = filter_input(INPUT_POST, 'tipoMeta');
     $dataMeta =  $_POST['data'];
     $valorMeta = $_POST['meta'];
@@ -30,12 +30,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         for($i=0; $i<count($dataMeta);$i++){
             $data = date('Y-m-d', strtotime(str_replace("/","-", $dataMeta[$i])));
             
-            $sql = $db->prepare("INSERT INTO metas (token, tipo_meta, data_meta, valor_meta, usuario) VALUES (:token,:tipo, :dataMeta, :meta, :usuario)");
+            $sql = $db->prepare("INSERT INTO metas (token, tipo_meta, data_meta, valor_meta, usuario, filial) VALUES (:token,:tipo, :dataMeta, :meta, :usuario, :filial)");
             $sql->bindValue(':token', $token);
             $sql->bindValue(':tipo', $tipoMeta);
             $sql->bindValue(':dataMeta', $data);
             $sql->bindValue(':meta', $valorMeta[$i]);
             $sql->bindValue(':usuario', $usuario);
+            $sql->bindValue(':filial', $filial);
             $sql->execute();
         }
 

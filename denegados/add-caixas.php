@@ -12,7 +12,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $idUsuario = $_SESSION['idUsuario'];
     $carga = filter_input(INPUT_POST, 'carga');
     $qtd =filter_input(INPUT_POST, 'qtd');
@@ -34,11 +34,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         }
 
-        $inserir = $db->prepare("INSERT INTO caixas (carregamento, qtd_caixas, situacao, usuario) VALUES (:carregamento, :qtd, :situacao, :usuario)");
+        $inserir = $db->prepare("INSERT INTO caixas (carregamento, qtd_caixas, situacao, usuario, filial) VALUES (:carregamento, :qtd, :situacao, :usuario, :filial)");
         $inserir->bindValue(':carregamento', $carga);
         $inserir->bindValue(':qtd', $qtd);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $idUsuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $db->commit();

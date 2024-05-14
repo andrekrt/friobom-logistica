@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial=$_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = " AND (denegadas.filial=$filial)";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT id_denegadas, carga, pedido, situacao, nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.id_denegadas = usuarios.idusuarios");
+    $sql = $db->query("SELECT id_denegadas, carga, pedido, situacao, nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.id_denegadas = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=denegadas.csv');

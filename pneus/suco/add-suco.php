@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $dataMedicao = date("Y-m-d H:i:s");
     $idpneu = $_POST['idpneu'];
     $fogo = $_POST['fogo'];
@@ -68,7 +68,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 $kmPneu = ($kmVeiculo-$kmVeiculoUltimaMedida);
             }
             
-            $sql = $db->prepare("INSERT INTO sucos (data_medicao, km_veiculo, km_pneu, carcaca, vida, suco01, suco02, suco03, suco04, calibragem, pneus_idpneus, veiculo, usuario) VALUES (:dataMedida, :kmVeiculo, :kmPneu, :carcaca, :vida, :suco01, :suco02, :suco03, :suco04, :calibragem, :pneu, :veiculo, :usuario)");
+            $sql = $db->prepare("INSERT INTO sucos (data_medicao, km_veiculo, km_pneu, carcaca, vida, suco01, suco02, suco03, suco04, calibragem, pneus_idpneus, veiculo, usuario, filial) VALUES (:dataMedida, :kmVeiculo, :kmPneu, :carcaca, :vida, :suco01, :suco02, :suco03, :suco04, :calibragem, :pneu, :veiculo, :usuario, :filial)");
             $sql->bindValue(':dataMedida', $dataMedicao);
             $sql->bindValue(':kmVeiculo', $kmVeiculo);
             $sql->bindValue(':kmPneu', $kmPneu);
@@ -82,6 +82,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $sql->bindValue(':pneu', $idpneu[$i]);
             $sql->bindValue(':veiculo',$veiculo);
             $sql->bindValue(':usuario', $usuario);
+            $sql->bindValue(':filial', $filial);
             $sql->execute();
 
             $kmRodadoTotal = $kmPneu+$kmRodado[$i];

@@ -15,7 +15,7 @@ $result = $sqlPerm->fetchColumn();
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $idUsuario = $_SESSION['idUsuario'];
-
+    $filial = $_SESSION['filial'];
     $codVeiculo = filter_input(INPUT_POST, 'codVeiculo');
     $tipoVeiculo = filter_input(INPUT_POST, 'tipoVeiculo');
     $placaVeiculo = filter_input(INPUT_POST, 'placaVeiculo');
@@ -42,7 +42,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit(); 
         }
         
-        $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, marca, peso_maximo, cubagem, meta_combustivel, cidade_base) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :marca, :peso, :cubagem, :metaCombustivel, :base) ");
+        $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, marca, peso_maximo, cubagem, meta_combustivel, cidade_base, filial) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :marca, :peso, :cubagem, :metaCombustivel, :base, :filial) ");
         $sql->bindValue(':codVeiculo', $codVeiculo);
         $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
         $sql->bindValue(':placaVeiculo', $placaVeiculo);
@@ -52,6 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':cubagem', $cubagem);
         $sql->bindValue(':metaCombustivel', $metaCombustivel);
         $sql->bindValue(':base', $base);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

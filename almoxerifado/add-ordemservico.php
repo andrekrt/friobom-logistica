@@ -32,6 +32,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $pecas = $_POST['peca'];
     $qtd = str_replace(",",".",$_POST['qtd']);
     $numRequisicao = $_POST['requisicao'];
+    $filial = $_SESSION['filial'];
 
     $db->beginTransaction();
 
@@ -46,7 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             }
         }
 
-        $inserir = $db->prepare("INSERT INTO ordem_servico (data_abertura, placa, descricao_problema, corretiva, preventiva, externa, higienizacao, causador, situacao, requisicao_saida, num_nf, obs, idusuario) VALUES (:dataAbertura, :placa, :descricaoProblema, :corretiva, :preventiva, :externa, :higienizacao, :causador, :situacao, :requisicao, :numNf, :obs, :idusuario)");
+        $inserir = $db->prepare("INSERT INTO ordem_servico (data_abertura, placa, descricao_problema, corretiva, preventiva, externa, higienizacao, causador, situacao, requisicao_saida, num_nf, obs, idusuario, filial) VALUES (:dataAbertura, :placa, :descricaoProblema, :corretiva, :preventiva, :externa, :higienizacao, :causador, :situacao, :requisicao, :numNf, :obs, :idusuario, :filial)");
         $inserir->bindValue(':dataAbertura', $dataAbertura);
         $inserir->bindValue(':placa', $placa);
         $inserir->bindValue(':descricaoProblema', $descricaoProblema);
@@ -60,6 +61,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':numNf', $numNf);
         $inserir->bindValue(':obs', $obs);
         $inserir->bindValue(':idusuario', $idUsuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $idOs = $db->lastInsertId();
@@ -74,7 +76,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         for($i;$i<count($pecas); $i++){
 
             $dataSaida = date("Y-m-d");
-            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao_saida, :idUsuario)");
+            $inserir = $db->prepare("INSERT INTO saida_estoque (data_saida, qtd, peca_idpeca, placa, obs, servico, os, requisicao_saida, id_usuario, filial) VALUES (:dataSaida, :qtd, :peca, :placa, :obs, :servico, :os, :requisicao_saida, :idUsuario, :filial)");
             $inserir->bindValue(':dataSaida', $dataSaida);
             $inserir->bindValue(':qtd', $qtd[$i]);
             $inserir->bindValue(':peca', $pecas[$i]);
@@ -84,6 +86,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $inserir->bindValue(':os', $idOs);
             $inserir->bindValue(':requisicao_saida', $numRequisicao[$i]);
             $inserir->bindValue(':idUsuario', $idUsuario);
+            $inserir->bindValue(':filial', $filial);
             $inserir->execute();
 
             atualizaEStoque($pecas[$i]);

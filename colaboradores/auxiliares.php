@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
    
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -171,7 +171,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="rota" id="rota" class="form-control">
                                 <option value=""></option>
                             <?php 
-                            $select = $db->query("SELECT * FROM rotas ");
+                            $select = $db->query("SELECT * FROM rotas WHERE filial=$filial");
                             $rotas = $select->fetchAll();
                             foreach($rotas as $rota):
                             ?>
@@ -224,7 +224,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="rota" id="rotaNew" class="form-control">
                                 <option value=""></option>
                             <?php 
-                            $select = $db->query("SELECT * FROM rotas ");
+                            $select = $db->query("SELECT * FROM rotas WHERE filial=$filial");
                             $rotas = $select->fetchAll();
                             foreach($rotas as $rota):
                             ?>

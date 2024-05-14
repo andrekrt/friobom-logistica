@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $idUsuario = $_SESSION['idUsuario'];
 
     $razaSocial = filter_input(INPUT_POST, 'razaoSocial');
@@ -41,7 +41,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         }
 
-        $inserir = $db->prepare("INSERT INTO fornecedores (razao_social, endereco, bairro, cidade, cep, uf, cnpj, nome_fantasia, apelido, telefone) VALUES (:razaoSocial, :endereco, :bairro, :cidade, :cep, :uf, :cnpj, :nomeFantasia, :apelido, :telefone)");
+        $inserir = $db->prepare("INSERT INTO fornecedores (razao_social, endereco, bairro, cidade, cep, uf, cnpj, nome_fantasia, apelido, telefone, filial) VALUES (:razaoSocial, :endereco, :bairro, :cidade, :cep, :uf, :cnpj, :nomeFantasia, :apelido, :telefone, :filial)");
         $inserir->bindValue(':razaoSocial', $razaSocial);
         $inserir->bindValue(':endereco', $endereco);
         $inserir->bindValue(':bairro', $bairro);
@@ -52,6 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':nomeFantasia', $nomeFantasia);
         $inserir->bindValue(':apelido', $apelido);
         $inserir->bindValue(':telefone', $telefone);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $db->commit();

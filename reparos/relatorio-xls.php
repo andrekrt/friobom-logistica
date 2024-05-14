@@ -14,6 +14,13 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND solicitacoes.filial=$filial";
+    }
+
         $arquivo = 'pecas-solicitadas.xls';
 
         $html = '';
@@ -31,7 +38,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $html .= '<td class="text-center font-weight-bold"> Local </td>';
         $html .= '</tr>';
 
-        $sql = $db->query("SELECT * FROM solicitacoes");
+        $sql = $db->query("SELECT * FROM solicitacoes WHERE 1 $condicao");
         $dados = $sql->fetchAll();
         foreach($dados as $dado){
 

@@ -14,6 +14,7 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
     $nomeUsuario = $_SESSION['nomeUsuario'];
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
@@ -169,7 +170,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="descricao"> Placa </label>
                             <select required name="placa" id="placaEdit" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM veiculos WHERE ativo = 1");
+                                <?php $pecas = $db->query("SELECT * FROM veiculos WHERE ativo = 1 AND filial = $filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -215,7 +216,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="descricao"> Placa </label>
                             <select required name="placa" id="placa" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM veiculos WHERE ativo = 1");
+                                <?php $pecas = $db->query("SELECT * FROM veiculos WHERE ativo = 1 AND filial = $filial ");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>

@@ -13,6 +13,13 @@ $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND ocorrencias.filial=$filial";
+}
+
 $searchArray = array();
 
 ## Search 
@@ -25,19 +32,19 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista GROUP BY ocorrencias.cod_interno_motorista");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE 1 $condicao GROUP BY ocorrencias.cod_interno_motorista");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE 1 ".$searchQuery . " GROUP BY ocorrencias.cod_interno_motorista");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE 1 $condicao ".$searchQuery . " GROUP BY ocorrencias.cod_interno_motorista");
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE 1 ".$searchQuery." GROUP BY ocorrencias.cod_interno_motorista ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT ocorrencias.cod_interno_motorista, nome_motorista, COUNT(*) as ocorrencias, SUM(advertencia) as advertencia, SUM(vl_total_custos) as custoTotal FROM ocorrencias LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista WHERE 1 $condicao ".$searchQuery." GROUP BY ocorrencias.cod_interno_motorista ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -53,14 +60,14 @@ $data = array();
 
 foreach($empRecords as $row){
     //qtd de má condução
-    $qtdConduta = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia");
+    $qtdConduta = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia $condicao");
     $qtdConduta->bindValue(':motorista', $row['cod_interno_motorista']);
     $qtdConduta->bindValue(':ocorrencia', 'Má Condução');
     $qtdConduta->execute();
     $qtdConduta = $qtdConduta->rowCount();
 
     //qtd de mau comportamento
-    $qtdComportamneto = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia");
+    $qtdComportamneto = $db->prepare("SELECT * FROM ocorrencias WHERE cod_interno_motorista = :motorista AND tipo_ocorrencia = :ocorrencia $condicao");
     $qtdComportamneto->bindValue(':motorista', $row['cod_interno_motorista']);
     $qtdComportamneto->bindValue(':ocorrencia', 'Mau Comportamento');
     $qtdComportamneto->execute();

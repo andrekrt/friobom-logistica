@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
@@ -202,7 +202,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-5">
                             <label for="peca" class="col-form-label"> Peça </label>
                             <select required name="peca" id="pecaEdit" class="form-control">
-                                <?php $pecas = $db->query("SELECT * FROM peca_reparo");
+                                <?php $pecas = $db->query("SELECT * FROM peca_reparo WHERE filial=$filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -237,7 +237,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-6">
                             <label for="fornecedor" class="col-form-label">Fornecedor</label>
                             <select required name="fornecedor" id="fornecedorEdit" class="form-control">
-                                <?php $fornecedores = $db->query("SELECT * FROM fornecedores");
+                                <?php $fornecedores = $db->query("SELECT * FROM fornecedores WHERE filial=$filial");
                                 $fornecedores = $fornecedores->fetchAll();
                                 foreach($fornecedores as $fornecedor):
                                 ?>
@@ -290,7 +290,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="peca"> Peça </label>
                             <select required name="peca" id="pecaCad" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM peca_reparo");
+                                <?php $pecas = $db->query("SELECT * FROM peca_reparo WHERE filial=$filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -326,7 +326,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="fornecedor"> Fornecedor </label>
                             <select required name="fornecedor" id="fornecedorCad" class="form-control">
                                 <option value=""></option>
-                                <?php $fornecedores = $db->query("SELECT * FROM fornecedores");
+                                <?php $fornecedores = $db->query("SELECT * FROM fornecedores WHERE filial=$filial");
                                 $fornecedores = $fornecedores->fetchAll();
                                 foreach($fornecedores as $fornecedor):
                                 ?>

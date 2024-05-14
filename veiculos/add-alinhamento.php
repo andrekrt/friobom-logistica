@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $placa = filter_input(INPUT_POST,'placa');
     $kmAlinhamento = filter_input(INPUT_POST, 'kmAlinhamento');
     $dataAlinhamento = filter_input(INPUT_POST, 'dataAlinhamento');
@@ -23,11 +23,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $inserir = $db->prepare("INSERT INTO alinhamentos_veiculo (data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento) VALUES (:dataAlinhamento, :placa, :kmAlinhamento, :tipo)");
+        $inserir = $db->prepare("INSERT INTO alinhamentos_veiculo (data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento, filial) VALUES (:dataAlinhamento, :placa, :kmAlinhamento, :tipo, :filial)");
         $inserir->bindValue(':placa', $placa);
         $inserir->bindValue(':kmAlinhamento', $kmAlinhamento);
         $inserir->bindValue(':dataAlinhamento', $dataAlinhamento);
         $inserir->bindValue(':tipo', $tipoAlinhamento);    
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $atualizaVeiculo = $db->prepare("UPDATE veiculos SET km_alinhamento = :kmAlinhamento WHERE placa_veiculo = :placa");

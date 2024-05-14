@@ -17,8 +17,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $idSolicPrincipal = filter_input(INPUT_POST, 'id');
         $servicoAdicional = filter_input(INPUT_POST, 'servico02');
         $descricao = filter_input(INPUT_POST, 'descricao02');
+        $filial = $_SESSION['filial'];
 
-        $sql = $db->query("INSERT INTO solicitacoes02 (servico, descricao, idSocPrinc) VALUES('$servicoAdicional', '$descricao', $idSolicPrincipal)");
+        $sql = $db->query("INSERT INTO solicitacoes02 (servico, descricao, idSocPrinc, :filial) VALUES('$servicoAdicional', '$descricao', $idSolicPrincipal, '$filial')");
 
         $atualiza = $db->query("UPDATE solicitacoes SET statusSolic = 'Nova análise' WHERE id = $idSolicPrincipal ");
 

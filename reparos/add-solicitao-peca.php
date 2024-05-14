@@ -30,6 +30,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $problema = filter_input(INPUT_POST, 'descricao');
     $frete = str_replace(",",".", filter_input(INPUT_POST, 'frete'));
     $nf = filter_input(INPUT_POST, 'nf');
+    $filial = $_SESSION['filial'];
 
     $situacao = "Em análise";
     $usuario = $_SESSION['idUsuario'];
@@ -59,7 +60,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
             $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
     
-            $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto,  vl_total, frete, num_nf, situacao, usuario, cidade_base) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :nf, :situacao, :usuario, :cidadeBase)");
+            $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, motorista, rota, problema, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto,  vl_total, frete, num_nf, situacao, usuario, cidade_base, filial) VALUES (:token, :dataAtual, :placa, :motorista, :rota, :problema, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete, :nf, :situacao, :usuario, :cidadeBase, :filial)");
             $sql->bindValue(':token', $newToken);
             $sql->bindValue(':dataAtual', $dataAtual);
             $sql->bindValue(':placa', $placa);
@@ -78,6 +79,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $sql->bindValue(':situacao', $situacao);
             $sql->bindValue(':usuario', $usuario);
             $sql->bindValue(':cidadeBase', $cidadeBase);
+            $sql->bindValue(':filial', $filial);
             $sql->execute();
 
             $pasta = 'uploads/';

@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $pneu = filter_input(INPUT_POST, 'pneu');
     $consultaPneu = $db->prepare("SELECT * FROM pneus WHERE idpneus = :pneu");
     $consultaPneu->bindValue(':pneu', $pneu);
@@ -38,7 +38,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $sql = $db->prepare("INSERT INTO manutencao_pneu (data_manutencao, tipo_manutencao, km_veiculo, km_pneu, valor, num_nf, fornecedor, suco01, suco02, suco03, suco04, pneus_idpneus, usuario) VALUES (:dataManutencao, :tipoManutencao, :kmVeiculo, :kmPneu, :valor, :nf, :fornecedor, :suco01, :suco02, :suco03, :suco04, :pneu, :usuario)");
+        $sql = $db->prepare("INSERT INTO manutencao_pneu (data_manutencao, tipo_manutencao, km_veiculo, km_pneu, valor, num_nf, fornecedor, suco01, suco02, suco03, suco04, pneus_idpneus, usuario, filial) VALUES (:dataManutencao, :tipoManutencao, :kmVeiculo, :kmPneu, :valor, :nf, :fornecedor, :suco01, :suco02, :suco03, :suco04, :pneu, :usuario, :filial)");
         $sql->bindValue(':dataManutencao', $dataManutencao);
         $sql->bindValue(':tipoManutencao', $tipoReparo);
         $sql->bindValue(':kmVeiculo', $kmVeiculo);
@@ -52,6 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':suco04', $suco04);
         $sql->bindValue(':pneu', $pneu);
         $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $atualizaPneu = $db->prepare("UPDATE pneus SET suco01 = :suco01, suco02 = :suco02, suco03 = :suco03, suco04 = :suco04 WHERE idpneus = :idpneu");

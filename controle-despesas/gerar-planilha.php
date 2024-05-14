@@ -7,6 +7,13 @@ require("../conexao.php");
 $idModudulo = 7;
 $idUsuario = $_SESSION['idUsuario'];
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND viagem.filial=$filial";
+}
+
 $sqlPerm = $db->prepare("SELECT COUNT(*) FROM permissoes WHERE idusuario=:usuario AND idmodulo=:modulo");
 $sqlPerm->bindValue(':usuario', $idUsuario, PDO::PARAM_INT);
 $sqlPerm->bindValue(':modulo', $idModudulo,PDO::PARAM_INT);
@@ -102,7 +109,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inicio = filter_input(INPUT_POST, 'inicio');
         $final = filter_input(INPUT_POST, 'final');
 
-        $sql = $db->query("SELECT *, MONTH(data_chegada) as mes, YEAR(data_chegada) as ano FROM viagem WHERE DATE(data_chegada) BETWEEN '$inicio' and  '$final' ");
+        $sql = $db->query("SELECT *, MONTH(data_chegada) as mes, YEAR(data_chegada) as ano FROM viagem WHERE DATE(data_chegada) BETWEEN '$inicio' and  '$final' $condicao ");
         $dados = $sql->fetchAll();
         foreach($dados as $dado){
             $html .= '<tr>';

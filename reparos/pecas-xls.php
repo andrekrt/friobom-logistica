@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND peca_reparo.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT id_peca_reparo, descricao, categoria, un_medida FROM peca_reparo");
+    $sql = $db->query("SELECT id_peca_reparo, descricao, categoria, un_medida FROM peca_reparo WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=pecas.csv');

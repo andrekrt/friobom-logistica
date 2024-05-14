@@ -14,6 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
 
     $usuario = $_SESSION['idUsuario'];
     $veiculo = filter_input(INPUT_POST, 'veiculo');
@@ -58,7 +59,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $sql = $db->prepare("INSERT INTO checklist_apps (veiculo, hr_tk, tipo_checklist, data, cabine, retrovisores, parabrisa, quebra_sol, bordo, buzina, cinto, extintor, triangulo, macaco, tanque, janelas, banco, porta, cambio, seta, luz_freio, luz_re, alerta, luz_teto, faixas, farol_dianteiro, farol_traseiro, farol_neblina, farol_alto, painel, pneus, rodas, estepe, molas, cabo_forca, refrigeracao, ventilador, obs) VALUES (:veiculo, :hrTk, :tipo, :dataSaida, :cabine, :retrovisores, :parabrisa, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :obs)");
+        $sql = $db->prepare("INSERT INTO checklist_apps (veiculo, hr_tk, tipo_checklist, data, cabine, retrovisores, parabrisa, quebra_sol, bordo, buzina, cinto, extintor, triangulo, macaco, tanque, janelas, banco, porta, cambio, seta, luz_freio, luz_re, alerta, luz_teto, faixas, farol_dianteiro, farol_traseiro, farol_neblina, farol_alto, painel, pneus, rodas, estepe, molas, cabo_forca, refrigeracao, ventilador, obs, filial) VALUES (:veiculo, :hrTk, :tipo, :dataSaida, :cabine, :retrovisores, :parabrisa, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :obs, :filial)");
         $sql->bindValue(':veiculo', $veiculo);
         $sql->bindValue(':hrTk', $hrTk);
         $sql->bindValue(':tipo', $tipo);
@@ -97,6 +98,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':refrigeracao', $refrigeracao);
         $sql->bindValue(':ventilador', $ventilador);
         $sql->bindValue(':obs', $obs);
+        $sql->bindValue(':filial',$filial);
         $sql->execute();
 
         $db->commit();

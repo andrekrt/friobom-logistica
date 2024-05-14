@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $motorista = filter_input(INPUT_POST, 'motorista');
     $placa = filter_input(INPUT_POST, 'placa');
     $carregamento = filter_input(INPUT_POST, 'carregamento');
@@ -37,7 +37,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     try{
 
-        $inserir = $db->prepare("INSERT INTO ocorrencias (cod_interno_motorista, data_ocorrencia, placa, num_carregamento , tipo_ocorrencia, img_ocorrencia, advertencia, img_advertencia, laudo, img_laudo, descricao_custos, descricao_problema, vl_total_custos, situacao, usuario_lancou) VALUES (:motorista, :dataOcorrencia, :placa, :carregamento, :tipo, :imgOcorrencia, :advertencia, :imgAdvertencia, :laudo, :imgLaudo, :descricaoCusto, :descricaoProblema, :vlTotal, :situacao, :usuario)");
+        $inserir = $db->prepare("INSERT INTO ocorrencias (cod_interno_motorista, data_ocorrencia, placa, num_carregamento , tipo_ocorrencia, img_ocorrencia, advertencia, img_advertencia, laudo, img_laudo, descricao_custos, descricao_problema, vl_total_custos, situacao, usuario_lancou, filial) VALUES (:motorista, :dataOcorrencia, :placa, :carregamento, :tipo, :imgOcorrencia, :advertencia, :imgAdvertencia, :laudo, :imgLaudo, :descricaoCusto, :descricaoProblema, :vlTotal, :situacao, :usuario, :filial)");
         $inserir->bindValue(':motorista', $motorista);
         $inserir->bindValue(':dataOcorrencia', $data);
         $inserir->bindValue(':tipo', $tipoOcorrencia);
@@ -53,6 +53,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':placa', $placa);
         $inserir->bindValue(':carregamento', $carregamento);
         $inserir->bindValue(':descricaoProblema', $descricaoProblema);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $ultimoId = $db->lastInsertId();

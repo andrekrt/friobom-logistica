@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $dataCadastro = date("Y-m-d H:i:s");
     $nFogo = filter_input(INPUT_POST, 'nFogo');
     $medida = strtoupper(filter_input(INPUT_POST, 'medida'));
@@ -47,7 +47,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             header("Location: form-pneus.php");
             exit(); 
         }
-        $sql = $db->prepare("INSERT INTO pneus (data_cadastro, num_fogo, medida, calibragem_maxima, marca, modelo, num_serie, vida, posicao_inicio, situacao, localizacao, veiculo, km_inicial, suco01, suco02, suco03, suco04, usuario, uso) VALUES (:dataCadastro, :nFogo, :medida, :calibMax, :marca, :modelo, :nSerie, :vida, :posicao, :situacao, :localizacao, :veiculo, :kmVeiculo, :suco01, :suco02, :suco03, :suco04, :usuario, :uso)");
+        $sql = $db->prepare("INSERT INTO pneus (data_cadastro, num_fogo, medida, calibragem_maxima, marca, modelo, num_serie, vida, posicao_inicio, situacao, localizacao, veiculo, km_inicial, suco01, suco02, suco03, suco04, usuario, uso, filial) VALUES (:dataCadastro, :nFogo, :medida, :calibMax, :marca, :modelo, :nSerie, :vida, :posicao, :situacao, :localizacao, :veiculo, :kmVeiculo, :suco01, :suco02, :suco03, :suco04, :usuario, :uso, :filial)");
         $sql->bindValue(':dataCadastro', $dataCadastro);
         $sql->bindValue(':nFogo', $nFogo);
         $sql->bindValue(':medida', $medida);
@@ -67,6 +67,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':suco04', $suco04);
         $sql->bindValue(':usuario', $usuario);
         $sql->bindValue(':uso', $uso);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

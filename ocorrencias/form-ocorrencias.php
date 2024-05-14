@@ -13,7 +13,8 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
+    
     $nomeUsuario = $_SESSION['nomeUsuario'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -69,7 +70,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="motorista" id="motorista" required class="form-control">
                                 <option value=""></option>
                                 <?php
-                                    $motoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 ORDER BY nome_motorista ASC");
+                                    $motoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 AND filial = $filial ORDER BY nome_motorista ASC");
                                     if($motoristas->rowCount()>0){
                                         $dados = $motoristas->fetchAll();
                                         foreach($dados as $dado):
@@ -87,7 +88,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="placa" id="placa" class="form-control">
                                 <option value=""></option>
                                 <?php
-                                    $placas = $db->query("SELECT placa_veiculo FROM veiculos WHERE ativo =1 ORDER BY placa_veiculo ASC");
+                                    $placas = $db->query("SELECT placa_veiculo FROM veiculos WHERE ativo =1 AND filial = $filial ORDER BY placa_veiculo ASC");
                                     if($placas->rowCount()>0){
                                         $dados = $placas->fetchAll();
                                         foreach($dados as $dado):

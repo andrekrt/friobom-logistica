@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND auxiliares_rota.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT cpf_auxiliar, nome_auxiliar, salario_auxiliar, nome_rota FROM auxiliares_rota LEFT JOIN rotas ON auxiliares_rota.rota = rotas.cod_rota WHERE ativo = 1 ORDER BY nome_auxiliar");
+    $sql = $db->query("SELECT cpf_auxiliar, nome_auxiliar, salario_auxiliar, nome_rota FROM auxiliares_rota LEFT JOIN rotas ON auxiliares_rota.rota = rotas.cod_rota WHERE ativo = 1 $condicao ORDER BY nome_auxiliar");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=auxiliares.csv');

@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $codMotorista =filter_input(INPUT_POST, 'codMotorista');
     $nomeMotorista = filter_input(INPUT_POST, 'nomeMotorista');
     $salario = str_replace(",",".", filter_input(INPUT_POST, 'salario'));
@@ -39,7 +39,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit();
         }
 
-        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, cidade_base, ativo) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :base, :ativo) ");
+        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, cidade_base, ativo, filial) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :base, :ativo, :filial) ");
         $sql->bindValue(':codMotorista', $codMotorista);
         $sql->bindValue(':nomeMotorista', $nomeMotorista);
         $sql->bindValue(':salario', $salario);
@@ -49,6 +49,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':validadeToxicologico', $validadeToxicologico);
         $sql->bindValue(':base', $cidadeBase);
         $sql->bindValue(':ativo', 1);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $idUsuario = $_SESSION['idUsuario'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $tipoUsuario = $_SESSION['tipoUsuario'];
@@ -72,7 +72,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select required name="veiculo" id="veiculo" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $veiculos = $db->query("SELECT DISTINCT(veiculo) FROM pneus");
+                                    $veiculos = $db->query("SELECT DISTINCT(veiculo) FROM pneus WHERE filial = $filial");
                                     $veiculos = $veiculos->fetchAll();
                                     foreach($veiculos as $veiculo):
                                     ?>

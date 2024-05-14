@@ -15,11 +15,7 @@ $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
-    $nomeUsuario = $_SESSION['nomeUsuario'];
-
-    // função para pegar os mdfe no winthor e registrar no bd online
-    registraMdfe();
-    
+    $nomeUsuario = $_SESSION['nomeUsuario'];    
 
 } else {
     $_SESSION['msg'] = 'Acesso não permitido';

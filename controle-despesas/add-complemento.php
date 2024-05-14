@@ -4,7 +4,7 @@ session_start();
 require("../conexao-on.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SESSION['tipoUsuario'] != 4){
-
+    $filial = $_SESSION['filial'];
     $idUsuario = $_SESSION['idUsuario'];
     $veiculo = filter_input(INPUT_POST, 'veiculo');
     $motorista = filter_input(INPUT_POST,'motorista');
@@ -15,7 +15,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
 
     //echo "$veiculo<br>$motorista<br>$kmSaida<br>$kmChegada<br>$ltAbast<br>$vlAbast";
 
-    $inserir = $db->prepare("INSERT INTO complementos_combustivel (veiculo, motorista, km_saida, km_chegada, litros_abast, valor_abast, id_usuario) VALUES (:veiculo, :motorista, :kmSaida, :kmChegada, :ltAbast, :vlAbast, :idUsuario)");
+    $inserir = $db->prepare("INSERT INTO complementos_combustivel (veiculo, motorista, km_saida, km_chegada, litros_abast, valor_abast, id_usuario, filial) VALUES (:veiculo, :motorista, :kmSaida, :kmChegada, :ltAbast, :vlAbast, :idUsuario, :filial)");
     $inserir->bindValue(':veiculo', $veiculo);
     $inserir->bindValue(':motorista', $motorista);
     $inserir->bindValue(':kmSaida', $kmSaida);
@@ -23,6 +23,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false && $_SE
     $inserir->bindValue(':ltAbast', $ltAbast);
     $inserir->bindValue(':vlAbast', $vlAbast);
     $inserir->bindValue(':idUsuario', $idUsuario);
+    $inserir->bindValue(':filial', $filial);
 
     if($inserir->execute()){
         echo "<script> alert('Complemento Lançado!')</script>";

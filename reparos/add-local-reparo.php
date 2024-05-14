@@ -13,15 +13,16 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $local = filter_input(INPUT_POST, 'local');
     $responsavel = filter_input(INPUT_POST, 'responsavel');
     $telefone = filter_input(INPUT_POST, 'telefone');
 
-    $sql = $db->prepare("INSERT INTO local_reparo (nome_local, responsavel, telefone) VALUES (:nomeLocal, :responsavel, :telefone)");
+    $sql = $db->prepare("INSERT INTO local_reparo (nome_local, responsavel, telefone, filial) VALUES (:nomeLocal, :responsavel, :telefone, :filial)");
     $sql->bindValue(':nomeLocal', $local);
     $sql->bindValue(':responsavel', $responsavel);
     $sql->bindValue(':telefone', $telefone);
+    $sql->bindValue(':filial', $filial);
 
     if($sql->execute()){
         echo "<script> alert('Local de Reparo Cadastado!')</script>";

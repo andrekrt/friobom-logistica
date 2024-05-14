@@ -3,8 +3,15 @@
 session_start();
 require("../conexao.php");
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND combustivel_extrato.filial=$filial";
+}
+
 $db->exec("set names utf8");
-$sql = $db->query("SELECT * FROM combustivel_extrato LEFT JOIN usuarios ON combustivel_extrato.usuario = usuarios.idusuarios");
+$sql = $db->query("SELECT * FROM combustivel_extrato LEFT JOIN usuarios ON combustivel_extrato.usuario = usuarios.idusuarios WHERE $condicao");
 $dados = $sql->fetchAll();
 
 $fp = fopen("extrato.csv", "w");

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao-oracle.php';
 
 ## Read value

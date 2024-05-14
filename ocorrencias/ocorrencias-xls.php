@@ -12,9 +12,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND ocorrencias.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idocorrencia, nome_motorista, data_ocorrencia, tipo_ocorrencia, advertencia, laudo, descricao_custos, vl_total_custos, situacao FROM `ocorrencias`LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista LEFt JOIN usuarios ON ocorrencias.usuario_lancou = usuarios.idusuarios");
+    $sql = $db->query("SELECT idocorrencia, nome_motorista, data_ocorrencia, tipo_ocorrencia, advertencia, laudo, descricao_custos, vl_total_custos, situacao FROM `ocorrencias`LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista LEFt JOIN usuarios ON ocorrencias.usuario_lancou = usuarios.idusuarios WHERE $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=ocorrencias.csv');

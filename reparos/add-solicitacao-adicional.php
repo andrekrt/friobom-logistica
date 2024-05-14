@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $newToken = filter_input(INPUT_POST, 'token');
     $dataAtual = filter_input(INPUT_POST, 'data');
     $placa = filter_input(INPUT_POST, 'veiculo');
@@ -37,7 +37,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
             $valorTotal = ($valorUnit[$i]-$desconto[$i])*$qtd[$i];
     
-            $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto, vl_total, frete,num_nf, situacao, usuario) VALUES (:token, :dataAtual, :placa, :problema, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete,:nf, :situacao, :usuario)");
+            $sql = $db->prepare("INSERT INTO solicitacoes_new (token, data_atual, placa, problema, imagem, peca_servico, fornecedor, qtd, vl_unit, desconto, vl_total, frete,num_nf, situacao, usuario, filial) VALUES (:token, :dataAtual, :placa, :problema, :imagem, :peca, :fornecedor, :qtd, :vlUnit, :desconto, :vlTotal, :frete,:nf, :situacao, :usuario, :filial)");
             $sql->bindValue(':token', $newToken);
             $sql->bindValue(':dataAtual', $dataAtual);
             $sql->bindValue(':placa', $placa);
@@ -53,6 +53,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $sql->bindValue(':nf', $nf);
             $sql->bindValue(':situacao', $situacao);
             $sql->bindValue(':usuario', $usuario);
+            $sql->bindValue(':filial', $filial);
             $sql->execute();
 
             $atualiaza = $db->prepare("UPDATE solicitacoes_new SET situacao = :situacao WHERE token=:token");

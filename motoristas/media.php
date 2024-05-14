@@ -13,7 +13,12 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND motoristas.filial=$filial";
+    }
    
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -62,7 +67,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <select style="margin-left: 10px;" name="motorista" id="motorista" class="form-control">
                             <option value=""></option>
                             <?php
-                            $motoristas = $db->query("SELECT * FROM motoristas");
+                            $motoristas = $db->query("SELECT * FROM motoristas WHERE 1 $condicao");
                             $motoristas = $motoristas->fetchAll();
                             foreach($motoristas as $motorista):
                             ?>
@@ -106,7 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             $nomeMotorista = filter_input(INPUT_GET, 'motorista')?filter_input(INPUT_GET, 'motorista'):"%";
                         }
                         
-                        $nomes=$db->prepare("SELECT DISTINCT(nome_motorista) as motorista FROM viagem WHERE nome_motorista LIKE :motorista LIMIT :inicio, :qtd");
+                        $nomes=$db->prepare("SELECT DISTINCT(nome_motorista) as motorista FROM viagem WHERE nome_motorista $condicao LIKE :motorista LIMIT :inicio, :qtd");
                         $nomes->bindValue(':motorista', $nomeMotorista);
                         $nomes->bindValue(':inicio', (int)$pagIni, PDO::PARAM_INT);
                         $nomes->bindValue(':qtd',(int)$quantidade, PDO::PARAM_INT);
@@ -115,7 +120,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 
                         foreach($nomes as $nome):
                             
-                            $mediaTruck = $db->prepare("SELECT AVG(media_comtk) as mediaTruck FROM viagem LEFT JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_motorista = :motorista AND categoria = :categoria AND data_chegada BETWEEN :inicio AND :final");
+                            $mediaTruck = $db->prepare("SELECT AVG(media_comtk) as mediaTruck FROM viagem LEFT JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_motorista = :motorista AND categoria = :categoria AND data_chegada BETWEEN :inicio AND :final $condicao ");
                             $mediaTruck->bindValue(':motorista', $nome['motorista']);
                             $mediaTruck->bindValue(':categoria', "Truck");
                             $mediaTruck->bindValue(':inicio', $minimo);
@@ -128,7 +133,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 $percTruck = ($mediaTruck['mediaTruck']/3.5)*100;
                             }
 
-                            $mercedinha = $db->prepare("SELECT AVG(media_comtk) as mediaMercedinha FROM viagem LEFT JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_motorista = :motorista AND categoria = :categoria AND data_chegada BETWEEN :inicio AND :final");
+                            $mercedinha = $db->prepare("SELECT AVG(media_comtk) as mediaMercedinha FROM viagem LEFT JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_motorista = :motorista AND categoria = :categoria AND data_chegada BETWEEN :inicio AND :final $condicao ");
                             $mercedinha->bindValue(':motorista', $nome['motorista']);
                             $mercedinha->bindValue(':categoria', "Mercedinha");
                             $mercedinha->bindValue(':inicio', $minimo);
@@ -141,7 +146,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 $percMercedinha = ($mercedinha['mediaMercedinha']/5.2)*100;
                             }
 
-                            $toco = $db->prepare("SELECT AVG(media_comtk) as mediaToco FROM viagem LEFT JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_motorista = :motorista AND categoria = :categoria AND data_chegada BETWEEN :inicio AND :final");
+                            $toco = $db->prepare("SELECT AVG(media_comtk) as mediaToco FROM viagem LEFT JOIN veiculos ON viagem.placa_veiculo = veiculos.placa_veiculo WHERE nome_motorista = :motorista AND categoria = :categoria AND data_chegada BETWEEN :inicio AND :final $condicao");
                             $toco->bindValue(':motorista', $nome['motorista']);
                             $toco->bindValue(':categoria', "Toco");
                             $toco->bindValue(':inicio', $minimo);
@@ -179,7 +184,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     </table>
                     <ul class="pagination justify-content-center">
                     <?php
-                    $sqlTotal = $db->query("SELECT DISTINCT(nome_motorista) as motorista FROM viagem ");
+                    $sqlTotal = $db->query("SELECT DISTINCT(nome_motorista) as motorista FROM viagem $condicao ");
                     $numtotal = $sqlTotal->rowCount();
                     $numPag = ceil($numtotal/$quantidade);
                     echo "<li class='page-item'> <span class='page-link'> Total de Registros: $numtotal </span></li>";

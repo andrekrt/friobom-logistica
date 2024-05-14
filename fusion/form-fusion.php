@@ -12,7 +12,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
     
 }else{
@@ -74,7 +74,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="veiculo" id="veiculo" class="form-control" required>
                                     <option value=""></option>
                                     <?php
-                                    $sqlVeiculos = $db->query("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos");
+                                    $sqlVeiculos = $db->query("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE filial=$filial");
                                     $veiculos=$sqlVeiculos->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($veiculos as $veiculo):
                                     ?>
@@ -87,7 +87,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="rota" required id="rota" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $sqlRotas = $db->query("SELECT cod_rota, nome_rota FROM rotas ORDER BY nome_rota ASC");
+                                    $sqlRotas = $db->query("SELECT cod_rota, nome_rota FROM rotas WHERE filial=$filial ORDER BY nome_rota ASC");
                                     $rotas=$sqlRotas->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($rotas as $rota):
                                     ?>
@@ -100,7 +100,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="motorista" required id="motorista" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $sqlMotoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas ORDER BY nome_motorista ASC");
+                                    $sqlMotoristas = $db->query("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE filial= $filial ORDER BY nome_motorista ASC");
                                     $motoristas=$sqlMotoristas->fetchAll(PDO::FETCH_ASSOC);
                                     foreach($motoristas as $motorista):
                                     ?>

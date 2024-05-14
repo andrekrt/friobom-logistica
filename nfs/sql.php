@@ -61,7 +61,7 @@ function registraNf(){
                 $uf = stream_get_contents($row['UF']);
                 $fone = !empty($row['FONE'])?stream_get_contents($row['FONE']):"";
                 $chave = $row['CHAVENFE'];
-                $referente = stream_get_contents($row['NFREF']);
+                $referente = !empty($row['NFREF'])?stream_get_contents($row['NFREF']):"";
                 $valorNf = str_replace(",",".",$row['VLTOTALNFE']) ;
                 $manifestacao = $row['SITUACAOMANIF'];
                 $fornecedor = $row['CODFORNEC'];
@@ -139,10 +139,11 @@ function registraNf(){
                     $sqlInsert->execute();
                 }else{
                     if(!empty($dtEntrada)){
-                        $sqlUpdate = $db->prepare("UPDATE nfs_xml SET data_entrada=:dtEntrada, situacao=:situacao WHERE chave_nf=:chaveNf");
+                        $sqlUpdate = $db->prepare("UPDATE nfs_xml SET data_entrada=:dtEntrada, situacao=:situacao, status_carga=:statusCarga WHERE chave_nf=:chaveNf");
                         $sqlUpdate->bindValue(':dtEntrada', $dtEntrada);
                         $sqlUpdate->bindValue(':situacao', $situacao);
                         $sqlUpdate->bindValue(':chaveNf', $chave);
+                        $sqlUpdate->bindValue(':statusCarga', $statusCarga);
                         $sqlUpdate->execute();
                     }
                     

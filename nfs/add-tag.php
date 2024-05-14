@@ -15,7 +15,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-   
+    $filial = $_SESSION['filial'];
     $coluna = filter_input(INPUT_POST, 'coluna');
     $valores = $_POST['valor'];
     $descricao = filter_input(INPUT_POST, 'descricao');
@@ -37,12 +37,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 header("Location: tags.php");
                 exit();
             }
-            $sql = $db->prepare("INSERT INTO tags_xml (nome_coluna, descricao, valor, legenda, cor) VALUES (:coluna, :descricao, :valor, :legenda, :cor)");
+            $sql = $db->prepare("INSERT INTO tags_xml (nome_coluna, descricao, valor, legenda, cor, filial) VALUES (:coluna, :descricao, :valor, :legenda, :cor, :filial)");
             $sql->bindValue(':coluna', $coluna);
             $sql->bindValue(':descricao', $descricao);
             $sql->bindValue(':valor', $valor);
             $sql->bindValue(':legenda', $legenda);
             $sql->bindValue(':cor', $cor);
+            $sql->bindValue(':filial', $filial);
             $sql->execute();
 
         }

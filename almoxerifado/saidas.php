@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
@@ -159,7 +159,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-5">
                             <label for="peca"  class="col-form-label">Peça</label>
                             <select required name="peca" id="pecaEdit" class="form-control">
-                                <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                <?php $pecas = $db->query("SELECT * FROM peca_estoque WHERE filial=$filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -180,7 +180,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <div class="form-group col-md-4">
                             <label for="placa" class="col-form-label">Placa</label>
                             <select required name="placa" id="placaEdit" class="form-control">
-                                <?php $veiculos = $db->query("SELECT * FROM veiculos");
+                                <?php $veiculos = $db->query("SELECT * FROM veiculos WHERE filial=$filial");
                                 $placas = $veiculos->fetchAll();
                                 foreach($placas as $placa):
                                 ?>
@@ -233,7 +233,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="peca"> Peça</label>
                             <select required name="peca" id="pecaSa" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM peca_estoque");
+                                <?php $pecas = $db->query("SELECT * FROM peca_estoque WHERE filial=$filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -249,7 +249,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select required name="placa" id="placaSa" class="form-control">
                                 <option value=""></option>
                                 <option value="Oficina">Oficina</option>
-                                <?php $pecas = $db->query("SELECT * FROM veiculos");
+                                <?php $pecas = $db->query("SELECT * FROM veiculos WHERE filial=$filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>

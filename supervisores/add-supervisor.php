@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $codigo = filter_input(INPUT_POST, 'codigo');
     $nome = filter_input(INPUT_POST, 'nome');
     $cidade = filter_input(INPUT_POST, 'residencia');
@@ -32,11 +32,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             header("Location: supervisores.php");
             exit();
         }
-        $sql = $db->prepare("INSERT INTO supervisores (idsupervisor, nome_supervisor, cidade_residencia, veiculo) VALUES (:codigo, :supervisor, :cidade, :veiculo)");
+        $sql = $db->prepare("INSERT INTO supervisores (idsupervisor, nome_supervisor, cidade_residencia, veiculo) VALUES (:codigo, :supervisor, :cidade, :veiculo, :filial)");
         $sql->bindValue(':codigo', $codigo);
         $sql->bindValue(':supervisor', $nome);
         $sql->bindValue(':cidade', $cidade);
         $sql->bindValue(':veiculo', $veiculo);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

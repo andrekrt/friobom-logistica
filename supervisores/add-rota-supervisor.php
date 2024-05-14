@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $dataSaida = filter_input(INPUT_POST, 'dataSaida');
     $dataChegada = filter_input(INPUT_POST, 'dataChegada');
     $supervisor = filter_input(INPUT_POST, 'supervisor', FILTER_VALIDATE_INT);
@@ -30,7 +30,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, km_rodado, hora_almoco) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :km, :horaAlmoco)");
+        $sql = $db->prepare("INSERT INTO rotas_supervisores (saida, supervisor, chegada, velocidade_max, rca01, rca02, obs, qtd_visitas, usuario, cidades, km_rodado, hora_almoco, filial) VALUES (:saida, :supervisor, :chegada, :velocidade_max, :rca01, :rca02, :obs, :qtd_visitas, :usuario, :cidades, :km, :horaAlmoco, :filial)");
         $sql->bindValue(':saida', $dataSaida);
         $sql->bindValue(':supervisor', $supervisor);
         $sql->bindValue(':chegada', $dataChegada);
@@ -43,6 +43,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':cidades',$cidades);
         $sql->bindValue(':km', $kmRodado);
         $sql->bindValue(':horaAlmoco', $horaAlmoco);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $db->commit();

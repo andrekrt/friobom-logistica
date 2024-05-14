@@ -12,9 +12,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND veiculos.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT * FROM veiculos");
+    $sql = $db->query("SELECT * FROM veiculos WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=veiculos.csv');

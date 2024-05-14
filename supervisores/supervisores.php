@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
@@ -171,7 +171,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="residencia" required id="residencia" class="form-control">
                                 <option value=""></option>
                                 <?php
-                                $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades ORDER BY nome_cidade ASC");
+                                $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades WHERE filial=$filial ORDER BY nome_cidade ASC");
                                 $cidades=$cidades->fetchAll(PDO::FETCH_ASSOC);
                                 foreach($cidades as $cidade):
                                 ?>
@@ -186,7 +186,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="veiculo" required id="veiculo" class="form-control">
                                 <option value=""></option>
                                 <?php
-                                $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo");
+                                $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo AND filial = $filial");
                                 $veiculos->bindValue(':tipo', 'Frota Leve');
                                 $veiculos->execute();
                                 $veiculos=$veiculos->fetchAll(PDO::FETCH_ASSOC);
@@ -235,7 +235,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="residencia" required id="residenciaEdit" class="form-control">
                                 <option value=""></option>
                                 <?php
-                                $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades ORDER BY nome_cidade ASC");
+                                $cidades = $db->query("SELECT idcidades, nome_cidade FROM cidades WHERE filial = $filial ORDER BY nome_cidade ASC");
                                 $cidades=$cidades->fetchAll(PDO::FETCH_ASSOC);
                                 foreach($cidades as $cidade):
                                 ?>
@@ -250,7 +250,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="veiculo" required id="veiculoEdit" class="form-control">
                                 <option value=""></option>
                                 <?php
-                                $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo");
+                                $veiculos = $db->prepare("SELECT cod_interno_veiculo, placa_veiculo FROM veiculos WHERE categoria=:tipo AND filial = $filial");
                                 $veiculos->bindValue(':tipo', 'Frota Leve');
                                 $veiculos->execute();
                                 $veiculos=$veiculos->fetchAll(PDO::FETCH_ASSOC);

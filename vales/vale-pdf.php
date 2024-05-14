@@ -33,6 +33,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $situacao = $dados['situacao'];
     $usuario = $dados['nome_usuario'];
     $extenso = ucwords(extenso($dados['valor']));
+    $cpf = $dados['cpf'];
   
     $mpdf = new \Mpdf\Mpdf(['mode'=>'utf-8', 'format'=>[210, 148], 'margin_top'=>5]);
     $mpdf->AddPage();
@@ -71,7 +72,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         </table>
 
         <div style='margin-top:0px; width:100%; text-align:center; '>
-            <img src='../assets/images/assinatura-makson.png' style='height:50px' >
+            <img src='../assets/images/$cpf.png' style='height:50px' >
             <div style=' width: 100%; float:left; border-top: 1px solid #000; '>RESPONSÁVEL </div>
         </div>
         <div style='margin-top:10px; width:100%; text-align:center '>

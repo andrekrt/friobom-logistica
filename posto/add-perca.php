@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $usuario = $_SESSION['idUsuario'];
     $dataAbastecimento = date("Y-m-d");
     $litro = str_replace(",",".",filter_input(INPUT_POST, 'litro'));
@@ -25,12 +25,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     try{
 
-        $total = $db->query("SELECT SUM(total_litros) AS  litros, SUM(valor_total) as valor FROM combustivel_entrada WHERE situacao ='Aprovado'");
+        $total = $db->query("SELECT SUM(total_litros) AS  litros, SUM(valor_total) as valor FROM combustivel_entrada WHERE situacao ='Aprovado' AND filial = $filial");
         $total = $total->fetch();
         $precoMedio = $total['valor']/$total['litros'];
         $valorTotal = $precoMedio*$litro;
 
-        $inserir = $db->prepare("INSERT INTO combustivel_saida (data_abastecimento, litro_abastecimento, preco_medio, valor_total,  tipo_abastecimento, situacao, usuario) VALUES (:dataAbastecimento, :litros, :precoMedio, :valorTotal, :tipo, :situacao, :usuario)");
+        $inserir = $db->prepare("INSERT INTO combustivel_saida (data_abastecimento, litro_abastecimento, preco_medio, valor_total,  tipo_abastecimento, situacao, usuario, filial) VALUES (:dataAbastecimento, :litros, :precoMedio, :valorTotal, :tipo, :situacao, :usuario, :filial)");
         $inserir->bindValue(':dataAbastecimento', $dataAbastecimento);
         $inserir->bindValue(':litros', $litro);
         $inserir->bindValue(':precoMedio', $precoMedio);
@@ -38,6 +38,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':tipo', $tipoAbastecimento);
         $inserir->bindValue(':situacao',$situacao);
         $inserir->bindValue(':usuario', $usuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $db->commit();

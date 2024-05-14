@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $descricao = trim(filter_input(INPUT_POST, 'descricao'));
     $categoria = filter_input(INPUT_POST, 'categoria');
     $medida = filter_input(INPUT_POST, 'medida');
@@ -32,13 +32,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             header("Location: pecas.php");
             exit();
         }
-        $inserir = $db->prepare("INSERT INTO peca_reparo (descricao, categoria, un_medida, estoque_minimo, situacao, usuario) VALUES (:descricao, :categoria, :medida, :estoque, :situacao, :usuario)" );
+        $inserir = $db->prepare("INSERT INTO peca_reparo (descricao, categoria, un_medida, estoque_minimo, situacao, usuario, filial) VALUES (:descricao, :categoria, :medida, :estoque, :situacao, :usuario, :filial)" );
         $inserir->bindValue(':descricao', $descricao);
         $inserir->bindValue(':categoria', $categoria);
         $inserir->bindValue(':medida', $medida);
         $inserir->bindValue(':estoque', $estoqueMinimo);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $idUsuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $db->commit();

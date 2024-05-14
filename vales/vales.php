@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result > 0)) {
-
+    $filial = $_SESSION['filial'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -224,7 +224,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="motorista" required id="motorista" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $motoristas = $db->prepare("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 ORDER BY nome_motorista ASC");
+                                    $motoristas = $db->prepare("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 AND filial = $filial ORDER BY nome_motorista ASC");
                                     $motoristas->execute();
                                     $motoristas = $motoristas->fetchAll();
                                     foreach ($motoristas as $motorista) :
@@ -238,7 +238,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="rota" required id="rota" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $rotas = $db->prepare("SELECT cod_rota, nome_rota FROM rotas ORDER BY nome_rota ASC");
+                                    $rotas = $db->prepare("SELECT cod_rota, nome_rota FROM rotas WHERE filial = $filial ORDER BY nome_rota ASC");
                                     $rotas->execute();
                                     $rotas = $rotas->fetchAll();
                                     foreach ($rotas as $rota) :
@@ -285,7 +285,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="motorista" required id="motoristaEdit" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $motoristas = $db->prepare("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 ORDER BY nome_motorista ASC");
+                                    $motoristas = $db->prepare("SELECT cod_interno_motorista, nome_motorista FROM motoristas WHERE ativo=1 AND filial = $filial ORDER BY nome_motorista ASC");
                                     $motoristas->execute();
                                     $motoristas = $motoristas->fetchAll();
                                     foreach ($motoristas as $motorista) :
@@ -299,7 +299,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="rota" required id="rotaEdit" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $rotas = $db->prepare("SELECT cod_rota, nome_rota FROM rotas ORDER BY nome_rota ASC");
+                                    $rotas = $db->prepare("SELECT cod_rota, nome_rota FROM rotas WHERE filial = $filial ORDER BY nome_rota ASC");
                                     $rotas->execute();
                                     $rotas = $rotas->fetchAll();
                                     foreach ($rotas as $rota) :

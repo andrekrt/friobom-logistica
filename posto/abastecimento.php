@@ -12,7 +12,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
     echo "<script>window.location.href='../index.php'</script>";
@@ -252,7 +252,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="rota"> Rota</label>
                             <select required name="rota" id="rotaEdit" class="form-control">
                                 <option value=""></option>
-                                <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");
+                                <?php $rotas = $db->query("SELECT * FROM rotas WHERE filial = $filial ORDER BY nome_rota");
                                 $rotas = $rotas->fetchAll();
                                 foreach($rotas as $rota):
                                 ?>
@@ -264,7 +264,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="motorista"> Motorista</label>
                             <select required name="motorista" id="motoristaEdit" class="form-control">
                                 <option value=""></option>
-                                <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista ");
+                                <?php $motoristas = $db->query("SELECT * FROM motoristas WHERE filial=$filial ORDER BY nome_motorista ");
                                 $motoristas = $motoristas->fetchAll();
                                 foreach($motoristas as $motorista):
                                 ?>
@@ -315,7 +315,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <select name="litro" id="litro" class="form-control">
                                 <option value=""></option>
                                 <?php 
-                                $inventarios = $db->query("SELECT * FROM combustivel_inventario ORDER BY data_inventario DESC LIMIT 1");
+                                $inventarios = $db->query("SELECT * FROM combustivel_inventario WHERE filial = $filial ORDER BY data_inventario DESC LIMIT 1");
                                 $inventarios=$inventarios->fetch();
                                 ?>
                                 <option value="<?=$inventarios['qtd_encontrada']?>"><?= date('d/m/Y', strtotime($inventarios['data_inventario'])). " - ". number_format($inventarios['qtd_encontrada'],2,",",".") ."l"  ?></option>
@@ -350,8 +350,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 $("#add").empty();
             }else if(tipo=="Rota"){
                 $("#add").empty();
-                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control select2">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control select2"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento" > </div>');
-
+                $("#add").append('<div class="form-group col-md-3 espaco "> <label for="rota"> Rota</label> <select required name="rota" id="rota" class="form-control select2">   <option value=""></option> <?php $rotas = $db->query("SELECT * FROM rotas WHERE filial=$filial ORDER BY nome_rota");$rotas = $rotas->fetchAll(); foreach($rotas as $rota): ?> <option value="<?=$rota['nome_rota']?>"><?= $rota['nome_rota']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-4 espaco "> <label for="motorista"> Motorista</label> <select required name="motorista" id="motorista" class="form-control select2"> <option value=""></option> <?php $motoristas = $db->query("SELECT * FROM motoristas WHERE filial=$filial ORDER BY nome_motorista"); $motoristas = $motoristas->fetchAll(); foreach($motoristas as $motorista): ?> <option value="<?=$motorista['nome_motorista']?>"><?= $motorista['nome_motorista']?></option> <?php endforeach; ?> </select> </div> <div class="form-group col-md-2 espaco "> <label for="carregamento"> Carregamento</label> <input type="text" required name="carregamento" class="form-control" id="carregamento" > </div>');
                 
             }else if(tipo=="Lava Jato"){
                 $("#add").empty();

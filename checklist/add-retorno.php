@@ -14,6 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
 
     $idCheckSaida=filter_input(INPUT_POST,'id');
     $carregamento = filter_input(INPUT_POST, 'carregamento');
@@ -60,7 +61,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $sql = $db->prepare("INSERT INTO checklist_apps_retorno02 (veiculo_ret, hr_tk_ret, carregamento_ret, tipo_checklist_ret, data_ret, cabine_ret, retrovisores_ret, parabrisa_ret, quebra_sol_ret, bordo_ret, buzina_ret, cinto_ret, extintor_ret, triangulo_ret, macaco_ret, tanque_ret, janelas_ret, banco_ret, porta_ret, cambio_ret, seta_ret, luz_freio_ret, luz_re_ret, alerta_ret, luz_teto_ret, faixas_ret, farol_dianteiro_ret, farol_traseiro_ret, farol_neblina_ret, farol_alto_ret, painel_ret, pneus_ret, rodas_ret, estepe_ret, molas_ret, cabo_forca_ret, refrigeracao_ret, ventilador_ret, obs_ret, checksaida) VALUES (:veiculo, :hrTk, :carregamento, :tipo, :dataSaida, :cabine, :retrovisores, :parabrisa, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :obs, :checksaida)");
+        $sql = $db->prepare("INSERT INTO checklist_apps_retorno02 (veiculo_ret, hr_tk_ret, carregamento_ret, tipo_checklist_ret, data_ret, cabine_ret, retrovisores_ret, parabrisa_ret, quebra_sol_ret, bordo_ret, buzina_ret, cinto_ret, extintor_ret, triangulo_ret, macaco_ret, tanque_ret, janelas_ret, banco_ret, porta_ret, cambio_ret, seta_ret, luz_freio_ret, luz_re_ret, alerta_ret, luz_teto_ret, faixas_ret, farol_dianteiro_ret, farol_traseiro_ret, farol_neblina_ret, farol_alto_ret, painel_ret, pneus_ret, rodas_ret, estepe_ret, molas_ret, cabo_forca_ret, refrigeracao_ret, ventilador_ret, obs_ret, checksaida, filial) VALUES (:veiculo, :hrTk, :carregamento, :tipo, :dataSaida, :cabine, :retrovisores, :parabrisa, :quebraSol, :bordo, :buzina, :cinto, :extintor, :triangulo, :macaco, :tanque, :janelas, :banco, :porta, :cambio, :seta, :luzFreio, :luzRe, :alerta, :luz_teto, :faixas, :farolDianteiro, :farolTraseiro, :farolNeblina, :farolAlto, :painel, :pneus, :rodas, :estepe, :molas, :cabo_forca, :refrigeracao, :ventilador, :obs, :checksaida, :filial)");
         $sql->bindValue(':veiculo', $veiculo);
         $sql->bindValue(':hrTk', $hrTk);
         $sql->bindValue(':tipo', $tipo);
@@ -101,6 +102,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':ventilador', $ventilador);
         $sql->bindValue(':obs', $obs);
         $sql->bindValue(':checksaida',$idCheckSaida);
+        $sql->bindValue(':filial',$filial);
         $sql->execute();
         
         $db->commit();

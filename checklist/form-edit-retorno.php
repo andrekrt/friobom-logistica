@@ -13,6 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $idCheck = filter_input(INPUT_GET, 'id');
@@ -110,7 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="rota" id="rota" class="form-control" required>
                                     <option value="<?=$check['rota']?>"><?=$check['nome_rota']?></option>
                                     <?php
-                                    $sql = $db->query("SELECT * FROM rotas ORDER BY nome_rota ASC");
+                                    $sql = $db->query("SELECT * FROM rotas WHERE filial = $filial ORDER BY nome_rota ASC");
                                     if ($sql->rowCount() > 0) {
                                         $rotas = $sql->fetchAll();
                                         foreach ($rotas as $rota) {
@@ -133,7 +134,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <select name="motorista" id="motorista" class="form-control" required>
                                     <option value="<?=$check['motorista']?>"><?=$check['nome_motorista']?></option>
                                     <?php
-                                    $sql = $db->query("SELECT * FROM motoristas ORDER BY nome_motorista ASC");
+                                    $sql = $db->query("SELECT * FROM motoristas WHERE filial = $filial ORDER BY nome_motorista ASC");
                                     if ($sql->rowCount() > 0) {
                                         $motoristas = $sql->fetchAll();
                                         foreach ($motoristas as $motorista) {

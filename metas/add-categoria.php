@@ -13,13 +13,14 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $idUsuario = $_SESSION['idUsuario'];
     $descricao = filter_input(INPUT_POST, 'descricao');
 
-    $inserir = $db->prepare("INSERT INTO metas_tipo (descricao_tipo, usuario) VALUES (:descricao, :usuario)");
+    $inserir = $db->prepare("INSERT INTO metas_tipo (descricao_tipo, usuario, filial) VALUES (:descricao, :usuario, :filial)");
     $inserir->bindValue(':descricao', $descricao);
     $inserir->bindValue(':usuario', $idUsuario);
+    $inserir->bindValue(':filial', $filial);
 
     if($inserir->execute()){
         echo "<script>alert('Categoria Cadastrado com Sucesso!');</script>";

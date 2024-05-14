@@ -3,8 +3,16 @@
 session_start();
 require("../conexao.php");
 
+$filial = $_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = "AND vales.filial=$filial";
+}
+
+
 $db->exec("set names utf8");
-$sql = $db->query("SELECT * FROM vales LEFT JOIN motoristas ON motoristas.cod_interno_motorista=vales.motorista LEFT JOIN rotas ON rotas.cod_rota=vales.rota LEFT JOIN usuarios on usuarios.idusuarios=vales.usuario");
+$sql = $db->query("SELECT * FROM vales LEFT JOIN motoristas ON motoristas.cod_interno_motorista=vales.motorista LEFT JOIN rotas ON rotas.cod_rota=vales.rota LEFT JOIN usuarios on usuarios.idusuarios=vales.usuario WHERE $condicao");
 $dados = $sql->fetchAll();
 
 $fp = fopen("vales.csv", "w");

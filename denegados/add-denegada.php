@@ -19,7 +19,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }else{
         $newToken = $token['token']+1;
     }
-    
+    $filial = $_SESSION['filial'];
     $idUsuario = $_SESSION['idUsuario'];
     $carga = filter_input(INPUT_POST, 'carga');
     $nf = $_POST['nf'];
@@ -29,12 +29,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
     try{
         for($i=0;$i<count($nf);$i++){
-            $inserir = $db->prepare("INSERT INTO denegadas (token, carga, nf, situacao, usuario) VALUES (:token, :carga, :nf, :situacao, :usuario)");
+            $inserir = $db->prepare("INSERT INTO denegadas (token, carga, nf, situacao, usuario, filial) VALUES (:token, :carga, :nf, :situacao, :usuario, :filial)");
             $inserir->bindValue(':token', $newToken);
             $inserir->bindValue(':carga', $carga);
             $inserir->bindValue(':nf', $nf[$i]);
             $inserir->bindValue(':situacao', $situacao);
             $inserir->bindValue(':usuario', $idUsuario);
+            $inserir->bindValue('filial', $filial);
             $inserir->execute();
     
         }

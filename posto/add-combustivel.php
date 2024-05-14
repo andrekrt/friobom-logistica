@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result > 0)) {
-
+    $filial = $_SESSION['filial'];
     $usuario = $_SESSION['idUsuario'];
     $dataEntrada = date("Y-m-d");
     $valorlitro = str_replace(",", ".", filter_input(INPUT_POST, 'vlLitro'));
@@ -40,7 +40,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit();
 
         } 
-        $inserir = $db->prepare("INSERT INTO combustivel_entrada (data_entrada, total_litros, valor_litro, frete, valor_total, nf, data_nf, fornecedor, qualidade, situacao, usuario) VALUES (:dataEntrada, :totalLitros, :valorLitros, :frete, :valorTotal, :nf, :dataNf,:fornecedor, :qualidade, :situacao, :usuario)");
+        $inserir = $db->prepare("INSERT INTO combustivel_entrada (data_entrada, total_litros, valor_litro, frete, valor_total, nf, data_nf, fornecedor, qualidade, situacao, usuario, filial) VALUES (:dataEntrada, :totalLitros, :valorLitros, :frete, :valorTotal, :nf, :dataNf,:fornecedor, :qualidade, :situacao, :usuario, :filial)");
         $inserir->bindValue(':dataEntrada', $dataEntrada);
         $inserir->bindValue(':totalLitros', $totalLitro);
         $inserir->bindValue(':valorLitros', $valorlitro);
@@ -52,6 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $inserir->bindValue(':qualidade', $qualidade);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $usuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
         $db->commit();

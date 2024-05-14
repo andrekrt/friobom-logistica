@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-    
+    $filial = $_SESSION['filial'];
     $usuario = $_SESSION['idUsuario'];
     $dataInventario = date("Y-m-d");
     $litros = str_replace(",",".",filter_input(INPUT_POST, 'litros'));
@@ -24,17 +24,19 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $inserir = $db->prepare("INSERT INTO combustivel_inventario (data_inventario , qtd_encontrada, usuario) VALUES (:dataInventario, :litros, :usuario)");
+        $inserir = $db->prepare("INSERT INTO combustivel_inventario (data_inventario , qtd_encontrada, usuario, filial) VALUES (:dataInventario, :litros, :usuario, :filial)");
         $inserir->bindValue(':dataInventario', $dataInventario);
         $inserir->bindValue(':litros', $litros);
         $inserir->bindValue(':usuario', $usuario);
+        $inserir->bindValue(':filial', $filial);
         $inserir->execute();
 
-        $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, usuario) VALUES (:dataOp, :tipoOp, :volume, :usuario)");
+        $sqlExtrato = $db->prepare("INSERT INTO combustivel_extrato (data_operacao, tipo_operacao, volume, usuario, filial) VALUES (:dataOp, :tipoOp, :volume, :usuario, :filial)");
         $sqlExtrato->bindValue(':dataOp', $dataInventario);
         $sqlExtrato->bindValue(':tipoOp', "Inventário");
         $sqlExtrato->bindValue(':volume', $litros);
         $sqlExtrato->bindValue(':usuario', $usuario);
+        $sqlExtrato->bindValue(':filial', $filial);
         $sqlExtrato->execute();
 
         $db->commit();

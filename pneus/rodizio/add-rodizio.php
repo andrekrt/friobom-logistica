@@ -14,7 +14,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $dataRodizio = date("Y-m-d");
     $pneu = filter_input(INPUT_POST, 'pneu');
 
@@ -39,7 +39,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $sql = $db->prepare("INSERT INTO rodizio_pneu (data_rodizio, pneu, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, usuario) VALUES (:dataRodizio, :pneu, :veiculoAnterior, :kmInicialAnterior, :kmFinalAnterior, :kmRodadoAnterior, :novoVeiculo, :kmInicialNovo, :usuario)");
+        $sql = $db->prepare("INSERT INTO rodizio_pneu (data_rodizio, pneu, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, usuario, filial) VALUES (:dataRodizio, :pneu, :veiculoAnterior, :kmInicialAnterior, :kmFinalAnterior, :kmRodadoAnterior, :novoVeiculo, :kmInicialNovo, :usuario, :filial)");
         $sql->bindValue(':dataRodizio', $dataRodizio);
         $sql->bindValue(':pneu', $pneu);
         $sql->bindValue(':veiculoAnterior', $veiculoAnterior);
@@ -49,6 +49,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':novoVeiculo', $novoVeiculo);
         $sql->bindValue(':kmInicialNovo', $kmInicialNovo);
         $sql->bindValue(':usuario', $usuario);
+        $sql->bindValue(':filial', $filial);
         $sql->execute();
 
         $somaRodizio = $db->prepare("SELECT SUM(km_rodado_veiculo_anterior) as kmRodadoAnterior FROM rodizio_pneu WHERE pneu=:pneu");

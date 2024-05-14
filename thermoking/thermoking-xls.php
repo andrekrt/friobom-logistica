@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND thermoking.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idthermoking, placa_veiculo, tipo_veiculo, tipo_tk, hora_atual, hora_ultima_revisao, ultima_revisao_tk, hora_restante, situacao FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
+    $sql = $db->query("SELECT idthermoking, placa_veiculo, tipo_veiculo, tipo_tk, hora_atual, hora_ultima_revisao, ultima_revisao_tk, hora_restante, situacao FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE 1 $condicao ");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=thermoking.csv');

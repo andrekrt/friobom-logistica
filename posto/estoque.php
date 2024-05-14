@@ -13,9 +13,9 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     //qtd de ENTRADAS
-    $entradas = $db->query("SELECT SUM(total_litros) as totalLitros, SUM(valor_total) as valorTotal FROM combustivel_entrada WHERE situacao='Aprovado'");
+    $entradas = $db->query("SELECT SUM(total_litros) as totalLitros, SUM(valor_total) as valorTotal FROM combustivel_entrada WHERE situacao='Aprovado' AND filial = $filial ");
     $qtdEntradas = $entradas->fetch();
     $valorTotal = $qtdEntradas['valorTotal']?$qtdEntradas['valorTotal']:0;
     $qtdEntradas = $qtdEntradas['totalLitros']?$qtdEntradas['totalLitros']:0;
@@ -27,7 +27,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     
 
     //qtd saidas
-    $saidas = $db->query("SELECT SUM(litro_abastecimento) as litroAbastecimento FROM combustivel_saida WHERE situacao='Aprovado'");
+    $saidas = $db->query("SELECT SUM(litro_abastecimento) as litroAbastecimento FROM combustivel_saida WHERE situacao='Aprovado' AND filial = $filial");
     $qtdSaidas = $saidas->fetch();
     $qtdSaidas = $qtdSaidas['litroAbastecimento']?$qtdSaidas['litroAbastecimento']:0;
 
@@ -35,7 +35,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $percentual = ($estoqueAtual/15000)*100;
 
     // inventario
-    $inventario = $db->query("SELECT * FROM combustivel_inventario ORDER BY data_inventario DESC LIMIT 1");
+    $inventario = $db->query("SELECT * FROM combustivel_inventario WHERE filial = $filial ORDER BY data_inventario DESC LIMIT 1");
     $inventario = $inventario->fetch();
     $dataInventario = date("d/m/Y", strtotime($inventario['data_inventario']));
     $volume = $inventario['qtd_encontrada'];

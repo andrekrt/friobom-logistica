@@ -15,10 +15,14 @@ $result = $sqlPerm->fetchColumn();
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $nomeUsuario = $_SESSION['nomeUsuario'];
+    
+
 
     function contaVeic($condicao){
         include "../conexao.php";
-        $sqlCont = $db->prepare("SELECT COUNT(*) as qtd FROM veiculos WHERE situacao = :condicao AND ativo=1" );
+        $filial = $_SESSION['filial'];
+        $sqlCont = $db->prepare("SELECT COUNT(*) as qtd FROM veiculos WHERE situacao = :condicao AND ativo=1 AND filial = :filial" );
+        $sqlCont->bindValue(':filial', $filial);
         $sqlCont->bindValue(':condicao', $condicao);
         if($sqlCont->execute()){
             $qtd = $sqlCont->fetch();

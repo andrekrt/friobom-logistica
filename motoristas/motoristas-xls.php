@@ -13,9 +13,15 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
+    $filial = $_SESSION['filial'];
+    if($filial===99){
+        $condicao = " ";
+    }else{
+        $condicao = "AND motoristas.filial=$filial";
+    }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT cod_interno_motorista, nome_motorista, cidade_base, cnh, validade_cnh, toxicologico, validade_toxicologico, salario FROM motoristas WHERE ativo = 1 ORDER BY nome_motorista");
+    $sql = $db->query("SELECT cod_interno_motorista, nome_motorista, cidade_base, cnh, validade_cnh, toxicologico, validade_toxicologico, salario FROM motoristas WHERE ativo = 1 $condicao ORDER BY nome_motorista");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=motoristas.csv');

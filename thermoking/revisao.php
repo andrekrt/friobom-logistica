@@ -13,7 +13,7 @@ $sqlPerm->execute();
 $result = $sqlPerm->fetchColumn();
 
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
-
+    $filial = $_SESSION['filial'];
     $nomeUsuario = $_SESSION['nomeUsuario'];
 } else {
     echo "<script>alert('Acesso não permitido');</script>";
@@ -163,7 +163,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="tk"> Thermoking </label>
                             <select required name="tk" id="tkEdit" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
+                                <?php $pecas = $db->query("SELECT * FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE thermoking.filial = $filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
@@ -209,7 +209,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="tk"> Thermoking </label>
                             <select required name="tk" id="tk" class="form-control">
                                 <option value=""></option>
-                                <?php $pecas = $db->query("SELECT * FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo");
+                                <?php $pecas = $db->query("SELECT * FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE thermoking.filial = $filial");
                                 $pecas = $pecas->fetchAll();
                                 foreach($pecas as $peca):
                                 ?>
