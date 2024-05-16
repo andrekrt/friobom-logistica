@@ -12,7 +12,7 @@ if($filial===99){
 
 
 $db->exec("set names utf8");
-$sql = $db->query("SELECT * FROM vales LEFT JOIN motoristas ON motoristas.cod_interno_motorista=vales.motorista LEFT JOIN rotas ON rotas.cod_rota=vales.rota LEFT JOIN usuarios on usuarios.idusuarios=vales.usuario WHERE $condicao");
+$sql = $db->query("SELECT * FROM vales LEFT JOIN motoristas ON motoristas.cod_interno_motorista=vales.motorista LEFT JOIN rotas ON rotas.cod_rota=vales.rota LEFT JOIN usuarios on usuarios.idusuarios=vales.usuario WHERE 1 $condicao");
 $dados = $sql->fetchAll();
 
 $fp = fopen("vales.csv", "w");
