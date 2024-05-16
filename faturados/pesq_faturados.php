@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../conexao-oracle.php';
+include '../conexao.php';
 
 ## Read value
 $draw = $_POST['draw'];
@@ -11,36 +11,42 @@ $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
 
+$filial=$_SESSION['filial'];
+if($filial===99){
+    $condicao = " ";
+}else{
+    $condicao = " AND (faturados.filial=$filial)";
+}
+
 $searchArray = array();
 
 ## Search 
 $searchQuery = " ";
 if($searchValue != ''){
-	$searchQuery = " AND (NUMCAR LIKE :NUMCAR OR DATAMON LIKE :DATAMON OR DTFAT LIKE :DTFAT OR MOTORISTA LIKE :MOTORISTA OR VEICULO LIKE :VEICULO  OR ROTA LIKE :ROTA) ";
+	$searchQuery = " AND (carregamento LIKE :carregamento OR motorista LIKE :motorista OR veiculo LIKE :veiculo OR rota LIKE :rota ) ";
     $searchArray = array( 
-        'NUMCAR'=>"%$searchValue%", 
-        'DATAMON'=>"%$searchValue%",
-        'DTFAT'=>"%$searchValue%",
-        'MOTORISTA'=>"%$searchValue%",
-        'VEICULO'=>"%$searchValue%",
-        'ROTA'=>"%$searchValue%"
+        'carregamento'=>"%$searchValue%", 
+        'motorista'=>"%$searchValue%",
+        'veiculo'=>"%$searchValue%",
+        'rota'=>"%$searchValue%",
+       
     );
 }
 
 ## Total number of records without filtering
-$stmt = $dbora->prepare("SELECT COUNT(*) AS allcount FROM friobom.pccarreg WHERE obsfatur LIKE '%faturado com sucesso%' AND DTSAIDA >= TRUNC(SYSDATE - 14, 'DD') ");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM faturados WHERE 1 $condicao ");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
 
 ## Total number of records with filtering
-$stmt = $dbora->prepare("SELECT COUNT(*) AS allcount FROM friobom.pccarreg WHERE obsfatur LIKE '%faturado com sucesso%' AND DTSAIDA >= TRUNC(SYSDATE - 14, 'DD')  DESC AND ".$searchQuery);
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM faturados WHERE 1 $condicao ".$searchQuery);
 $stmt->execute($searchArray);
 $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $dbora->prepare("SELECT * FROM friobom.pccarreg WHERE obsfatur LIKE '%faturado com sucesso%' AND DTSAIDA >= TRUNC(SYSDATE - 14, 'DD') AND ".$searchQuery. " AND ROWNUM>".':limit'." AND ROWNUM<=:offset ORDER BY ".$columnName." ".$columnSortOrder." ");
+$stmt = $db->prepare("SELECT * FROM faturados WHERE 1 $condicao ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -57,13 +63,13 @@ $data = array();
 foreach($empRecords as $row){
     
     $data[] = array(
-        "NUMCAR"=>$row['NUMCAR'],
-        "DATAMON"=>$row['DATAMON'],
-        "DTFAT"=>$row['DTFAT'],
-        "MOTORISTA"=>$row['MOTORISTA'],
-        "VEICULO"=>$row['VEICULO'],       
-        "ROTA"=>$row['ROTA'],
-        "VLTOTAL"=>$row['VLTOTAL']
+        "carregamento"=>$row['carregamento'],
+        "data_montagem"=>date("d/m/Y", strtotime($row['data_montagem'])) ,
+        "data_faturamento"=>date("d/m/Y", strtotime($row['data_faturamento'])),
+        "motorista"=>$row['motorista'],
+        "veiculo"=>$row['veiculo'],       
+        "rota"=>$row['rota'],
+        "valor_faturado"=>"R$ ".number_format( $row['valor_faturado'],2, ",",".")
     );
 }
 
