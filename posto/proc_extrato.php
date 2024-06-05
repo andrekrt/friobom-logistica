@@ -61,6 +61,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
+        "filial"=>$row['filial'],
         "idextrato"=>$row['idextrato'],
         "data_operacao"=>date("d/m/Y", strtotime($row['data_operacao'])),
         "tipo_operacao"=>$row['tipo_operacao'],

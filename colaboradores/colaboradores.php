@@ -73,6 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableColab' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center"> Filial </th>
                                 <th scope="col" class="text-center"> CPF </th>
                                 <th scope="col" class="text-center"> Nome  </th>
                                 <th scope="col" class="text-center"> Salário </th>
@@ -106,6 +107,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_colab.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'cpf_colaborador'},
                     { data: 'nome_colaborador' },
                     { data: 'salario_colaborador' },

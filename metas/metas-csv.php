@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Código','ISO-8859-1', 'UTF-8'),
         "Tipo Meta",
         "Data",
@@ -43,7 +44,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     foreach($dados as $dado){
         $percentual =number_format($dado['valor_alcancado']/$dado['valor_meta'],2,",",".");
         fwrite($arquivo,
-            "\n". $dado['token'].";".  mb_convert_encoding($dado['tipo_meta'],'ISO-8859-1', 'UTF-8').";". date("d/m/Y h:i",strtotime($dado['data_meta'])). ";".$dado['valor_meta']. ";". $dado['valor_alcancado'].";" .$percentual
+            "\n". $dado['filial'].";". $dado['token'].";".  mb_convert_encoding($dado['tipo_meta'],'ISO-8859-1', 'UTF-8').";". date("d/m/Y h:i",strtotime($dado['data_meta'])). ";".$dado['valor_meta']. ";". $dado['valor_alcancado'].";" .$percentual
         );
     }
 

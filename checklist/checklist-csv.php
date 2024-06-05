@@ -14,7 +14,7 @@ if($filial===99){
 }
 
 $sql = $db->prepare("SELECT 
-    id, veiculo, hr_tk, data, cabine, retrovisores, parabrisa, quebra_sol, bordo, buzina, cinto, extintor, triangulo, macaco, tanque, janelas, banco, porta, cambio, seta, luz_freio, luz_re, alerta, luz_teto, faixas, farol_dianteiro, farol_traseiro, farol_neblina, farol_alto, painel, rodas, pneus, estepe, molas, cabo_forca, refrigeracao, ventilador, obs, hr_tk_ret, carregamento_ret, data_ret, cabine_ret, retrovisores_ret, parabrisa_ret, quebra_sol_ret, bordo_ret, buzina_ret, cinto_ret, extintor_ret, triangulo_ret, macaco_ret, tanque_ret, janelas_ret, banco_ret, porta_ret, cambio_ret, seta_ret, luz_freio_ret, luz_re_ret, alerta_ret, luz_teto_ret, faixas_ret, farol_dianteiro_ret, farol_traseiro_ret, farol_neblina_ret, farol_alto_ret, painel_ret, rodas_ret, pneus_ret, estepe_ret, molas_ret, cabo_forca_ret, refrigeracao_ret, ventilador_ret, obs_ret
+    checklist_apps.filial,id, veiculo, hr_tk, data, cabine, retrovisores, parabrisa, quebra_sol, bordo, buzina, cinto, extintor, triangulo, macaco, tanque, janelas, banco, porta, cambio, seta, luz_freio, luz_re, alerta, luz_teto, faixas, farol_dianteiro, farol_traseiro, farol_neblina, farol_alto, painel, rodas, pneus, estepe, molas, cabo_forca, refrigeracao, ventilador, obs, hr_tk_ret, carregamento_ret, data_ret, cabine_ret, retrovisores_ret, parabrisa_ret, quebra_sol_ret, bordo_ret, buzina_ret, cinto_ret, extintor_ret, triangulo_ret, macaco_ret, tanque_ret, janelas_ret, banco_ret, porta_ret, cambio_ret, seta_ret, luz_freio_ret, luz_re_ret, alerta_ret, luz_teto_ret, faixas_ret, farol_dianteiro_ret, farol_traseiro_ret, farol_neblina_ret, farol_alto_ret, painel_ret, rodas_ret, pneus_ret, estepe_ret, molas_ret, cabo_forca_ret, refrigeracao_ret, ventilador_ret, obs_ret
  FROM checklist_apps LEFT JOIN checklist_apps_retorno02 ON checklist_apps.id = checklist_apps_retorno02.checksaida $condicao");
 
 if($sql->execute()){
@@ -24,6 +24,7 @@ if($sql->execute()){
     $resultado = fopen("php://output", 'w');
 
     $cabecalho = [
+        "Filial",
         "ID",
         mb_convert_encoding("Veículo", 'ISO-8859-1', 'UTF-8') ,
         mb_convert_encoding("Hora Tk Saída", 'ISO-8859-1', 'UTF-8') ,

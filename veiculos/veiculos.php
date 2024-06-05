@@ -67,6 +67,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableVeiculos' class='table  table-bordered nowrap' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap" > Filial </th>
                                 <th scope="col" class="text-center text-nowrap" >  Código Veículo </th>
                                 <th scope="col" class="text-center text-nowrap">Tipo Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Categoria</th>
@@ -133,6 +134,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_veic.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'cod_interno_veiculo' },
                     { data: 'tipo_veiculo' },
                     { data: 'categoria' },

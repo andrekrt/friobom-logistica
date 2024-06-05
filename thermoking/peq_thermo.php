@@ -60,6 +60,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
+        "filial"=>$row['filial'],
         "idthermoking"=>$row['idthermoking'],
         "placa_veiculo"=>$row['placa_veiculo'] ,
         "tipo_veiculo"=>$row['tipo_veiculo'],

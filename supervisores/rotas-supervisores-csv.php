@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idrotas, saida, nome_supervisor, placa_veiculo, chegada, velocidade_max, qtd_visitas , rca01, rca02, cidades, hora_almoco, km_rodado, obs, nome_usuario FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 $condicao");
+    $sql = $db->query("SELECT rotas_supervisores.filial, idrotas, saida, nome_supervisor, placa_veiculo, chegada, velocidade_max, qtd_visitas , rca01, rca02, cidades, hora_almoco, km_rodado, obs, nome_usuario FROM rotas_supervisores rotas_supervisores LEFT JOIN supervisores ON rotas_supervisores.supervisor = supervisores.idsupervisor LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo LEFT JOIN usuarios ON rotas_supervisores.usuario = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=rotas-supervisores.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Data de Saída','ISO-8859-1', 'UTF-8'),
         "Supervisor",
         "Placa",
@@ -49,7 +50,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
     foreach($dados as $dado){
         fwrite($arquivo,
-        date("d/m/Y", strtotime($dado['saida'])) .";".  mb_convert_encoding($dado['nome_supervisor'],'ISO-8859-1', 'UTF-8').";".$dado['placa_veiculo']. ";".date("d/m/Y", strtotime($dado['chegada'])). ";". $dado['velocidade_max'].";" . $dado['km_rodado'] . ";" .mb_convert_encoding($dado['qtd_visitas'],'ISO-8859-1', 'UTF-8').";".$dado['rca01'].";".$dado['rca02'].";".mb_convert_encoding($dado['cidades'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['hora_almoco'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['obs'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')."\n"
+        $dado['filial'].";". date("d/m/Y", strtotime($dado['saida'])) .";".  mb_convert_encoding($dado['nome_supervisor'],'ISO-8859-1', 'UTF-8').";".$dado['placa_veiculo']. ";".date("d/m/Y", strtotime($dado['chegada'])). ";". $dado['velocidade_max'].";" . $dado['km_rodado'] . ";" .mb_convert_encoding($dado['qtd_visitas'],'ISO-8859-1', 'UTF-8').";".$dado['rca01'].";".$dado['rca02'].";".mb_convert_encoding($dado['cidades'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['hora_almoco'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['obs'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')."\n"
         );
     }
 

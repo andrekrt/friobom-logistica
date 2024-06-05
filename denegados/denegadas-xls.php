@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT id_denegadas, carga, pedido, situacao, nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.id_denegadas = usuarios.idusuarios WHERE 1 $condicao");
+    $sql = $db->query("SELECT denegadas.filial,id_denegadas, carga, pedido, situacao, nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.id_denegadas = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=denegadas.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Nº','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Carga','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Nº Pedido','ISO-8859-1', 'UTF-8'),

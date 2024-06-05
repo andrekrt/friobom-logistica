@@ -63,6 +63,7 @@ foreach($empRecords as $row){
         $botao= '<a href="javascript:void();" data-id="'.$row['idcaixas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a> <a class="btn btn-secondary btn-sm" onclick=\'confirmaDelete(' . $row['idcaixas'] . ')\' >Confirmar Recebimento </a>';
     }
     $data[] = array(
+        "filial"=>$row['filial'],
         "idcaixas"=>$row['idcaixas'],
         "carregamento"=>$row['carregamento'],
         "qtd_caixas"=>$row['qtd_caixas'],

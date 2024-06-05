@@ -77,6 +77,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableVale' class='table table-striped table-bordered nowrap' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th> Filial</th>
                                 <th> Nº </th>
                                 <th> Data </th>
                                 <th>Motorista</th>
@@ -121,6 +122,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 },
                 'columns': [
                     {
+                        data: 'filial'
+                    },
+                    {
                         data: 'idvale'
                     },
                     {
@@ -157,7 +161,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
-                order: [0, 'desc'],
+                order: [1, 'desc'],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
                    
                    if(aData['situacao']==='Não Resgatado'){

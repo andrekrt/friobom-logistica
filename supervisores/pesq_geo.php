@@ -64,6 +64,7 @@ foreach($empRecords as $row){
     $latitude=str_replace(",",".",$row['latitude']);
     $logintude = str_replace(",",".", $row['longitude']);
     $data[] = array(
+        "filial"=>$row['filial'],
         "id"=>$row['id'],
         "data_hora"=>date("d/m/Y H:i", strtotime($row['data_hora'])) ,
         "codigo_sup"=>$row['codigo_sup'],

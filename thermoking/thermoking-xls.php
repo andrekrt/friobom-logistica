@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idthermoking, placa_veiculo, tipo_veiculo, tipo_tk, hora_atual, hora_ultima_revisao, ultima_revisao_tk, hora_restante, situacao FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE 1 $condicao ");
+    $sql = $db->query("SELECT thermoking.filial, idthermoking, placa_veiculo, tipo_veiculo, tipo_tk, hora_atual, hora_ultima_revisao, ultima_revisao_tk, hora_restante, situacao FROM thermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE 1 $condicao ");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=thermoking.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         mb_convert_encoding('Placa de Veículo','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Modelo de Veículo','ISO-8859-1', 'UTF-8'),

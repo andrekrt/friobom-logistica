@@ -44,7 +44,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT veiculos.placa_veiculo, veiculos.tipo_veiculo, COUNT(viagem.placa_veiculo) AS qtd, SUM(viagem.km_rodado) AS kmRodado, SUM(viagem.litros) AS totalLitros, SUM(viagem.valor_total_abast) AS vlAbast, COUNT(solicitacoes_new.placa) AS qtdSolic, SUM(solicitacoes_new.vl_total) AS vlSolic, (SUM(solicitacoes_new.vl_total)+SUM(viagem.valor_total_abast))/ SUM(viagem.km_rodado) AS media FROM veiculos LEFT JOIN viagem ON viagem.cod_interno_veiculo=veiculos.cod_interno_veiculo LEFT JOIN solicitacoes_new ON solicitacoes_new.placa = veiculos.placa_veiculo WHERE 1 $condicao ".$searchQuery." GROUP BY veiculos.placa_veiculo ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT veiculos.filial,veiculos.placa_veiculo, veiculos.tipo_veiculo, COUNT(viagem.placa_veiculo) AS qtd, SUM(viagem.km_rodado) AS kmRodado, SUM(viagem.litros) AS totalLitros, SUM(viagem.valor_total_abast) AS vlAbast, COUNT(solicitacoes_new.placa) AS qtdSolic, SUM(solicitacoes_new.vl_total) AS vlSolic, (SUM(solicitacoes_new.vl_total)+SUM(viagem.valor_total_abast))/ SUM(viagem.km_rodado) AS media FROM veiculos LEFT JOIN viagem ON viagem.cod_interno_veiculo=veiculos.cod_interno_veiculo LEFT JOIN solicitacoes_new ON solicitacoes_new.placa = veiculos.placa_veiculo WHERE 1 $condicao ".$searchQuery." GROUP BY veiculos.placa_veiculo ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -60,16 +60,17 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "tipo_veiculo"=>$row['tipo_veiculo'],
-            "qtd"=>$row['qtd'],
-            "kmRodado"=>$row['kmRodado'],
-            "totalLitros"=>$row['totalLitros'],
-            "vlAbast"=> $row['vlAbast'],
-            "qtdSolic"=> $row['qtdSolic'],
-            "vlSolic"=> $row['vlSolic'],
-            "media"=> $row['media'],
-        );
+        "filial"=>$row['filial'],
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "tipo_veiculo"=>$row['tipo_veiculo'],
+        "qtd"=>$row['qtd'],
+        "kmRodado"=>$row['kmRodado'],
+        "totalLitros"=>$row['totalLitros'],
+        "vlAbast"=> $row['vlAbast'],
+        "qtdSolic"=> $row['qtdSolic'],
+        "vlSolic"=> $row['vlSolic'],
+        "media"=> $row['media'],
+    );
 }
 
 ## Response

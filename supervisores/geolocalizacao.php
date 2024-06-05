@@ -71,6 +71,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         <table id='geo' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                             <thead>
                                 <tr>
+                                    <th   th scope="col" class="text-center text-nowrap" > Filial </th>
                                     <th scope="col" class="text-center text-nowrap" > ID </th>
                                     <th scope="col" class="text-center text-nowrap" > Data  </th>
                                     <th scope="col" class="text-center text-nowrap" > Supervisor </th>
@@ -114,6 +115,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         'url':'pesq_geo.php'
                     },
                     'columns':[
+                        { data: 'filial'},
                         { data: 'id'},
                         { data: 'data_hora'},
                         { data: 'codigo_sup'},
@@ -127,7 +129,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                     },
                     "order":[
-                        [0,"desc"]
+                        [1,"desc"]
                     ]
                 });
             });

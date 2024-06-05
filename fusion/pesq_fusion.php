@@ -63,31 +63,32 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "saida"=>date("d/m/Y ", strtotime($row['saida'])) ,
-            "termino_rota"=>$row['termino_rota']?date("d/m/Y H:i", strtotime($row['termino_rota'])):"",
-            "chegada_empresa"=>$row['chegada_empresa']?date("d/m/Y H:i", strtotime($row['chegada_empresa'])):"",
-            "carregamento"=>$row['carregamento'],
-            "placa"=>$row['placa_veiculo'],
-            "motorista"=>$row['nome_motorista'],
-            "rota"=>$row['nome_rota'],
-            "num_entregas"=>$row['num_entregas'],
-            "entregas_feitas"=>$row['entregas_feitas'],
-            "erros_fusion"=>$row['erros_fusion'],
-            "num_dev"=>$row['num_dev'],
-            "entregas_liq"=>$row['entregas_liq'],
-            "uso_fusion"=>($row['uso_fusion']*100)."%",
-            "checklist"=>($row['checklist']*100)."%",
-            "media_km"=>($row['media_km']*100)."%",
-            "devolucao"=>($row['devolucao']*100)."%",
-            "dias_rota"=>($row['dias_rota']*100)."%",
-            "vel_max"=>($row['vel_max']*100)."%",
-            "premio_possivel"=>$row['premio_possivel']?"R$".number_format($row['premio_possivel'],2,",","."):"" ,
-            "premio_real"=>$row['premio_real']?"R$".number_format($row['premio_real'],2,",","."):"" ,
-            "premio_alcancado"=>number_format($row['premio_alcancado']*100,2,",",".")."%" ,
-            "situacao"=>$row['situacao'],
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idfusion'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a  data-id="'.$row['idfusion'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idfusion'] . ')\'>Deletar</a>'
-        );
+        "filial"=>$row['filial'],
+        "saida"=>date("d/m/Y ", strtotime($row['saida'])) ,
+        "termino_rota"=>$row['termino_rota']?date("d/m/Y H:i", strtotime($row['termino_rota'])):"",
+        "chegada_empresa"=>$row['chegada_empresa']?date("d/m/Y H:i", strtotime($row['chegada_empresa'])):"",
+        "carregamento"=>$row['carregamento'],
+        "placa"=>$row['placa_veiculo'],
+        "motorista"=>$row['nome_motorista'],
+        "rota"=>$row['nome_rota'],
+        "num_entregas"=>$row['num_entregas'],
+        "entregas_feitas"=>$row['entregas_feitas'],
+        "erros_fusion"=>$row['erros_fusion'],
+        "num_dev"=>$row['num_dev'],
+        "entregas_liq"=>$row['entregas_liq'],
+        "uso_fusion"=>($row['uso_fusion']*100)."%",
+        "checklist"=>($row['checklist']*100)."%",
+        "media_km"=>($row['media_km']*100)."%",
+        "devolucao"=>($row['devolucao']*100)."%",
+        "dias_rota"=>($row['dias_rota']*100)."%",
+        "vel_max"=>($row['vel_max']*100)."%",
+        "premio_possivel"=>$row['premio_possivel']?"R$".number_format($row['premio_possivel'],2,",","."):"" ,
+        "premio_real"=>$row['premio_real']?"R$".number_format($row['premio_real'],2,",","."):"" ,
+        "premio_alcancado"=>number_format($row['premio_alcancado']*100,2,",",".")."%" ,
+        "situacao"=>$row['situacao'],
+        "nome_usuario"=>$row['nome_usuario'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idfusion'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a  data-id="'.$row['idfusion'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idfusion'] . ')\'>Deletar</a>'
+    );
 }
 
 ## Response

@@ -67,6 +67,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='checklist' class='table table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap" > Filial </th>
                                 <th scope="col" class="text-center text-nowrap" > ID </th>
                                 <th scope="col" class="text-center text-nowrap">Placa</th>
                                 <th scope="col" class="text-center text-nowrap">Data Saída</th>
@@ -99,6 +100,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'pesq-checklist.php'
                 },
                 'columns': [
+                    {data: 'filial'},
                     {data: 'id'},
                     {data: 'veiculo'},
                     {data: 'dataSaida'},
@@ -114,7 +116,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[7]}
                 ],
-                "order":[0,'desc'],
+                "order":[1,'desc'],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
                    
                    if(aData['dataRetorno']===""){

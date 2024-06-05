@@ -67,6 +67,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableGastos' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th class="text-center align-middle">Filial</th>
                                 <th class="text-center align-middle">Veículo</th>
                                 <th class="text-center align-middle"> Custo/Entrega </th>
                                 <th class="text-center align-middle">Valor Transportado</th>
@@ -111,6 +112,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_gasto.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'placa_veiculo' },
                     { data: 'custoEntrega'},
                     { data: 'mediaValorTransportado' },
@@ -133,6 +135,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
+                "order":[
+                    1, 'desc'
+                ]
             });
         });
 

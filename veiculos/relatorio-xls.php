@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT placa_veiculo, tipo_veiculo, COUNT(placa_veiculo) as qtdViagem, SUM(km_rodado) as kmRodado, SUM(litros) as totalLitros, SUM(valor_total_abast) as valorLitros, COUNT(solicitacoes_new.placa) AS qtdSolicitacoes, SUM(solicitacoes_new.vl_total) as valorTotalSolicitacoes, (SUM(solicitacoes_new.vl_total)+SUM(litros)) / SUM(km_rodado) FROM `viagem` LEFT JOIN solicitacoes_new ON viagem.placa_veiculo = solicitacoes_new.placa WHERE 1 $condicao GROUP BY placa_veiculo ORDER BY placa_veiculo");
+    $sql = $db->query("SELECT viagem.filial,placa_veiculo, tipo_veiculo, COUNT(placa_veiculo) as qtdViagem, SUM(km_rodado) as kmRodado, SUM(litros) as totalLitros, SUM(valor_total_abast) as valorLitros, COUNT(solicitacoes_new.placa) AS qtdSolicitacoes, SUM(solicitacoes_new.vl_total) as valorTotalSolicitacoes, (SUM(solicitacoes_new.vl_total)+SUM(litros)) / SUM(km_rodado) FROM `viagem` LEFT JOIN solicitacoes_new ON viagem.placa_veiculo = solicitacoes_new.placa WHERE 1 $condicao GROUP BY placa_veiculo ORDER BY placa_veiculo");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=despesas-por-veiculo.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "Placa",
         "Tipo",
         "Qtd Viagens",

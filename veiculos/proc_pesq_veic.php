@@ -84,6 +84,7 @@ foreach($empRecords as $row){
         $situacaoAlinhamento = 'Aguardando';
     }
     $data[] = array(
+        "filial"=>$row['filial'],
         "cod_interno_veiculo"=>$row['cod_interno_veiculo'],
         "tipo_veiculo"=>$row['tipo_veiculo'],
         "categoria"=>$row['categoria'],

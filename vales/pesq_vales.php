@@ -79,6 +79,7 @@ foreach($empRecords as $row){
     $pago = $row['pago']==0?"NÃO":"SIM";
     
     $data[] = array(
+        "filial"=>$row['filial'],
         "idvale"=>$row['idvale'],
         "data_lancamento"=>date("d/m/Y", strtotime($row['data_lancamento'])),
         "motorista"=>$row['nome_motorista'],

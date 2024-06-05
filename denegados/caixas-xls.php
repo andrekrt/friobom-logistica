@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idcaixas, carregamento, qtd_caixas, situacao, nome_usuario FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 $condicao");
+    $sql = $db->query("SELECT auxiliares_rota.filial,idcaixas, carregamento, qtd_caixas, situacao, nome_usuario FROM caixas LEFT JOIN usuarios ON caixas.usuario = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=caixas.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Nº','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Carga','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Qtd de Caixas','ISO-8859-1', 'UTF-8'),

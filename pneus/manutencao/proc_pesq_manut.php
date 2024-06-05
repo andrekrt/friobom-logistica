@@ -60,21 +60,22 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "num_fogo"=>$row['num_fogo'],
-            "data_manutencao"=>date("d/m/Y",strtotime( $row['data_manutencao'])) ,
-            "tipo_manutencao"=>$row['tipo_manutencao'],
-            "km_veiculo"=>$row['km_veiculo'],
-            "km_pneu"=>$row['km_pneu'],
-            "valor"=>"R$ ". str_replace(".",",",$row['valor']) ,
-            "num_nf"=>$row['num_nf'],
-            "fornecedor"=>$row['fornecedor'],
-            "suco01"=>$row['suco01'],
-            "suco02"=>$row['suco02'] ,
-            "suco03"=>$row['suco03'] ,
-            "suco04"=>$row['suco04'] ,
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idmanutencao_pneu'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['idmanutencao_pneu'].'" onclick=\'confirmaDelete(' . $row['idmanutencao_pneu'] . ')\' class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
-        );
+        "filial"=>$row['filial'],
+        "num_fogo"=>$row['num_fogo'],
+        "data_manutencao"=>date("d/m/Y",strtotime( $row['data_manutencao'])) ,
+        "tipo_manutencao"=>$row['tipo_manutencao'],
+        "km_veiculo"=>$row['km_veiculo'],
+        "km_pneu"=>$row['km_pneu'],
+        "valor"=>"R$ ". str_replace(".",",",$row['valor']) ,
+        "num_nf"=>$row['num_nf'],
+        "fornecedor"=>$row['fornecedor'],
+        "suco01"=>$row['suco01'],
+        "suco02"=>$row['suco02'] ,
+        "suco03"=>$row['suco03'] ,
+        "suco04"=>$row['suco04'] ,
+        "nome_usuario"=>$row['nome_usuario'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idmanutencao_pneu'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['idmanutencao_pneu'].'" onclick=\'confirmaDelete(' . $row['idmanutencao_pneu'] . ')\' class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+    );
 }
 
 ## Response

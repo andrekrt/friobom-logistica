@@ -25,6 +25,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $html = '';
         $html .= '<table border="1">';
         $html .= '<tr>';
+        $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Filial','ISO-8859-1', 'UTF-8') .'</td>';
         $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Código Veículo','ISO-8859-1', 'UTF-8') .'</td>';
         $html .= '<td class="text-center font-weight-bold">'. mb_convert_encoding('Tipo Veículo','ISO-8859-1', 'UTF-8').' </td>';
         $html .= '<td class="text-center font-weight-bold">'.mb_convert_encoding('Placa Veículo','ISO-8859-1', 'UTF-8')  .'</td>';
@@ -113,6 +114,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $dados = $sql->fetchAll();
         foreach($dados as $dado){
             $html .= '<tr>';
+            $html .= '<td>' .$dado['filial'].  '</td>';
             $html .= '<td>' .$dado['cod_interno_veiculo'].  '</td>';
             $html .= '<td>' .$dado['tipo_veiculo'].  '</td>';
             $html .= '<td>' .$dado['placa_veiculo'].  '</td>';

@@ -66,6 +66,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableSolic' class='table table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap" > Filial </th>
                                 <th scope="col" class="text-center text-nowrap" > ID </th>
                                 <th scope="col" class="text-center text-nowrap">Data Solicitação</th>
                                 <th scope="col" class="text-center text-nowrap">Veículo</th>
@@ -106,6 +107,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_solic.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'token' },
                     { data: 'data_atual' },
                     { data: 'placa' },
@@ -126,9 +128,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[12]}
+                    {'bSortable':false, 'aTargets':[13]}
                 ],
-                order: [[0, 'desc']],
+                order: [[1, 'desc']],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
                    
                    if(aData['situacao']==='Em análise' ){

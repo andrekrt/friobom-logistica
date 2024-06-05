@@ -61,12 +61,13 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "data_alinhamento"=> date("d/m/Y", strtotime($row['data_alinhamento'])),
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "km_alinhamento"=>$row['km_alinhamento'],
-            "tipo_alinhamento"=>$row['tipo_alinhamento'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idalinhamento'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> '
-        );
+        "filial"=>$row['filial'],
+        "data_alinhamento"=> date("d/m/Y", strtotime($row['data_alinhamento'])),
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "km_alinhamento"=>$row['km_alinhamento'],
+        "tipo_alinhamento"=>$row['tipo_alinhamento'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idalinhamento'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> '
+    );
 }
 
 ## Response

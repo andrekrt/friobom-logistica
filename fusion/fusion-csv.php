@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Data de Saída','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Data de Finalização','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Data de Chegada','ISO-8859-1', 'UTF-8'),
@@ -57,7 +58,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
     foreach($dados as $dado){
         fwrite($arquivo,
-        date("d/m/Y H:i", strtotime($dado['saida'])) .";".   date("d/m/Y H:i", strtotime($dado['termino_rota'])).";". date("d/m/Y H:i", strtotime($dado['chegada_empresa'])). ";".$dado['carregamento']. ";". $dado['placa_veiculo'].";" .mb_convert_encoding($dado['nome_motorista'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['nome_rota'],'ISO-8859-1', 'UTF-8').";".$dado['num_entregas'].";".$dado['entregas_feitas'].";".$dado['erros_fusion'].";".$dado['num_dev'].";".$dado['entregas_liq'].";".$dado['uso_fusion'].";".$dado['checklist'].";".$dado['media_km'].";".$dado['devolucao'].";".$dado['dias_rota'].";".$dado['vel_max'].";".number_format($dado['premio_possivel'],2,",",".").";".number_format($dado['premio_real'],2,",",".").";".number_format($dado['premio_alcancado'],2,",",".")."\n"
+        $dado['fillial'].";". date("d/m/Y H:i", strtotime($dado['saida'])) .";".   date("d/m/Y H:i", strtotime($dado['termino_rota'])).";". date("d/m/Y H:i", strtotime($dado['chegada_empresa'])). ";".$dado['carregamento']. ";". $dado['placa_veiculo'].";" .mb_convert_encoding($dado['nome_motorista'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['nome_rota'],'ISO-8859-1', 'UTF-8').";".$dado['num_entregas'].";".$dado['entregas_feitas'].";".$dado['erros_fusion'].";".$dado['num_dev'].";".$dado['entregas_liq'].";".$dado['uso_fusion'].";".$dado['checklist'].";".$dado['media_km'].";".$dado['devolucao'].";".$dado['dias_rota'].";".$dado['vel_max'].";".number_format($dado['premio_possivel'],2,",",".").";".number_format($dado['premio_real'],2,",",".").";".number_format($dado['premio_alcancado'],2,",",".")."\n"
         );
     }
 

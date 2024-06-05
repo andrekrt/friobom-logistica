@@ -70,6 +70,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tablePag' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center"> Filial </th>
                                 <th scope="col" class="text-center"> Mês/Ano </th>
                                 <th scope="col" class="text-center"> Valor  </th>
                                 <th scope="col" class="text-center"> Grupo Funcionários </th>
@@ -99,6 +100,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pagamento.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'mes_ano'},
                     { data: 'pagamento' },
                     { data: 'tipo_funcionarios' },
@@ -108,9 +110,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
-                "order":[0, 'desc'],
+                "order":[1, 'desc'],
                 "columnDefs":[{
-                    "targets":4,
+                    "targets":5,
                     "orderable":false
                 }]
             });

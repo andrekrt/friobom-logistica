@@ -92,11 +92,11 @@ foreach($empRecords as $row){
         $editar=' <a class=" icon-acoes" href="form-atualiza.php?id='.$row['iddespesas'].'"><img src="../assets/images/icones/update.png" alt=""></a> ';
     }   
     $data[] = array(
+        "filial"=>$row['filial'],
         "iddespesas"=>$row['iddespesas'],
         "num_carregemento"=>$row['num_carregemento'],
         "placa_veiculo"=>$row['placa_veiculo'],
         "peso_carga"=>number_format($row['peso_carga'],2,",",".")."Kg" ,
-       
         "nome_motorista"=> $row['nome_motorista'],
         "nome_rota"=>$row['nome_rota'],
         "mediatk"=>number_format($row['media_comtk'],2,",",".")."Km/L" ,

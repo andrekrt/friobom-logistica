@@ -58,16 +58,17 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "cod_interno_motorista"=>$row['cod_interno_motorista'],
-            "nome_motorista"=>$row['nome_motorista'],
-            "cidade_base"=>$row['cidade_base'],
-            "cnh"=>$row['cnh'],
-            "validade_cnh"=> date("d/m/Y", strtotime($row['validade_cnh'])),
-            "toxicologico"=>$row['toxicologico'],
-            "validade_toxicologico"=>date("d/m/Y", strtotime($row['validade_toxicologico'])),
-            "salario"=>"R$ " . str_replace(".",",",$row['salario']),
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_motorista'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
-        );
+        "filial"=>$row['filial'],
+        "cod_interno_motorista"=>$row['cod_interno_motorista'],
+        "nome_motorista"=>$row['nome_motorista'],
+        "cidade_base"=>$row['cidade_base'],
+        "cnh"=>$row['cnh'],
+        "validade_cnh"=> date("d/m/Y", strtotime($row['validade_cnh'])),
+        "toxicologico"=>$row['toxicologico'],
+        "validade_toxicologico"=>date("d/m/Y", strtotime($row['validade_toxicologico'])),
+        "salario"=>"R$ " . str_replace(".",",",$row['salario']),
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_motorista'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
+    );
 }
 
 ## Response

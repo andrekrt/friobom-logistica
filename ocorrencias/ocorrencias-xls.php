@@ -20,7 +20,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idocorrencia, nome_motorista, data_ocorrencia, tipo_ocorrencia, advertencia, laudo, descricao_custos, vl_total_custos, situacao FROM `ocorrencias`LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista LEFt JOIN usuarios ON ocorrencias.usuario_lancou = usuarios.idusuarios WHERE $condicao");
+    $sql = $db->query("SELECT ocorrencias.filial,idocorrencia, nome_motorista, data_ocorrencia, tipo_ocorrencia, advertencia, laudo, descricao_custos, vl_total_custos, situacao FROM `ocorrencias`LEFT JOIN motoristas ON ocorrencias.cod_interno_motorista = motoristas.cod_interno_motorista LEFt JOIN usuarios ON ocorrencias.usuario_lancou = usuarios.idusuarios WHERE $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=ocorrencias.csv');
@@ -28,6 +28,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         "Motorista",
         mb_convert_encoding('Data Ocorrência','ISO-8859-1', 'UTF-8'),

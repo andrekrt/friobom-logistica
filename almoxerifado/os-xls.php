@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         "Data de Abertura",
         "Placa",
@@ -61,7 +62,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $higienizacao = $dado['higienizacao']?"SIM":mb_convert_encoding("NÃO",'ISO-8859-1', 'UTF-8');
 
         fwrite($arquivo,
-            "$dado[idordem_servico];". date("d/m/Y",strtotime($dado['data_abertura'])). "; $dado[placa];" . mb_convert_encoding($dado['descricao_problema'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['tipo_manutencao'],'ISO-8859-1', 'UTF-8')."; $corretiva; $preventiva; $externa; $oleo; $higienizacao;". mb_convert_encoding($dado['causador'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['requisicao_saida'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['solicitacao_peca'],'ISO-8859-1', 'UTF-8'). ";$dado[num_nf];" . mb_convert_encoding($dado['obs'],'ISO-8859-1', 'UTF-8'). ";" . mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8').";".date("d/m/mY",strtotime($dado['data_encerramento'])).";".mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')."\n"
+            "$dado[filial]; $dado[idordem_servico];". date("d/m/Y",strtotime($dado['data_abertura'])). "; $dado[placa];" . mb_convert_encoding($dado['descricao_problema'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['tipo_manutencao'],'ISO-8859-1', 'UTF-8')."; $corretiva; $preventiva; $externa; $oleo; $higienizacao;". mb_convert_encoding($dado['causador'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['requisicao_saida'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['solicitacao_peca'],'ISO-8859-1', 'UTF-8'). ";$dado[num_nf];" . mb_convert_encoding($dado['obs'],'ISO-8859-1', 'UTF-8'). ";" . mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8').";".date("d/m/mY",strtotime($dado['data_encerramento'])).";".mb_convert_encoding($dado['nome_usuario'],'ISO-8859-1', 'UTF-8')."\n"
         );
     }
 

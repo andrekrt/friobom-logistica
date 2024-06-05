@@ -18,7 +18,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $nomeUsuario = $_SESSION['nomeUsuario'];
 
     // função para pegar as nfs no winthor e registrar no bd online
-    registraNf();
+    // registraNf();
     
 
 } else {
@@ -72,10 +72,11 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableFat' class='table table-bordered nowrap' style="width: 100%;">
                         <thead>
                             <tr>
-                                <th>Tags</th>
-                                <th>  ID </th>
-                                <th>  Nº NF </th>
-                                <th>Data Emissão</th>
+                                <th> Filial</th>
+                                <th> Tags</th>
+                                <th> ID </th>
+                                <th> Nº NF </th>
+                                <th> Data Emissão</th>
                                 <th> Data Entrada </th>
                                 <th>Nome Emitente </th>
                                 <th>CNPJ Emitente</th>
@@ -120,6 +121,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'pesq_nf.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'tags'},
                     { data: 'idnf' },
                     { data: 'num_nota' },
@@ -143,7 +145,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
-                order: [3, 'desc']
+                order: [4, 'desc']
             });
 
             // função para clicar na linha e pegar o id 
@@ -177,8 +179,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
                 let btn = $(' <button> ').addClass('acao-btn btn btn-primary').text(' Detalhes ');
                 let btnObs = $(' <button> ').addClass('acao-btn btn btn-success').text(' Obs. ');
-                let btnConf = $('<a href="atualiza-status.php?status=Conferido&id='+ rowData[1]+ '">').addClass('acao-btn btn btn-secondary').text('Conferido');
-                let btnCancela = $('<a href="atualiza-status.php?status=Cancelado&id='+ rowData[1]+ '">>').addClass('acao-btn btn btn-danger').text('Cancelar');
+                let btnConf = $('<a href="atualiza-status.php?status=Conferido&id='+ rowData[2]+ '">').addClass('acao-btn btn btn-secondary').text('Conferido');
+                let btnCancela = $('<a href="atualiza-status.php?status=Cancelado&id='+ rowData[2]+ '">>').addClass('acao-btn btn btn-danger').text('Cancelar');
         
                 btn.on('click', function(){
                     // $('#danfe').modal('show');
@@ -187,7 +189,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     
                     $.ajax({
                         url:"get_xml.php",
-                        data:{id:rowData[1]},
+                        data:{id:rowData[2]},
                         type:'post',
                         success: function(data){
                             var json = JSON.parse(data);
@@ -208,6 +210,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             $('#uf').text(json.ufEmit);
                             $('#valorNF').text(json.valorNf);
                             $('#chaveRef').text(json.chaveRef);
+                            $('#motorista').text(json.produtosRef[0].motorista);
+                            $('#carga').text(json.produtosRef[0].carga);
                            
                             $('#produtos').empty();
                             $('#produtosRef').empty();
@@ -244,7 +248,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#addObs').modal('show');
                     $.ajax({
                         url:"get_obs.php",
-                        data:{id:rowData[1]},
+                        data:{id:rowData[2]},
                         type:'post',
                         success: function(data){
                             var json = JSON.parse(data);
@@ -255,9 +259,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 });
 
 
-                if(rowData[18]=='Pendente'){
+                if(rowData[19]=='Pendente'){
                     var actionRow = $('<tr>').addClass('acao-row text-center').append($('<td colspan="' + cells.length + '">').append(btn).append(btnObs).append(btnConf).append(btnCancela));
-                }else if(rowData[18]=='Finalizado' || rowData[18]=='Conferido' || rowData[18]=='Cancelado'){
+                }else if(rowData[19]=='Finalizado' || rowData[19]=='Conferido' || rowData[19]=='Cancelado'){
                     var actionRow = $('<tr>').addClass('acao-row text-center').append($('<td colspan="' + cells.length + '">').append(btn));
                 }
                
@@ -394,6 +398,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <tr>
                         <th> Chave Referente:</th>
                         <th id="chaveRef" colspan="4"></th>
+                    </tr>
+                    <tr>
+                        <th> Motorista:</th>
+                        <td id="motorista" colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <th> Carga:</th>
+                        <td id="carga" colspan="4"></td>
                     </tr>
                     <tr>
                         <th>Descrição</th>

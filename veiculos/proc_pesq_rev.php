@@ -63,12 +63,13 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "km_revisao"=>$row['km_revisao'],
-            "tipo_revisao"=>$row['tipo_revisao'],
-            "data_revisao"=>date("d/m/Y", strtotime( $row['data_revisao'])),
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
-        );
+        "filial"=>$row['filial'],
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "km_revisao"=>$row['km_revisao'],
+        "tipo_revisao"=>$row['tipo_revisao'],
+        "data_revisao"=>date("d/m/Y", strtotime( $row['data_revisao'])),
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
+    );
 }
 
 ## Response

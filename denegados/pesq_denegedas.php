@@ -44,7 +44,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT token, carga, COUNT(nf) as qtd, situacao, usuario,nome_usuario FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 $condicao ".$searchQuery."GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT token, carga, COUNT(nf) as qtd, situacao, usuario,nome_usuario, denegadas.filial FROM denegadas LEFT JOIN usuarios ON denegadas.usuario = usuarios.idusuarios WHERE 1 $condicao ".$searchQuery."GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -64,6 +64,7 @@ foreach($empRecords as $row){
         $botao= '<a href="javascript:void();" data-id="'.$row['token'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a> <a  class="btn btn-secondary btn-sm" onclick=\'confirmaDelete(' . $row['token'] . ')\'>Confirmar Todas as NF\'s</a>';
     }
     $data[] = array(
+        "filial"=>$row['filial'],
         "id_denegadas"=>$row['token'],
         "carga"=>$row['carga'],
         "nf"=>$row['qtd'],

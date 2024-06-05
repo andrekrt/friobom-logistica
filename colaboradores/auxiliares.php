@@ -73,6 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableAux' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center"> Filial </th>
                                 <th scope="col" class="text-center"> CPF </th>
                                 <th scope="col" class="text-center"> Nome  </th>
                                 <th scope="col" class="text-center"> Salário </th>
@@ -105,6 +106,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_aux.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'cpf_auxiliar'},
                     { data: 'nome_auxiliar'},
                     { data: 'salario_auxiliar'},
@@ -113,7 +115,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                }
+                },
+                "order":[1,'desc'],
             });
         });
 

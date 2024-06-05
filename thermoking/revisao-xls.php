@@ -22,7 +22,7 @@ if($filial===99){
 if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && ($result>0)  ) {
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idrevisao, placa_veiculo, tipo_veiculo, tipo_tk, data_revisao_tk, horimetro_revisao FROM revisao_tk LEFT JOIN thermoking ON revisao_tk.thermoking = thermoking.idthermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE 1 $filial ");
+    $sql = $db->query("SELECT revisao_tk.filial,idrevisao, placa_veiculo, tipo_veiculo, tipo_tk, data_revisao_tk, horimetro_revisao FROM revisao_tk LEFT JOIN thermoking ON revisao_tk.thermoking = thermoking.idthermoking LEFT JOIN veiculos ON thermoking.veiculo = veiculos.cod_interno_veiculo WHERE 1 $filial ");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=revisao-tk.csv');
@@ -30,6 +30,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         mb_convert_encoding('Placa de Veículo','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Modelo de Veículo','ISO-8859-1', 'UTF-8'),

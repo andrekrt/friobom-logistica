@@ -60,16 +60,17 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "num_fogo"=>$row['num_fogo'],
-            "data_rodizio"=>date("d/m/Y",strtotime( $row['data_rodizio'])) ,
-            "veiculo_anterior"=>$row['veiculo_anterior'],
-            "km_inicial_veiculo_anterior"=>$row['km_inicial_veiculo_anterior'],
-            "km_final_veiculo_anterior"=>$row['km_final_veiculo_anterior'],
-            "km_rodado_veiculo_anterior"=>$row['km_rodado_veiculo_anterior'],
-            "novo_veiculo"=>$row['novo_veiculo'],
-            "km_inicial_novo_veiculo"=>$row['km_inicial_novo_veiculo'],
-            "nome_usuario"=>$row['nome_usuario']
-        );
+        "filial"=>$row['filial'],
+        "num_fogo"=>$row['num_fogo'],
+        "data_rodizio"=>date("d/m/Y",strtotime( $row['data_rodizio'])) ,
+        "veiculo_anterior"=>$row['veiculo_anterior'],
+        "km_inicial_veiculo_anterior"=>$row['km_inicial_veiculo_anterior'],
+        "km_final_veiculo_anterior"=>$row['km_final_veiculo_anterior'],
+        "km_rodado_veiculo_anterior"=>$row['km_rodado_veiculo_anterior'],
+        "novo_veiculo"=>$row['novo_veiculo'],
+        "km_inicial_novo_veiculo"=>$row['km_inicial_novo_veiculo'],
+        "nome_usuario"=>$row['nome_usuario']
+    );
 }
 
 ## Response

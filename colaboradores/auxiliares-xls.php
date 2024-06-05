@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT cpf_auxiliar, nome_auxiliar, salario_auxiliar, nome_rota FROM auxiliares_rota LEFT JOIN rotas ON auxiliares_rota.rota = rotas.cod_rota WHERE ativo = 1 $condicao ORDER BY nome_auxiliar");
+    $sql = $db->query("SELECT auxiliares_rota.filial,cpf_auxiliar, nome_auxiliar, salario_auxiliar, nome_rota FROM auxiliares_rota LEFT JOIN rotas ON auxiliares_rota.rota = rotas.cod_rota WHERE ativo = 1 $condicao ORDER BY nome_auxiliar");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=auxiliares.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "CPF",
         "Nome",
         mb_convert_encoding('Salário','ISO-8859-1', 'UTF-8'),

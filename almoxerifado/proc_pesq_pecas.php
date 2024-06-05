@@ -63,6 +63,7 @@ foreach($empRecords as $row){
     atualizaEStoque($row['id_peca_reparo']);
     
     $data[] = array(
+        "filial"=>$row['filial'],
         "id_peca_reparo"=>$row['id_peca_reparo'],
         "descricao"=>($row['descricao']),
         "un_medida"=>($row['un_medida']),
@@ -84,7 +85,8 @@ $response = array(
     "draw" => intval($draw),
     "iTotalRecords" => $totalRecords,
     "iTotalDisplayRecords" => $totalRecordwithFilter,
-    "aaData" => $data
+    "aaData" => $data,
+
 );
 
 echo json_encode($response);

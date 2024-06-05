@@ -59,6 +59,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
+        "filial"=>$row['filial'],
         "mes_ano"=>date("m/Y", strtotime($row['mes_ano'])),
         "pagamento"=>"R$ ".number_format($row['pagamento'],2,",",".") ,
         "tipo_funcionarios"=>$row['tipo_funcionarios'],

@@ -64,6 +64,7 @@ foreach($empRecords as $row){
         $excluir='<a  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idsucos'] . ')\'>Deletar</a>';
     }
     $data[] = array(
+        "filial"=>$row['filial'],
         "num_fogo"=>$row['num_fogo'],
         "data_medicao"=>date("d/m/Y H:i",strtotime( $row['data_medicao'])) ,
         "km_veiculo"=>$row['km_veiculo'],

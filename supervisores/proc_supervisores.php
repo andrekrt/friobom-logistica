@@ -43,7 +43,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT idsupervisor, nome_supervisor, nome_cidade, placa_veiculo FROM supervisores LEFT JOIN cidades ON supervisores.cidade_residencia = cidades.idcidades LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo WHERE 1 $condicao ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT supervisores.filial,idsupervisor, nome_supervisor, nome_cidade, placa_veiculo FROM supervisores LEFT JOIN cidades ON supervisores.cidade_residencia = cidades.idcidades LEFT JOIN veiculos ON supervisores.veiculo = veiculos.cod_interno_veiculo WHERE 1 $condicao ".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -59,12 +59,13 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "idsupervisor"=>$row['idsupervisor'] ,
-            "nome_supervisor"=>$row['nome_supervisor'],
-            "cidade_residencia"=>$row['nome_cidade'],
-            "veiculo"=>$row['placa_veiculo'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsupervisor'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a data-id="'.$row['idsupervisor'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idsupervisor'] . ')\'>Deletar</a>'
-        );
+        "filial"=>$row['filial'],
+        "idsupervisor"=>$row['idsupervisor'] ,
+        "nome_supervisor"=>$row['nome_supervisor'],
+        "cidade_residencia"=>$row['nome_cidade'],
+        "veiculo"=>$row['placa_veiculo'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idsupervisor'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a data-id="'.$row['idsupervisor'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idsupervisor'] . ')\'>Deletar</a>'
+    );
 }
 
 ## Response

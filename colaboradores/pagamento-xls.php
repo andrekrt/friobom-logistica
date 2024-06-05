@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT mes_ano, pagamento, tipo_funcionarios, nome_usuario  FROM `folha_pagamento` LEFT JOIN usuarios ON folha_pagamento.usuario=usuarios.idusuarios $condicao");
+    $sql = $db->query("SELECT folha_pagamento.filial,mes_ano, pagamento, tipo_funcionarios, nome_usuario  FROM `folha_pagamento` LEFT JOIN usuarios ON folha_pagamento.usuario=usuarios.idusuarios $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=folha-pagamento.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Mês/Ano','ISO-8859-1', 'UTF-8'),
         "Valor",
         mb_convert_encoding('Grupo Funcinários','ISO-8859-1', 'UTF-8'),

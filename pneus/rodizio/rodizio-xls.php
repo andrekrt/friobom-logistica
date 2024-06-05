@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT data_rodizio, num_fogo, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, nome_usuario FROM `rodizio_pneu` LEFT JOIN pneus ON rodizio_pneu.pneu = pneus.idpneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios WHERE 1 $condicao");
+    $sql = $db->query("SELECT rodizio_pneu.filial,data_rodizio, num_fogo, veiculo_anterior, km_inicial_veiculo_anterior, km_final_veiculo_anterior, km_rodado_veiculo_anterior, novo_veiculo, km_inicial_novo_veiculo, nome_usuario FROM `rodizio_pneu` LEFT JOIN pneus ON rodizio_pneu.pneu = pneus.idpneus LEFT JOIN usuarios ON pneus.usuario = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=rodizio.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         mb_convert_encoding('Data do Rodízio','ISO-8859-1', 'UTF-8'),
        "Pneu",
         mb_convert_encoding('Veículo Anterior','ISO-8859-1', 'UTF-8'),

@@ -20,7 +20,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $condicao = "AND combustivel_saida.filial=$filial";
     }
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT idcombustivel_saida, data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, km, placa_veiculo, rota, motorista, tipo_abastecimento, nome_usuario FROM combustivel_saida LEFT JOIN usuarios ON combustivel_saida.usuario = usuarios.idusuarios WHERE 1 $condicao");
+    $sql = $db->query("SELECT combustivel_saida.filial,idcombustivel_saida, data_abastecimento, litro_abastecimento, preco_medio, valor_total, carregamento, km, placa_veiculo, rota, motorista, tipo_abastecimento, nome_usuario FROM combustivel_saida LEFT JOIN usuarios ON combustivel_saida.usuario = usuarios.idusuarios WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=saidas.csv');
@@ -28,6 +28,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         "Data Abastecimento",
         "Litros Abastecimento",

@@ -74,6 +74,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableAbast' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Data Abastecimento</th>
                                 <th scope="col" class="text-center text-nowrap">Litros Abastecido</th>
@@ -115,6 +116,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_abastecimento.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idcombustivel_saida'},
                     { data: 'data_abastecimento'},
                     { data: 'litro_abastecimento'},
@@ -134,10 +136,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[13]}
+                    {'bSortable':false, 'aTargets':[14]}
                 ],
                 "order":[
-                    0, 'desc'
+                    1, 'desc'
                 ]
             });
         });

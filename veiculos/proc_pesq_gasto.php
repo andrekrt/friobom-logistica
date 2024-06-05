@@ -42,7 +42,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT viagem.placa_veiculo,COUNT(nome_motorista) as contagem, AVG(custo_entrega) as custoEntrega, SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(peso_carga) as peso, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento, SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(dias_em_rota) as diasEmRota, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia FROM viagem WHERE 1 $condicao ".$searchQuery." GROUP BY placa_veiculo ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT viagem.filial,viagem.placa_veiculo,COUNT(nome_motorista) as contagem, AVG(custo_entrega) as custoEntrega, SUM(valor_transportado) as mediaValorTransportado, SUM(valor_devolvido) as valorDevolvido, SUM(qtd_entregas) as entregas, SUM(peso_carga) as peso, SUM(km_rodado) as kmRodado, SUM(litros) as litros, SUM(valor_total_abast) as abastecimento, SUM(mediaSemTk) as mediaKm, SUM(dias_em_rota) AS diasEmRota, SUM(diarias_motoristas) as diariasMotoristas, SUM(diarias_ajudante) as diariasAjudante, SUM(dias_motorista) as diasMotoristas, SUM(dias_ajudante) as diasAjudante, SUM(outros_servicos) as outrosServicos, SUM(dias_em_rota) as diasEmRota, SUM(tomada) as tomada, SUM(descarga) as descarga, SUM(travessia) as travessia FROM viagem WHERE 1 $condicao ".$searchQuery." GROUP BY placa_veiculo ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -58,25 +58,26 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "custoEntrega"=>"R$ ". number_format($row['custoEntrega'], 2, ",",".") ,
-            "mediaValorTransportado"=>"R$ ". number_format($row['mediaValorTransportado'], 2, ",","."),
-            "valorDevolvido"=>"R$ ". number_format($row['valorDevolvido'], 2, ",","."),
-            "entregas"=>$row['entregas'],
-            "kmRodado"=> $row['kmRodado'],
-            "litros"=>number_format($row['litros'], 2, ",","."),
-            "abastecimento"=> "R$ ". number_format($row['abastecimento'], 2, ",","."),
-            "media"=>number_format($row['kmRodado']/$row['litros'], 2, ",","."),
-            "diasEmRota"=> number_format($row['diasEmRota'], 2, ",","."),
-            "diariasMotoristas"=> "R$ ". number_format($row['diariasMotoristas'], 2, ",","."),
-            "diariasAjudante"=> "R$ ". number_format($row['diariasAjudante'], 2, ",","."),
-            "diasMotoristas"=> number_format($row['diasMotoristas'], 2, ",","."),
-            "diasAjudante"=> number_format($row['diasAjudante'], 2, ",","."),
-            "outrosServicos"=>"R$ " . number_format($row['diasMotoristas'], 2, ",","."),
-            "tomada"=> "R$ " . number_format($row['tomada'], 2, ",","."),
-            "descarga"=> "R$ " . number_format($row['descarga'], 2, ",","."),
-            "travessia"=>"R$ " . number_format($row['travessia'], 2, ",","."),
-        );
+        "filial"=>$row['filial'],
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "custoEntrega"=>"R$ ". number_format($row['custoEntrega'], 2, ",",".") ,
+        "mediaValorTransportado"=>"R$ ". number_format($row['mediaValorTransportado'], 2, ",","."),
+        "valorDevolvido"=>"R$ ". number_format($row['valorDevolvido'], 2, ",","."),
+        "entregas"=>$row['entregas'],
+        "kmRodado"=> $row['kmRodado'],
+        "litros"=>number_format($row['litros'], 2, ",","."),
+        "abastecimento"=> "R$ ". number_format($row['abastecimento'], 2, ",","."),
+        "media"=>number_format($row['kmRodado']/$row['litros'], 2, ",","."),
+        "diasEmRota"=> number_format($row['diasEmRota'], 2, ",","."),
+        "diariasMotoristas"=> "R$ ". number_format($row['diariasMotoristas'], 2, ",","."),
+        "diariasAjudante"=> "R$ ". number_format($row['diariasAjudante'], 2, ",","."),
+        "diasMotoristas"=> number_format($row['diasMotoristas'], 2, ",","."),
+        "diasAjudante"=> number_format($row['diasAjudante'], 2, ",","."),
+        "outrosServicos"=>"R$ " . number_format($row['diasMotoristas'], 2, ",","."),
+        "tomada"=> "R$ " . number_format($row['tomada'], 2, ",","."),
+        "descarga"=> "R$ " . number_format($row['descarga'], 2, ",","."),
+        "travessia"=>"R$ " . number_format($row['travessia'], 2, ",","."),
+    );
 }
 
 ## Response

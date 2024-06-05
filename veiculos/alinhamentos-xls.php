@@ -23,7 +23,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento FROM `alinhamentos_veiculo` WHERE 1 $condicao");
+    $sql = $db->query("SELECT alinhamentos_veiculo.filial,data_alinhamento, placa_veiculo, km_alinhamento, tipo_alinhamento FROM `alinhamentos_veiculo` WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=alinhamentos.csv');
@@ -31,6 +31,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "Data Alinhamento",
         mb_convert_encoding('Placa Veículo','ISO-8859-1', 'UTF-8'),
         "Km Alinhamento",

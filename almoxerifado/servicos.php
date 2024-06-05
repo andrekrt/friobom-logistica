@@ -68,6 +68,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='servicos' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Serviço</th>
                                 <th scope="col" class="text-center text-nowrap">Categoria</th>
@@ -100,6 +101,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_servicos.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idservicos' },
                     { data: 'descricao' },
                     { data: 'categoria' },
@@ -112,6 +114,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[4]}
                 ],
+                "order":[1,'desc']
             });
         });
 

@@ -61,6 +61,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
+            "filial"=>$row['filial'],
             "idinventario"=>$row['idinventario'],
             "data"=>date("d/m/Y", strtotime($row['data_inv'])) ,
             "descricao_peca"=>$row['id_peca_reparo']. " - " .$row['descricao'],

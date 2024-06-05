@@ -60,11 +60,12 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "descricao"=>$row['descricao'],
-            "categoria"=>$row['categoria'],
-            "un_medida"=>$row['un_medida'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['id_peca_reparo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  onclick=\'confirmaDelete(' . $row['id_peca_reparo'] . ')\' data-id="'.$row['id_peca_reparo'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
-        );
+        "filial"=>$row['filial'],
+        "descricao"=>$row['descricao'],
+        "categoria"=>$row['categoria'],
+        "un_medida"=>$row['un_medida'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['id_peca_reparo'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  onclick=\'confirmaDelete(' . $row['id_peca_reparo'] . ')\' data-id="'.$row['id_peca_reparo'].'"  class="btn btn-danger btn-sm deleteBtn" >Deletar</a>'
+    );
 }
 
 ## Response

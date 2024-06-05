@@ -71,6 +71,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableAli' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">Data Revisão</th>
                                 <th scope="col" class="text-center text-nowrap" > Placa Veículo </th>
                                 <th scope="col" class="text-center text-nowrap">Km Alinhamento</th>
@@ -106,6 +107,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_ali.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'data_alinhamento'},
                     { data: 'placa_veiculo'},
                     { data: 'km_alinhamento'},

@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT id_peca_reparo, descricao, categoria, un_medida FROM peca_reparo WHERE 1 $condicao");
+    $sql = $db->query("SELECT peca_reparo.filial,id_peca_reparo, descricao, categoria, un_medida FROM peca_reparo WHERE 1 $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=pecas.csv');
@@ -29,6 +29,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         mb_convert_encoding('Descrição','ISO-8859-1', 'UTF-8'),
         "Categoria",

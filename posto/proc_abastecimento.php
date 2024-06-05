@@ -76,6 +76,7 @@ foreach($empRecords as $row){
         $aprovar = ' <a onclick=\'confirmaAprovacao(' . $row['idcombustivel_saida'] . ')\'  data-id="'.$row['idcombustivel_saida'].'"  class="btn btn-success btn-sm " >Aprovar</a>';
     }
     $data[] = array(
+        "filial"=>$row['filial'],
         "idcombustivel_saida"=>$row['idcombustivel_saida'],
         "data_abastecimento"=>date("d/m/Y", strtotime($row['data_abastecimento'])),
         "litro_abastecimento"=> number_format($row['litro_abastecimento'],2,",","."),

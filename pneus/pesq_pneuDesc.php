@@ -62,25 +62,26 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "num_fogo"=>$row['num_fogo'],
-            "data_cadastro"=>date("d/m/Y", strtotime($row['data_cadastro'])) ,
-            "medida"=>$row['medida'],
-            "calibragem_maxima"=>$row['calibragem_maxima'],
-            "marca"=>$row['marca'],
-            "modelo"=>$row['modelo'],
-            "num_serie"=>$row['num_serie'],
-            "vida"=> $row['vida'],
-            "posicao_inicio"=>$row['posicao_inicio'],
-            "veiculo"=>$row['veiculo'],
-            "km_rodado"=>$row['km_rodado'],
-            "situacao"=>$row['situacao'],
-            "localizacao"=>$row['localizacao'],
-            "suco01"=>$row['suco01'],
-            "suco02"=>$row['suco02'],
-            "suco03"=>$row['suco03'],
-            "suco04"=>$row['suco04'],
-            "motivo"=>$row['motivo_descarte']
-        );
+        "filial"=>$row['filial'],
+        "num_fogo"=>$row['num_fogo'],
+        "data_cadastro"=>date("d/m/Y", strtotime($row['data_cadastro'])) ,
+        "medida"=>$row['medida'],
+        "calibragem_maxima"=>$row['calibragem_maxima'],
+        "marca"=>$row['marca'],
+        "modelo"=>$row['modelo'],
+        "num_serie"=>$row['num_serie'],
+        "vida"=> $row['vida'],
+        "posicao_inicio"=>$row['posicao_inicio'],
+        "veiculo"=>$row['veiculo'],
+        "km_rodado"=>$row['km_rodado'],
+        "situacao"=>$row['situacao'],
+        "localizacao"=>$row['localizacao'],
+        "suco01"=>$row['suco01'],
+        "suco02"=>$row['suco02'],
+        "suco03"=>$row['suco03'],
+        "suco04"=>$row['suco04'],
+        "motivo"=>$row['motivo_descarte']
+    );
 }
 
 ## Response

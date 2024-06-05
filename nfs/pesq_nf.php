@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -79,26 +80,27 @@ foreach($empRecords as $row){
     }
 
     $data[] = array(
-            "tags"=>$tagsHtml,
-            "idnf"=>$row['idnf'],
-            "num_nota"=>$row['num_nota'],
-            "data_emissao"=>date('d/m/Y', strtotime($row['data_emissao'])) ,
-            "data_entrada"=>!empty($row['data_entrada'])?date('d/m/Y', strtotime($row['data_entrada'])):""  ,
-            "nome_emit"=>$row['nome_emit'],
-            "cnpj"=> $row['cnpj'],
-            "cidade"=>$row['cidade'],
-            "uf"=>$row['uf'],
-            "fone"=>$row['fone'],
-            "cfop"=>$row['cfop'],
-            "valor_total"=>"R$ ".number_format($row['valor_total'],2,",",".") ,
-            "situacao_manifest"=>$row['situacao_manifest'],
-            "fornecedor"=>$row['fornecedor'],
-            "carregamento"=>$row['carregamento'],
-            "status_carga"=>$row['status_carga'],
-            "divergencia"=>$row['divergencia'],
-            "obs"=>$row['obs'],
-            "situacao"=>$row['situacao']
-        );
+        "filial"=>$row['filial'],
+        "tags"=>$tagsHtml,
+        "idnf"=>$row['idnf'],
+        "num_nota"=>$row['num_nota'],
+        "data_emissao"=>date('d/m/Y', strtotime($row['data_emissao'])) ,
+        "data_entrada"=>!empty($row['data_entrada'])?date('d/m/Y', strtotime($row['data_entrada'])):""  ,
+        "nome_emit"=>$row['nome_emit'],
+        "cnpj"=> $row['cnpj'],
+        "cidade"=>$row['cidade'],
+        "uf"=>$row['uf'],
+        "fone"=>$row['fone'],
+        "cfop"=>$row['cfop'],
+        "valor_total"=>"R$ ".number_format($row['valor_total'],2,",",".") ,
+        "situacao_manifest"=>$row['situacao_manifest'],
+        "fornecedor"=>$row['fornecedor'],
+        "carregamento"=>$row['carregamento'],
+        "status_carga"=>$row['status_carga'],
+        "divergencia"=>$row['divergencia'],
+        "obs"=>$row['obs'],
+        "situacao"=>$row['situacao']
+    );
 }
 
 ## Response

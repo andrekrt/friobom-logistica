@@ -67,13 +67,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableDesp' class='table  table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center">Filial </th>
                                 <th scope="col" class="text-center">ID Despesas </th>
                                 <th scope="col" class="text-center">Nº Carregamento </th>
                                 <th scope="col" class="text-center"> Placa Veículo </th>
                                 <th scope="col" class="text-center"> Rota </th>
                                 <th scope="col" class="text-center"> Motorista </th>
                                 <th scope="col" class="text-center"> Peso Carga (Kg) </th>
-                             
                                 <th scope="col" class="text-center"> Média c/ Tk </th>
                                 <th scope="col" class="text-center"> Média s/ Tk </th>
                                 <th scope="col" class="text-center"> Data Carregamento </th>
@@ -121,6 +121,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_desp.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'iddespesas' },
                     { data: 'num_carregemento'},
                     { data: 'placa_veiculo' },
@@ -153,9 +154,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[25]}
+                    {'bSortable':false, 'aTargets':[27]}
                 ],
-                order: [[0,'desc']],
+                order: [[1,'desc']],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull ){
                    
                     if(aData['status']==='Não Confirmado'){

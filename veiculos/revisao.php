@@ -72,6 +72,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableRevisao' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap" >  Filial </th>
                                 <th scope="col" class="text-center text-nowrap" >  Placa Veículo </th>
                                 <th scope="col" class="text-center text-nowrap">Km Revisão</th>
                                 <th scope="col" class="text-center text-nowrap">Tipo Revisão</th>
@@ -108,6 +109,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_rev.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'placa_veiculo' },
                     { data: 'km_revisao'},
                     { data: 'tipo_revisao' },
@@ -118,7 +120,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[4]}
+                    {'bSortable':false, 'aTargets':[5]}
                 ],
             });
         });

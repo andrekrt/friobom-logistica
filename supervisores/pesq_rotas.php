@@ -66,21 +66,22 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "saida"=>date("d/m/Y H:i", strtotime($row['saida'])) ,
-            "nome_supervisor"=>$row['nome_supervisor'],
-            "placa_veiculo"=>$row['placa_veiculo'],
-            "chegada"=>date("d/m/Y H:i", strtotime($row['chegada'])),
-            "velocidade_max"=>$row['velocidade_max'],
-            "km_rodado"=>$row['km_rodado'],
-            "qtd_visitas"=>$row['qtd_visitas'],
-            "rca01"=>$row['rca01'],
-            "rca02"=>$row['rca02'],
-            "cidades"=>$row['cidades'],
-            "hora_almoco"=>$row['hora_almoco'],
-            "obs"=>$row['obs'],
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idrotas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a data-id="'.$row['idrotas'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idrotas'] . ')\'>Deletar</a>'
-        );
+        "filial"=>$row['filial'],
+        "saida"=>date("d/m/Y H:i", strtotime($row['saida'])) ,
+        "nome_supervisor"=>$row['nome_supervisor'],
+        "placa_veiculo"=>$row['placa_veiculo'],
+        "chegada"=>date("d/m/Y H:i", strtotime($row['chegada'])),
+        "velocidade_max"=>$row['velocidade_max'],
+        "km_rodado"=>$row['km_rodado'],
+        "qtd_visitas"=>$row['qtd_visitas'],
+        "rca01"=>$row['rca01'],
+        "rca02"=>$row['rca02'],
+        "cidades"=>$row['cidades'],
+        "hora_almoco"=>$row['hora_almoco'],
+        "obs"=>$row['obs'],
+        "nome_usuario"=>$row['nome_usuario'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idrotas'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a data-id="'.$row['idrotas'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idrotas'] . ')\'>Deletar</a>'
+    );
 }
 
 ## Response

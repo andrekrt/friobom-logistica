@@ -45,7 +45,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT idsaida_estoque, data_saida, qtd,id_peca_reparo, peca_reparo.descricao as nomePeca, solicitante, placa, obs,  servicos_almoxarifado.descricao as nomeServico, requisicao_saida, os, nome_usuario  FROM saida_estoque LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 $condicao".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT idsaida_estoque, data_saida, qtd,id_peca_reparo, peca_reparo.descricao as nomePeca, solicitante, placa, obs,  servicos_almoxarifado.descricao as nomeServico, requisicao_saida, os, nome_usuario, saida_estoque.filial FROM saida_estoque LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN servicos_almoxarifado ON saida_estoque.servico = servicos_almoxarifado.idservicos LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios WHERE 1 $condicao".$searchQuery." ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -61,17 +61,18 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "idsaida_estoque"=>$row['idsaida_estoque'],
-            "data_saida"=>date("d/m/Y", strtotime($row['data_saida'])),
-            "qtd"=>$row['qtd'],
-            "descricao_peca"=>$row['id_peca_reparo']. " - ". $row['nomePeca'],
-            "solicitante"=>$row['solicitante'],
-            "placa"=> $row['placa'],
-            "obs"=>$row['obs'] ,
-            "servico"=>$row['nomeServico'],
-            "requisicao"=>$row['requisicao_saida'] ,
-            "os"=>$row['os'] ,
-            "nome_usuario"=>$row['nome_usuario']
+        "filial"=>$row['filial'],
+        "idsaida_estoque"=>$row['idsaida_estoque'],
+        "data_saida"=>date("d/m/Y", strtotime($row['data_saida'])),
+        "qtd"=>$row['qtd'],
+        "descricao_peca"=>$row['id_peca_reparo']. " - ". $row['nomePeca'],
+        "solicitante"=>$row['solicitante'],
+        "placa"=> $row['placa'],
+        "obs"=>$row['obs'] ,
+        "servico"=>$row['nomeServico'],
+        "requisicao"=>$row['requisicao_saida'] ,
+        "os"=>$row['os'] ,
+        "nome_usuario"=>$row['nome_usuario']
         );
 }
 

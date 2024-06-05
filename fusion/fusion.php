@@ -71,7 +71,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableFusion' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
-
+                                <th scope="col" class="text-center text-nowrap" >Filial </th>
                                 <th scope="col" class="text-center text-nowrap" >Data Saída </th>
                                 <th scope="col" class="text-center text-nowrap" >Finalizou Rota</th>
                                 <th scope="col" class="text-center text-nowrap" >Chegada Empresa</th>
@@ -121,6 +121,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'pesq_fusion.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'saida'},
                     { data: 'termino_rota' },
                     { data: 'chegada_empresa' },
@@ -150,9 +151,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[23]}
+                    {'bSortable':false, 'aTargets':[24]}
                 ],
-                "order":[[0,"desc"]]
+                "order":[[1,"desc"]]
             });
         });
 

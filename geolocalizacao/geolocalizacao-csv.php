@@ -20,6 +20,7 @@ if($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99){
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "ID",
         "Data",
         "Supervisor",
@@ -36,7 +37,7 @@ if($_SESSION['tipoUsuario']==2 || $_SESSION['tipoUsuario']==99){
     $dados = $sql->fetchAll(PDO::FETCH_ASSOC);
     foreach($dados as $dado){
         fwrite($arquivo,
-            "\n". $dado['id'].";". date("d/m/Y h:i",strtotime($dado['data_hora'])).";". $dado['codigo_sup']. ";".$dado['cod_cliente']. ";". $dado['rca'].";" .mb_convert_encoding($dado['endereco'],'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['bairro'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['cidade'],'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8')
+            "\n". $dado['filial'].";". $dado['id'].";". date("d/m/Y h:i",strtotime($dado['data_hora'])).";". $dado['codigo_sup']. ";".$dado['cod_cliente']. ";". $dado['rca'].";" .mb_convert_encoding($dado['endereco'],'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['bairro'],'ISO-8859-1', 'UTF-8').";".mb_convert_encoding($dado['cidade'],'ISO-8859-1', 'UTF-8').";". mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8')
         );
     }
 

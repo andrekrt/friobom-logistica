@@ -68,6 +68,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='table' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">Pneu</th>
                                 <th scope="col" class="text-center text-nowrap">Data Rodízio</th>
                                 <th scope="col" class="text-center text-nowrap">Veículo Anterior</th>
@@ -102,6 +103,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_rod.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'num_fogo'},
                     { data: 'data_rodizio'},
                     { data: 'veiculo_anterior' },
@@ -115,6 +117,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
+                "order":[[1,"desc"]]
             });
         });
     </script>

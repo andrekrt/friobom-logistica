@@ -72,6 +72,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableInv' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">Nº Inventário</th>
                                 <th scope="col" class="text-center text-nowrap">Data</th>
                                 <th scope="col" class="text-center text-nowrap">Peça</th>
@@ -109,6 +110,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_inv.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idinventario' },
                     { data: 'data' },
                     { data: 'descricao_peca' },
@@ -124,7 +126,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "aoColumnDefs":[
                     {'bSortable':false, 'aTargets':[7]}
                 ],
-                "order":[0,'desc']
+                "order":[1,'desc']
             });
         });
 

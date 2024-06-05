@@ -92,6 +92,7 @@ foreach($empRecords as $row){
     
 
     $data[] = array(
+        "filial"=>$row['filial'],
         "idcombustivel_entrada"=>$row['idcombustivel_entrada'],
         "data_entrada"=>date("d/m/Y", strtotime($row['data_entrada'])),
         "nf"=>$row['nf'],

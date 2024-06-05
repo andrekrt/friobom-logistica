@@ -58,6 +58,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
+        "filial"=>$row['filial'],
         "token"=>$row['token'],
         "data_meta"=>date("m/Y", strtotime($row['data_meta'])) ,
         "tipo_meta"=>$row['tipo_meta'],

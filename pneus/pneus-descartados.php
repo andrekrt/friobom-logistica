@@ -66,6 +66,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tablePneus' class='table table-striped table-bordered nowrap' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">Nº Fogo</th>
                                 <th scope="col" class="text-center text-nowrap">Cadastrado</th>
                                 <th scope="col" class="text-center text-nowrap">Medida</th>
@@ -110,6 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'pesq_pneuDesc.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'num_fogo' },
                     { data: 'data_cadastro' },
                     { data: 'medida' },
@@ -132,6 +134,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
+                "order":[[1,"desc"]]
             });
         });
 

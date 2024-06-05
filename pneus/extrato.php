@@ -66,6 +66,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableExtrato' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Nº Fogo</th>
                                 <th scope="col" class="text-center text-nowrap">Data Operação</th>
@@ -98,6 +99,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_extrato.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idextrato' },
                     { data: 'fogo' },
                     { data: 'data_op' },
@@ -109,6 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
+                "order":[[1,"desc"]]
             });
         });
     </script>

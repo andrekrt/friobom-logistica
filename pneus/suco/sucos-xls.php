@@ -17,10 +17,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     if($filial===99){
         $condicao = " ";
     }else{
-        $condicao = "AND sucoss.filial=$filial";
+        $condicao = "AND sucos.filial=$filial";
     }
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT data_cadastro, data_medicao, num_fogo, medida, calibragem_maxima, marca, num_serie, sucos.vida, sucos.veiculo, km_veiculo, km_pneu, carcaca, posicao_inicio, sucos.suco01 as medida01, sucos.suco02 as medida02, sucos.suco03 as medida03, sucos.suco04 as medida04 , pneus.suco01 as cadastro01, pneus.suco02 as cadastro02, pneus.suco03 as cadastro03, pneus.suco04 as cadastro04,  calibragem, nome_usuario FROM sucos LEFT JOIN pneus ON sucos.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON sucos.usuario = usuarios.idusuarios WHERE 1 $condicao ");
+    $sql = $db->query("SELECT sucos.filial,data_cadastro, data_medicao, num_fogo, medida, calibragem_maxima, marca, num_serie, sucos.vida, sucos.veiculo, km_veiculo, km_pneu, carcaca, posicao_inicio, sucos.suco01 as medida01, sucos.suco02 as medida02, sucos.suco03 as medida03, sucos.suco04 as medida04 , pneus.suco01 as cadastro01, pneus.suco02 as cadastro02, pneus.suco03 as cadastro03, pneus.suco04 as cadastro04,  calibragem, nome_usuario FROM sucos LEFT JOIN pneus ON sucos.pneus_idpneus = pneus.idpneus LEFT JOIN usuarios ON sucos.usuario = usuarios.idusuarios WHERE 1 $condicao ");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=suco.csv');
@@ -28,6 +28,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $arquivo = fopen("php://output", "w");
 
     $cabacelho = [
+        "Filial",
         "Data de Cadastro",
         mb_convert_encoding('Data de Medição','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Nº Fogo','ISO-8859-1', 'UTF-8'),

@@ -46,7 +46,7 @@ $records = $stmt->fetch();
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$stmt = $db->prepare("SELECT solicitacoes_new.id, solicitacoes_new.token,solicitacoes_new.data_atual, solicitacoes_new.placa, solicitacoes_new.motorista, solicitacoes_new.rota, solicitacoes_new.problema, solicitacoes_new.local_reparo, solicitacoes_new.situacao, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal, frete, num_nf,nome_usuario, nome_fantasia FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN fornecedores ON solicitacoes_new.fornecedor = fornecedores.id WHERE 1 $condicao ".$searchQuery." GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
+$stmt = $db->prepare("SELECT solicitacoes_new.filial,solicitacoes_new.id, solicitacoes_new.token,solicitacoes_new.data_atual, solicitacoes_new.placa, solicitacoes_new.motorista, solicitacoes_new.rota, solicitacoes_new.problema, solicitacoes_new.local_reparo, solicitacoes_new.situacao, COUNT(peca_servico) as peca, SUM(qtd) as qtd, GROUP_CONCAT('R$ ', vl_unit) as vlUnit, SUM(vl_total) as vlTotal, frete, num_nf,nome_usuario, nome_fantasia FROM solicitacoes_new LEFT JOIN peca_reparo ON solicitacoes_new.peca_servico = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON solicitacoes_new.usuario = usuarios.idusuarios LEFT JOIN fornecedores ON solicitacoes_new.fornecedor = fornecedores.id WHERE 1 $condicao ".$searchQuery." GROUP BY token ORDER BY ".$columnName." ".$columnSortOrder." LIMIT :limit,:offset");
 
 // Bind values
 foreach($searchArray as $key=>$search){
@@ -74,6 +74,7 @@ foreach($empRecords as $row){
         $editar= ' <a href="form-edit-solic.php?idPneu='.$row['id'].'" data-id="'.$row['id'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>'; 
     }
     $data[] = array(
+        "filial"=>$row['filial'],
         "token"=>$row['token'],
         "data_atual"=>date("d/m/Y", strtotime($row['data_atual'])),
         "placa"=>$row['placa'],

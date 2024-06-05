@@ -71,6 +71,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableThermo' class='table table-striped table-bordered nowrap' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap" > Filial </th>
                                 <th scope="col" class="text-center text-nowrap" > ID </th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Modelo Veículo</th>
@@ -112,6 +113,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'peq_thermo.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idthermoking'},
                     { data: 'placa_veiculo'},
                     { data: 'tipo_veiculo'},
@@ -125,7 +127,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 ],
                 "language":{
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
-                }
+                },
+                "order":[
+                    1, 'desc'
+                ]
             });
            
         });

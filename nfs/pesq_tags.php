@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../conexao.php';
 
 ## Read value
@@ -61,14 +62,15 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "idtags"=>$row['idtags'],
-            "nome_coluna"=>$row['nome_coluna'],
-            "descricao"=>$row['descricao'],
-            "valor"=>$row['valor'],
-            "legenda"=> $row['legenda'],
-            "cor"=>'<input type="color" value="'.$row['cor'].'" disabled> ' ,
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idtags'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a  data-id="'.$row['idtags'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idtags'] . ')\'>Deletar</a> '
-        );
+        "filial"=>$row['filial'],
+        "idtags"=>$row['idtags'],
+        "nome_coluna"=>$row['nome_coluna'],
+        "descricao"=>$row['descricao'],
+        "valor"=>$row['valor'],
+        "legenda"=> $row['legenda'],
+        "cor"=>'<input type="color" value="'.$row['cor'].'" disabled> ' ,
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idtags'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  <a  data-id="'.$row['idtags'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idtags'] . ')\'>Deletar</a> '
+    );
 }
 
 ## Response

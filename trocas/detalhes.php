@@ -84,7 +84,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <?php foreach ($dados as $dado) : ?>
                         <input type="hidden" name="idtroca[]" value="<?=$dado['idtroca']?>">
                         <div class="form-row">
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label for="codProd" class="col-form-label"> Cód Produto </label>
                                 <input type="text" readonly name="codProd[]" class="form-control" id="codProd" value="<?= $dado['cod_produto'] ?>">
                             </div>
@@ -96,14 +96,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="qtd" class="col-form-label"> Qtd </label>
                                 <input type="text" readonly name="qtd[]" class="form-control" id="qtd" value="<?= $dado['qtd']  ?>">
                             </div>
-
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
+                                <label for="rca" class="col-form-label"> RCA </label>
+                                <input type="text" readonly name="rca[]" class="form-control" id="rca" value="<?= $dado['rca']  ?>">
+                            </div>
+                            <div class="form-group col-md-1">
+                                <label for="supervisor" class="col-form-label"> Supervisor </label>
+                                <input type="text" readonly name="supervisor[]" class="form-control" id="supervisor" value="<?= $dado['supervisor']  ?>">
+                            </div>
+                            <div class="form-group col-md-1">
                                 <label for="vlTotal" class="col-form-label">Tudo OK? </label>
                                 <div class="input-group-text pb-3">
                                     <input type="checkbox" class="align-middle checkbox" value="1"  data-id="<?=$dado['idtroca']?>" id="situacao" name="situacao[<?=$dado['idtroca']?>]">
                                 </div>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label for="falta" class="col-form-label">Qt Falta</label>
                                 <input type="number" class="form-control falta" data-id="<?=$dado['idtroca']?>" id="falta" name="falta[<?=$dado['idtroca']?>]">
                             </div>

@@ -67,6 +67,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableOcor' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center"> Filial </th>
                                 <th scope="col" class="text-center">Código </th>
                                 <th scope="col" class="text-center"> Motorista </th>
                                 <th scope="col" class="text-center"> Data Ocorrência </th>
@@ -105,6 +106,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_pesq_ocor.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idocorrencia' },
                     { data: 'nome_motorista'},
                     { data: 'data_ocorrencia' },
@@ -131,6 +133,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     {'bSortable':false, 'aTargets':[11]},
                     {'bSortable':false, 'aTargets':[12]}
                 ],
+                "order":[[1,"desc"]]
             });
         });
 

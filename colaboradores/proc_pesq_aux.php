@@ -60,6 +60,7 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
+        "filial"=>$row['filial'],
         "nome_auxiliar"=>$row['nome_auxiliar'],
         "cpf_auxiliar"=>$row['cpf_auxiliar'],
         "salario_auxiliar"=>"R$". str_replace(".",",", $row['salario_auxiliar']),

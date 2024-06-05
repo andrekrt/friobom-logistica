@@ -18,7 +18,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $nomeUsuario = $_SESSION['nomeUsuario'];
     $filial = $_SESSION['filial'];
 
-    $sqlCarregamento = $dbora->prepare('SELECT C.NUMCAR FROM friobom.pcpedc C INNER JOIN FRIOBOM.pcpedi d ON c.numped=d.numped INNER JOIN  friobom.pccarreg g ON c.numcar = g.numcar WHERE g.dtretorno IS NULL AND c.condvenda=11 AND d.posicao=:posicao AND c.dtfat BETWEEN SYSDATE -10 AND SYSDATE GROUP BY C.NUMCAR ');
+    $sqlCarregamento = $dbora->prepare('SELECT C.NUMCAR FROM friobom.pcpedc C INNER JOIN FRIOBOM.pcpedi d ON c.numped=d.numped INNER JOIN  friobom.pccarreg g ON c.numcar = g.numcar WHERE g.dtretorno IS NULL AND c.condvenda=11 AND d.posicao=:posicao AND c.dtfat BETWEEN SYSDATE -5 AND SYSDATE GROUP BY C.NUMCAR ');
     $sqlCarregamento->bindValue(':posicao', 'F');
     $sqlCarregamento->execute();
     $carregamentos = $sqlCarregamento->fetchAll(PDO::FETCH_ASSOC);
@@ -30,7 +30,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sqlTroca->bindValue(':carregamento', $carregamento['NUMCAR']);
         $sqlTroca->execute();
         if($sqlTroca->rowCount()<1){
-            $sqlWint = $dbora->prepare("SELECT c.dtfat, dp.codprod, p.descricao, dp.qt, dp.pvenda, dp.numped, dp.numcar,c.destino, c.codveiculo, v.placa, c.codmotorista, m.nome FROM friobom.pcpedc cp INNER JOIN friobom.pcpedi dp ON cp.numped=dp.numped LEFT JOIN friobom.pccarreg c ON dp.numcar = c.numcar LEFT JOIN friobom.pcprodut p ON dp.codprod=p.codprod LEFT JOIN FRIOBOM.pcveicul v ON c.codveiculo=v.codveiculo LEFT JOIN FRIOBOM.pcempr m ON c.codmotorista=m.matricula WHERE  cp.condvenda=11 AND dp.posicao=:posicao AND dp.NUMCAR = :carregamento ");
+            $sqlWint = $dbora->prepare("SELECT 
+            c.dtfat, cp.codcli as cliente, cp.codusur as rca, r.codsupervisor, dp.codprod, p.descricao, dp.qt, dp.pvenda, dp.numped, dp.numcar,c.destino, c.codveiculo, v.placa, c.codmotorista, m.nome 
+        FROM friobom.pcpedc cp 
+        INNER JOIN friobom.pcpedi dp ON cp.numped=dp.numped 
+        LEFT JOIN friobom.pccarreg c ON dp.numcar = c.numcar 
+        LEFT JOIN friobom.pcprodut p ON dp.codprod=p.codprod 
+        LEFT JOIN FRIOBOM.pcveicul v ON c.codveiculo=v.codveiculo 
+        LEFT JOIN FRIOBOM.pcempr m ON c.codmotorista=m.matricula 
+        LEFT JOIN FRIOBOM.pcusuari r ON cp.codusur = r.codusur WHERE  cp.condvenda=11 AND dp.posicao=:posicao AND dp.NUMCAR = :carregamento ");
             $sqlWint->bindValue(':posicao', 'F');
             $sqlWint->bindValue(':carregamento', $carregamento['NUMCAR']);
             $sqlWint->execute();
@@ -44,7 +52,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
                 // echo "Preço unit=$preco - Qtd= $qtd - Valor total=$valorTotal Carregamento = $carregamento[NUMCAR]<br>";
 
-                $sqlInsert = $db->prepare('INSERT INTO trocas (cod_produto, nome_produto, qtd, valor_unit, valor_total, pedido, carregamento, rota, veiculo, motorista, filial) VALUES (:codProd, :nomeProd, :qtd, :vlUnit, :vlTotal, :pedido, :carregamento, :rota, :veiculo, :motorista, :filial)');
+                $sqlInsert = $db->prepare('INSERT INTO trocas (cod_produto, nome_produto, qtd, valor_unit, valor_total, pedido, carregamento, rota, veiculo, motorista, filial, rca, supervisor) VALUES (:codProd, :nomeProd, :qtd, :vlUnit, :vlTotal, :pedido, :carregamento, :rota, :veiculo, :motorista, :filial, :rca, :supervisor)');
                 $sqlInsert->bindValue(':codProd', $troca['CODPROD']);
                 $sqlInsert->bindValue(':nomeProd', $troca['DESCRICAO']);
                 $sqlInsert->bindValue(':qtd', $qtd);
@@ -56,6 +64,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                 $sqlInsert->bindValue(':veiculo', $troca['PLACA']);
                 $sqlInsert->bindValue(':motorista', $troca['NOME']);
                 $sqlInsert->bindValue(':filial', $filial);
+                $sqlInsert->bindValue(':rca', $troca['RCA']);
+                $sqlInsert->bindValue(':supervisor', $troca['CODSUPERVISOR']);
                 $sqlInsert->execute();
             }
 

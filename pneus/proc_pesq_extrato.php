@@ -62,14 +62,15 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "idextrato"=>$row['idextrato'],
-            "fogo"=>$row['pneu'],
-            "data_op"=>date("d/m/Y", strtotime($row['data_op'])) ,
-            "operacao"=>$row['operacao'],
-            "km_pneu"=>$row['km_pneu'],
-            "veiculo"=>$row['veiculo'],
-            'km_veiculo'=>$row['km_veiculo']
-        );
+        "filial"=>$row['filial'],
+        "idextrato"=>$row['idextrato'],
+        "fogo"=>$row['pneu'],
+        "data_op"=>date("d/m/Y", strtotime($row['data_op'])) ,
+        "operacao"=>$row['operacao'],
+        "km_pneu"=>$row['km_pneu'],
+        "veiculo"=>$row['veiculo'],
+        'km_veiculo'=>$row['km_veiculo']
+    );
 }
 
 ## Response

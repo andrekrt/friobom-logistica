@@ -73,6 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='tableSupervisores' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">Código</th>
                                 <th scope="col" class="text-center text-nowrap">Supervisor</th>
                                 <th scope="col" class="text-center text-nowrap">Cidade Residência</th>
@@ -104,6 +105,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_supervisores.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idsupervisor'},
                     { data: 'nome_supervisor'},
                     { data: 'cidade_residencia'},
@@ -114,10 +116,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "aoColumnDefs":[
-                    {'bSortable':false, 'aTargets':[3]}
+                    {'bSortable':false, 'aTargets':[5]}
                 ],
                 "order":[
-                    0, 'desc'
+                    1, 'desc'
                 ]
             });
         });

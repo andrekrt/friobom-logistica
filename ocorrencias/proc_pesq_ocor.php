@@ -68,20 +68,21 @@ foreach($empRecords as $row){
         $botao = null;
     }
     $data[] = array(
-            "idocorrencia"=>$row['idocorrencia'],
-            "nome_motorista"=>$row['nome_motorista'],
-            "data_ocorrencia"=>date("d/m/Y", strtotime($row['data_ocorrencia'])),
-            "tipo_ocorrencia"=> $row['tipo_ocorrencia'],
-            "placa"=>$row['placa'],
-            "num_carregamento"=>$row['num_carregamento'],
-            "ocorrencias"=> $row['img_ocorrencia']==""?"Sem Provas de Ocorrências":"<a href='uploads/$row[idocorrencia]/ocorrencias' target='_blank'>Anexo</a>" ,
-            "advertencias"=> $row['img_advertencia']==""?"Sem Anexo":"<a href='uploads/$row[idocorrencia]/advertencias' target='_blank'>Anexo</a>" ,
-            "laudos"=> $row['img_laudo']==""?"Sem Anexo":"<a href='uploads/$row[idocorrencia]/laudos' target='_blank'>Anexo</a>" ,
-            "vl_total"=>"R$ ". str_replace(".",",",$row['vl_total_custos']),
-            "situacao"=> $row['situacao'] ,
-            "usuario"=>$row['nome_usuario'],
-            "acoes"=> $botao
-        );
+        "filial"=>$row['filial'],
+        "idocorrencia"=>$row['idocorrencia'],
+        "nome_motorista"=>$row['nome_motorista'],
+        "data_ocorrencia"=>date("d/m/Y", strtotime($row['data_ocorrencia'])),
+        "tipo_ocorrencia"=> $row['tipo_ocorrencia'],
+        "placa"=>$row['placa'],
+        "num_carregamento"=>$row['num_carregamento'],
+        "ocorrencias"=> $row['img_ocorrencia']==""?"Sem Provas de Ocorrências":"<a href='uploads/$row[idocorrencia]/ocorrencias' target='_blank'>Anexo</a>" ,
+        "advertencias"=> $row['img_advertencia']==""?"Sem Anexo":"<a href='uploads/$row[idocorrencia]/advertencias' target='_blank'>Anexo</a>" ,
+        "laudos"=> $row['img_laudo']==""?"Sem Anexo":"<a href='uploads/$row[idocorrencia]/laudos' target='_blank'>Anexo</a>" ,
+        "vl_total"=>"R$ ". str_replace(".",",",$row['vl_total_custos']),
+        "situacao"=> $row['situacao'] ,
+        "usuario"=>$row['nome_usuario'],
+        "acoes"=> $botao
+    );
 }
 
 ## Response

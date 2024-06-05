@@ -60,13 +60,14 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "nome_colaborador"=>$row['nome_colaborador'],
-            "cpf_colaborador"=>$row['cpf_colaborador'],
-            "salario_colaborador"=>"R$". str_replace(".",",", $row['salario_colaborador']),
-            "extra"=>"R$". str_replace(".",",", $row['salario_extra']),
-            "cargo_colaborador"=>$row['cargo_colaborador'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idcolaboradores'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['idcolaboradores'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idcolaboradores'] . ')\'>Desativar</a>'
-        );
+        "filial"=>$row['filial'],
+        "nome_colaborador"=>$row['nome_colaborador'],
+        "cpf_colaborador"=>$row['cpf_colaborador'],
+        "salario_colaborador"=>"R$". str_replace(".",",", $row['salario_colaborador']),
+        "extra"=>"R$". str_replace(".",",", $row['salario_extra']),
+        "cargo_colaborador"=>$row['cargo_colaborador'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idcolaboradores'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['idcolaboradores'].'"  class="btn btn-danger btn-sm deleteBtn" onclick=\'confirmaDelete(' . $row['idcolaboradores'] . ')\'>Desativar</a>'
+    );
 }
 
 ## Response

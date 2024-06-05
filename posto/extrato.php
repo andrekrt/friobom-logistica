@@ -70,6 +70,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     <table id='extrato' class='table table-striped table-bordered nowrap text-center' style="width: 100%;">
                         <thead>
                             <tr>
+                                <th scope="col" class="text-center text-nowrap">Filial</th>
                                 <th scope="col" class="text-center text-nowrap">ID</th>
                                 <th scope="col" class="text-center text-nowrap">Data Operação</th>
                                 <th scope="col" class="text-center text-nowrap">Tipo Operação</th>
@@ -102,6 +103,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     'url':'proc_extrato.php'
                 },
                 'columns': [
+                    { data: 'filial'},
                     { data: 'idextrato' },
                     { data: 'data_operacao' },
                     { data: 'tipo_operacao' },
@@ -114,7 +116,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     "url":"//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 },
                 "order":[
-                    0, 'desc'
+                    1, 'desc'
                 ]
             });
         });

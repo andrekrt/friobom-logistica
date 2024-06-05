@@ -72,6 +72,7 @@ foreach($empRecords as $row){
         $atualiza =  ' <a  href="form-edit-os.php?idOs='.$row['idordem_servico'].'"  data-id="'.$row['idordem_servico'].'"  class="editbtn icon-acoes" ><img src="../assets/images/icones/update.png" alt=""></a> ';
     endif;
     $data[] = array(
+            "filial"=>$row['filial'],
             "idordem_servico"=>$row['idordem_servico'],
             "data_abertura"=>date("d/m/Y",strtotime($row['data_abertura'])) ,
             "placa"=>$row['placa'],

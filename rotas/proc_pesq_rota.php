@@ -58,15 +58,16 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "cod_rota"=>$row['cod_rota'],
-            "nome_rota"=>$row['nome_rota'],
-            "fechamento1"=>$row['fechamento1'],
-            "hora_fechamento1"=>$row['hora_fechamento1'],
-            "fechamento2"=>$row['fechamento2'],
-            "hora_fechamento2"=>$row['hora_fechamento2'],
-            "meta_dias"=>empty($row['meta_dias'])?null: number_format($row['meta_dias'],1,",",","),
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_rota'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['cod_rota'].'"  class="btn btn-danger btn-sm deleteBtn"  onclick=\'confirmaDelete(' . $row['cod_rota'] . ')\' >Deletar</a>'
-        );
+        "filial"=>$row['filial'],
+        "cod_rota"=>$row['cod_rota'],
+        "nome_rota"=>$row['nome_rota'],
+        "fechamento1"=>$row['fechamento1'],
+        "hora_fechamento1"=>$row['hora_fechamento1'],
+        "fechamento2"=>$row['fechamento2'],
+        "hora_fechamento2"=>$row['hora_fechamento2'],
+        "meta_dias"=>empty($row['meta_dias'])?null: number_format($row['meta_dias'],1,",",","),
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_rota'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  <a  data-id="'.$row['cod_rota'].'"  class="btn btn-danger btn-sm deleteBtn"  onclick=\'confirmaDelete(' . $row['cod_rota'] . ')\' >Deletar</a>'
+    );
 }
 
 ## Response

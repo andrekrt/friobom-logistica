@@ -59,12 +59,13 @@ $data = array();
 
 foreach($empRecords as $row){
     $data[] = array(
-            "idservicos"=>$row['idservicos'],
-            "descricao"=>$row['descricao'],
-            "categoria"=>$row['categoria'],
-            "nome_usuario"=>$row['nome_usuario'],
-            "acoes"=> '<a href="javascript:void();" data-id="'.$row['idservicos'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  '
-        );
+        "filial"=>$row['filial'],
+        "idservicos"=>$row['idservicos'],
+        "descricao"=>$row['descricao'],
+        "categoria"=>$row['categoria'],
+        "nome_usuario"=>$row['nome_usuario'],
+        "acoes"=> '<a href="javascript:void();" data-id="'.$row['idservicos'].'"  class="btn btn-info btn-sm editbtn" >Editar</a>  '
+    );
 }
 
 ## Response
