@@ -73,6 +73,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Categoria</th>
                                 <th scope="col" class="text-center text-nowrap">Marca</th>
                                 <th scope="col" class="text-center text-nowrap">Placa Veículo</th>
+                                <th scope="col" class="text-center text-nowrap">Ano Veículo</th>
                                 <th scope="col" class="text-center text-nowrap">Cidade Base</th>
                                 <th scope="col" class="text-center text-nowrap">Peso Máximo</th>
                                 <th scope="col" class="text-center text-nowrap">Cubagem</th>
@@ -140,6 +141,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'categoria' },
                     { data: 'marca'},
                     { data: 'placa_veiculo' },
+                    { data: 'ano_veiculo' },
                     { data: 'cidade_base'},
                     { data: 'peso_maximo' },
                     { data: 'cubagem' },
@@ -203,6 +205,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#marca').val(json.marca);
                     $('#metaCombustivel').val(json.meta_combustivel);
                     $('#base').val(json.cidade_base);
+                    $("#anoVeiculo").val(json.ano_veiculo);
                 }
             })
         });
@@ -231,7 +234,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <label for="tipoVeiculo" class="col-form-label">Tipo Veículo</label>
                             <input type="text" class="form-control" name="tipoVeiculo" id="tipoVeiculo" >
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="categoria" class="col-form-label">Categoria</label>
                             <select class="form-control" name="categoria" id="categoria">
                                 <option >  </option>
@@ -244,9 +247,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Serviço">Serviço</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-3">
                             <label for="placa" class="col-form-label">Placa</label>
                             <input type="text" class="form-control" name="placa" id="placa" >
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="anoVeiculo" class="col-form-label">Ano Veículo</label>
+                            <input type="text" class="form-control" name="anoVeiculo" id="anoVeiculo" >
                         </div>
                     </div>
                     <div class="row">

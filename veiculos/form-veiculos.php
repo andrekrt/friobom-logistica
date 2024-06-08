@@ -122,9 +122,13 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="cubagem">Cubagem(m3)</label>
                                 <input type="text" required name="cubagem" id="cubagem" class="form-control">
                             </div>
-                            <div class="form-group col-md-4 espaco">
+                            <div class="form-group col-md-2 espaco">
                                 <label for="metaCombustivel">Meta de Combustível</label>
                                 <input type="text" required name="metaCombustivel" id="metaCombustivel" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2 espaco">
+                                <label for="anoVeiculo">Ano Veículo</label>
+                                <input type="number" required name="anoVeiculo" id="anoVeiculo" class="form-control">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary"> Cadastrar </button>

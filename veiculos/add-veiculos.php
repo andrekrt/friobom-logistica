@@ -1,5 +1,8 @@
 <?php
 
+use DeepCopy\Filter\Filter;
+use setasign\Fpdi\PdfParser\Filter\FilterInterface;
+
 session_start();
 require("../conexao.php");
 
@@ -25,6 +28,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $metaCombustivel = str_replace(",", ".",filter_input(INPUT_POST, 'metaCombustivel') ) ;
     $marca = filter_input(INPUT_POST, 'marca');
     $base = filter_input(INPUT_POST, 'base');
+    $ano = filter_input(INPUT_POST,'anoVeiculo');
 
     $db->beginTransaction();
 
@@ -42,7 +46,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit(); 
         }
         
-        $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, marca, peso_maximo, cubagem, meta_combustivel, cidade_base, filial) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :marca, :peso, :cubagem, :metaCombustivel, :base, :filial) ");
+        $sql= $db->prepare("INSERT INTO veiculos (cod_interno_veiculo, tipo_veiculo, placa_veiculo, categoria, marca, peso_maximo, cubagem, meta_combustivel, cidade_base, filial, ano_veiculo) VALUES (:codVeiculo, :tipoVeiculo, :placaVeiculo, :categoria, :marca, :peso, :cubagem, :metaCombustivel, :base, :filial,:ano) ");
         $sql->bindValue(':codVeiculo', $codVeiculo);
         $sql->bindValue(':tipoVeiculo', $tipoVeiculo);
         $sql->bindValue(':placaVeiculo', $placaVeiculo);
@@ -53,6 +57,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':metaCombustivel', $metaCombustivel);
         $sql->bindValue(':base', $base);
         $sql->bindValue(':filial', $filial);
+        $sql->bindValue(':ano', $ano);
         $sql->execute();
 
         $db->commit();
