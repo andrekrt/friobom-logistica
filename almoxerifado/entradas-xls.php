@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT entrada_estoque.filial,identrada_estoque, data_nf, num_nf, num_pedido, CONCAT(id_peca_reparo, ' - ', descricao) as peca, preco_custo, qtd,frete, desconto, obs, apelido, vl_total_comprado FROM `entrada_estoque` LEFT JOIN peca_reparo ON entrada_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id $condicao");
+    $sql = $db->query("SELECT entrada_estoque.filial,identrada_estoque, data_nf, num_nf, num_pedido, id_peca_reparo, descricao, preco_custo, qtd,frete, desconto, obs, apelido, vl_total_comprado FROM `entrada_estoque` LEFT JOIN peca_reparo ON entrada_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON entrada_estoque.id_usuario = usuarios.idusuarios LEFT JOIN fornecedores ON entrada_estoque.fornecedor = fornecedores.id $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=entradas.csv');
@@ -34,6 +34,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         "Data NF",
         mb_convert_encoding('Nº NF','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Nº Pedido','ISO-8859-1', 'UTF-8'),
+        mb_convert_encoding('Código Peça','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Peça','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Preço','ISO-8859-1', 'UTF-8'),
         "Quantidade",

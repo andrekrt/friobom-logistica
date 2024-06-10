@@ -21,7 +21,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     }
 
     $db->exec("set names utf8");
-    $sql = $db->query("SELECT saida_estoque.filial,idsaida_estoque, data_saida, qtd, CONCAT(id_peca_reparo, ' - ', descricao) as peca, valor_total/total_estoque as valorMedio, solicitante, placa, obs, nome_usuario FROM `saida_estoque` LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios $condicao");
+    $sql = $db->query("SELECT saida_estoque.filial,idsaida_estoque, data_saida, qtd, id_peca_reparo, descricao, valor_total/total_estoque as valorMedio, solicitante, placa, obs, nome_usuario FROM `saida_estoque` LEFT JOIN peca_reparo ON saida_estoque.peca_idpeca = peca_reparo.id_peca_reparo LEFT JOIN usuarios ON saida_estoque.id_usuario = usuarios.idusuarios $condicao");
 
     header('Content-Type:text/csv; charset=UTF-8');
     header('Content-Disposition: attachement; filename=saidas.csv');
@@ -33,6 +33,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         "ID",
         mb_convert_encoding('Data Saída','ISO-8859-1', 'UTF-8'),
         "Qtd",
+        mb_convert_encoding('Código Peça','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Peça','ISO-8859-1', 'UTF-8'),
         mb_convert_encoding('Valor Médio','ISO-8859-1', 'UTF-8'),
         "Solicitante",
