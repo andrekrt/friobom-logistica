@@ -105,6 +105,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $html .= '<td class="text-center font-weight-bold"> Chapa 01 </td>';
         $html .= '<td class="text-center font-weight-bold"> Chapa 02 </td>';
         $html .= '<td class="text-center font-weight-bold"> Status </td>';
+        $html .= '<td class="text-center font-weight-bold"> Nota da Carga </td>';
+        $html .= '<td class="text-center font-weight-bold"> Doca Congelado </td>';
+        $html .= '<td class="text-center font-weight-bold"> Doca Seco </td>';
         $html .= '</tr>';
         
         $inicio = filter_input(INPUT_POST, 'inicio');
@@ -113,6 +116,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql = $db->query("SELECT *, MONTH(data_chegada) as mes, YEAR(data_chegada) as ano FROM viagem WHERE DATE(data_chegada) BETWEEN '$inicio' and  '$final' $condicao ");
         $dados = $sql->fetchAll();
         foreach($dados as $dado){
+            $docas = explode('0', $dado['doca']);
+            if(count($docas)<2){
+                if($docas[0]<=10){
+                    $docaCong = $docas[0];
+                    $docaSeco = "";
+                }else{
+                    $docaSeco = $docas[0];
+                    $docaCong = ""; 
+                }
+            }else{
+                $docaCong = $docas[0];
+                $docaSeco = $docas[1];
+            }
+            // echo "Congelado: $docaCong<br>";
+            // echo "Seco: $docaSeco<hr>";
             $html .= '<tr>';
             $html .= '<td>' .$dado['filial'].  '</td>';
             $html .= '<td>' .$dado['cod_interno_veiculo'].  '</td>';
@@ -194,6 +212,9 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             $html .= '<td>' .mb_convert_encoding($dado['chapa01'],'ISO-8859-1', 'UTF-8').  '</td>';
             $html .= '<td>' .mb_convert_encoding($dado['chapa02'],'ISO-8859-1', 'UTF-8').  '</td>';
             $html .= '<td>' .mb_convert_encoding($dado['situacao'],'ISO-8859-1', 'UTF-8').  '</td>';
+            $html .= '<td>' .$dado['nota_carga'].  '</td>';
+            $html .= '<td>' . $docaCong .  '</td>';
+            $html .= '<td>' . $docaSeco.  '</td>';
             $html .= '</tr>';
         }
         $html .= '</table>';

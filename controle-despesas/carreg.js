@@ -12,10 +12,41 @@ $(document).ready(function(){
         var $valorAbastecido = $("input[name='vl4Abast']");
         var $localAbastecimento = $("input[name='local4Abast']");
         var $botao = $("button[type='submit']");
+        var $doca = $("input[name='doca']");
         var nCarregamento = $(this).val();
 
         $.getJSON('num-carreg.php', {nCarregamento},
             function(retorno){
+                let valorTroca = parseFloat(retorno.valorTroca);
+
+                // comentando para desativar temporariamente essa trava
+                // if(retorno.qtdTrocas>0){
+                //     alert("Existe Trocas não conferidas! ");
+                //     $botao.remove();
+                // }
+
+                // desativado temporiamente
+                // if(valorTroca>0){
+                //     let valorFormat = valorTroca.toFixed(2);
+                //     let valorNumerico = parseFloat(valorFormat);
+                //    valorFormat = valorNumerico.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                
+                //     alert("Faltou itens que deu um total de "+ valorFormat + " informe quem é o responsavel");
+                //     $("#linha").append(`
+                //     <div class="form-group col-md-6 espaco">
+                //         <label for="troca">Pagar Troca?</label>
+                //         <select class="form-control" id="troca" name="troca" required>
+                //             <option></option>
+                //             <option>Vendedor</option>
+                //             <option> Motorista </option>
+                //             <option> Supervisor </option>
+                //         </select>
+                //     </div>
+                //     `)
+                   
+
+                // }
+                
                if(retorno.denegadas>0){
                     alert("Notas Denegas que ainda não foram resolvidas!");
                     $botao.remove();
@@ -38,9 +69,17 @@ $(document).ready(function(){
                     $litrosAbastecido.val(retorno.litrosAbastecimento);
                     $valorAbastecido.val(retorno.valorTotal);
                     $localAbastecimento.val(retorno.local);
+                    $doca.val(retorno.doca);    
+                }
+
+                if(retorno.qtdVales>0){
+                    alert("Existe vales não resgatado para o carregamento: "+nCarregamento);
+                    $botao.remove();
                 }
                 
             }
+
+            
         );
     });
 });

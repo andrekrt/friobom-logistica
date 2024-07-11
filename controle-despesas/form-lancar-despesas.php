@@ -286,20 +286,65 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <label for="chapa2">Nome Chapa 2</label>
                                 <input type="text" name="chapa2" class="form-control" id="chapa2">
                             </div>
-                            <div class="form-group col-md-2 espaco">
-                                <label for="classificacao">Como foi sua carga?</label>
-                                <select name="classificacao" required class="form-control" id="classificacao">
-                                    <option value=""></option>
-                                    <option value="Ruim">Ruim</option>
-                                    <option value="Regular">Regular</option>
-                                    <option value="Boa">Boa</option>
-                                    <option value="Ótima">Ótima</option>  
-                                </select>
-                            </div>
-                            <div class="mb-3 form-grupo col-md-2 espaco">
+                            <div class="mb-3 form-grupo col-md-4 espaco">
                                 <label for="imagem" class="form-label">Imagem da carga</label>
                                 <input type="file" name="imagem" class="form-control" id="imagem" >    
                             </div> 
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3 espaco">
+                                <label for="arrumacao">A arrumação fez com que avariasse algum produto? </label>
+                                <select name="arrumacao" required id="arrumacao" class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">SIM</option>
+                                    <option value="1">NÃO</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group col-md-4 espaco">
+                                <label for="caixaErrada">Tinha produto dentro da caixa de outro produto que atrapalhou a entrega? </label>
+                                <select name="caixaErrada" required id="caixaErrada" class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">SIM</option>
+                                    <option value="1">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-5 espaco">
+                                <label for="produtoErrado">Tinha algum produto que foi colocado atrás de outro que ficou de difícil visão dentro do baú?</label>
+                                <select name="produtoErrado" id="produtoErrado" required class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">SIM</option>
+                                    <option value="1">NÃO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-2 espaco">
+                                <label for="miudeza">Tinha miudeza solta no caminhão? </label>
+                                <select name="miudeza" required id="miudeza" class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">SIM</option>
+                                    <option value="1">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6 espaco" id="after">
+                                <label for="voltouCliente">Teve que ir no cliente mais de 1 vez por conta de produtos não encontrados, mas que fora encontrados depois?</label>
+                                <select name="voltouCliente" id="voltouCliente" required class="form-control">
+                                    <option value=""></option>
+                                    <option value="0">SIM</option>
+                                    <option value="1">NÃO</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 espaco">
+                                <label for="setorBaguncado">Qual depósito deu mais trabalho?</label>
+                                <select name="setorBaguncado" required id="setorBaguncado" class="form-control">
+                                    <option value=""></option>
+                                    <option value="Seco">Seco</option>
+                                    <option value="Frios">Frios</option>
+                                    <option value="Ambos">Ambos</option>
+                                    <option value="Nenhum">Nenhum</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-12 espaco">
@@ -307,6 +352,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <textarea class="form-control" id="obs" rows="3" name="obs" required></textarea>
                             </div>
                         </div>
+                        <input type="hidden" name="doca" id="doca">
                         <button type="submit" class="btn btn-primary" name="cadastrar"> Cadastrar </button>
                     </form>
                 </div>
@@ -372,6 +418,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     if(kmRetorno<kmSaida){
                         alert("Km de Retorno precisa ser maior que o de saída.");
                         $('#km4Abast').val("");
+                    }
+                });
+
+                $('#voltouCliente').change(function(){
+                    let voltouCliente = $('#voltouCliente').val();
+                    if(voltouCliente=="0"){
+                        let inputExtra = `
+                        <div class="form-group col-md-5 espaco" id="inputExtra">
+                            <label for="qtdVezes">Em quantos clientes tever que retornar?</label>
+                            <input class="form-control" type="number" id="qtdVezes" name="qtdVezes">
+                        </div>
+                        `
+                        $(inputExtra).insertAfter('#after');
+                    }else if(voltouCliente=="1" || ($('#inputExtra').length==1)){
+                       $('#inputExtra').remove();
                     }
                 });
             });

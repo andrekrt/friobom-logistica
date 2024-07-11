@@ -32,6 +32,12 @@ if(!empty($nCarregamento)){
     $sqlCaixas->execute();
     $qtdCaixa = $sqlCaixas->rowCount();
 
+    // verificar se carregamento ja existe
+    $qtdCarga = $db->prepare("SELECT * FROM viagem WHERE num_carregemento=:carregamento");
+    $qtdCarga->bindValue(':carregamento', $nCarregamento);
+    $qtdCarga->execute();
+    $qtdCarga = $qtdCarga->rowCount();
+
     // verificar se tem vale não resgatado
     $sqlVales = $db->prepare("SELECT * FROM vales WHERE carregamento=:carregamento AND situacao = :situacao");
     $sqlVales->bindValue(':carregamento', $nCarregamento);
@@ -39,11 +45,24 @@ if(!empty($nCarregamento)){
     $sqlVales->execute();
     $qtdVales = $sqlVales->rowCount();
 
-    // verificar se carregamento ja existe
-    $qtdCarga = $db->prepare("SELECT * FROM viagem WHERE num_carregemento=:carregamento");
-    $qtdCarga->bindValue(':carregamento', $nCarregamento);
-    $qtdCarga->execute();
-    $qtdCarga = $qtdCarga->rowCount();
+    // verificar se tem troca não conferida
+    $sqlTroca = $db->prepare("SELECT * FROM trocas WHERE carregamento =:carregamento AND situacao=:situacao");
+    $sqlTroca->bindValue(':carregamento', $nCarregamento);
+    $sqlTroca->bindValue(':situacao', "Não Conferido");
+    $sqlTroca->execute();
+    $qtdTrocas = $sqlTroca->rowCount();
+
+    // verificar valor que falta na troca
+    $sqlValorTroca = $db->prepare("SELECT SUM(valor_unit*qtd_falta) as vlTotal FROM trocas WHERE carregamento=:carregamento GROUP BY carregamento ");
+    $sqlValorTroca->bindValue(':carregamento', $nCarregamento);
+    $sqlValorTroca->execute();
+    $valorTroca = $sqlValorTroca->fetchColumn();
+
+    // pegar docas
+    $sqlDoca = $dbora->prepare("SELECT numbox FROM friobom.PCMOVENDPEND WHERE numcar = :carregamento GROUP BY numbox ORDER BY numbox DESC");
+    $sqlDoca->bindValue(':carregamento', $nCarregamento);
+    $sqlDoca->execute();
+    $doca = $sqlDoca->fetch(PDO::FETCH_ASSOC);
 
     $valores=array();    
 
@@ -65,6 +84,9 @@ if(!empty($nCarregamento)){
         $valores['caixas']=$qtdCaixa;
         $valores['qtdCarregamentos']=$qtdCarga;
         $valores['qtdVales']=$qtdVales;
+        $valores['qtdTrocas']= $qtdTrocas;
+        $valores['valorTroca']=$valorTroca;
+        $valores['doca']= $doca['NUMBOX']; 
     }else{
         $valores['vlTransp']='Não Encontrado';
     }
