@@ -77,6 +77,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center text-nowrap">Nº</th>
                                 <th scope="col" class="text-center text-nowrap">Carga</th>
                                 <th scope="col" class="text-center text-nowrap">Qtd de Caixas</th>
+                                <th scope="col" class="text-center text-nowrap">Qtd de Pallets</th>
                                 <th scope="col" class="text-center text-nowrap">Status</th>
                                 <th scope="col" class="text-center text-nowrap">Registrado por:</th>
                                 <th scope="col" class="text-center text-nowrap"> Ações  </th>
@@ -110,6 +111,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'idcaixas' },
                     { data: 'carregamento' },
                     { data: 'qtd_caixas' },
+                    { data: 'qtd_pallets' },
                     { data: 'situacao' },
                     { data: 'nome_usuario' },
                     { data: 'acoes' },
@@ -140,7 +142,8 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     var json = JSON.parse(data);
                     $('#id').val(json.idcaixas);
                     $('#carga').val(json.carregamento);
-                    $('#qtd').val(json.qtd_caixas);     
+                    $('#qtd').val(json.qtd_caixas);    
+                    $('#pallets').val(json.qtd_pallets); 
                 }
             })
         });
@@ -187,6 +190,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                             <input type="text" name="qtd" class="form-control" id="qtd" required>
                         </div>
                     </div> 
+                    <div class="form-row">
+                        <div class="form-group col-md-12 espaco">
+                            <label for="pallets"> Qtd de Palletes </label>
+                            <input type="text" name="pallets" required class="form-control" id="pallets" required>
+                        </div>
+                    </div> 
             </div>
             <div class="modal-footer">
                     <div class="text-center">
@@ -225,6 +234,12 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <input type="text" name="qtd" class="form-control" id="qtd" required>
                             </div>
                         </div> 
+                        <div class="form-row">
+                            <div class="form-group col-md-12 espaco">
+                                <label for="pallets"> Qtd de Palletes </label>
+                                <input type="text" name="pallets" required class="form-control" id="pallets" required>
+                            </div>
+                        </div>
                     </div>
                 <div class="modal-footer">
                     <button type="submit" name="analisar" class="btn btn-primary">Registar</button>

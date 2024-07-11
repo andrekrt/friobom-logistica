@@ -67,6 +67,7 @@ foreach($empRecords as $row){
         "idcaixas"=>$row['idcaixas'],
         "carregamento"=>$row['carregamento'],
         "qtd_caixas"=>$row['qtd_caixas'],
+        "qtd_pallets"=>$row['qtd_pallets'],
         "situacao"=>$row['situacao'],
         "nome_usuario"=>$row['nome_usuario'],
         "acoes"=>$botao

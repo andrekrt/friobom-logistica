@@ -16,6 +16,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $idUsuario = $_SESSION['idUsuario'];
     $carga = filter_input(INPUT_POST, 'carga');
     $qtd =filter_input(INPUT_POST, 'qtd');
+    $pallets = filter_input(INPUT_POST, 'pallets');
     $situacao = "Saída";
 
     $db->beginTransaction();
@@ -34,9 +35,10 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
 
         }
 
-        $inserir = $db->prepare("INSERT INTO caixas (carregamento, qtd_caixas, situacao, usuario, filial) VALUES (:carregamento, :qtd, :situacao, :usuario, :filial)");
+        $inserir = $db->prepare("INSERT INTO caixas (carregamento, qtd_caixas, qtd_pallets, situacao, usuario, filial) VALUES (:carregamento, :qtd, :pallets, :situacao, :usuario, :filial)");
         $inserir->bindValue(':carregamento', $carga);
         $inserir->bindValue(':qtd', $qtd);
+        $inserir->bindValue(':pallets', $pallets);
         $inserir->bindValue(':situacao', $situacao);
         $inserir->bindValue(':usuario', $idUsuario);
         $inserir->bindValue(':filial', $filial);

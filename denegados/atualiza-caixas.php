@@ -18,13 +18,15 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $id = filter_input(INPUT_POST,'id');
     $carga = filter_input(INPUT_POST,'carga');
     $qtd = filter_input(INPUT_POST,'qtd');
+    $pallets= filter_input(INPUT_POST, 'pallets');
   
     $db->beginTransaction();
 
     try{
-        $atualiza = $db->prepare("UPDATE caixas SET carregamento = :carregamento, qtd_caixas = :qtd WHERE idcaixas = :id");
+        $atualiza = $db->prepare("UPDATE caixas SET carregamento = :carregamento, qtd_caixas = :qtd, qtd_pallets=:palltes WHERE idcaixas = :id");
         $atualiza->bindValue(':carregamento', $carga);
         $atualiza->bindValue(':qtd', $qtd);
+        $atualiza->bindValue(':palltes', $pallets);
         $atualiza->bindValue(':id', $id);
         $atualiza->execute();
 
