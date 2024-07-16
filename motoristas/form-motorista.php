@@ -100,6 +100,14 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <option value="Teresina">Teresina</option>
                             </select>
                         </div>
+                        <div class="form-group col-md-12 espaco">
+                            <label for="fusion">Cadastro no Fusion?</label>
+                            <select name="fusion" id="fusion" required class="form-control">
+                                <option value=""></option>
+                                <option value="1">SIM</option>
+                                <option value="0">NÃO</option>
+                            </select>
+                        </div>  
                     </div>
                     <button type="submit" class="btn btn-primary"> Cadastrar </button>
                 </form>

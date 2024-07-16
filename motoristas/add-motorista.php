@@ -22,6 +22,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $toxicoligco = filter_input(INPUT_POST,'situacaoToxicologico');
     $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
     $cidadeBase = filter_input(INPUT_POST, 'base');
+    $fusion = filter_input(INPUT_POST, 'fusion');
 
     $db->beginTransaction();
 
@@ -39,7 +40,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
             exit();
         }
 
-        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, cidade_base, ativo, filial) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :base, :ativo, :filial) ");
+        $sql = $db->prepare("INSERT INTO motoristas (cod_interno_motorista, nome_motorista, salario, cnh, validade_cnh, toxicologico, validade_toxicologico, cidade_base, ativo, filial, fusion) VALUES (:codMotorista, :nomeMotorista, :salario, :cnh, :validadeCnh, :toxicologico, :validadeToxicologico, :base, :ativo, :filial, :fusion) ");
         $sql->bindValue(':codMotorista', $codMotorista);
         $sql->bindValue(':nomeMotorista', $nomeMotorista);
         $sql->bindValue(':salario', $salario);
@@ -50,6 +51,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $sql->bindValue(':base', $cidadeBase);
         $sql->bindValue(':ativo', 1);
         $sql->bindValue(':filial', $filial);
+        $sql->bindValue(':fusion', $fusion);    
         $sql->execute();
 
         $db->commit();

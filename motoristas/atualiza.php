@@ -23,6 +23,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $validadeToxicologico = filter_input(INPUT_POST, 'validadeToxicologico');
     $cidadeBase = filter_input(INPUT_POST, 'base');
     $ativo = filter_input(INPUT_POST, 'ativo');
+    $fusion = filter_input(INPUT_POST, 'fusion');
     if($ativo=='on'){
         $ativo = 0;
     }else{
@@ -32,7 +33,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
     $db->beginTransaction();
 
     try{
-        $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, cidade_base=:base, salario = :salario WHERE cod_interno_motorista = :codMotorista ");
+        $atualiza = $db->prepare("UPDATE motoristas SET nome_motorista = :nomeMotorista, cnh = :cnh, validade_cnh = :validadeCnh, toxicologico = :toxicologico, validade_toxicologico = :validadeToxicologico, ativo = :ativo, cidade_base=:base, salario = :salario, fusion=:fusion WHERE cod_interno_motorista = :codMotorista ");
         $atualiza->bindValue(':nomeMotorista', $nomeMotorista);
         $atualiza->bindValue('salario', $salario);
         $atualiza->bindValue(':cnh', $cnh);
@@ -42,6 +43,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
         $atualiza->bindValue(':ativo', $ativo);
         $atualiza->bindValue(':codMotorista', $codMotorista);
         $atualiza->bindValue(':base', $cidadeBase);
+        $atualiza->bindValue(':fusion', $fusion);
         $atualiza->execute();
 
         $db->commit();

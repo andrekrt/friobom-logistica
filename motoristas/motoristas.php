@@ -76,6 +76,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                                 <th scope="col" class="text-center"> Toxicológico </th>
                                 <th scope="col" class="text-center"> Validade Toxicológico </th>
                                 <th scope="col" class="text-center">Salário</th>
+                                <th scope="col" class="text-center">Cadastro no Fusion?</th>
                                 <th scope="col" class="text-center"> Ações</th>
                             </tr>
                         </thead>
@@ -111,6 +112,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     { data: 'toxicologico' },
                     { data: 'validade_toxicologico' },
                     { data: 'salario' },
+                    { data: 'fusion'},
                     { data: 'acoes'},
                 ],
                 "language":{
@@ -144,6 +146,7 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                     $('#validadeToxicologico').val(json.validade_toxicologico);
                     $('#salario').val(json.salario);
                     $('#base').val(json.cidade_base);
+                    $('#fusion').val(json.fusion);
                 }
             })
         });
@@ -207,11 +210,21 @@ if (isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario']) == false && (
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="fusion" class="col-form-label">Cadastro no Fusion?</label>
+                            <select name="fusion" id="fusion" class="form-control">
+                                <option value=""></option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
+                    </div>   
+                    <div class="form-row">
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="ativo" name="ativo">
                             <label for="ativo">Desativar Mototista</label>
                         </div>
-                    </div>   
+                    </div>
             </div>
             <div class="modal-footer">
                     <div class="text-center">

@@ -67,6 +67,7 @@ foreach($empRecords as $row){
         "toxicologico"=>$row['toxicologico'],
         "validade_toxicologico"=>date("d/m/Y", strtotime($row['validade_toxicologico'])),
         "salario"=>"R$ " . str_replace(".",",",$row['salario']),
+        "fusion"=>$row['fusion'] == 1 ? "SIM" : "NÃO",
         "acoes"=> '<a href="javascript:void();" data-id="'.$row['cod_interno_motorista'].'"  class="btn btn-info btn-sm editbtn" >Visulizar</a>  '
     );
 }
